@@ -19330,7 +19330,7 @@ module.exports = function(module) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nModuleBuildError: Module build failed (from ./node_modules/postcss-loader/src/index.js):\nError: true is not a PostCSS plugin\n    at Processor.normalize (C:\\Users\\makos\\Desktop\\perfectWebApp\\node_modules\\postcss\\lib\\processor.js:168:15)\n    at new Processor (C:\\Users\\makos\\Desktop\\perfectWebApp\\node_modules\\postcss\\lib\\processor.js:52:25)\n    at postcss (C:\\Users\\makos\\Desktop\\perfectWebApp\\node_modules\\postcss\\lib\\postcss.js:55:10)\n    at Promise.resolve.then.then (C:\\Users\\makos\\Desktop\\perfectWebApp\\node_modules\\postcss-loader\\src\\index.js:140:12)\n    at process._tickCallback (internal/process/next_tick.js:68:7)\n    at runLoaders (C:\\Users\\makos\\Desktop\\perfectWebApp\\node_modules\\webpack\\lib\\NormalModule.js:316:20)\n    at C:\\Users\\makos\\Desktop\\perfectWebApp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:367:11\n    at C:\\Users\\makos\\Desktop\\perfectWebApp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:233:18\n    at context.callback (C:\\Users\\makos\\Desktop\\perfectWebApp\\node_modules\\loader-runner\\lib\\LoaderRunner.js:111:13)\n    at Promise.resolve.then.then.catch (C:\\Users\\makos\\Desktop\\perfectWebApp\\node_modules\\postcss-loader\\src\\index.js:208:9)\n    at process._tickCallback (internal/process/next_tick.js:68:7)");
 
 /***/ }),
 

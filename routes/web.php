@@ -29,5 +29,3 @@ Route::get('/centre', [App\Http\Controllers\CentreController::class, 'index'])->
 //Route::get('/stagiaire','StagiaireController@index')->name('stagiaire')->middleware('stagiaire');
 //Route::get('/formateur','FormateurController@index')->name('formateur')->middleware('formateur');
 //Route::get('/centre','CentreController@index')->name('centre')->middleware('centre');
-
-

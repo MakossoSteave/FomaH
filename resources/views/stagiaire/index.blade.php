@@ -1,13 +1,235 @@
 @extends('layouts.app')
 
 @section('content')
-<a href="{{ route('logout')}}" class="px-4 py-2 block text-gray-900 hover:bg-indigo-400 hover:text-white no-underline hover:no-underline"
-                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();"
-                                                     >Deconnection</a></li>
-                            
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+<div class="relative bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
+            <i class="fas fa-user"> </i>
+            <div class="flex justify-start lg:w-0 lg:flex-1">
+
+                <a href="#">
+                    <span
+                        class="group bg-white rounded-md text-blue-500 inline-flex items-center text-base font-medium hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        {{Auth::user()->name}} </span>
+                </a>
+            </div>
+            <nav class="hidden md:flex space-x-10">
+                <div class="relative">
+                    <button type="button"
+                        class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <span>Solutions</span>
+                    </button>
+                </div>
+                <div class="relative">
+                    <button type="button"
+                        class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <svg class="flex-shrink-0 h-6 w-6 text-indigo-600 " xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                        </svg>
+                        <span>Notification</span>
+                    </button>
+
+                </div>
+            </nav>
+            <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+
+                <a href="{{ route('logout')}}"
+                    onclick="event.preventDefault();document.getElementById('logout-form').submit();" class=" ml-8
+                        whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border
+                        border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600
+                        hover:bg-indigo-700">
+                    Deconnection
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<section class="py-12 px-4">
+    <div class="flex flex-wrap -mx-4">
+        <div class="w-full lg:w-1/2 px-4 mb-8 lg:mb-0">
+            <div class="flex flex-col  p-8 bg-gray-100 rounded">
+                <h2 class="text-3xl indigo-500 font-heading">Formahuub </h2>
+                <p class="text-gray-500 "> formahuub , garantie une qualité avec des prix défiant toute concurence
+                </p>
+                <br>
+                <img class=" pte-7"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA2JFgAzKqwq5wfr3i60FDcMCydweHn8fIRg&usqp=CAU"><br>
+                <a class=" px-9 py-1 border border-transparent rounded-md shadow-sm text-base font-medium text-white
+                    bg-indigo-600 hover:bg-indigo-700">
+                    Voici nos formations à la une
+                </a>
+            </div>
+
+        </div>
+        <div class="lg:w-1/2 px-4">
+            <div class="flex flex-wrap -m-2">
+                <div class="w-1/3 p-2"><img class="rounded shadow"
+                        src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/01/iStock-1156717900-1.jpg"
+                        alt="">
+                    <a class="text-right text-indigo-600 hover:underline" href="#">Formation de psychatre</a>
+                </div>
+                <div class="w-1/3 p-2"><img class="rounded shadow"
+                        src="https://i2.wp.com/managersante.com/wp-content/uploads/2020/03/infirmiere-pratique-avancee-hospitaliers.jpg?fit=1080%2C727&ssl=1"
+                        alt="">
+                    <a class="text-right text-indigo-600 hover:underline" href="#">Formation d'infirmiere</a>
+                </div>
+                <div class="w-1/3 p-2"><img class="rounded shadow"
+                        src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/03/Dermatologue.jpg"
+                        alt="">
+                    <a class="text-right text-indigo-600 hover:underline" href="#">Formation dermatologue</a>
+                </div>
+                <div class="w-1/3 p-2"><img class="rounded shadow"
+                        src="https://cdn.futura-sciences.com/buildsv6/images/mediumoriginal/2/2/a/22aa85ecd1_50148008_chimiste-analytique2.jpg"
+                        alt="">
+                    <a class="text-right text-indigo-600 hover:underline" href="#">Formation de chimiste</a>
+
+                </div>
+                <div class="w-1/3 p-2"><img class="rounded shadow"
+                        src="https://prospecvente.com/wp-content/uploads/2011/03/bon-vendeur.jpg" alt="">
+                    <a class="text-right text-indigo-600 hover:underline" href="#">Formation de vendeur</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="">
+    <h1 class="text-center text-indigo-800 text-3xl font-heading font-black">Formation disponible</h1>
+    <div class="">
+        <div class="bg-white-400 p-6">
+            <div class="inline bg-white-400 text-center text-1xl p-3"><a href="">General</a></div>
+            <div class="inline bg-white-400 text-center text-1xl p-3"><a href="">Informatique</a></div>
+            <div class="inline bg-white-400 text-center text-1xl p-3"><a href="">Design</a></div>
+            <div class="inline bg-white-400 text-center text-1xl p-3"><a href="">Science</a></div>
+        </div>
+    </div>
+    <div class="lg:w-3/1 px-4">
+        <div class="flex flex-wrap ">
+            <div class="w-1/4 p-2"><img class="rounded shadow"
+                    src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/01/iStock-1156717900-1.jpg"
+                    alt="">
+                <a class="text-right text-indigo-600 hover:underline" href="#">Formation de psychatre</a>
+            </div>
+            <div class="w-1/4 p-2"><img class="rounded shadow"
+                    src="https://i2.wp.com/managersante.com/wp-content/uploads/2020/03/infirmiere-pratique-avancee-hospitaliers.jpg?fit=1080%2C727&ssl=1"
+                    alt="">
+                <a class="text-right text-indigo-600 hover:underline" href="#">Formation d'infirmiere</a>
+            </div>
+            <div class="w-1/4 p-2"><img class="rounded shadow"
+                    src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/03/Dermatologue.jpg"
+                    alt="">
+                <a class="text-right text-indigo-600 hover:underline" href="#">Formation dermatologue</a>
+            </div>
+            <div class="w-1/4 p-2"><img class="rounded shadow"
+                    src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/01/iStock-1156717900-1.jpg"
+                    alt="">
+                <a class="text-right text-indigo-600 hover:underline" href="#">Formation de controleur</a>
+
+            </div>
+            <div class="w-1/4 p-2"><img class="rounded shadow"
+                    src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/03/Dermatologue.jpg"
+                    alt="">
+                <a class="text-right text-indigo-600 hover:underline" href="#">Formation dermatologue</a>
+            </div>
+            <div class="w-1/4 p-2"><img class="rounded shadow"
+                    src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/01/iStock-1156717900-1.jpg"
+                    alt="">
+                <a class="text-right text-indigo-600 hover:underline" href="#">Formation de controleur</a>
+
+            </div>
+            <div class="w-1/4 p-2"><img class="rounded shadow"
+                    src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/01/iStock-1156717900-1.jpg"
+                    alt="">
+                <a class="text-right text-indigo-600 hover:underline" href="#">Formation de controleur</a>
+
+            </div>
+            <div class="w-1/4 p-2"><img class="rounded shadow"
+                    src="https://lh3.googleusercontent.com/proxy/XasOvIAjQGk3wqnQrkGqqOwdA0TXpTL_YeXe1FurLuo6kuqvd9XyYFXx5qrgPos24ikwqBaAQZd2CFqqGHEZflpRC02mPAZSpK2gyVeMX_s5lr2hUYOFCoCLwL0"
+                    alt="">
+                <a class="text-right text-indigo-600 hover:underline" href="#">Pêcheur</a>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<section class="py-8 px-4">
+    <h2 class="text-4xl text-center mb-10 font-semibold font-heading">Mes Droits </h2>
+    <div class="flex flex-wrap -mx-4">
+        <div class="lg:w-1/3 px-4 mb-8 lg:mb-0">
+            <div class="h-full">
+                <img class="mb-3" src="https://www.datocms-assets.com/17507/1606813387-shutterstock318703970.jpg"
+                    alt=""><small>Par nos partenaires</small>
+                <h3 class="text-2xl mt-2 mb-3 font-heading">Suivis personnalisé</h3>
+                <a class="text-indigo-600 hover:underline" href="#">En savoir plus »</a>
+            </div>
+        </div>
+        <div class="lg:w-1/3 px-4 mb-8 lg:mb-0">
+            <div class="h-full">
+                <img class="mb-3"
+                    src="https://1819.brussels/sites/default/files/styles/image_style_1_2_landscape_xs_wide/public/eighteennineteen/galleries/reduction_de_prix.jpg?itok=OjALCPy2"
+                    alt=""><small>Par nos partenaires</small>
+                <h3 class=" text-2xl mt-2 mb-3 font-heading">Réduction</h3>
+                <a class="text-indigo-600 hover:underline" href="#">En savoir plus »</a>
+            </div>
+        </div>
+        <div class="lg:w-1/3 px-4 mb-8 lg:mb-0">
+            <div class="">
+                <img class="mb-3"
+                    src="https://www.ville-clichy.fr/uploads/Image/d7/IMF_ACCROCHE/GAB_CLICHY/58481_979_creation-d-entreprise.jpg"
+                    alt=""><small>Par nos partenaires</small>
+                <h3 class="text-2xl mt-2 mb-3 font-heading">Entreprise</h3>
+                <a class="text-indigo-600 hover:underline" href="#">En savoir plus »</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="text-gray-100 bg-gray-800">
+    <div class="max-w-3xl mx-auto py-6">
+        <h1 class="text-center text-lg lg:text-2xl">
+            Nous rejoindre <br>
+            c'est avoir les conseils d'un professionnel
+        </h1>
+        <div class="flex justify-center mt-6">
+            <div class=" bg-white rounded-md">
+                <div class="flex flex-wrap justify-between md:flex-row">
+                    <input type="email"
+                        class="m-1 p-2 appearance-none text-gray-700 text-sm focus:placeholder-transparent"
+                        placeholder="Entrez votre email" aria-label="Entrez votre email">
+                    <button
+                        class="w-full m-1 p-2 text-sm bg-gray-800 rounded font-semibold uppercase lg:w-auto hover:bg-gray-700">
+                        s'abonner
+                    </button>
+                </div>
+            </div>
+        </div>
+        <hr class="h-px mt-6 bg-gray-700 border-none">
+        <div class="flex flex-col items-center justify-between mt-6 md:flex-row">
+            <div>
+                <a href="#" class="text-xl font-bold text-gray-100 hover:text-gray-400">Perfect Ingénieurie</a>
+            </div>
+            <div class="flex mt-4 md:m-0">
+                <a href="" class="px-4 text-sm text-gray-100 font medium hover:text-gray-400">A propos de nous </a>
+                <a href="" class="px-4 text-sm text-gray-100 font medium hover:text-gray-400">Contactez nous </a>
+                <a href="" class="px-4 text-sm text-gray-100 font medium hover:text-gray-400">Blog</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
 @endsection

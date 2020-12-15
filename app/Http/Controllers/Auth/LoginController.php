@@ -29,21 +29,21 @@ class LoginController extends Controller
     protected $redirectTo = RouteServiceProvider::HOME;
     
     public function  redirectTo(){
-        switch(Auth::user()->role){
+        switch(Auth::user()->role_id){
             case 1:
                 $this->redirectTo ='/admin';
                 return $this->redirectTo;
             break;
             case 2:
-                $this->redirectTo ='/stagiaire';
+                $this->redirectTo ='/centre';
                 return $this->redirectTo;
             break;
             case 3:
-                $this->redirectTo ='/formateur';
+                $this->redirectTo ='/stagiaire';
                 return $this->redirectTo;
             break;
             case 4:
-                $this->redirectTo ='/centre';
+                $this->redirectTo ='/formateur';
                 return $this->redirectTo;
             break;
             default :
