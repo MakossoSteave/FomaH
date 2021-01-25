@@ -97,11 +97,6 @@
                             </div>
                             <select class="form-select block w-full mt-1  @error('role') is-invalid @enderror"
                                 name="role">
-                                <ul>
-                                    @foreach($role as $roles)
-                                    <li>{{$roles->type}}</li>
-                                    @endforeach
-                                </ul>
 
                                 <option value="3"> Stagiaire</option>
                                 <option value="4">Formateur</option>

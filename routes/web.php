@@ -24,8 +24,16 @@ Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->na
 Route::get('/stagiaire', [App\Http\Controllers\StagiaireController::class, 'index'])->name('stagiaire');
 Route::get('/formateur', [App\Http\Controllers\FormateurController::class, 'index'])->name('formateur');
 Route::get('/centre', [App\Http\Controllers\CentreController::class, 'index'])->name('centre');
-
-//Route::get('/admin','AdminController@index')->name('admin')->middleware('admin');
+Route::get('parametre/{id}', [
+    'as' => 'parametre',
+    'uses' => 'App\Http\Controllers\parametreController@show',
+]);
+Route::get('/formationshow', [App\Http\Controllers\formationshowController::class, 'index'])->name('formationshow');
+Route::get('message/{id}', [
+    'as' => 'message',
+    'uses' => 'App\Http\Controllers\messageController@index',
+    'message'
+]);
 //Route::get('/stagiaire','StagiaireController@index')->name('stagiaire')->middleware('stagiaire');
 //Route::get('/formateur','FormateurController@index')->name('formateur')->middleware('formateur');
 //Route::get('/centre','CentreController@index')->name('centre')->middleware('centre');

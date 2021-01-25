@@ -54,8 +54,19 @@
           @if (Route::has('login'))
                 <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                     @auth
-                    
+                        @if(Auth::user()->role_id == 1)
+                        <a href="{{ url('/admin') }}" class="text-sm text-gray-700 underline">Home</a>
+                         @endif
+                         @if(Auth::user()->role_id == 2)
+                        <a href="{{ url('/centre') }}" class="text-sm text-gray-700 underline">Home</a>
+                         @endif
+                         @if(Auth::user()->role_id == 3)
+                        <a href="{{ url('/stagiaire') }}" class="text-sm text-gray-700 underline">Home</a>
+                         @endif
+                         @if(Auth::user()->role_id == 3)
                         <a href="{{ url('/formateur') }}" class="text-sm text-gray-700 underline">Home</a>
+                         @endif
+
                     @else
                     <div class="rounded-md shadow">
                         <a href="{{ url('/login') }}" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">Connection</a>
