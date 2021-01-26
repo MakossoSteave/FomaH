@@ -12,9 +12,7 @@
                                 class="group bg-white rounded-md text-blue-500 inline-flex items-center text-base font-medium hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                 {{Auth::user()->name}} </span>
                         </a>
-                        <div class="absolute top-5 right-0 h-8 w-18 p-4">
-                            <button class="js-change-theme focus:outline-none">🌙</button>
-                        </div>
+
                     </li>
                     <li> <i class="fas fa-envelope text-blue-900 font-medium"></i>
                         <a href="{{route('message',[Auth::user()->id]) }}">
@@ -45,6 +43,13 @@
                                 d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                         </svg>
                         <span>Notification</span>
+                    </button>
+                </div>
+                <div class="relative">
+                    <button type="button"
+                        class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <img src="https://img.icons8.com/material-two-tone/24/000000/add-image.png" />
+                        <span> Ajouter une formation</span>
                     </button>
                 </div>
             </nav>
@@ -390,44 +395,9 @@
         </div>
     </div>
     <!-- component -->
-    <header>
-        <nav class="bg-white shadow">
-            <div class="container mx-auto px-6 py-3 ">
-                <div class="md:flex md:items-center md:justify-between">
-                    <div class="flex justify-between items-center">
-                        <div class="flex md:hidden">
-                            <button type="button"
-                                class="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600"
-                                aria-label="toggle menu">
-                                <svg viewBox="0 0 24 24" class="h-6 w-6 fill-current">
-                                    <path fill-rule="evenodd"
-                                        d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z">
-                                    </path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <div class="w-full bg-cover bg-center"
-            style="height:32rem; background-image: url(https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80);">
-            <div class="flex items-center justify-center h-full w-full bg-gray-900 bg-opacity-50">
-                <div class="text-center">
-                    <h1 class="text-white text-2xl font-semibold uppercase md:text-3xl">commencé à <span
-                            class="underline text-blue-400">Former</span></h1>
-                    <button
-                        class="mt-4 px-4 py-2 bg-blue-600 text-white text-sm uppercase font-medium rounded hover:bg-blue-500 focus:outline-none focus:bg-blue-500">Debuter
-                        une formation </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
 
     <div>
-        <h1 class="text-center p-5  text-indigo-800 font-black text-3xl">Formation Dispensé</h1>
+        <h1 class="text-center p-5   text-indigo-800 font-black text-3xl">Formation Dispensé</h1>
     </div>
     <div class="flex flex-wrap -m-4">
         <div class="p-4 md:w-1/3">
