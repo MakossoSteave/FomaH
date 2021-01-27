@@ -230,7 +230,7 @@
                 </a>
                 <div class="flex w-1/2 justify-end content-center">
                     <a class="inline-block text-blue-300 no-underline hover:text-indigo-800 hover:text-underline text-center h-10 p-2 md:h-auto md:p-4"
-                        data-tippy-content="@twitter_handle" href="https://twitter.com/intent/tweet?url=#">
+                        data-tippy-content="@twitter_handle" href="{{ url('/register') }}">
 
                         <svg class="fill-current h-6" height="480pt" viewBox="-43 0 479 480" width="80pt"
                             xmlns="http://www.w3.org/2000/svg">
@@ -255,7 +255,7 @@
                         </svg>
                     </a>
                     <a class="inline-block text-blue-300 no-underline hover:text-indigo-800 hover:text-underline text-center h-5 p-1 md:h-auto md:p-4 "
-                        data-tippy-content="#facebook_id" href="https://www.facebook.com/sharer/sharer.php?u=#">
+                        data-tippy-content="#facebook_id" href="{{ url('/login') }}">
 
                         <svg class="fill-current h-6" height="32" viewBox="0 0 60 64" width="42"
                             xmlns="http://www.w3.org/2000/svg">

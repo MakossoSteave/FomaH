@@ -231,7 +231,7 @@
 
                 <div class="flex w-1/2 justify-end content-center">
                     <a class="inline-block text-blue-300 no-underline hover:text-indigo-800 hover:text-underline text-center h-10 p-2 md:h-auto md:p-4"
-                        data-tippy-content="@twitter_handle" href="https://twitter.com/intent/tweet?url=#">
+                        data-tippy-content="@twitter_handle" href="{{ url('/register') }}">
 
                         <svg class="fill-current h-6" height="480pt" viewBox="-43 0 479 480" width="80pt"
                             xmlns="http://www.w3.org/2000/svg">
@@ -256,7 +256,7 @@
                         </svg>
                     </a>
                     <a class="inline-block text-blue-300 no-underline hover:text-indigo-800 hover:text-underline text-center h-5 p-1 md:h-auto md:p-4 "
-                        data-tippy-content="#facebook_id" href="https://www.facebook.com/sharer/sharer.php?u=#">
+                        data-tippy-content="#facebook_id" href="{{ url('/login') }}">
 
                         <svg class="fill-current h-6" height="32" viewBox="0 0 60 64" width="42"
                             xmlns="http://www.w3.org/2000/svg">
@@ -320,6 +320,7 @@
 
                 <a class="text-blue-400 font-bold pb-8 lg:pb-6 text-center md:text-left fade-in"></a>
                 <div class="flex w-full justify-center md:justify-start pb-24 lg:pb-0 fade-in">
+
                     <svg class="h-12 pr-4 bounce-top-icons" height="512" viewBox="0 0 64 64" width="412"
                         xmlns="http://www.w3.org/2000/svg">
                         <g id="Fill_Outline" data-name="Fill Outline">
@@ -354,6 +355,8 @@
                         <path
                             d="m47.758 20.03-12 3a1 1 0 0 0 -.758.97v9a1 1 0 0 0 1.242.97l12-3a1 1 0 0 0 .758-.97v-9a1 1 0 0 0 -1.242-.97zm-.758 9.189-10 2.5v-6.938l10-2.5z" />
                     </svg>
+
+
 
                     <svg class="h-12 bounce-top-icons" height="512" viewBox="0 0 74 74" width="512"
                         xmlns="http://www.w3.org/2000/svg">
