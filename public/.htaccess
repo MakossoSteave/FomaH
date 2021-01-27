@@ -1,5 +1,5 @@
 <IfModule mod_rewrite.c>
-   <IfModule mod_negotiation.c>
+    <IfModule mod_negotiation.c>
         Options -MultiViews
     </IfModule>
 
@@ -15,5 +15,6 @@
     RewriteRule ^ index.php [L]
 
     # Handle Authorization Header
-    RewriteC
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 </IfModule>
