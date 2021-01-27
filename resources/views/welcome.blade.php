@@ -411,11 +411,14 @@
                         aria-label="Global">
 
                         <div class=" md:block md:ml-10 md:pr-4 md:space-x-8">
-                            <a href="#" class="font-medium text-gray-500 hover:text-gray-900">Formateur</a>
+                            <a href="{{ url('/formateurEx') }}"
+                                class="font-medium text-gray-500 hover:text-gray-900">Formateur</a>
 
-                            <a href="#" class="font-medium text-gray-500 hover:text-gray-900">Stagiaire</a>
+                            <a href="{{ url('/stagiaireEx') }}"
+                                class="font-medium text-gray-500 hover:text-gray-900">Stagiaire</a>
 
-                            <a href="#" class="font-medium text-gray-500 hover:text-gray-900">Centre de Formation</a>
+                            <a href="{{ url('/centreEx') }}"
+                                class="font-medium text-gray-500 hover:text-gray-900">Centre de Formation</a>
 
                             <a href="#" class="font-medium text-gray-500 hover:text-gray-900">Organisme</a>
                         </div>

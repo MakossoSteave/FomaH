@@ -22,6 +22,13 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
 Route::get('/stagiaire', [App\Http\Controllers\StagiaireController::class, 'index'])->name('stagiaire');
+Route::get('/stagiaireEx', [App\Http\Controllers\StagiairesExController::class, 'index'])->name('StagiaireEx');
+Route::get('/formateurEx', [App\Http\Controllers\FormateurExController::class, 'index'])->name('FormateurEx');
+Route::get('/centreEx', [App\Http\Controllers\CentreExController::class, 'index'])->name('CentreEx');
+
+
+
+
 Route::get('/formateur', [App\Http\Controllers\FormateurController::class, 'index'])->name('formateur');
 Route::get('/centre', [App\Http\Controllers\CentreController::class, 'index'])->name('centre');
 Route::get('parametre/{id}', [
