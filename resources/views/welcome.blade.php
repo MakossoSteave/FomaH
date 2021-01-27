@@ -417,7 +417,8 @@
                             <a href="{{ url('/stagiaireEx') }}"
                                 class="font-medium text-gray-500 hover:text-gray-900">Stagiaire</a>
 
-                            <a href="#" class="font-medium text-gray-500 hover:text-gray-900">Centre de Formation</a>
+                            <a href="{{ url('/centreEx') }}"
+                                class="font-medium text-gray-500 hover:text-gray-900">Centre de Formation</a>
 
                             <a href="#" class="font-medium text-gray-500 hover:text-gray-900">Organisme</a>
                         </div>
