@@ -418,7 +418,8 @@
                                 class="font-medium text-gray-500 hover:text-gray-900">Stagiaire</a>
 
                             <a href="{{ url('/centreEx') }}"
-                                class="font-medium text-gray-500 hover:text-gray-900">Centre de Formation</a>
+                                class="font-medium text-gray-500 hover:text-gray-900">Centre
+                                de Formation</a>
 
                             <a href="#" class="font-medium text-gray-500 hover:text-gray-900">Organisme</a>
                         </div>
@@ -445,7 +446,7 @@
                             @if(Auth::user()->role_id == 3)
                             <a href="{{ url('/stagiaire') }}" class="text-sm text-gray-700 underline">Home</a>
                             @endif
-                            @if(Auth::user()->role_id == 3)
+                            @if(Auth::user()->role_id == 4)
                             <a href="{{ url('/formateur') }}" class="text-sm text-gray-700 underline">Home</a>
                             @endif
 
