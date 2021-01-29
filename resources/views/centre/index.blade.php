@@ -78,10 +78,16 @@
                             href="#">Message</a>
                     </li>
                 </ul>
-                <button id="navAction"
-                    class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-                    Deconnection
-                </button>
+                <a href="{{ route('logout')}}"
+                    onclick="event.preventDefault();document.getElementById('logout-form').submit();" class=" ml-8
+      "> <button id=" navAction"
+                        class="mx-auto lg:mx-0 hover:underline bg-indigo-700 text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                        Deconnection
+                    </button>
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
             </div>
         </div>
         <hr class="border-b border-gray-100 opacity-25 my-0 py-0" />
@@ -924,11 +930,11 @@
 
     </section>
     <!--Footer-->
-    <footer class="bg-gray-900">
+    <footer class="bg-gray-700">
         <div class="container mx-auto px-8">
             <div class="w-full flex flex-col md:flex-row py-6">
                 <div class="flex-1 mb-6 text-black">
-                    <a class="text-pink-600 no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
+                    <a class="text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
                         <!--Icon from: http://www.potlabicons.com/ -->
                         <svg class="w-10 text-indigo-500" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px"
