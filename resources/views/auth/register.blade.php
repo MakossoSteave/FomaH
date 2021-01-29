@@ -119,6 +119,7 @@
                         </button>
                     </div>
                 </form>
+
                 <div class="mt-6 text-sm font-display font-semibold text-gray-700 text-center">
                     déja un compte ? <a href="{{ route('login') }}"
                         class="cursor-pointer text-indigo-600 hover:text-indigo-800">Connection</a>
