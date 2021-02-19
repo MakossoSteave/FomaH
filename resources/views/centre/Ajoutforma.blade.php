@@ -1,7 +1,18 @@
 @extends('layouts.app')
+
 @section('content')
 
-
+<div class="row">
+    <div class="col-lg-12 margin-tb">
+        <div class="pull-left">
+            <h2>Acceuil</h2>
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-primary" href="{{ route('centre.index') }}" title="Go back"> <i
+                    class="fas fa-backward "></i> </a>
+        </div>
+    </div>
+</div>
 <div class="min-h-screen flex mb-4 row-signup">
     <div class="w-3/5 h-12 row-right">
 
@@ -14,22 +25,42 @@
             </div>
         </div>
     </div>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <strong>Whoops!</strong> There were some problems with your input.<br><br>
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     <div class="w-2/5  h-12 row-left">
         <div class="text-singup mb-8">
-            <h2 class="">
+            <h2 class="font-black">
                 Nouvelle Formation
             </h2>
         </div>
         <div class="form-signup-dig">
             <div class="w-full max-w-xs">
-                <form class="max-w-md mb-4 form-input">
+                <form class="max-w-md mb-4 form-input" action="{{ route('centre.store') }}" method="POST">
+                    @csrf
+
                     <div class="mb-4">
                         <label class="block text-grey-darker text-sm font-bold mb-2" for="username">
                             Intitulé de formation
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full h-12 py-2 px-3 text-grey-darker leading-tight focus:outline-none focus:shadow-outline"
-                            id="text" type="text" placeholder="nom de la formation">
+                            id="text" type="text" name="libelle" placeholder="nom de la formation">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-grey-darker text-sm font-bold mb-2" for="username">
+                            Description
+                        </label>
+                        <input
+                            class="shadow appearance-none border rounded w-full h-12 py-2 px-3 text-grey-darker leading-tight focus:outline-none focus:shadow-outline"
+                            id="text" type="text" name="description" placeholder="description de la formation">
                     </div>
                     <div class="mb-4">
                         <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
@@ -37,29 +68,34 @@
                         </label>
                         <input
                             class="shadow appearance-none border border rounded h-12 w-full py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                            id="text" type="text" placeholder="code ref">
+                            id="text" name="reference" type="text" placeholder="code ref">
                     </div>
                     <div class="mb-6">
                         <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
-                            mots de passe
+                            Prix
                         </label>
                         <input
                             class="shadow appearance-none border border rounded w-full h-12 py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                            id="password" type="password" placeholder="******">
+                            id="password" name="prix" type="number" placeholder="Prix">
+                        <input
+                            class="shadow appearance-none border border rounded w-full h-12 py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                            id="ref_user" name="userRef" type="hidden" value="{{Auth::user()->id}}">
+
                     </div>
                     <div class="flex items-center justify-between">
-                        <button
-                            class="bg-blue hover:bg-blue-dark text-white font-bold w-full h-12 py-2 px-4  rounded focus:outline-none focus:shadow-outline"
-                            type="button">
-                            Sign In
+                        <button type="submit" class="bg-indigo-500 text-gray-100 p-4 w-full rounded-full tracking-wide
+                                font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-indigo-600
+                                shadow-lg">
+                            Créer
                         </button>
                     </div>
-                </form>
 
+                </form>
             </div>
         </div>
     </div>
 </div>
 
 </div>
+
 @endsection

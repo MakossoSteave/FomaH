@@ -25,10 +25,6 @@ Route::get('/stagiaire', [App\Http\Controllers\StagiaireController::class, 'inde
 Route::get('/stagiaireEx', [App\Http\Controllers\StagiairesExController::class, 'index'])->name('StagiaireEx');
 Route::get('/formateurEx', [App\Http\Controllers\FormateurExController::class, 'index'])->name('FormateurEx');
 Route::get('/centreEx', [App\Http\Controllers\CentreExController::class, 'index'])->name('CentreEx');
-
-
-
-
 Route::get('/formateur', [App\Http\Controllers\FormateurController::class, 'index'])->name('formateur');
 Route::get('/centre', [App\Http\Controllers\CentreController::class, 'index'])->name('centre');
 Route::get('parametre/{id}', [
@@ -41,9 +37,9 @@ Route::get('message/{id}', [
     'uses' => 'App\Http\Controllers\messageController@index',
     'message'
 ]);
-Route::get('/Ajoutforma' ,function (){
+
+
+Route::get('Ajoutforma', function () {
     return view('centre.Ajoutforma');
 });
-//Route::get('/stagiaire','StagiaireController@index')->name('stagiaire')->middleware('stagiaire');
-//Route::get('/formateur','FormateurController@index')->name('formateur')->middleware('formateur');
-//Route::get('/centre','CentreController@index')->name('centre')->middleware('centre');
+Route::resource('centre','App\Http\Controllers\FormationController');
