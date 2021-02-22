@@ -5,3 +5,6 @@ pass:ccd238753ef620e94679576b89b374fc3f5c932f0b80ce672c571c93c8492667
 host:ec2-3-220-193-133.compute-1.amazonaws.com
 port:5432
 db:d9uul8v1j3qk4h
+
+pstgrl2 :
+postgres://kpzfgvhnviyfwp:80925a33c975718be45c6560f6d28cc2e0e43f67574865953eecad4b197f412d@ec2-52-203-27-62.compute-1.amazonaws.com:5432/d9lmai6oo0vec5
