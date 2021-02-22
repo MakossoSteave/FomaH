@@ -22,7 +22,6 @@ class CreateFormationTable extends Migration
             $table->integer('userRef');
             $table->string('_token')->nullable();
             $table->string('_method')->nullable();
-            $table->string('category')->nullable();
             $table->timestamps();
         });
     }
