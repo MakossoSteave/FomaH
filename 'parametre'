@@ -1,7 +1,6 @@
-postgres://yfswcbpfzytips:ccd238753ef620e94679576b89b374fc3f5c932f0b80ce672c571c93c8492667@ec2-3-220-193-133.compute-1.amazonaws.com:5432/d9uul8v1j3qk4h
-
-user: yfswcbpfzytips
-pass:ccd238753ef620e94679576b89b374fc3f5c932f0b80ce672c571c93c8492667
-host:ec2-3-220-193-133.compute-1.amazonaws.com
-port:5432
-db:d9uul8v1j3qk4h
+postgres://uepevlxqiebzzb:61b95e7968b4ca51c66dddee33019ee15fbd6e33451eef48883f30d4aa60312d@ec2-3-221-243-122.compute-1.amazonaws.com:5432/d1nioijevrt1c7
+user :uepevlxqiebzzb
+pass: 61b95e7968b4ca51c66dddee33019ee15fbd6e33451eef48883f30d4aa60312d
+host : ec2-3-221-243-122.compute-1.amazonaws.com
+port :5432
+db : d1nioijevrt1c7
