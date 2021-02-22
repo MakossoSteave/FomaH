@@ -1,6 +1,1 @@
-postgres://uepevlxqiebzzb:61b95e7968b4ca51c66dddee33019ee15fbd6e33451eef48883f30d4aa60312d@ec2-3-221-243-122.compute-1.amazonaws.com:5432/d1nioijevrt1c7
-user :uepevlxqiebzzb
-pass: 61b95e7968b4ca51c66dddee33019ee15fbd6e33451eef48883f30d4aa60312d
-host : ec2-3-221-243-122.compute-1.amazonaws.com
-port :5432
-db : d1nioijevrt1c7
+APP_KEY=base64:ONHqJlrnTXq+hI+819y/J/FX19eBkombeM6n+IL+nR8=
