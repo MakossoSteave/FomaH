@@ -1,1 +1,12 @@
 APP_KEY=base64:ONHqJlrnTXq+hI+819y/J/FX19eBkombeM6n+IL+nR8=
+
+postgres://uepevlxqiebzzb:61b95e7968b4ca51c66dddee33019ee15fbd6e33451eef48883f30d4aa60312d@ec2-3-221-243-122.compute-1.amazonaws.com:5432/d1nioijevrt1c7
+
+db_user : uepevlxqiebzzb
+pass : 61b95e7968b4ca51c66dddee33019ee15fbd6e33451eef48883f30d4aa60312d
+host : ec2-3-221-243-122.compute-1.amazonaws.com
+port : 5432
+db : d1nioijevrt1c7
+
+
+postgres://phokdiwgqsiada:6c40dde2aae814b5d3293676e81d8950dc476c300e08e441cf3b6e77a0558d8f@ec2-3-95-85-91.compute-1.amazonaws.com:5432/d207ducf8kvnnj
