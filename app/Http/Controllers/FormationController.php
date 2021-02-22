@@ -11,7 +11,7 @@ class FormationController extends Controller
 
     public function index()
     {
-        $data = Formations::orderBy('id','desc')->paginate(2)->setPath('contacts');
+        $data = Formations::orderBy('id','desc')->paginate(1)->setPath('centre');
         return view('centre..index',compact(['data']));
     }
 
@@ -57,14 +57,14 @@ class FormationController extends Controller
         ]);
 
         Formations::where('id',$id)->update($request->all());
-        return redirect()->back()->with('success','Update Successfully');
+        return redirect()->back()->with('success','Modifié avec succes');
         
     }
 
     public function destroy($id)
     {
         Formations::where('id',$id)->delete();
-        return redirect()->back()->with('success','Delete Successfully');
+        return redirect()->back()->with('success','Supprimé avec succes');
     }
 
 }

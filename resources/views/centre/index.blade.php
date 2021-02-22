@@ -330,7 +330,7 @@
 
 
                 @endforeach
-
+                {!! $data->links() !!}
                 @endif
 
             </div>
