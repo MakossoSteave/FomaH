@@ -1,10 +1,12 @@
-APP_KEY=base64:ONHqJlrnTXq+hI+819y/J/FX19eBkombeM6n+IL+nR8=
+base64:uqBd4JCTYgg512bKg5UdxweqvKqW0TzZdNH8TO6iarE=
 
-user: yfswcbpfzytips
-pass:ccd238753ef620e94679576b89b374fc3f5c932f0b80ce672c571c93c8492667
-host:ec2-3-220-193-133.compute-1.amazonaws.com
-port:5432
-db:d9uul8v1j3qk4h
+// h base64:uqBd4JCTYgg512bKg5UdxweqvKqW0TzZdNH8TO6iarE=
 
-pstgrl2 :
-postgres://kpzfgvhnviyfwp:80925a33c975718be45c6560f6d28cc2e0e43f67574865953eecad4b197f412d@ec2-52-203-27-62.compute-1.amazonaws.com:5432/d9lmai6oo0vec5
+postgres://lsplncvpyqkhtl:fe4b732b892359138d671dd210775be7a5d441e76318b29ab78be7d22ce22b58@ec2-3-222-127-167.compute-1.amazonaws.com:5432/dbbt76obk914mo
+
+
+user : lsplncvpyqkhtl
+pass : fe4b732b892359138d671dd210775be7a5d441e76318b29ab78be7d22ce22b58
+host : ec2-3-222-127-167.compute-1.amazonaws.com
+port : 5432
+db : dbbt76obk914mo
