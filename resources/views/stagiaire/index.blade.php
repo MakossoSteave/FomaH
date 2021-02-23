@@ -131,59 +131,33 @@
 
     <div class="sm:w-3/1 px-20">
         <div class="flex flex-wrap ">
-            <div class="w-1/4 p-2"><img class="rounded shadow"
+            @foreach ($data as $formation)
+
+            <div class="w-1/4 p-4"><img class="rounded shadow"
                     src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/01/iStock-1156717900-1.jpg"
                     alt="">
-                <a class="text-right text-indigo-600 hover:underline" href="{{route('formationshow')}}">Formation de
-                    psychatre</a>
-            </div>
-            <div class="w-1/4 p-2"><img class="rounded shadow"
-                    src="https://i2.wp.com/managersante.com/wp-content/uploads/2020/03/infirmiere-pratique-avancee-hospitaliers.jpg?fit=1080%2C727&ssl=1"
-                    alt="">
-                <a class="text-right text-indigo-600 hover:underline" href="#">Formation d'infirmiere</a>
-            </div>
-            <div class="w-1/4 p-2"><img class="rounded shadow"
-                    src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/03/Dermatologue.jpg"
-                    alt="">
-                <a class="text-right text-indigo-600 hover:underline" href="#">Formation dermatologue</a>
-            </div>
-            <div class="w-1/4 p-2"><img class="rounded shadow"
-                    src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/01/iStock-1156717900-1.jpg"
-                    alt="">
-                <a class="text-right text-indigo-600 hover:underline" href="#">Formation de controleur</a>
+                <a class="text-right text-black-600 hover:underline" href="{{route('formationshow')}}">
+                    {{$formation->libelle}}</a>
+                <p class="text-left text-black-300 ">{{$formation->prix}} €</p>
+                <a class="bg-indigo-500 text-gray-100 p-1 w-5/10 rounded-full tracking-wide
+                                font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-indigo-600
+                                shadow-lg" href="{{ route('centre.show', $formation->id) }}" title="show">
+                    <i class="fas fa-eye text-success  fa-lg">
 
+                    </i>
+                    Voir
+                </a>
             </div>
-            <div class="w-1/4 p-2"><img class="rounded shadow"
-                    src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/03/Dermatologue.jpg"
-                    alt="">
-                <a class="text-right text-indigo-600 hover:underline" href="#">Formation dermatologue</a>
-            </div>
-            <div class="w-1/4 p-2"><img class="rounded shadow"
-                    src="https://img.actionco.fr/Img/BREVE/2016/11/310512/astuces-conduite-economique-F.jpg" alt="">
-                <a class="text-right text-indigo-600 hover:underline" href="#">Formation conduite</a>
-
-            </div>
-            <div class="w-1/4 p-2"><img class="rounded shadow"
-                    src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/01/iStock-1156717900-1.jpg"
-                    alt="">
-                <a class="text-right text-indigo-600 hover:underline" href="#">Formation de controleur</a>
-
-            </div>
-            <div class="w-1/4 p-2"><img class="rounded shadow"
-                    src="https://image.over-blog.com/29KdRhlwxe1nJd3ZhXF0pta8GbM=/fit-in/500x500/filters:no_upscale()/image%2F1188309%2F20200429%2Fob_8de675_formation-secourisme-securite-paris.jpg"
-                    alt="">
-                <a class="text-right text-indigo-600 hover:underline" href="#">Secourisme</a>
-
-            </div>
-
+            @endforeach
+            {!! $data->links() !!}
         </div>
     </div>
 </div>
 <div>
-    <div class="flex justify-center items-center h-screen md:-mx-2">
+    <div class="flex justify-center items-center h-screen md:-mx-1">
         <div class="w-full my-80 bg-gray-100 h-30"
             style="background-image:url(https://www.bricorama.fr/media/catalog/product/9/0/903f59fb0c4503523cdf0cbacd4b7aa35562f261_3256610707182_2.jpg)">
-            <h2 class="text-center font-black text-3xl text-indigo-700 pt-10">Formahuub propose</h2>
+            <h2 class="text-center font-black text-3xl text-indigo-700 pt-5">Formahuub propose</h2>
             <div class="swiper-container w-43">
                 <!-- Additional required wrapper -->
                 <div class="swiper-wrapper">
