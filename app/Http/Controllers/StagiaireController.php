@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Formations;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 
@@ -13,4 +14,14 @@ class StagiaireController extends Controller
 
         return view('stagiaire/index',compact(['data']));
     }
+    public function show(Request $request,$id)
+    {
+        $formation  = Formations::find($id);
+        $user = User::all();
+      
+        $databis =Formations::all();
+
+       return view('stagiaire.formation.Show',compact(['formation','user', 'databis']));
+    }
+    
 }

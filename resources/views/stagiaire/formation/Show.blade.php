@@ -76,13 +76,18 @@
 <div class="py-16">
     <div class="container m-auto px-6">
 
+
         <div class="lg:flex justify-between items-center">
             <div class="lg:w-6/12 lg:p-0 p-7">
+
+
+
                 <h1 class="text-4xl font-bold leading-tight mb-5 capitalize">
-                    Formation de psychiatre </h1>
-                <p class="text-xl"> Des formateurs spécialisé dans l'étude et la prise en charge de maladies mentales
-                    et/ou
-                    psychiatre vous êtes a devenir ce que vous voulez .</p>
+
+                    {{$formation->libelle}}
+                </h1>
+
+                <p class="text-xl">{{$formation->description}} </p>
 
                 <div class="py-5">
                     <a href="#"
@@ -102,14 +107,20 @@
                 <img src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/01/iStock-1156717900-1.jpg"
                     style="transform: scale(1) perspective(1040px) rotateY(-11deg) rotateX(2deg) rotate(2deg);" alt=""
                     class="rounded">
-                <p>15000 €</p>
+                <p>{{ $formation->prix}} €</p>
             </div>
+
+
+
+
         </div>
 
     </div>
 </div>
 
 <br>
+
+
 <footer class="text-gray-100 bg-gray-800">
     <div class="max-w-3xl mx-auto py-6">
         <h1 class="text-center text-lg lg:text-2xl">

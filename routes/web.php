@@ -43,3 +43,4 @@ Route::get('Ajoutforma', function () {
     return view('centre.Ajoutforma');
 });
 Route::resource('centre','App\Http\Controllers\FormationController');
+Route::resource('stagiaire','App\Http\Controllers\StagiaireController');
