@@ -136,9 +136,11 @@
             <div class="w-1/4 p-4"><img class="rounded shadow"
                     src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/01/iStock-1156717900-1.jpg"
                     alt="">
-                <a class="text-right text-black-600 hover:underline" href="{{route('formationshow')}}">
+                <a class="text-right text-black-600 hover:underline"
+                    href="{{ route('stagiaire.show', $formation->id , $formation )}}">
                     {{$formation->libelle}}</a>
-                <p class="text-left text-black-300 ">{{$formation->prix}} €</p>
+                <p class="text-right text-black-300 ">{{$formation->prix}} €</p>
+
                 <a class="bg-indigo-500 text-gray-100 p-1 w-5/10 rounded-full tracking-wide
                                 font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-indigo-600
                                 shadow-lg" href="{{ route('stagiaire.show', $formation->id , $formation )}}"

@@ -109,12 +109,7 @@
                     class="rounded">
                 <p>{{ $formation->prix}} €</p>
             </div>
-
-
-
-
         </div>
-
     </div>
 </div>
 
