@@ -12,6 +12,7 @@ class FormationController extends Controller
     public function index()
     {
         $data = Formations::orderBy('id','desc')->paginate(3)->setPath('centre');
+                   
         return view('centre..index',compact(['data']));
     }
 

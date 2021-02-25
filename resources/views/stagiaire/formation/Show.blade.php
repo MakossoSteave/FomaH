@@ -88,6 +88,7 @@
                 </h1>
 
                 <p class="text-xl">{{$formation->description}} </p>
+                <p class="text-xl"> heure de formation : 680 h</p>
 
                 <div class="py-5">
                     <a href="#"
