@@ -449,6 +449,9 @@
                             @if(Auth::user()->role_id == 4)
                             <a href="{{ url('/formateur') }}" class="text-sm text-gray-700 underline">Home</a>
                             @endif
+                            @if(Auth::user()->role_id == 5)
+                            <a href="{{ url('/organisme') }}" class="text-sm text-gray-700 underline">Home</a>
+                            @endif
 
                             @else
                             <div class="rounded-md shadow">
