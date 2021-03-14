@@ -133,7 +133,7 @@
         <div class="flex flex-wrap ">
 
             @foreach ($data as $formation)
-            <div class="w-1/4 p-4"><img class="rounded shadow"
+            <div class="w-1/4 p-4 pt-8"><img class="rounded shadow"
                     src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/01/iStock-1156717900-1.jpg"
                     alt="">
                 <a class="text-right text-black-600 ">
@@ -142,7 +142,8 @@
 
                 <a class="bg-indigo-500 text-gray-100 p-1 w-5/10 rounded-full tracking-wide
                                 font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-indigo-600
-                                shadow-lg" href="{{ route('stagiaire.show', $formation->id , $formation )}}"
+                                shadow-lg"
+                    href="{{ route('stagiaire.show', ['formation'=> $formation->id ,'user'=>$formation->userRef ]  )}}"
                     title="show">
                     <i class="fas fa-eye text-success  fa-lg">
 
@@ -151,7 +152,7 @@
                 </a>
             </div>
             @endforeach
-
+            <br><br>
             {!! $data->links() !!}
         </div>
     </div>
@@ -261,7 +262,8 @@
         <div class="max-w-3xl mx-auto py-6">
             <h1 class="text-center text-lg lg:text-2xl">
                 Nous rejoindre <br>
-                c'est avoir les conseils d'un professionnel
+                c'est avoir les conseils d'un professionn
+                el
             </h1>
             <div class="flex justify-center mt-6">
                 <div class=" bg-white rounded-md">

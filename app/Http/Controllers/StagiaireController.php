@@ -14,14 +14,14 @@ class StagiaireController extends Controller
 
         return view('stagiaire/index',compact(['data']));
     }
-    public function show(Request $request,$id)
+    public function show($id ,$ids )
     {
         $formation  = Formations::find($id);
-        $user = User::all();
+        $user = User::find([$ids]);
       
         $databis =Formations::all();
 
-       return view('stagiaire.formation.Show',compact(['formation','user', 'databis']));
+       return view('stagiaire.formation.Show',compact(['formation','user']));
     }
     
 }

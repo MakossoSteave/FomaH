@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
-
 <div class="relative bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
@@ -69,54 +67,80 @@
         </div>
 
     </div>
+    <br>
+    <section class="w-full max-w-2xl px-6 py-5 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800">
+        <h2 class="text-3xl font-semibold text-center text-gray-800 dark:text-white">Formulaire d'inscription </h2>
+        <p class="mt-3 text-center text-gray-600 dark:text-gray-400">Avec Formahuub vous allez glow Up !!</p>
 
+        <div class="grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2 md:grid-cols-3">
+            <a href="#"
+                class="flex flex-col items-center px-4 py-3 text-gray-700 rounded-md dark:text-gray-200 hover:bg-blue-200 dark:hover:bg-blue-500">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                        clip-rule="evenodd" />
+                </svg>
 
-</div>
+                <input class="mt-2"></span>
+            </a>
 
-<div class="py-16">
-    <div class="container m-auto px-6">
+            <a href="#"
+                class="flex flex-col items-center px-4 py-3 text-gray-700 rounded-md dark:text-gray-200 hover:bg-blue-200 dark:hover:bg-blue-500">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                        d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                </svg>
 
+                <input class="mt-2"></span>
+            </a>
 
-        <div class="lg:flex justify-between items-center">
-            <div class="lg:w-6/12 lg:p-0 p-7">
+            <a href="#"
+                class="flex flex-col items-center px-4 py-3 text-gray-700 rounded-md dark:text-gray-200 hover:bg-blue-200 dark:hover:bg-blue-500">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                </svg>
 
+                <span class="mt-2">{{Auth::user()->email}}</span>
+            </a>
+        </div>
 
+        <div class="mt-6 ">
+            <div class="items-center -mx-2 md:flex">
+                <div class="w-full mx-2">
+                    <label class="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200">Name</label>
 
-                <h1 class="text-4xl font-bold leading-tight mb-5 capitalize">
-
-                    {{$formation->libelle}}
-                </h1>
-                <p class="text-xl">{{$formation->userRef }} </p>
-
-                <p class="text-xl">{{$formation->description}} </p>
-                <p class="text-xl"> heure de formation : 680 h</p>
-
-                <div class="py-5">
-                    <a href="/inscriptionformation"
-                        class="text-white rounded-full py-2 px-5 text-lg font-semibold bg-purple-600 inline-block border border-purple-600 mr-3">
-                        S'inscrire </a>
-                    <a href="#"
-                        class="text-black rounded-full py-2 px-5 text-lg font-semibold bg-gray-400 inline-block border hover:bg-white hover:text-black">
-                        En savoir plus sur le programme
-                    </a>
-
+                    <input
+                        class="block w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                        type="text" value="{{Auth::user()->name}}">
                 </div>
 
+                <div class="w-full mx-2 mt-4 md:mt-0">
+                    <label class="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200">E-mail</label>
 
+                    <input
+                        class="block w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                        type="email" value="{{Auth::user()->email}}">
+                </div>
             </div>
-            <div class="lg:w-5/12 order-2">
-                <img src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/01/iStock-1156717900-1.jpg"
-                    style="transform: scale(1) perspective(1040px) rotateY(-11deg) rotateX(2deg) rotate(2deg);" alt=""
-                    class="rounded">
-                <p>{{ $formation->prix}} €</p>
+
+            <div class="w-full mt-4">
+                <label class="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200">Message
+                    (facultatif)</label>
+
+                <textarea
+                    class="block w-full h-40 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"></textarea>
+            </div>
+
+            <div class="flex justify-center mt-6">
+                <button
+                    class="px-4 py-2 text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">
+                    Envoyé l'inscription </button>
             </div>
         </div>
-    </div>
+    </section>
+    <br>
 </div>
-
-<br>
-
-
 <footer class="text-gray-100 bg-gray-800">
     <div class="max-w-3xl mx-auto py-6">
         <h1 class="text-center text-lg lg:text-2xl">
@@ -149,4 +173,6 @@
         </div>
     </div>
 </footer>
+
+
 @endsection
