@@ -140,16 +140,7 @@
                     {{$formation->libelle}}</a>
                 <p class="text-right text-black-300 ">{{$formation->prix}} €</p>
 
-                <a class="bg-indigo-500 text-gray-100 p-1 w-5/10 rounded-full tracking-wide
-                                font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-indigo-600
-                                shadow-lg"
-                    href="{{ route('stagiaire.show', ['formation'=> $formation->id ,'user'=>$formation->userRef ]  )}}"
-                    title="show">
-                    <i class="fas fa-eye text-success  fa-lg">
 
-                    </i>
-                    Voir
-                </a>
             </div>
             @endforeach
             <br><br>
