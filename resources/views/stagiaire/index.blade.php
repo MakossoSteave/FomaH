@@ -142,13 +142,11 @@
 
                 <a class="bg-indigo-500 text-gray-100 p-1 w-5/10 rounded-full tracking-wide
                                 font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-indigo-600
-                                shadow-lg"
-                    href="{{ route('stagiaire.show', ['formation'=> $formation->id ,'user'=>$formation->userRef ]  )}}"
-                    title="show">
+                                shadow-lg" title="show">
                     <i class="fas fa-eye text-success  fa-lg">
 
                     </i>
-                    Voir
+                    Voir tous
                 </a>
             </div>
             @endforeach
