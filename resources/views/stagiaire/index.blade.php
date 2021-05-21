@@ -12,7 +12,7 @@
                         <a href="#">
                             <span
                                 class="group bg-white rounded-md text-blue-500 inline-flex items-center text-base font-medium hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                {{Auth::user()->name}} </span>
+                                {{Str::upper(Auth::user()->name)}} </span>
                         </a>
                     </li>
                     <li> <i class="fas fa-envelope text-blue-900 font-medium"></i>

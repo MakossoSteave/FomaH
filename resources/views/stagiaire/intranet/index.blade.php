@@ -13,82 +13,57 @@
 
 <body>
     <div class="relative bg-gray-500">
-        <h1 class="font-sans md:font-serif text-5xl text-center truncate">Intranet</h1>
         <div class=" max-w-6xl mx-auto px-1 sm:px-4">
+
             <div
                 class="flex justify-between items-center border-b-1 border-gray-100 py-6 md:justify-start md:space-x-10">
 
                 <div class="flex justify-start lg:w-0 lg:flex-1">
-                    <ul>
-                        <li><i class="fas fa-user"> </i>
-                            <a href="#">
-                                <span
-                                    class="group text-white inline-flex items-center text-base font-medium hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    {{Auth::user()->name}} </span>
-                            </a>
-                        </li>
-                        <li> <i class="fas fa-envelope text-blue-900 font-medium"></i>
-                            <a href="{{route('message',[Auth::user()->id]) }}">
-                                <span class="group  text-base font-medium hover:text-blue-900 text-white">Messages
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
+                    <h1 class="font-sans md:font-serif text-5xl text-center truncate">Intranet</h1>
                 </div>
+
                 <nav class="hidden md:flex space-x-10">
                     <div class="relative">
-                        <i class="fas fa-sliders-h "></i>
-                        <button type="button"
-                            class="group  text-white inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            <a href="{{ route('parametre', [Auth::user()->id]) }}">
-                                <span>Parametre</span>
-                            </a>
+                        <ul>
+                            <li><i class="fas fa-user"> </i>
+                                <a href="#">
+                                    <span
+                                        class="group text-white inline-flex items-center text-base font-medium hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                        {{Str::upper(Auth::user()->name)}} </span>
+                                </a>
+                            </li>
+                            <li> <i class="fas fa-envelope text-blue-900 font-medium"></i>
+                                <a href="{{route('message',[Auth::user()->id]) }}">
+                                    <span class="group  text-base font-medium hover:text-blue-900 text-white">Messages
+                                    </span>
+                                </a>
+                            </li>
 
-                        </button>
-                    </div>
-                    <div class="relative">
-                        <button type="button"
-                            class="group  text-white inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            <img src="{{url('/img/alerte.svg')}}" alt="Image" />
-                            <a href=""><span>Notification</span>
-                            </a>
+                        </ul>
 
-                        </button>
-                    </div>
-                    <div class="relative">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <a href="../stagiaire">
-                            <button type="button"
-                                class="group  text-white inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <div class="relative">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <a href="../stagiaire">
+                                <button type="button"
+                                    class="group  text-white inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
 
-                                <span>Quitter</span>
+                                    <span>Quitter</span>
 
 
-                            </button></a>
-                    </div>
+                                </button></a>
+                        </div>
 
 
 
                 </nav>
-                <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
 
-                    <a href="{{ route('logout')}}"
-                        onclick="event.preventDefault();document.getElementById('logout-form').submit();" class=" ml-8
-        whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border
-        border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600
-        hover:bg-indigo-700">
-                        Deconnection
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
-                </div>
             </div>
 
         </div>
 
 
     </div>
+
     <div class="text-gray">
         <input class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
             type="recherche" name="search" placeholder="Recherche">
@@ -101,6 +76,31 @@
                     d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
             </svg>
         </button>
+    </div>
+
+    <div class="grid gap-4 row-gap-5 sm:grid-cols-2 lg:grid-cols-4 p-5 ">
+        <div class="flex flex-col justify-between p-5 border rounded shadow-sm  rounded-lg ">
+            <h1> Categories</h1>
+
+
+            <div
+                class="toggle hidden md:flex w-full md:w-auto text-right text-bold mt-5 md:mt-0 border-t-2 border-blue-900 md:border-none">
+
+
+
+
+                <a href="#"
+                    class="block md:inline-block text-blue-900 hover:text-blue-500 px-3 py-3 border-b-2 border-blue-900 md:border-none">
+                    Cours</a>
+                <a href="#"
+                    class="block md:inline-block text-blue-900 hover:text-blue-500 px-3 py-3 border-b-2 border-blue-900 md:border-none">Exercices</a>
+                <a href="#"
+                    class="block md:inline-block text-blue-900 hover:text-blue-500 px-3 py-3 border-b-2 border-blue-900 md:border-none">
+                    Live</a>
+                <a href="#"
+                    class="block md:inline-block text-blue-900 hover:text-blue-500 px-3 py-3 border-b-2 border-blue-900 md:border-none">Aide</a>
+            </div>
+        </div>
     </div>
     <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
 
@@ -117,7 +117,8 @@
                     <p class="mb-3 text-sm text-gray-900">
                         aravel est un framework web open-source écrit en PHP respectant le principe
                         modèle-vue-contrôleur et
-                        entièrement développé en programmation orientée objet. Laravel est distribué sous licence MIT,
+                        entièrement développé en programmation orientée objet. Laravel est distribué sous licence
+                        MIT,
                         avec
                         ses sources hébergées sur GitHub.
                     </p>
@@ -136,9 +137,11 @@
                     </div>
                     <h6 class="mb-2 font-semibold leading-5">HTML </h6>
                     <p class="mb-3 text-sm text-gray-900">
-                        Le HyperText Markup Language, généralement abrégé HTML ou dans sa dernière version HTML5, est le
+                        Le HyperText Markup Language, généralement abrégé HTML ou dans sa dernière version HTML5,
+                        est le
                         langage de balisage conçu pour représenter les pages web. Ce langage permet : d’écrire de
-                        l’hypertexte, d’où son nom, de structurer sémantiquement la page, de mettre en forme le contenu,
+                        l’hypertexte, d’où son nom, de structurer sémantiquement la page, de mettre en forme le
+                        contenu,
                         de
                         créer des formulaires de saisie
                     </p>
@@ -159,7 +162,8 @@
                     <p class="mb-3 text-sm text-gray-900">
                         PHP: Hypertext Preprocessor, plus connu sous son sigle PHP, est un langage de programmation
                         libre,
-                        principalement utilisé pour produire des pages Web dynamiques via un serveur HTTP, mais pouvant
+                        principalement utilisé pour produire des pages Web dynamiques via un serveur HTTP, mais
+                        pouvant
                         également fonctionner comme n'importe quel langage interprété de façon locale. PHP est un
                         langage
                         impératif orienté objet
@@ -179,10 +183,12 @@
                     </div>
                     <h6 class="mb-2 font-semibold leading-5">Javascript</h6>
                     <p class="mb-3 text-sm text-gray-900">
-                        JavaScript est un langage de programmation de scripts principalement employé dans les pages web
+                        JavaScript est un langage de programmation de scripts principalement employé dans les pages
+                        web
                         interactives et à ce titre est une partie essentielle des applications web. Avec les
                         technologies
-                        HTML et CSS, JavaScript est parfois considéré comme l'une des technologies cœur du World Wide
+                        HTML et CSS, JavaScript est parfois considéré comme l'une des technologies cœur du World
+                        Wide
                         Web.
                     </p>
                 </div>
@@ -192,6 +198,41 @@
             </div>
         </div>
     </div>
+
+    <footer class="text-gray-100 bg-gray-800">
+        <div class="max-w-3xl mx-auto py-6">
+            <h1 class="text-center text-lg lg:text-2xl">
+                Nous rejoindre <br>
+                c'est avoir les conseils d'un professionnel
+            </h1>
+            <div class="flex justify-center mt-6">
+                <div class=" bg-white rounded-md">
+                    <div class="flex flex-wrap justify-between md:flex-row">
+                        <input type="email"
+                            class="m-1 p-2 appearance-none text-gray-700 text-sm focus:placeholder-transparent"
+                            placeholder="Entrez votre email" aria-label="Entrez votre email">
+                        <button
+                            class="w-full m-1 p-2 text-sm bg-gray-800 rounded font-semibold uppercase lg:w-auto hover:bg-gray-700">
+                            s'abonner
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr class="h-px mt-6 bg-gray-700 border-none">
+            <div class="flex flex-col items-center justify-between mt-6 md:flex-row">
+                <div>
+                    <a href="#" class="text-xl font-bold text-gray-100 hover:text-gray-400">Perfect Ingénieurie</a>
+                </div>
+                <div class="flex mt-4 md:m-0">
+                    <a href="" class="px-4 text-sm text-gray-100 font medium hover:text-gray-400">A propos de nous
+                    </a>
+                    <a href="" class="px-4 text-sm text-gray-100 font medium hover:text-gray-400">Contactez nous
+                    </a>
+                    <a href="" class="px-4 text-sm text-gray-100 font medium hover:text-gray-400">Blog</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>
