@@ -86,7 +86,7 @@
 
                     {{$formation->libelle}}
                 </h1>
-                <p class="text-xl">{{$formation->userRef }} </p>
+                <p class="text-xl"> user ref-> {{$formation->userRef }} </p>
 
                 <p class="text-xl">{{$formation->description}} </p>
                 <p class="text-xl"> heure de formation : 680 h</p>
@@ -104,7 +104,7 @@
 
 
             </div>
-            <div class="lg:w-5/12 order-2">
+            <div class="lg:w-3/12 order-2">
                 <img src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/01/iStock-1156717900-1.jpg"
                     style="transform: scale(1) perspective(1040px) rotateY(-11deg) rotateX(2deg) rotate(2deg);" alt=""
                     class="rounded">

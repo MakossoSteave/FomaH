@@ -10,6 +10,10 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link
+        href=" https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap "
+        rel=" feuille de style ">
+
     <!-- Styles -->
     <style>
     /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */

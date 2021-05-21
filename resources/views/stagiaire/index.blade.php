@@ -38,14 +38,26 @@
                 <div class="relative">
                     <button type="button"
                         class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <img src="{{url('/img/alerte.svg')}}" alt="Image" />
+                        <a href=""><span>Notification</span>
+                        </a>
+
+                    </button>
+                </div>
+                <div class=" relative">
+                    <button type="button"
+                        class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <svg class="flex-shrink-0 h-6 w-6 text-indigo-600 " xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                         </svg>
-                        <span>Notification</span>
+                        <a href="{{url('intranet')}}"><span>Intranet</span>
+                        </a>
                     </button>
                 </div>
+
+
             </nav>
             <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
 
@@ -142,13 +154,12 @@
 
                 <a class="bg-indigo-500 text-gray-100 p-1 w-5/10 rounded-full tracking-wide
                                 font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-indigo-600
-                                shadow-lg" href="{{ route('stagiaire.show',  $formation->id    )}}" title="show">
+                                shadow-lg" href="{{ route('stagiaire.show',$formation->userRef )}}" title="show">
                     <i class="fas fa-eye text-success  fa-lg">
 
                     </i>
+
                     Voir
-                    <p>{{$formation->id}} </p>
-                    <p>{{$formation->userRef}} </p>
                 </a>
             </div>
             @endforeach

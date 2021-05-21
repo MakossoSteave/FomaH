@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Formations;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,18 +31,18 @@ Route::get('/formateurEx', [App\Http\Controllers\FormateurExController::class, '
 Route::get('/centreEx', [App\Http\Controllers\CentreExController::class, 'index'])->name('CentreEx');
 Route::get('/formateur', [App\Http\Controllers\FormateurController::class, 'index'])->name('formateur');
 Route::get('/centre', [App\Http\Controllers\CentreController::class, 'index'])->name('centre');
+Route::get('/intranet', [App\Http\Controllers\IntranetController::class, 'index'])->name('intranet');
 Route::get('parametre/{id}', [
     'as' => 'parametre',
     'uses' => 'App\Http\Controllers\parametreController@show',
 ]);
+
 Route::get('/formationshow', [App\Http\Controllers\formationshowController::class, 'index'])->name('formationshow');
 Route::get('message/{id}', [
     'as' => 'message',
     'uses' => 'App\Http\Controllers\messageController@index',
     'message'
 ]);
-
-
 Route::get('Ajoutforma', function () {
     return view('centre.Ajoutforma');
 });
