@@ -79,7 +79,7 @@
     </div>
 
     <div class="grid gap-4 row-gap-5 sm:grid-cols-2 lg:grid-cols-4 p-5 ">
-        <div class="flex flex-col justify-between p-5 border rounded shadow-sm  rounded-lg ">
+        <div class="flex flex-col justify-between p-5 border rounded shadow-sm  rounded-lgs ">
             <h1> Categories</h1>
 
 
