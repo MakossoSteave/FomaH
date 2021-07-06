@@ -93,7 +93,10 @@
                         Categories
                     </p>
                     <ul class="menu-list">
-                        <li><a href="{{ route('cours')}}">Cours</a></li>
+                        <li><a>Cours</a></li>
+                        <li><a>Exercices</a></li>
+                        <li><a>Lives</a></li>
+                        <li><a>Aide</a></li>
                     </ul>
                 </aside>
 

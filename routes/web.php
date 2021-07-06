@@ -36,8 +36,6 @@ Route::get('parametre/{id}', [
     'as' => 'parametre',
     'uses' => 'App\Http\Controllers\parametreController@show',
 ]);
-Route::get('/cours',[App\Http\Controllers\CoursController::class, 'index'])->name('cours');
-Route::get('/lives',[App\Http\Controllers\LiveController::class, 'index'])->name('live');
 
 Route::get('/formationshow', [App\Http\Controllers\formationshowController::class, 'index'])->name('formationshow');
 Route::get('message/{id}', [
