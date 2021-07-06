@@ -55,6 +55,7 @@
         @endif
         @else
         @if (Auth::user()->role_id==1)
+
         <link href="https://fonts.googleapis.com/css?family=Nunito:400,700,800" rel="stylesheet">
 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"

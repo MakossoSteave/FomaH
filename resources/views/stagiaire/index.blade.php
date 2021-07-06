@@ -68,7 +68,7 @@
         hover:bg-indigo-700">
                     Deconnection
                 </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                <form id="logout-form" fn action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>
             </div>

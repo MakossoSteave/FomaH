@@ -27,6 +27,8 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
+  
+    
     
     public function  redirectTo(){
         switch(Auth::user()->role_id){
@@ -56,6 +58,8 @@ class LoginController extends Controller
         }
     }
 
+
+    
     /**
      * Create a new controller instance.
      *
