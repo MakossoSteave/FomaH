@@ -83,13 +83,13 @@
 
 
                 <h1 class="text-4xl font-bold leading-tight mb-5 capitalize">
+                    {{$formations->libelle}}
 
-                    {{$formation->libelle}}
                 </h1>
-                <p class="text-xl">{{$formation->userRef }} </p>
 
-                <p class="text-xl">{{$formation->description}} </p>
+                <p class="text-xl">{{$formations->description}} </p>
                 <p class="text-xl"> heure de formation : 680 h</p>
+
 
                 <div class="py-5">
                     <a href="/inscriptionformation"
@@ -104,20 +104,53 @@
 
 
             </div>
-            <div class="lg:w-5/12 order-2">
+            <div class="lg:w-3/12 order-2">
                 <img src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/01/iStock-1156717900-1.jpg"
                     style="transform: scale(1) perspective(1040px) rotateY(-11deg) rotateX(2deg) rotate(2deg);" alt=""
                     class="rounded">
-                <p>{{ $formation->prix}} €</p>
+
+                <p class="pt-2">{{ $formations->prix}} €</p>
+                <span> formation proposé par <strong>{{$al->name}}</strong></span>
+            </div>
+
+
+        </div>
+        <h1> Liste des formations proposé par {{$al->name}} qui pourrais vous intéressé</h1>
+        <div class="container mx-auto px- p-8 pr-4   ">
+            <div class="inline-grid grid-cols-5 gap-x-2 border-2 border-light-gray-300 border-opacity-25 bg-gray-400">
+
+                @foreach($referenceee as $ref)
+
+                <div class="lg:w-4/6 order-2 	">
+                    <h1 class=" truncate hover:text-black">{{$ref->libelle}}</h1>
+
+                    <img src="https://www.lesfurets.com/mutuelle-sante/guide/wp-content/uploads/sites/9/2017/01/iStock-1156717900-1.jpg"
+                        style="transform: scale(1) perspective(1040px) rotateY(-11deg) rotateX(2deg) rotate(2deg);"
+                        alt="" class="rounded ">
+                    <p class="pt-4">{{ $ref->prix}} €</p>
+                    <a class="bg-indigo-500 text-gray-100 p-1 w-5/10 rounded-full tracking-wide
+                                font-semibold font-display focus:outline-none focus:shadow-outline hover:bg-indigo-600
+                                shadow-lg" href="{{ route('stagiaire.show', $ref->id ) }}" title="show">
+                        <i class="fas fa-eye text-success  fa-lg">
+                        </i>
+
+                        Voir
+                    </a>
+                    <span><br> formation proposé par <strong>{{$al->name}}</strong></span>
+                </div>
+
+
+                @endforeach
             </div>
         </div>
+
     </div>
 </div>
 
 <br>
 
 
-<footer class="text-gray-100 bg-gray-800">
+<footer class=" text-gray-100 bg-gray-800">
     <div class="max-w-3xl mx-auto py-6">
         <h1 class="text-center text-lg lg:text-2xl">
             Nous rejoindre <br>
@@ -139,11 +172,14 @@
         <hr class="h-px mt-6 bg-gray-700 border-none">
         <div class="flex flex-col items-center justify-between mt-6 md:flex-row">
             <div>
-                <a href="#" class="text-xl font-bold text-gray-100 hover:text-gray-400">Perfect Ingénieurie</a>
+                <a href="#" class="text-xl font-bold text-gray-100 hover:text-gray-400">Perfect
+                    Ingénieurie</a>
             </div>
             <div class="flex mt-4 md:m-0">
-                <a href="" class="px-4 text-sm text-gray-100 font medium hover:text-gray-400">A propos de nous </a>
-                <a href="" class="px-4 text-sm text-gray-100 font medium hover:text-gray-400">Contactez nous </a>
+                <a href="" class="px-4 text-sm text-gray-100 font medium hover:text-gray-400">A propos
+                    de nous </a>
+                <a href="" class="px-4 text-sm text-gray-100 font medium hover:text-gray-400">Contactez
+                    nous </a>
                 <a href="" class="px-4 text-sm text-gray-100 font medium hover:text-gray-400">Blog</a>
             </div>
         </div>
