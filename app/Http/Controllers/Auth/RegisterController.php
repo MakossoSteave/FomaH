@@ -42,8 +42,11 @@ class RegisterController extends Controller
     {
         $this->middleware('guest');
     }
-    public function role(){
-        
+    
+    public function index(){
+        $roles = role::where('id', '!=', 1)->get();
+
+        return view('auth.register', compact(['roles']));
     }
     /**
      * Get a validator for an incoming registration request.

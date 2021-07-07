@@ -98,11 +98,10 @@
                             </div>
                             <select class="form-select block w-full mt-1  @error('role') is-invalid @enderror"
                                 name="role">
-
-                                <option value="3"> Stagiaire</option>
-                                <option value="4">Formateur</option>
-                                <option value="2">Centre de formation</option>
-                                <option value="5">Organisme</option>
+                                @foreach($roles as $role)
+                                <option value="{{$role->id}}">{{$role->type}}</option>
+                                @endforeach
+                                
                                 @error('role')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
