@@ -51,6 +51,7 @@
 | :--------------- |:---------------:|:---------------:| -----:|
 | ID | Identifiant de l'organisation | BigInt | Clé primaire |
 | Designation| Nom de l'organisation | Char |  |
+| ID_Utilisateur| Identifiant de l'utilisateur| BigInt |Clé étrangère   |
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
 
@@ -289,7 +290,7 @@
 | :--------------- |:---------------:|:---------------:| -----:|
 | ID | Identifiant de la réunion en ligne | BigInt | Clé primaire |
 | Date_Meeting | Date de la réunion en ligne | Timestamp |  |
-| Statut | Identifiant du statut de la réunion en ligne | BigInt | clé étrangère |
+| Statut | Identifiant du statut de la réunion en ligne | BigInt | Clé étrangère |
 | ID_Cours| Identifiant du cours | BigInt |Clé étrangère , champ non obligatoire (Si le champ est indiqué le stagiaire ne peut pas passer au cours suivant tant qu'il n'a pas assisté et validé la réunion en ligne)|
 | Numero_Cours| Numéro du cours | Int |Clé étrangère , champ non obligatoire (Si le champ est indiqué le stagiaire ne peut pas passer au cours suivant tant qu'il n'a pas assisté et validé la réunion en ligne)|
 |ID_Utilisateur|Identifiant du hôte de la réunion en ligne | BigInt |Clé étrangère |
@@ -302,7 +303,7 @@
 | :--------------- |:---------------:|:---------------:| -----:|
 | ID_Utilisateur | Identifiant du participant à la réunion en ligne | BigInt | Clé primaire, clé étrangère  |
 | ID_Meeting | Identifiant de la réunion en ligne | BigInt | Clé primaire, clé étrangère  |
-| Validation | Savoir si le stagiaire a été validé après la réunion en ligne |champ non obligatoire (champ rempli après la réunion,le stagiaire ne peut pas passer au cours suivant tant qu'il n'a pas été validé)  |
+| Validation | Savoir si le stagiaire a été validé après la réunion en ligne |Boolean|champ non obligatoire (champ rempli après la réunion,le stagiaire ne peut pas passer au cours suivant tant qu'il n'a pas été validé)  |
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
 
