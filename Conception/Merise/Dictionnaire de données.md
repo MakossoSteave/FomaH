@@ -78,6 +78,7 @@
 | Description| Description du cursus  | Char |  |
 | Image| Lien de l'image du cursus  | Char | Champ non obligatoire |
 | Volume_Horaire| Le volume horaire du cursus  | Int |  |
+| Effectif| Le nombre de stagiaire accepté pour le cursus  | Int |  |
 | Nombre_Cours_Total| Le nombre de cours que contient le cursus  | Int | Modifié à chaque ajout de cours pour le cursus |
 | Nombre_Chapitres_Total| Le nombre total de chapitres que contient le cursus  | Int | Modifié à chaque ajout de chapitre pour le cursus |
 | Prix| Prix du cursus  | Char |  |
