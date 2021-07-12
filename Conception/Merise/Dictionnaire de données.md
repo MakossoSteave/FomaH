@@ -107,7 +107,16 @@
 | Nombre_Chapitres| Le nombre de chapitres que contient le cours  | Int | Modifié à chaque ajout de chapitre pour le cours |
 | Prix| Prix du cours  | Char |  |
 | Etat| Cours activé ou désactivé  | Boolean | Désactivé automatiquement si aucun chapitre n'est actif |
-| ID_Cursus| Identifiant du cursus auquel appartient le cours| BigInt |Clé étrangère   |
+| created_at | Date de création | Timestamp |   |
+| updated_at | Date de modification | Timestamp |   |
+
+## Cursus_Contenir_Cours
+
+| Nom | Description | Type | Commentaire |
+| :--------------- |:---------------:|:---------------:| -----:|
+| ID_Cursus | Identifiant du cursus auquel appartient le cours| BigInt | Clé primaire, clé étrangère |
+| ID_Cours| Identifiant du cours| BigInt |Clé primaire, clé étrangère   |
+| Numero_Cours| Le numéro du cours | Int |Clé primaire, clé étrangère   |
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
 
@@ -294,6 +303,9 @@
 | Nom | Description | Type | Commentaire |
 | :--------------- |:---------------:|:---------------:| -----:|
 | ID | Identifiant de la réunion en ligne | BigInt | Clé primaire |
+| Description | Description de la réunion en ligne | Char |  |
+| Lien | Lien de la réunion en ligne | Char |  |
+| Code | Code de la réunion en ligne | Char |  |
 | Date_Meeting | Date de la réunion en ligne | Timestamp |  |
 | Statut | Identifiant du statut de la réunion en ligne | BigInt | Clé étrangère |
 | ID_Cours| Identifiant du cours | BigInt |Clé étrangère , champ non obligatoire (Si le champ est indiqué le stagiaire ne peut pas passer au cours suivant tant qu'il n'a pas assisté et validé la réunion en ligne)|
