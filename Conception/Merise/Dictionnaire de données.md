@@ -23,6 +23,7 @@
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
 
+
 ## Stagiaire
 
 | Nom | Description | Type | Commentaire |
@@ -45,6 +46,7 @@
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
 
+
 ## Organisation
 
 | Nom | Description | Type | Commentaire |
@@ -65,6 +67,7 @@
 | ID_Utilisateur| Identifiant de l'utilisateur| BigInt |Clé étrangère   |
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
+
 
 ## Cursus
 
@@ -265,6 +268,7 @@
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
 
+
 ## Contenir_Document_Projet
 
 | Nom | Description | Type | Commentaire |
@@ -325,6 +329,7 @@
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
 
+
 ## Avoir_Cours_Mot_Cle
 
 | Nom | Description | Type | Commentaire |
@@ -344,6 +349,7 @@
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
 
+
 ## Suivre_Cursus
 
 | Nom | Description | Type | Commentaire |
@@ -356,6 +362,7 @@
 | Progression| Progression du stagiaire dans le cursus suivi | Int |Pourcentage calculé à partir du nombre de chapitres lus par le stagiaire par rapport au nombre total de chapitre du cursus   |
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
+
 
 ## Suivre_Cours
 
