@@ -31,6 +31,7 @@ Route::get('/formateurEx', [App\Http\Controllers\FormateurExController::class, '
 Route::get('/centreEx', [App\Http\Controllers\CentreExController::class, 'index'])->name('CentreEx');
 Route::get('/formateur', [App\Http\Controllers\FormateurController::class, 'index'])->name('formateur');
 Route::get('/centre', [App\Http\Controllers\CentreController::class, 'index'])->name('centre');
+Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register');
 Route::get('/intranet', [App\Http\Controllers\IntranetController::class, 'index'])->name('intranet');
 Route::get('parametre/{id}', [
     'as' => 'parametre',
