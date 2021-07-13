@@ -263,8 +263,6 @@
 | Resultat_Description| Description du résultat du stagiaire  | Boolean | Champ non obligatoire ( rempli par le coach lorsque le projet est terminé) |
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
-<br /><br />
-
 ## Statut
 
 | Nom | Description | Type | Commentaire |
@@ -283,7 +281,7 @@
 | Lien| Lien du document | Char | |
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
-<br /><br /><br /><br />
+<br /><br /><br /><br /><br /><br />
 
 ## Contenir_Document_Projet
 
@@ -311,7 +309,7 @@
 | ID | Identifiant de la réunion en ligne | BigInt | Clé primaire |
 | Description | Description de la réunion en ligne | Char |  |
 | Lien | Lien de la réunion en ligne | Char |  |
-| Code | Code de la réunion en ligne | Char |  |
+| Code | Code de la réunion en ligne | Char |  Champ non obligatoire |
 | Date_Meeting | Date de la réunion en ligne | Timestamp |  |
 | Statut | Identifiant du statut de la réunion en ligne | BigInt | Clé étrangère |
 | ID_Cours| Identifiant du cours | BigInt |Clé étrangère , champ non obligatoire (Si le champ est indiqué le stagiaire ne peut pas passer au cours suivant tant qu'il n'a pas assisté et validé la réunion en ligne)|
@@ -348,7 +346,6 @@
 | ID_Mot_Cle | Identifiant du mot clé| BigInt |Clé primaire , clé étrangère   |
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
-<br /><br /><br /><br />
 
 ## Avoir_Cours_Mot_Cle
 
@@ -368,7 +365,8 @@
 | ID_Mot_Cle | Identifiant du mot clé| BigInt |Clé primaire , clé étrangère   |
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
-<br /><br /><br /><br /><br /><br /><br />
+
+<br /><br /><br /><br /><br /><br />
 
 ## Suivre_Cursus
 
@@ -396,8 +394,6 @@
 | Progression| Progression du stagiaire dans le cours suivi | Int |Pourcentage calculé à partir du nombre de chapitres lus par le stagiaire par rapport au nombre total de chapitre du cours   |
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
-<br /><br /><br /><br /><br /><br /><br />
-
 ## Session
 
 | Nom | Description | Type | Commentaire |
@@ -422,6 +418,8 @@
 | Resultat_Description| Description du résultat du stagiaire  | Boolean | Champ non obligatoire ( rempli par le formateur lorsque la session est terminé) |
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
+
+<br /><br /><br /><br />
 
 ## Titre
 

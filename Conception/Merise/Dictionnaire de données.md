@@ -305,7 +305,7 @@
 | ID | Identifiant de la réunion en ligne | BigInt | Clé primaire |
 | Description | Description de la réunion en ligne | Char |  |
 | Lien | Lien de la réunion en ligne | Char |  |
-| Code | Code de la réunion en ligne | Char |  |
+| Code | Code de la réunion en ligne | Char | Champ non obligatoire |
 | Date_Meeting | Date de la réunion en ligne | Timestamp |  |
 | Statut | Identifiant du statut de la réunion en ligne | BigInt | Clé étrangère |
 | ID_Cours| Identifiant du cours | BigInt |Clé étrangère , champ non obligatoire (Si le champ est indiqué le stagiaire ne peut pas passer au cours suivant tant qu'il n'a pas assisté et validé la réunion en ligne)|
