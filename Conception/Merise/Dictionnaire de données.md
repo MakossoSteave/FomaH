@@ -10,6 +10,7 @@
 | Email| Email de l'utilisateur | Char |  |
 | Telephone| Telephone de l'utilisateur | Char |  |
 | Mot_De_Passe| Mot de passe de l'utilisateur | Char |  |
+| Image| Lien de la photo de profil de l'utilisateur | Char | Champ non obligatoire |
 | ID_Role| Role de l'utilisateur | BigInt | Clé étrangère |
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
