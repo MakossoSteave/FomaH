@@ -411,7 +411,7 @@
 | :--------------- |:---------------:|:---------------:| -----:|
 | ID_Stagiaire | Identifiant du stagiaire participant à la session| BigInt | Clé primaire, clé étrangère |
 | ID_Session | Identifiant de la session| BigInt | Clé primaire, clé étrangère |
-| Etat| Liaison activé ou désactivé  | Boolean |Désactiver automatiquement si la session est terminée|
+| Etat| Liaison activé ou désactivé  | Boolean |Désactiver automatiquement si la session est terminée, désactivé si l'inscription du stagiaire n'est pas encore validé|
 | Validation| Savoir si le stagiaire a réussi la session | Boolean | Champ non obligatoire ( rempli par le formateur lorsque la session est terminé) |
 | Resultat_Description| Description du résultat du stagiaire  | Boolean | Champ non obligatoire ( rempli par le formateur lorsque la session est terminé) |
 | created_at | Date de création | Timestamp |   |
