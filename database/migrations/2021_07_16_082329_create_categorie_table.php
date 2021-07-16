@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAide extends Migration
+class CreateCategorieTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreateAide extends Migration
      */
     public function up()
     {
-        Schema::create('aide', function (Blueprint $table) {
+        Schema::create('categorie', function (Blueprint $table) {
             $table->id();
+            $table->string('designation');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ class CreateAide extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('aide');
+        Schema::dropIfExists('categorie');
     }
 }
