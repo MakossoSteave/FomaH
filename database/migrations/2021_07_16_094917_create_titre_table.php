@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Exercice extends Migration
+class CreateTitreTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class Exercice extends Migration
      */
     public function up()
     {
-        Schema::create('exercices', function (Blueprint $table) {
+        Schema::create('titre', function (Blueprint $table) {
             $table->id();
-            $table->String("nom_exercices");
-            $table->String("correction_exercice");
+            $table->string('intitule');
+            $table->date('date_obtention');
+            $table->bigInteger('stagiaire_id')->unsigned()->index();
+            $table->foreign('stagiaire_id')->references('id')->on('stagiaire')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ class Exercice extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exercices');
+        Schema::dropIfExists('titre');
     }
 }
