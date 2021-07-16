@@ -1,0 +1,13 @@
+Cursus = (id_cursus INT);
+Matiere = (id_matiere VARCHAR(50));
+Sous_matiere = (id_sous_matiere VARCHAR(50));
+Niveau_scolaire = (id_niveau_scolaire VARCHAR(50));
+Formateur = (id_formateur BIGINT, curriculumVitae VARCHAR(20), nom VARCHAR(20), 
+	prenom VARCHAR(20), departement_ SMALLINT, mot_de_passe VARCHAR(50), 
+	email VARCHAR(30), telephone VARCHAR(20), competence VARCHAR(20), 
+	cursusPositionner VARCHAR(20), #id_cursus);
+Competence = (id_competence BIGINT, #id_sous_matiere, #id_niveau_scolaire, #id_matiere);
+Cours_executes_historique = (id_cours_executes BIGINT, id_cours VARCHAR(50), 
+	date_debut DATE, date_fin DATE, appreciation_cours VARCHAR(50), 
+	pourcentage_reussite VARCHAR(50), #id_formateur);
+se_declare = (#id_formateur, #id_competence);

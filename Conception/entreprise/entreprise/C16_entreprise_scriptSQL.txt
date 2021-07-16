@@ -1,0 +1,7 @@
+Entreprise = (numero_siret VARCHAR(20), raison_sociale VARCHAR(50), departement INT, 
+	ville VARCHAR(20), adresse VARCHAR(30), contact_s_ VARCHAR(50));
+Contact = (id_contact INT, nom VARCHAR(20), prenom VARCHAR(20), 
+	titre VARCHAR(50), telephone VARCHAR(15), email VARCHAR(30));
+Stagiaire = (id_stagiaire INT);
+travaille = (#numero_siret, #id_contact);
+est_stagiaire = (#numero_siret, #id_stagiaire, annee VARCHAR(50));
