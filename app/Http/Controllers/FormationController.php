@@ -19,9 +19,9 @@ class FormationController extends Controller
 
     public function create()
     {
-        $categories = Categorie::all();
+        $Categorie = Categorie::all();
 
-        return view('centre.Ajoutforma',compact(['categories']));
+        return view('centre.Ajoutforma',compact(['Categorie']));
     }
 
     public function store(Request $request)
@@ -41,9 +41,9 @@ class FormationController extends Controller
         do {
             $id= rand(1000000000,9999999999);
         } while(Formation::find($id)!=null);
-        $request->etat=0;
-        $request->id=$id;
-        //$formation =
+       /* $request->etat=0;
+        $request->id=$id;*/
+        //$formation = 
         Formation::create($request->all());
         /*$formation->etat=0;
         $formation->id=$id;
@@ -61,9 +61,9 @@ class FormationController extends Controller
     public function edit($id)
     {
        $data = Formation::find($id);
-       $categories = Categorie::all();
+       $Categorie = Categorie::all();
 
-       return view('centre.formation.edit',compact(['data'], ['categories']));
+       return view('centre.formation.edit',compact(['data'], ['Categorie']));
     }
 
     public function update(Request $request, $id)
