@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Categories;
+use App\Models\Categorie;
 use App\Models\Formations;
 use Illuminate\Http\Request;
 
@@ -19,7 +19,7 @@ class FormationController extends Controller
 
     public function create()
     {
-        $categories = Categories::all();
+        $categories = Categorie::all();
 
         return view('centre.Ajoutforma',compact(['categories']));
     }
@@ -53,7 +53,7 @@ class FormationController extends Controller
     public function edit($id)
     {
        $data = Formations::find($id);
-       $categories = Categories::all();
+       $categories = Categorie::all();
 
        return view('centre.formation.edit',compact(['data'], ['categories']));
     }
