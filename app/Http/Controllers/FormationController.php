@@ -19,9 +19,9 @@ class FormationController extends Controller
 
     public function create()
     {
-        $Categorie = Categorie::all();
+        $categories = Categorie::all();
 
-        return view('centre.Ajoutforma',compact(['Categorie']));
+        return view('centre.Ajoutforma',compact(['categories']));
     }
 
     public function store(Request $request)
@@ -61,9 +61,9 @@ class FormationController extends Controller
     public function edit($id)
     {
        $data = Formation::find($id);
-       $Categorie = Categorie::all();
+       $categories = Categorie::all();
 
-       return view('centre.formation.edit',compact(['data'], ['Categorie']));
+       return view('centre.formation.edit',compact(['data'], ['categories']));
     }
 
     public function update(Request $request, $id)
