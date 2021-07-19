@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Categorie extends Model
 {
     use HasFactory;
-    public function categorie()
+    public function formation()
     {
         return $this->belongsTo(Formation::class);
     }
