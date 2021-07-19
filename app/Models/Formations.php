@@ -10,6 +10,6 @@ class Formations extends Model
     use HasFactory;
     
     protected $fillable=[
-        'libelle','description','reference','prix','userRef'
+        'libelle','description','volume_horaire','nombre_cours_total','nombre_chapitre_total','etat','reference','prix','userRef', 'categorie_id'
     ];
 }

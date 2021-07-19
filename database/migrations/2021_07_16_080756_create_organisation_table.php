@@ -13,8 +13,8 @@ class CreateOrganisationTable extends Migration
      */
     public function up()
     {
-        Schema::create('organisation', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('organisations', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('designation');
             $table->timestamps();

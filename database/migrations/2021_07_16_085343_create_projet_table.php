@@ -13,8 +13,8 @@ class CreateProjetTable extends Migration
      */
     public function up()
     {
-        Schema::create('projet', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('projets', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('description');
             $table->date('date_debut')->nullable();

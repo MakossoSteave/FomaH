@@ -13,8 +13,8 @@ class CreateAvoirPreferenceTable extends Migration
      */
     public function up()
     {
-        Schema::create('avoir_preference', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('avoir_preferences', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->bigInteger('id_stagiaire')->unsigned();
             $table->bigInteger('id_mot_cle')->unsigned();
             $table->primary(['id_stagiaire', 'id_mot_cle']);

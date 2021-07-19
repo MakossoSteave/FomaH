@@ -14,7 +14,7 @@ class CreateReponseQuestionQcmTable extends Migration
     public function up()
     {
         Schema::create('reponse_question_qcm', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('reponse');
             $table->boolean('validation');

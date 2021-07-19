@@ -13,8 +13,8 @@ class CreateStagiaireTable extends Migration
      */
     public function up()
     {
-        Schema::create('stagiaire', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('stagiaires', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('nom');
             $table->string('prenom');

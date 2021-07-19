@@ -13,16 +13,16 @@ class CreateSessionTable extends Migration
      */
     public function up()
     {
-        Schema::create('session', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('sessions', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->id();;
             $table->date('date_debut');
             $table->date('date_fin');
             $table->boolean('etat');
             $table->bigInteger('formateur_id')->unsigned()->index();
             $table->foreign('formateur_id')->references('id')->on('formateur')->onDelete('cascade');
-            $table->bigInteger('cursus_id')->unsigned()->index();
-            $table->foreign('cursus_id')->references('id')->on('cursus')->onDelete('cascade');
+            $table->bigInteger('formations_id')->unsigned()->index();
+            $table->foreign('formations_id')->references('id')->on('formations')->onDelete('cascade');
             $table->bigInteger('statut_id')->unsigned()->index();
             $table->foreign('statut_id')->references('id')->on('statut')->onDelete('cascade');
             $table->timestamps();

@@ -13,8 +13,8 @@ class CreateFormateurTable extends Migration
      */
     public function up()
     {
-        Schema::create('formateur', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('formateurs', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('parcours');
             $table->string('cv');

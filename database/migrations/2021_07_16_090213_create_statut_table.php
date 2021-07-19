@@ -13,8 +13,8 @@ class CreateStatutTable extends Migration
      */
     public function up()
     {
-        Schema::create('statut', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('statuts', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('statut');
             $table->timestamps();

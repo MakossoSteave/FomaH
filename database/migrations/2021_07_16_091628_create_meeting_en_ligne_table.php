@@ -13,8 +13,8 @@ class CreateMeetingEnLigneTable extends Migration
      */
     public function up()
     {
-        Schema::create('meeting_en_ligne', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('meeting_en_lignes', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->id();;
             $table->timestamp('date_meeting');
             $table->bigInteger('statut_id')->unsigned()->index();
