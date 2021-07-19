@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Formation extends Model
 {
     use HasFactory;
+
+    public $incrementing = false;
     
     protected $fillable=[
-        'libelle','description','volume_horaire','nombre_cours_total','nombre_chapitre_total','etat','reference','prix','userRef', 'categorie_id'
+        'id', 'libelle','description','volume_horaire','nombre_cours_total','nombre_chapitre_total','etat','reference','prix','userRef', 'categorie_id'
     ];
 }

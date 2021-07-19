@@ -32,14 +32,17 @@ class FormationController extends Controller
          'volume_horaire' => 'required',
          'nombre_cours_total' => 'required',
          'nombre_chapitre_total' => 'required',
-         'etat' => 'required',
          'reference' => 'required',
          'prix' => 'required',
          'userRef'=>'required',
          'categorie_id' =>'required'
         ]);
+        do {
+            $id = rand(1000000, 99999999);
+        } while(Formation::find($id)!=null);
 
-        Formation::create($request->all());
+        Formation::create($request->all() + ['etat' => 0] + ['id' => $id]);
+
         return redirect()->back()->with('success','Create Successfully');
     }
 
@@ -66,7 +69,6 @@ class FormationController extends Controller
          'volume_horaire' => 'required',
          'nombre_cours_total' => 'required',
          'nombre_chapitre_total' => 'required',
-         'etat' => 'required',
          'prix' => 'required',
          'userRef'=>'required',
          'categorie_id' =>'required'
