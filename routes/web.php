@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Formations;
+use App\Models\Formation;
 use App\Models\User;
 
 /*

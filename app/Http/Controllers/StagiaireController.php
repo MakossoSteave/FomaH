@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Formations;
+use App\Models\Formation;
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -10,22 +10,22 @@ use Illuminate\Http\Request;
 class StagiaireController extends Controller
 {
     public function index(){
-        $data = Formations::orderBy('id','desc')->paginate(8)->setPath('stagiaire');
+        $data = Formation::orderBy('id','desc')->paginate(8)->setPath('stagiaire');
 
         return view('stagiaire/index',compact(['data']));
     }
     public function show($id)
     {
-       // $formation  = Formations::find($ids);
-        $formations = Formations ::find($id);
-        $user = $formations->userRef;
+       // $formation  = Formation::find($ids);
+        $Formation = Formation ::find($id);
+        $user = $Formation->userRef;
         $al = User:: find($user);
-        $referenceee = Formations::where("userRef",$user)->take(10)->get();
+        $referenceee = Formation::where("userRef",$user)->take(10)->get();
         
       
-        //$databis =Formations::all();
+        //$databis =Formation::all();
 
-       return view('stagiaire.formation.Show',compact(['formations','al', 'referenceee']));
+       return view('stagiaire.formation.Show',compact(['Formation','al', 'referenceee']));
     }
     
 }
