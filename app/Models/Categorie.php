@@ -10,6 +10,6 @@ class Categorie extends Model
     use HasFactory;
     public function formation()
     {
-        return $this->belongsTo(Formations::class);
+        return $this->belongsTo(Formation::class);
     }
 }   
