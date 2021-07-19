@@ -14,7 +14,8 @@ class CreateFormateurTable extends Migration
     public function up()
     {
         Schema::create('formateur', function (Blueprint $table) {
-            $table->id();
+            $table->engine='MyiSAM';
+            $table->id();;
             $table->string('parcours');
             $table->string('cv');
             $table->bigInteger('user_id')->unsigned()->index();

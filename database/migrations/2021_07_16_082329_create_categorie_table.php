@@ -14,7 +14,8 @@ class CreateCategorieTable extends Migration
     public function up()
     {
         Schema::create('categorie', function (Blueprint $table) {
-            $table->id();
+            $table->engine='MyiSAM';
+            $table->id();;
             $table->string('designation');
             $table->timestamps();
         });

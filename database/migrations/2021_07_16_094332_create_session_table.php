@@ -14,7 +14,8 @@ class CreateSessionTable extends Migration
     public function up()
     {
         Schema::create('session', function (Blueprint $table) {
-            $table->id();
+            $table->engine='MyiSAM';
+            $table->id();;
             $table->date('date_debut');
             $table->date('date_fin');
             $table->boolean('etat');

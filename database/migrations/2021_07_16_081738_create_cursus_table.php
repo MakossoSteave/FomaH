@@ -14,7 +14,8 @@ class CreateCursusTable extends Migration
     public function up()
     {
         Schema::create('cursus', function (Blueprint $table) {
-            $table->id();
+            $table->engine='MyiSAM';
+            $table->id();;
             $table->string('designation');
             $table->string('description');
             $table->string('image')->nullable();

@@ -14,6 +14,7 @@ class CreateCoursTable extends Migration
     public function up()
     {
         Schema::create('cours', function (Blueprint $table) {
+            $table->engine='MyiSAM';
             $table->bigInteger('id_cours')->unsigned();
             $table->integer('numero_cours')->unsigned();
             $table->primary(['id_cours', 'numero_cours']);

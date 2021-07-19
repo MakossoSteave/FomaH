@@ -14,7 +14,8 @@ class CreateDocumentTable extends Migration
     public function up()
     {
         Schema::create('document', function (Blueprint $table) {
-            $table->id();
+            $table->engine='MyiSAM';
+            $table->id();;
             $table->string('designation');
             $table->string('lien');
             $table->timestamps();

@@ -14,6 +14,7 @@ class CreateFormationTable extends Migration
     public function up()
     {
         Schema::create('formations', function (Blueprint $table) {
+            $table->engine='MyiSAM';
             $table->id('id');
             $table->string('libelle');
             $table->string('description');

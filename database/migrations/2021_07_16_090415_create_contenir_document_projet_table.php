@@ -14,6 +14,7 @@ class CreateContenirDocumentProjetTable extends Migration
     public function up()
     {
         Schema::create('contenir_document_projet', function (Blueprint $table) {
+            $table->engine='MyiSAM';
             $table->bigInteger('id_projet')->unsigned();
             $table->bigInteger('id_document')->unsigned();
             $table->primary(['id_projet', 'id_document']);

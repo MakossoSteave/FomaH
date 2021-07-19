@@ -14,6 +14,7 @@ class CreateParticiperMeetingTable extends Migration
     public function up()
     {
         Schema::create('participer_meeting', function (Blueprint $table) {
+            $table->engine='MyiSAM';
             $table->bigInteger('id_utilisateur')->unsigned();
             $table->bigInteger('id_meeting')->unsigned();
             $table->primary(['id_utilisateur', 'id_meeting']);
