@@ -13,8 +13,8 @@ class CreateTitreTable extends Migration
      */
     public function up()
     {
-        Schema::create('titre', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('titres', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('intitule');
             $table->date('date_obtention');

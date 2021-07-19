@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAvoirCursusMotCleTable extends Migration
+class CreateAvoirformationsMotCleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateAvoirCursusMotCleTable extends Migration
      */
     public function up()
     {
-        Schema::create('avoir_cursus_mot_cle', function (Blueprint $table) {
-            $table->engine='MyiSAM';
-            $table->bigInteger('id_cursus')->unsigned();
+        Schema::create('avoir_formations_mots_cles', function (Blueprint $table) {
+            $table->engine='MyISAM';
+            $table->bigInteger('id_formations')->unsigned();
             $table->bigInteger('id_mot_cle')->unsigned();
-            $table->primary(['id_cursus', 'id_mot_cle']);
+            $table->primary(['id_formations', 'id_mot_cle']);
             $table->foreign('id_mot_cle')->references('id')->on('mot_cle');    
-            $table->foreign('id_cursus')->references('id')->on('cursus');
+            $table->foreign('id_formations')->references('id')->on('formations');
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreateAvoirCursusMotCleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('avoir_cursus_mot_cle');
+        Schema::dropIfExists('avoir_formations_mot_cle');
     }
 }

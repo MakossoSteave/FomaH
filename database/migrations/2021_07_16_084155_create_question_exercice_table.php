@@ -13,8 +13,8 @@ class CreateQuestionExerciceTable extends Migration
      */
     public function up()
     {
-        Schema::create('question_exercice', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('questions_exercices', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('question');
             $table->boolean('etat');

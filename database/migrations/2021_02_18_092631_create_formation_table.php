@@ -14,16 +14,22 @@ class CreateFormationTable extends Migration
     public function up()
     {
         Schema::create('formations', function (Blueprint $table) {
-            $table->engine='MyiSAM';
-            $table->id('id');
+            $table->engine='MyISAM';
+            $table->id();
             $table->string('libelle');
             $table->string('description');
+            $table->string('image')->nullable();
+            $table->integer('volume_horaire');
+            $table->integer('nombre_cours_total');
+            $table->integer('nombre_chapitre_total');
             $table->string('reference');
             $table->integer('prix');
             $table->integer('userRef');
             $table->string('_token')->nullable();
             $table->string('_method')->nullable();
-            $table->string('categorie')->nullable();
+            $table->boolean('etat');
+            $table->bigInteger('categorie_id')->unsigned()->index();
+            $table->foreign('categorie_id')->references('id')->on('categorie')->onDelete('cascade');
             $table->timestamps();
         });
     }

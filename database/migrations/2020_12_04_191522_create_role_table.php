@@ -16,7 +16,7 @@ class CreateRoleTable extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             
-            $table->engine='MyiSAM';
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('type');
             $table->timestamps();

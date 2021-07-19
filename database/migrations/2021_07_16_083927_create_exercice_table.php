@@ -13,8 +13,8 @@ class CreateExerciceTable extends Migration
      */
     public function up()
     {
-        Schema::create('exercice', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('exercices', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('enonce');
             $table->string('image')->nullable();

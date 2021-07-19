@@ -13,8 +13,8 @@ class CreateCategorieTable extends Migration
      */
     public function up()
     {
-        Schema::create('categorie', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('categories', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('designation');
             $table->timestamps();

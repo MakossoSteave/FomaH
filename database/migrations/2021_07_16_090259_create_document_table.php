@@ -13,8 +13,8 @@ class CreateDocumentTable extends Migration
      */
     public function up()
     {
-        Schema::create('document', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('documents', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('designation');
             $table->string('lien');

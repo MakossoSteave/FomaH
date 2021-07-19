@@ -13,8 +13,8 @@ class CreateLierSessionStagiaireTable extends Migration
      */
     public function up()
     {
-        Schema::create('lier_session_stagiaire', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('lier_sessions_stagiaires', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->bigInteger('id_session')->unsigned();
             $table->bigInteger('id_stagiaire')->unsigned();
             $table->primary(['id_session', 'id_stagiaire']);

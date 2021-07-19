@@ -13,8 +13,8 @@ class CreateQuestionCorrectionTable extends Migration
      */
     public function up()
     {
-        Schema::create('question_correction', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('questions_corrections', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('reponse');
             $table->string('image')->nullable();

@@ -13,8 +13,8 @@ class CreateSectionTable extends Migration
      */
     public function up()
     {
-        Schema::create('section', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('sections', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('designation');
             $table->string('contenu');

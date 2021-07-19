@@ -14,7 +14,7 @@ class CreateCoursTable extends Migration
     public function up()
     {
         Schema::create('cours', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+            $table->engine='MyISAM';
             $table->bigInteger('id_cours')->unsigned();
             $table->integer('numero_cours')->unsigned();
             $table->primary(['id_cours', 'numero_cours']);
@@ -23,8 +23,8 @@ class CreateCoursTable extends Migration
             $table->integer('nombre_chapitres');
             $table->float('prix');
             $table->boolean('etat');
-            $table->bigInteger('cursus_id')->unsigned()->index();
-            $table->foreign('cursus_id')->references('id')->on('cursus')->onDelete('cascade');
+            $table->bigInteger('formations_id')->unsigned()->index();
+            $table->foreign('formations_id')->references('id')->on('formations')->onDelete('cascade');
             $table->timestamps();
         });
     }

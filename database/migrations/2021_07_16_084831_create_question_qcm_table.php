@@ -14,7 +14,7 @@ class CreateQuestionQcmTable extends Migration
     public function up()
     {
         Schema::create('question_qcm', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('question');
             $table->string('explication')->nullable();

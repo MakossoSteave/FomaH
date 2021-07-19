@@ -13,8 +13,8 @@ class CreateTypeInscriptionTable extends Migration
      */
     public function up()
     {
-        Schema::create('type_inscription', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('types_inscriptions', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('type');
             $table->timestamps();

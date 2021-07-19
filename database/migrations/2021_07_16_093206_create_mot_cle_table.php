@@ -13,8 +13,8 @@ class CreateMotCleTable extends Migration
      */
     public function up()
     {
-        Schema::create('mot_cle', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+        Schema::create('mots_cles', function (Blueprint $table) {
+            $table->engine='MyISAM';
             $table->id();;
             $table->string('designation');
             $table->timestamps();

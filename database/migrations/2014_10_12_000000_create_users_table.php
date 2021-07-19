@@ -14,9 +14,9 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+            $table->engine='MyISAM';
             $table->id('id');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('name');
             $table->integer('status_id')->nullable();
             $table->string('email')->unique();
