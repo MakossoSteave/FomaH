@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFormateurTable extends Migration
+class CreateSousMatiereTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class CreateFormateurTable extends Migration
      */
     public function up()
     {
-        Schema::create('formateurs', function (Blueprint $table) {
+        Schema::create('sous_matieres', function (Blueprint $table) {
             $table->engine='MyiSAM';
             $table->id();
-            $table->string('prenom');
-            $table->integer('telephone');
-            $table->string('parcours');
-            $table->string('cv');
-            $table->bigInteger('user_id')->unsigned()->index();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('designation_sous_matiere');
             $table->timestamps();
         });
     }
@@ -33,6 +28,6 @@ class CreateFormateurTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('formateurs');
+        Schema::dropIfExists('sous_matieres');
     }
 }

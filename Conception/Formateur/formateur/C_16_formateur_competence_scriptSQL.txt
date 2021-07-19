@@ -1,0 +1,31 @@
+CREATE TABLE Matiere(
+   id_matiere VARCHAR(50),
+   PRIMARY KEY(id_matiere)
+);
+CREATE TABLE Sous_matiere(
+   id_sous_matiere VARCHAR(50),
+   PRIMARY KEY(id_sous_matiere)
+);
+CREATE TABLE Niveau_scolaire(
+   id_niveau_scolaire VARCHAR(50),
+   PRIMARY KEY(id_niveau_scolaire)
+);
+
+CREATE TABLE Competence(
+   id_competence BIGINT,
+   id_sous_matiere VARCHAR(50) NOT NULL,
+   id_niveau_scolaire VARCHAR(50) NOT NULL,
+   id_matiere VARCHAR(50) NOT NULL,
+   PRIMARY KEY(id_competence),
+   FOREIGN KEY(id_sous_matiere) REFERENCES Sous_matiere(id_sous_matiere),
+   FOREIGN KEY(id_niveau_scolaire) REFERENCES Niveau_scolaire(id_niveau_scolaire),
+   FOREIGN KEY(id_matiere) REFERENCES Matiere(id_matiere)
+);
+
+CREATE TABLE se_declare(
+   id_formateur BIGINT,
+   id_competence BIGINT,
+   PRIMARY KEY(id_formateur, id_competence),
+   FOREIGN KEY(id_formateur) REFERENCES Formateur(id_formateur),
+   FOREIGN KEY(id_competence) REFERENCES Competence(id_competence)
+);
