@@ -14,7 +14,8 @@ class CreateStatutTable extends Migration
     public function up()
     {
         Schema::create('statut', function (Blueprint $table) {
-            $table->id();
+            $table->engine='MyiSAM';
+            $table->id();;
             $table->string('statut');
             $table->timestamps();
         });

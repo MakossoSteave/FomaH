@@ -14,7 +14,8 @@ class CreateTypeInscriptionTable extends Migration
     public function up()
     {
         Schema::create('type_inscription', function (Blueprint $table) {
-            $table->id();
+            $table->engine='MyiSAM';
+            $table->id();;
             $table->string('type');
             $table->timestamps();
         });

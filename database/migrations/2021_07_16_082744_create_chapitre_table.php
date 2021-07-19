@@ -14,6 +14,7 @@ class CreateChapitreTable extends Migration
     public function up()
     {
         Schema::create('chapitre', function (Blueprint $table) {
+            $table->engine='MyiSAM';
             $table->bigInteger('id_chapitre')->unsigned();
             $table->integer('numero_chapitre')->unsigned();
             $table->primary(['id_chapitre', 'numero_chapitre']);

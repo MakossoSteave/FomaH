@@ -14,7 +14,8 @@ class CreateTitreTable extends Migration
     public function up()
     {
         Schema::create('titre', function (Blueprint $table) {
-            $table->id();
+            $table->engine='MyiSAM';
+            $table->id();;
             $table->string('intitule');
             $table->date('date_obtention');
             $table->bigInteger('stagiaire_id')->unsigned()->index();

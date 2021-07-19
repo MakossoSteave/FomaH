@@ -14,6 +14,7 @@ class CreateContenirDocumentChapitreTable extends Migration
     public function up()
     {
         Schema::create('contenir_document_chapitre', function (Blueprint $table) {
+            $table->engine='MyiSAM';
             $table->bigInteger('id_proj')->unsigned();
             $table->bigInteger('id_doc')->unsigned();
             $table->integer('num_chap')->unsigned();

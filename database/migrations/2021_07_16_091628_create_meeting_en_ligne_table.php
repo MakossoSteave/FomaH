@@ -14,7 +14,8 @@ class CreateMeetingEnLigneTable extends Migration
     public function up()
     {
         Schema::create('meeting_en_ligne', function (Blueprint $table) {
-            $table->id();
+            $table->engine='MyiSAM';
+            $table->id();;
             $table->timestamp('date_meeting');
             $table->bigInteger('statut_id')->unsigned()->index();
             $table->foreign('statut_id')->references('id')->on('statut')->onDelete('cascade');

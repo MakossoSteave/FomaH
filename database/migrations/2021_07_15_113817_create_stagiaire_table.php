@@ -14,7 +14,8 @@ class CreateStagiaireTable extends Migration
     public function up()
     {
         Schema::create('stagiaire', function (Blueprint $table) {
-            $table->id();
+            $table->engine='MyiSAM';
+            $table->id();;
             $table->string('nom');
             $table->string('prenom');
             $table->integer('telephone');

@@ -14,6 +14,7 @@ class CreateFaireProjetTable extends Migration
     public function up()
     {
         Schema::create('faire_projet', function (Blueprint $table) {
+            $table->engine='MyiSAM';
             $table->bigInteger('id_projet')->unsigned();
             $table->bigInteger('id_stagiaire')->unsigned();
             $table->primary(['id_projet', 'id_stagiaire']);

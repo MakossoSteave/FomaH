@@ -14,7 +14,8 @@ class CreateOrganisationTable extends Migration
     public function up()
     {
         Schema::create('organisation', function (Blueprint $table) {
-            $table->id();
+            $table->engine='MyiSAM';
+            $table->id();;
             $table->string('designation');
             $table->timestamps();
         });

@@ -14,7 +14,8 @@ class CreateQuestionCorrectionTable extends Migration
     public function up()
     {
         Schema::create('question_correction', function (Blueprint $table) {
-            $table->id();
+            $table->engine='MyiSAM';
+            $table->id();;
             $table->string('reponse');
             $table->string('image')->nullable();
             $table->boolean('etat');

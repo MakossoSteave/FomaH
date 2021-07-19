@@ -14,6 +14,7 @@ class CreateAvoirCursusMotCleTable extends Migration
     public function up()
     {
         Schema::create('avoir_cursus_mot_cle', function (Blueprint $table) {
+            $table->engine='MyiSAM';
             $table->bigInteger('id_cursus')->unsigned();
             $table->bigInteger('id_mot_cle')->unsigned();
             $table->primary(['id_cursus', 'id_mot_cle']);

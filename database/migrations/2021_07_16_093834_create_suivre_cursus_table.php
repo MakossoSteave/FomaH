@@ -14,6 +14,7 @@ class CreateSuivreCursusTable extends Migration
     public function up()
     {
         Schema::create('suivre_cursus', function (Blueprint $table) {
+            $table->engine='MyiSAM';
             $table->bigInteger('id_stagiaire')->unsigned();
             $table->bigInteger('id_cursus')->unsigned();
             $table->primary(['id_stagiaire', 'id_cursus']);

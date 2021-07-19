@@ -14,7 +14,8 @@ class CreateScoreQcmTable extends Migration
     public function up()
     {
         Schema::create('score_qcm', function (Blueprint $table) {
-            $table->id();
+            $table->engine='MyiSAM';
+            $table->id();;
             $table->integer('resultat');
             $table->bigInteger('stagiaire_id')->unsigned()->index();
             $table->foreign('stagiaire_id')->references('id')->on('stagiaire')->onDelete('cascade');
