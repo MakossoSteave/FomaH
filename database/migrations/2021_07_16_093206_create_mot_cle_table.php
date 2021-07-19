@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLive extends Migration
+class CreateMotCleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateLive extends Migration
      */
     public function up()
     {
-        Schema::create('live', function (Blueprint $table) {
+        Schema::create('mot_cle', function (Blueprint $table) {
             $table->id();
-            $table->String("nom_lives");
+            $table->string('designation');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CreateLive extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('live');
+        Schema::dropIfExists('mot_cle');
     }
 }
