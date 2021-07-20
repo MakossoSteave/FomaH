@@ -65,11 +65,10 @@ class FormationController extends Controller
          'libelle' => 'required',
          'description' => 'required',
          'volume_horaire' => 'required',
-         'nombre_cours_total' => 'required',
-         'nombre_chapitre_total' => 'required',
          'prix' => 'required',
          'userRef'=>'required',
-         'categorie_id' =>'required'
+         'categorie_id' =>'required',
+         'etat' => 'required'
         ]);
 
         Formation::where('id',$id)->update($request->all());   
