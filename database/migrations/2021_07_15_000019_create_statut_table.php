@@ -21,49 +21,49 @@ class CreateStatutTable extends Migration
             $table->timestamps();
         });
 
-        DB::table('statuts')->insert(
+        DB::table('statut')->insert(
                
             [
                 'statut'=>'Non débuté'
             ]
 
         );
-        DB::table('statuts')->insert(
+        DB::table('statut')->insert(
                
             [
                 'statut'=>'Non débutée'
             ]
 
         );
-        DB::table('statuts')->insert(
+        DB::table('statut')->insert(
                
             [
                 'statut'=>'En cours'
             ]
 
         );
-        DB::table('statuts')->insert(
+        DB::table('statut')->insert(
                
             [
                 'statut'=>'Terminé'
             ]
 
         );
-        DB::table('statuts')->insert(
+        DB::table('statut')->insert(
                
             [
                 'statut'=>'Terminée'
             ]
 
         );
-        DB::table('statuts')->insert(
+        DB::table('statut')->insert(
                
             [
                 'statut'=>'Annulé'
             ]
 
         );
-        DB::table('statuts')->insert(
+        DB::table('statut')->insert(
                
             [
                 'statut'=>'Annulée'
