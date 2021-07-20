@@ -14,56 +14,56 @@ class CreateStatutTable extends Migration
      */
     public function up()
     {
-        Schema::create('statuts', function (Blueprint $table) {
+        Schema::create('statut', function (Blueprint $table) {
             $table->engine='InnoDB';
             $table->id();;
             $table->string('statut');
             $table->timestamps();
         });
 
-        DB::table('statuts')->insert(
+        DB::table('statut')->insert(
                
             [
                 'statut'=>'Non débuté'
             ]
 
         );
-        DB::table('statuts')->insert(
+        DB::table('statut')->insert(
                
             [
                 'statut'=>'Non débutée'
             ]
 
         );
-        DB::table('statuts')->insert(
+        DB::table('statut')->insert(
                
             [
                 'statut'=>'En cours'
             ]
 
         );
-        DB::table('statuts')->insert(
+        DB::table('statut')->insert(
                
             [
                 'statut'=>'Terminé'
             ]
 
         );
-        DB::table('statuts')->insert(
+        DB::table('statut')->insert(
                
             [
                 'statut'=>'Terminée'
             ]
 
         );
-        DB::table('statuts')->insert(
+        DB::table('statut')->insert(
                
             [
                 'statut'=>'Annulé'
             ]
 
         );
-        DB::table('statuts')->insert(
+        DB::table('statut')->insert(
                
             [
                 'statut'=>'Annulée'

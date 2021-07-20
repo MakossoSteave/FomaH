@@ -24,7 +24,7 @@ class CreateSessionTable extends Migration
             $table->bigInteger('formations_id')->unsigned()->index();
             $table->foreign('formations_id')->references('id')->on('formations')->onDelete('cascade');
             $table->bigInteger('statut_id')->unsigned()->index();
-            $table->foreign('statut_id')->references('id')->on('statuts')->onDelete('cascade');
+            $table->foreign('statut_id')->references('id')->on('statut')->onDelete('cascade');
             $table->timestamps();
         });
     }
