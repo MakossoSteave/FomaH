@@ -53,114 +53,121 @@
         @else
         @if (Auth::user()->role_id==1)
 
-        <div class="container is-fluid user">
-            <span class="icon is-medium">
-                <i class="fas fa-user-circle"></i>
-            </span>
-
-            <span class="icon is-medium is-pulled-right">
-                <i class="fas fa-power-off"></i>
-            </span>
-
-            <span class="icon is-medium is-pulled-right mr-4">
-                <i class="fas fa-envelope"></i>
-            </span>
-        </div>
-
-        <nav class="navbar container is-fluid" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            
-        <div class="py-2 bg-indigo-100 lg:bg-white flex justify-center lg:justify-start lg:px-12">
-            <div class="cursor-pointer flex items-center">
+        <div class="container is-fluid">
+            <div class="user">
                 <div>
-                    <a class="navbar-item" href="/"><svg class="w-10 text-indigo-500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 225 225" style="enable-background:new 0 0 225 225;" xml:space="preserve">
-                            <style type="text/css">
-                            .st0 {
-                                fill: none;
-                                stroke: currentColor;
-                                stroke-width: 20;
-                                stroke-linecap: round;
-                                stroke-miterlimit: 3;
-                            }
-                            </style>
-                            <g transform="matrix( 1, 0, 0, 1, 0,0) ">
-                                <g>
-                                    <path id="Layer0_0_1_STROKES" class="st0" d="M173.8,151.5l13.6-13.6 M35.4,89.9l29.1-29 M89.4,34.9v1 M137.4,187.9l-0.6-0.4     M36.6,138.7l0.2-0.2 M56.1,169.1l27.7-27.6 M63.8,111.5l74.3-74.4 M87.1,188.1L187.6,87.6 M110.8,114.5l57.8-57.8"></path>
+                <span class="icon is-medium">
+                    <i class="fas fa-user-circle"></i>
+                    {{ Auth::user()->name }}
+                </span>
+                </div>
+
+                <div>
+                    <span class="icon is-medium mr-4">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+
+                    <span class="icon is-medium">
+                        <i class="fas fa-power-off"></i>
+                    </span>
+                </div>
+            </div>
+
+            <nav class="navbar container is-fluid" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                
+            <div class="py-2 bg-indigo-100 lg:bg-white flex justify-center lg:justify-start lg:px-12">
+                <div class="cursor-pointer flex items-center">
+                    <div>
+                        <a class="navbar-item" href="/"><svg class="w-10 text-indigo-500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 225 225" style="enable-background:new 0 0 225 225;" xml:space="preserve">
+                                <style type="text/css">
+                                .st0 {
+                                    fill: none;
+                                    stroke: currentColor;
+                                    stroke-width: 20;
+                                    stroke-linecap: round;
+                                    stroke-miterlimit: 3;
+                                }
+                                </style>
+                                <g transform="matrix( 1, 0, 0, 1, 0,0) ">
+                                    <g>
+                                        <path id="Layer0_0_1_STROKES" class="st0" d="M173.8,151.5l13.6-13.6 M35.4,89.9l29.1-29 M89.4,34.9v1 M137.4,187.9l-0.6-0.4     M36.6,138.7l0.2-0.2 M56.1,169.1l27.7-27.6 M63.8,111.5l74.3-74.4 M87.1,188.1L187.6,87.6 M110.8,114.5l57.8-57.8"></path>
+                                    </g>
                                 </g>
-                            </g>
-                        </svg>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="text-2xl text-indigo-800 tracking-wide ml-2 font-semibold">HubDigitForma</div>
+                </div>
+            </div>
+
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbarBasicExample" class="navbar-menu">
+                <a class="navbar-item custom-margin">
+                    Session
+                </a>
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link custom-margin">
+                    Cursus
                     </a>
+
+                    <div class="navbar-dropdown">
+                    <a class="navbar-item">
+                        Mots-clés
+                    </a>
+                    </div>
                 </div>
-                <div class="text-2xl text-indigo-800 tracking-wide ml-2 font-semibold">Formahuub</div>
-            </div>
-        </div>
 
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            </a>
-        </div>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link custom-margin">
+                    Cours
+                    </a>
 
-        <div id="navbarBasicExample" class="navbar-menu">
-            <a class="navbar-item custom-margin">
-                Session
-            </a>
-
-            <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link custom-margin">
-                Cursus
-                </a>
-
-                <div class="navbar-dropdown">
-                <a class="navbar-item">
-                    Mots-clés
-                </a>
+                    <div class="navbar-dropdown">
+                    <a class="navbar-item">
+                        Chapitres
+                    </a>
+                    <a class="navbar-item">
+                        Projets
+                    </a>
+                    <a class="navbar-item">
+                        Exercices
+                    </a>
+                    <a class="navbar-item">
+                        Documents
+                    </a>
+                    <a class="navbar-item">
+                        QCM
+                    </a>
+                    </div>
                 </div>
+
+                <a class="navbar-item custom-margin">
+                    Formateur
+                </a>
+
+                <a class="navbar-item custom-margin">
+                    Stagiaire
+                </a>
+
+                <a class="navbar-item custom-margin">
+                    Titre
+                </a>
+
+                <a class="navbar-item custom-margin">
+                    Catégorie
+                </a>
+
             </div>
-
-            <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link custom-margin">
-                Cours
-                </a>
-
-                <div class="navbar-dropdown">
-                <a class="navbar-item">
-                    Chapitres
-                </a>
-                <a class="navbar-item">
-                    Projets
-                </a>
-                <a class="navbar-item">
-                    Exercices
-                </a>
-                <a class="navbar-item">
-                    Documents
-                </a>
-                <a class="navbar-item">
-                    QCM
-                </a>
-                </div>
-            </div>
-
-            <a class="navbar-item custom-margin">
-                Formateur
-            </a>
-
-            <a class="navbar-item custom-margin">
-                Stagiaire
-            </a>
-
-            <a class="navbar-item custom-margin">
-                Titre
-            </a>
-
-            <a class="navbar-item custom-margin">
-                Catégorie
-            </a>
-
+            </nav>
         </div>
-        </nav>
 
         @endif
         @if(Auth::user()->role_id ==2)
