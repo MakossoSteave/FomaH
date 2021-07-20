@@ -92,7 +92,6 @@
                                         class="shadow appearance-none border border rounded w-full h-12 py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
                                         id="password" name="nombre_chapitre_total" type="number" placeholder="Nombre de chapitre" value="{{$data->nombre_chapitre_total}}">
                                 </div>
-                                <input id="etat" name="etat" type="hidden" value="1">
                                 <div class="mb-6">
                                     <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
                                         Categorie
