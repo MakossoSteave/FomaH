@@ -53,6 +53,20 @@
         @else
         @if (Auth::user()->role_id==1)
 
+        <div class="container is-fluid user">
+            <span class="icon is-medium">
+                <i class="fas fa-user-circle"></i>
+            </span>
+
+            <span class="icon is-medium is-pulled-right">
+                <i class="fas fa-power-off"></i>
+            </span>
+
+            <span class="icon is-medium is-pulled-right mr-4">
+                <i class="fas fa-envelope"></i>
+            </span>
+        </div>
+
         <nav class="navbar container is-fluid" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             
