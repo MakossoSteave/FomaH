@@ -81,6 +81,12 @@ class FormationController extends Controller
         $nombre_cours_total = $formation->nombre_cours_total;
         Formation::where('id', $id)->update(array('nombre_cours_total' => $nombre_cours_total+$operation));
     }
+    public function Update_nombre_chapitre_total($id,$operation)
+    {
+        $formation = Formation::find($id);
+        $nombre_chapitre_total = $formation->nombre_chapitre_total;
+        Formation::where('id', $id)->update(array('nombre_chapitre_total' => $nombre_chapitre_total+$operation));
+    }
     public function etat($id)
     {
         $formation = Formation::find($id);
