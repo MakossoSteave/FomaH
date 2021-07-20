@@ -75,6 +75,12 @@ class FormationController extends Controller
         return redirect()->back()->with('success','Modifié avec succes');
         
     }
+    public function Update_nombre_cours_total($id,$operation)
+    {
+        $formation = Formation::find($id);
+        $nombre_cours_total = $formation->nombre_cours_total;
+        Formation::where('id', $id)->update(array('nombre_cours_total' => $nombre_cours_total+$operation));
+    }
     public function etat($id)
     {
         $formation = Formation::find($id);
@@ -82,7 +88,6 @@ class FormationController extends Controller
         Formation::where('id', $id)->update(array('etat' => !$etat));
         return redirect()->back()->with('success','Modifié avec succes');
     }
-
     public function destroy($id)
     {
         Formation::where('id',$id)->delete();
