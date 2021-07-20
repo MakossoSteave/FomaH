@@ -25,7 +25,7 @@ class CreateProjetTable extends Migration
             $table->bigInteger('id_cours')->unsigned()->index()->nullable();
             $table->foreign('id_cours')->references('id_cours')->on('cours')->onDelete('cascade');
             $table->bigInteger('statut_id')->unsigned()->index();
-            $table->foreign('statut_id')->references('id')->on('statut')->onDelete('cascade');
+            $table->foreign('statut_id')->references('id')->on('statuts')->onDelete('cascade');
             $table->timestamps();
         });
     }

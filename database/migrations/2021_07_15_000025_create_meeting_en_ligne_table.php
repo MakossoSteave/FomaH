@@ -18,7 +18,7 @@ class CreateMeetingEnLigneTable extends Migration
             $table->id();;
             $table->timestamp('date_meeting');
             $table->bigInteger('statut_id')->unsigned()->index();
-            $table->foreign('statut_id')->references('id')->on('statut')->onDelete('cascade');
+            $table->foreign('statut_id')->references('id')->on('statuts')->onDelete('cascade');
             $table->bigInteger('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->bigInteger('id_cours')->unsigned()->index()->nullable();

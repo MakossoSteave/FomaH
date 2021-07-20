@@ -14,7 +14,7 @@ class CreateStatutTable extends Migration
      */
     public function up()
     {
-        Schema::create('statut', function (Blueprint $table) {
+        Schema::create('statuts', function (Blueprint $table) {
             $table->engine='InnoDB';
             $table->id();;
             $table->string('statut');
