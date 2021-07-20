@@ -11,8 +11,10 @@ class CoursController extends Controller
     public function index()
     {
         $cours = Cours::orderBy('numero_cours','desc')->paginate(5)->setPath('cours');
+
+        $formations = Formation::find(56895263);
                    
-        return view('cours.index',compact(['cours']));
+        return view('cours.index',compact(['cours'], ['formations']));
     }
 
     public function create()
