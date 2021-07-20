@@ -30,19 +30,17 @@ class FormationController extends Controller
          'libelle' => 'required',
          'description' => 'required',
          'volume_horaire' => 'required',
-         'nombre_cours_total' => 'required',
-         'nombre_chapitre_total' => 'required',
          'reference' => 'required',
          'prix' => 'required',
          'userRef'=>'required',
          'categorie_id' =>'required'
         ]);
         do {
-            $id = rand(1000000, 99999999);
+            $id = rand(10000000, 99999999);
         } while(Formation::find($id)!=null);
 
-        Formation::create($request->all() + ['etat' => 0] + ['id' => $id]);
-
+        Formation::create($request->all() + ['etat' => 0] + ['id' => $id]+ ['nombre_cours_total' => 0]+ ['nombre_chapitre_total' => 0]);
+       // $this->etat($id);
         return redirect()->back()->with('success','Create Successfully');
     }
 
@@ -74,16 +72,16 @@ class FormationController extends Controller
          'categorie_id' =>'required'
         ]);
 
-        Formation::where('id',$id)->update($request->all());
+        Formation::where('id',$id)->update($request->all());   
         return redirect()->back()->with('success','Modifié avec succes');
         
     }
     public function etat($id)
     {
         $formation = Formation::find($id);
-        $formation->etat= !$formation->etat;
-        $formation->save();
-        return redirect()->back()->with('success','Updated Successfully');
+        $etat = $formation->etat;
+        Formation::where('id', $id)->update(array('etat' => !$etat));
+        return redirect()->back()->with('success','Modifié avec succes');
     }
 
     public function destroy($id)
