@@ -26,12 +26,23 @@
                 </ul>
             </div>
             <nav class="hidden md:flex space-x-10">
+                
                 <div class="relative">
                     <i class="fas fa-sliders-h "></i>
                     <button type="button"
                         class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <a href="{{ route('parametre', [Auth::user()->id]) }}">
-                            <span>Parametre</span>
+                            <span>Parametre(formateur.index)</span>
+                        </a>
+
+                    </button>
+                </div>
+                <div class="relative">
+                    <i class="fas fa-sliders-h "></i>
+                    <button type="button"
+                        class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <a href="{{ route('competence', [Auth::user()->id]) }}">
+                            <span>Declaration de competence(s)</span>
                         </a>
 
                     </button>

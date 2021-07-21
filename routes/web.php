@@ -37,6 +37,10 @@ Route::get('parametre/{id}', [
     'as' => 'parametre',
     'uses' => 'App\Http\Controllers\parametreController@show',
 ]);
+Route::get('competence/{id}', [
+    'as' => 'competence',
+    'uses' => 'App\Http\Controllers\competenceController@show',
+]);
 
 Route::get('/formationshow', [App\Http\Controllers\formationshowController::class, 'index'])->name('formationshow');
 Route::get('message/{id}', [
