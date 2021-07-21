@@ -24,6 +24,7 @@
                                 </ul>
                             </div>
                             @endif
+                          
                             <form class="max-w-md mb-2 form-input" action="{{ route('centre.update', $data->id) }}"
                                 method="POST">
                                 @csrf
@@ -80,10 +81,25 @@
                                     <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
                                         Etat
                                     </label>
-                                    <select class="form-select block w-full mt-1"  name="categorie_id">
+                                    
+                                    <select class="form-select block w-full mt-1"  name="etat">
                                           
-                                            <option value="{{$data->etat}}">{{$data->etat}} </option>
-                                            <option value="{{!$data->etat}}">{{!$data->etat}} </option>
+                                            <option 
+                                            @if($data->etat == 1) value="1"
+                                            @else value="0"
+                                            @endif selected>
+                                            @if($data->etat == 1) Activé
+                                            @else Désactivé
+                                            @endif
+                                            </option>
+                                            <option
+                                            @if(!$data->etat == 1) value="1"
+                                            @else value="0"
+                                            @endif>
+                                            @if(!$data->etat == 1) Activé
+                                            @else Désactivé
+                                            @endif
+                                            </option>
                                         </select>
                                 </div>
                                 <div class="mb-6">
