@@ -8,6 +8,13 @@
 
 @else
 
+@if (session('success'))
+    <div class="notification is-success">
+        <button class="delete"></button>
+        {{ session('success') }}
+    </div>
+@endif
+
 @foreach ($cours as $cour)
 
 {{$cour->numero_cours}}
@@ -22,11 +29,9 @@
 
 {{$cour->prix}}
 
-{{$cour->formation_id}}
+{{$cour->libelle}}
 
 @endforeach
-
-{{$formations->libelle}}
 
 @endif
 
