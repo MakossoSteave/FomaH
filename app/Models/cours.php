@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Formations extends Model
+class Cours extends Model
 {
     use HasFactory;
+
+    public $incrementing = false;
     
     protected $fillable=[
-        'libelle','description','volume_horaire','nombre_cours_total','nombre_chapitre_total','etat','reference','prix','userRef', 'categorie_id'
+        'id_cours', 'numero_cours','designation','image','nombre_chapitre','prix','etat', 'formation_id'
     ];
 }
