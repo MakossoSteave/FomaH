@@ -2,37 +2,45 @@
 
 @section('content')
 
-@if($cours->isEmpty())
+<div class="container">
+    @if (session('success'))
+        <div class="notification is-success">
+            {{ session('success') }}
+        </div>
+    @endif
 
-<p>Aucun cours n'existe pour cette formation</p>
+    @if($cours->isEmpty())
+        <div class="notification is-success">
+            Aucun cours n'existe pour cette formation
+        </div>
+    @else
 
-@else
+    @foreach ($cours as $cour)
+    <div class="card my-6">
+        <div class="card-content">
+            <div class="media">
+            <div class="media-left">
+                <figure class="image is-128x128">
+                <img src="{{ URL::asset('/') }}img/cours/{{$cour->image}}" alt="Placeholder image">
+                </figure>
+            </div>
+            <div class="media-content">
+                <p class="title is-4">Cours n°{{$cour->numero_cours}}</p>
+                <p class="subtitle is-6">{{$cour->designation}}</p>
+            </div>
+            </div>
 
-@if (session('success'))
-    <div class="notification is-success">
-        <button class="delete"></button>
-        {{ session('success') }}
+            <div class="content">
+                <p class="title is-6">Nombre de chapitres: {{$cour->nombre_chapitres}}</p>
+                <p class="title is-6">Prix: {{$cour->prix}}€</p>
+                <p class="title is-6">{{$cour->libelle}}</p>
+            </div>
+        </div>
     </div>
-@endif
 
-@foreach ($cours as $cour)
+    @endforeach
 
-{{$cour->numero_cours}}
-
-{{$cour->designation}}
-
-{{$cour->image}}
-
-{{$cour->numero_cours}}
-
-{{$cour->nombre_chapitres}}
-
-{{$cour->prix}}
-
-{{$cour->libelle}}
-
-@endforeach
-
-@endif
+    @endif
+</div>
 
 @endsection

@@ -30,7 +30,6 @@ class CoursController extends Controller
         $request->validate([
          'numero_cours' => 'required',
          'designation' => 'required',
-         'image' => 'required',
          'prix' => 'required',
          'formation_id' =>'required'
         ]);
@@ -45,7 +44,9 @@ class CoursController extends Controller
             $filename = $file->getClientOriginalName();
             $image = time().$filename;
             $file->move($destinationPath, $image);
-        } 
+        } else {
+            $image = null;
+        }
 
         Cours::create([
             'id_cours' => $id,
@@ -81,20 +82,37 @@ class CoursController extends Controller
         $request->validate([
             'numero_cours' => 'required',
             'designation' => 'required',
-            'image' => 'required',
             'prix' => 'required',
             'formation_id' =>'required'
         ]);
 
-        Cours::where('cours_id',$id)->update($request->all());
+        if ($request->hasFile('image')) {
+            $destinationPath = public_path('img/cours/');
+            $file = $request->file('image');
+            $filename = $file->getClientOriginalName();
+            $image = time().$filename;
+            $file->move($destinationPath, $image);
+        } else {
+            $image = null;
+        }
 
-        return redirect()->back()->with('success','Cours modifié avec succes');
+        Cours::where('cours_id', $id)->update([
+            'numero_cours' => $request->get('numero_cours'),
+            'designation' => $request->get('designation'),
+            'image' => $image,
+            'prix' => $request->get('prix'),
+            'formation_id' => $request->get('formation_id'),
+            'etat' => 0,
+            'nombre_chapitres' => 0
+        ]);
+
+        return redirect('/cours')->with('success','Cours modifié avec succes');
     }
 
     public function destroy($id)
     {
         Cours::where('cours_id',$id)->delete();
 
-        return redirect()->back()->with('success','Cours supprimé avec succes');
+        return redirect('/cours')->with('success','Cours supprimé avec succes');
     }
 }
