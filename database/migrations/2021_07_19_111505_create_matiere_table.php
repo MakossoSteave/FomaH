@@ -23,17 +23,10 @@ class CreateMatiereTable extends Migration
         /*
         DB::table('matieres')->insert( ['type'=>'Admin'], );
         */
-
-
-
-
-
-
-
-
         DB::table('matieres')->insert(['designation_matiere'=>'Informatique'],);
         DB::table('matieres')->insert(['designation_matiere'=>'Chimie'],);
         DB::table('matieres')->insert(['designation_matiere'=>'Mathematiques'],);
+        
     }
 
     /**

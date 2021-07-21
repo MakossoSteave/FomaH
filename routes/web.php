@@ -44,8 +44,8 @@ Route::get('message/{id}', [
     'uses' => 'App\Http\Controllers\messageController@index',
     'message'
 ]);
-Route::get('Ajoutforma', function () {
-    return view('centre.Ajoutforma');
-});
+
+Route::get('/Ajoutforma', [App\Http\Controllers\FormationController::class, 'create'])->name('Ajoutforma');
+
 Route::resource('centre','App\Http\Controllers\FormationController');
 Route::resource('stagiaire','App\Http\Controllers\StagiaireController');

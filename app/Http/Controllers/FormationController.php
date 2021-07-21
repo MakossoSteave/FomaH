@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categorie;
 use App\Models\Formations;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,9 @@ class FormationController extends Controller
 
     public function create()
     {
-        return view('centre.Ajoutforma');
+        $categories = Categorie::all();
+
+        return view('centre.Ajoutforma',compact(['categories']));
     }
 
     public function store(Request $request)
@@ -26,10 +29,14 @@ class FormationController extends Controller
         $request->validate([
          'libelle' => 'required',
          'description' => 'required',
+         'volume_horaire' => 'required',
+         'nombre_cours_total' => 'required',
+         'nombre_chapitre_total' => 'required',
+         'etat' => 'required',
          'reference' => 'required',
          'prix' => 'required',
-         'userRef'=>'required'
-         
+         'userRef'=>'required',
+         'categorie_id' =>'required'
         ]);
 
         Formations::create($request->all());
@@ -39,13 +46,16 @@ class FormationController extends Controller
     public function show($id)
     {
        $data =  Formations::find($id);
+
        return view('centre.formation.show',compact(['data']));
     }
 
     public function edit($id)
     {
        $data = Formations::find($id);
-       return view('centre.formation.edit',compact(['data']));
+       $categories = Categorie::all();
+
+       return view('centre.formation.edit',compact(['data'], ['categories']));
     }
 
     public function update(Request $request, $id)
@@ -53,8 +63,13 @@ class FormationController extends Controller
         $request->validate([
          'libelle' => 'required',
          'description' => 'required',
+         'volume_horaire' => 'required',
+         'nombre_cours_total' => 'required',
+         'nombre_chapitre_total' => 'required',
+         'etat' => 'required',
          'prix' => 'required',
-         'userRef'=>'required'
+         'userRef'=>'required',
+         'categorie_id' =>'required'
         ]);
 
         Formations::where('id',$id)->update($request->all());
