@@ -1,5 +1,10 @@
-.custom-margin {
-    margin-right: 4.5em;
+#navbarBasicExample {
+    display: flex;
+    justify-content: space-between;
+}
+
+#logout-form:focus {
+    outline: none;
 }
 
 .user {

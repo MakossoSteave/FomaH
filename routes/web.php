@@ -38,6 +38,8 @@ Route::get('parametre/{id}', [
     'uses' => 'App\Http\Controllers\parametreController@show',
 ]);
 
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+
 Route::get('/formationshow', [App\Http\Controllers\formationshowController::class, 'index'])->name('formationshow');
 Route::get('message/{id}', [
     'as' => 'message',

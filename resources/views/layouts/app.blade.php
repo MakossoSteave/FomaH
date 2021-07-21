@@ -68,7 +68,10 @@
                     </span>
 
                     <span class="icon is-medium">
-                        <i class="fas fa-power-off"></i>
+                        <form action="{{ route('logout')}}" method="POST">
+                            @csrf
+                            <button id="logout-form" class="submit"><i class="fas fa-power-off"></i></button>
+                        </form>
                     </span>
                 </div>
             </div>
@@ -109,12 +112,12 @@
             </div>
 
             <div id="navbarBasicExample" class="navbar-menu">
-                <a class="navbar-item custom-margin">
+                <a class="navbar-item">
                     Session
                 </a>
 
                 <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link custom-margin">
+                    <a class="navbar-link">
                     Cursus
                     </a>
 
@@ -126,7 +129,7 @@
                 </div>
 
                 <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link custom-margin">
+                    <a class="navbar-link">
                     Cours
                     </a>
 
@@ -149,19 +152,19 @@
                     </div>
                 </div>
 
-                <a class="navbar-item custom-margin">
+                <a class="navbar-item">
                     Formateur
                 </a>
 
-                <a class="navbar-item custom-margin">
+                <a class="navbar-item">
                     Stagiaire
                 </a>
 
-                <a class="navbar-item custom-margin">
+                <a class="navbar-item">
                     Titre
                 </a>
 
-                <a class="navbar-item custom-margin">
+                <a class="navbar-item">
                     Catégorie
                 </a>
 
