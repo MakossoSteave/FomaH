@@ -7,6 +7,12 @@
     outline: none;
 }
 
+.image.is-4by3 {
+    padding-top: 0;
+    width: 14em;
+    margin-right: 1em;
+}
+
 .user {
     margin-top: 1em;
     display: flex;

@@ -20,9 +20,7 @@
         <div class="card-content">
             <div class="media">
             <div class="media-left">
-                <figure class="image is-128x128">
-                <img src="{{ URL::asset('/') }}img/cours/{{$cour->image}}" alt="Placeholder image">
-                </figure>
+                <img class="image is-4by3" src="{{ URL::asset('/') }}img/cours/{{$cour->image}}" alt="Placeholder image">
             </div>
             <div class="media-content">
                 <p class="title is-4">Cours n°{{$cour->numero_cours}}</p>
