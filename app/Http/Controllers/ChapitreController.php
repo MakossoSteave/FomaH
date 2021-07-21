@@ -28,7 +28,7 @@ class ChapitreController extends Controller
         $numero_chapitre=($Cours->findCours($request->get('id_cours')->get(['nombre_chapitres']))+1);//numero chapitre = nombre chapitre total cours+1
         $Cours->Update_nombre_chapitres($request->get('id_cours'),1);//ajouter +1 au nombre total de chapitre cours
         Chapitre::create($request->all() + ['numero_chapitre' => $numero_chapitre] + ['id_chapitre' => $id_chapitre]);
-       // $this->etat($id_chapitre);
+        // $this->etat($id_chapitre);
         return redirect()->back()->with('success','Create Successfully');
     }
 
@@ -70,8 +70,8 @@ class ChapitreController extends Controller
     public function etat($id_chapitre)
     {
         $Chapitre = Chapitre::find($id_chapitre);
-        $etat = $Chapitre->etat;
-        Chapitre::where('id_chapitre', $id_chapitre)->update(array('etat' => !$etat));
+        $etat = !$Chapitre->etat;
+        Chapitre::where('id_chapitre', $id_chapitre)->update(array('etat' => $etat));
         return redirect()->back()->with('success','Modifié avec succes');
     }
     public function destroy($id_chapitre)

@@ -93,8 +93,8 @@ class FormationController extends Controller
     public function etat($id)
     {
         $formation = Formation::find($id);
-        $etat = $formation->etat;
-        Formation::where('id', $id)->update(array('etat' => !$etat));
+        $etat = !$formation->etat;
+        Formation::where('id', $id)->update(array('etat' => $etat));
         return redirect()->back()->with('success','Modifié avec succes');
     }
     public function destroy($id)
