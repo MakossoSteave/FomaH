@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Formation;
-use App\Models\User;
+// use App\Models\Formations;
+// use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,14 +38,19 @@ Route::get('parametre/{id}', [
     'uses' => 'App\Http\Controllers\parametreController@show',
 ]);
 
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+
 Route::get('/formationshow', [App\Http\Controllers\formationshowController::class, 'index'])->name('formationshow');
 Route::get('message/{id}', [
     'as' => 'message',
     'uses' => 'App\Http\Controllers\messageController@index',
     'message'
 ]);
-
 Route::get('/Ajoutforma', [App\Http\Controllers\FormationController::class, 'create'])->name('Ajoutforma');
 
+Route::get('/cours', [App\Http\Controllers\CoursController::class, 'index'])->name('cours');
+Route::get('/addCours', [App\Http\Controllers\CoursController::class, 'create'])->name('addCours');
+
+Route::resource('cours','App\Http\Controllers\CoursController');
 Route::resource('centre','App\Http\Controllers\FormationController');
 Route::resource('stagiaire','App\Http\Controllers\StagiaireController');
