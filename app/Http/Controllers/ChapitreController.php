@@ -49,7 +49,8 @@ class ChapitreController extends Controller
         $request->validate([
             'designation' => 'required',
             'video' => 'required',
-            'id_cours' => 'required'
+            'id_cours' => 'required',
+            'etat' => 'required'
         ]);
 
         Chapitre::where('id_chapitre',$id_chapitre)->update($request->all());   

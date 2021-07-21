@@ -11,6 +11,7 @@ class CoursController extends Controller
     public function index()
     {
         $cours = Cours::join('formations', 'formations.id', '=', 'cours.formation_id')
+        ->select('cours.*','formations.image as formationImage')
         ->orderBy('numero_cours','desc')
         ->paginate(5)->setPath('cours');
       

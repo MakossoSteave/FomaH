@@ -25,8 +25,7 @@
 
 {{$cour->formation_id}}</br>
 formation:</br>
-libelle = {{$cour->libelle}}</br>
-volume_horaire = {{$cour->volume_horaire}}
+Image = {{$cour->formationImage}}
 @endforeach
 
 

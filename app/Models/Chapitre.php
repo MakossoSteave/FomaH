@@ -9,5 +9,11 @@ class Chapitre extends Model
 {
     use HasFactory;
     public $incrementing = false;
-    
+    protected $fillable=[
+        'id_chapitre', 'numero_chapitre','designation','image','video','etat','id_cours'
+    ];
+    public function cours()
+    {
+        return $this->belongsTo(Cours::class);
+    }
 }
