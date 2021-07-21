@@ -52,7 +52,12 @@ class CoursController extends Controller
 
        return view('cours.getOne',compact(['cours']));
     }
+    public function findCours($id)
+    {
+       $cours = Cours::find($id);
 
+       return $cours;
+    }
     public function edit($id)
     {
        $cours = Cours::find($id);
@@ -76,7 +81,20 @@ class CoursController extends Controller
 
         return redirect()->back()->with('success','Modifié avec succes');
     }
-
+    public function Update_numero_cours($id_cours,$operation)
+    {
+        $Cours = Cours::find($id_cours);
+        $numero_cours = $Cours->numero_cours+$operation;
+        if($numero_cours<0) $numero_cours=0;
+        Cours::where('id_cours', $id_cours)->update(array('numero_cours' => $numero_cours));
+    }
+    public function Update_nombre_chapitres($id_cours,$operation)
+    {
+        $Cours = Cours::find($id_cours);
+        $nombre_chapitres = $Cours->nombre_chapitres+$operation;
+        if($nombre_chapitres<0) $nombre_chapitres=0;
+        Cours::where('id_cours', $id_cours)->update(array('nombre_chapitres' => $nombre_chapitres));
+    }
     public function destroy($id)
     {
         Cours::where('cours_id',$id)->delete();

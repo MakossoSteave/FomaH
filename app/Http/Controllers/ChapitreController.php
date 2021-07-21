@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Chapitre;
+use App\Http\Controllers\CoursController;
 class ChapitreController extends Controller
 {
    /* public function create()
@@ -23,7 +24,9 @@ class ChapitreController extends Controller
         do {
             $id_chapitre = rand(10000000, 99999999);
         } while(Chapitre::where("id_chapitre",$id_chapitre)!=null);
-        $numero_chapitre=0;//from cours
+        $Cours = new CoursController;
+        $numero_chapitre=($Cours->findCours($request->get('id_cours')->get(['nombre_chapitres']))+1);//numero chapitre = nombre chapitre total cours+1
+        $Cours->Update_nombre_chapitres($request->get('id_cours'),1);//ajouter +1 au nombre total de chapitre cours
         Chapitre::create($request->all() + ['numero_chapitre' => $numero_chapitre] + ['id_chapitre' => $id_chapitre]);
        // $this->etat($id_chapitre);
         return redirect()->back()->with('success','Create Successfully');
@@ -60,7 +63,7 @@ class ChapitreController extends Controller
     public function Update_numero_chapitre($id_chapitre,$operation)
     {
         $Chapitre = Chapitre::find($id_chapitre);
-        $numero_chapitre = $Chapitre->numero_chapitrel+$operation;
+        $numero_chapitre = $Chapitre->numero_chapitre+$operation;
         if($numero_chapitre<0) $numero_chapitre=0;
         Chapitre::where('id_chapitre', $id_chapitre)->update(array('numero_chapitre' => $numero_chapitre));
     }
