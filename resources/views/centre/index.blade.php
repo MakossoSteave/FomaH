@@ -161,8 +161,15 @@
                 @foreach ($data as $formation)
                 <div class="w-5/6 sm:w-1/2 p-6">
                     <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3">
-                        {{$formation->libelle}}
+                        {{$formation->libelle}}  
                     </h3>
+                    <a class="{{ $formation->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etat', $formation->id) }}">
+                        @if($formation->etat == 1) 
+                        Activé
+                        @else
+                        Désactivé
+                        @endif
+                        </a>
                     <p class="text-gray-600 mb-8">
                         {{$formation->description}}
                         <br />
