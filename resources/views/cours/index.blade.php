@@ -4,13 +4,13 @@
 
 <div class="container">
     @if (session('success'))
-        <div class="notification is-success">
+        <div class="notification is-success has-text-centered my-4">
             {{ session('success') }}
         </div>
     @endif
 
     @if($cours->isEmpty())
-        <div class="notification is-success">
+        <div class="notification is-warning has-text-centered my-4">
             Aucun cours n'existe pour cette formation
         </div>
     @else
