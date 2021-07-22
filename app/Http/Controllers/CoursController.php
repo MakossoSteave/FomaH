@@ -50,22 +50,25 @@ class CoursController extends Controller
         } else {
             $image = null;
         }
-
+      
+        $utilisateurID = Auth::user()->id;
+        $formateur= new FormateurController;
+        $formateurID= $formateur->findFormateurID($utilisateurID);
         Cours::create([
             'id_cours' => $id,
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
-            'formateur' => 1,
+            'formateur' =>  $formateurID,
             'etat' => 0,
             'nombre_chapitres' => 0,
             'numero_cours' => 1
         ]);
-
+/*
         FormationsContenirCours::create([
             'id_cours' => $id,
             'id_formation' => $request->get('formation_id')
-        ]);
+        ]);*/
 
         return redirect('/cours')->with('success','Cours créé avec succès');
     }
@@ -112,7 +115,7 @@ class CoursController extends Controller
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
-            'formateur' => 1,
+           /* 'formateur' => 1,*/
             'etat' => 0,
             'nombre_chapitres' => 0
         ]);
