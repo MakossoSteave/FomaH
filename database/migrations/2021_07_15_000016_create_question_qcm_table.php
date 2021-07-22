@@ -15,7 +15,7 @@ class CreateQuestionQcmTable extends Migration
     {
         Schema::create('question_qcm', function (Blueprint $table) {
             $table->engine='InnoDB';
-            $table->id();;
+            $table->id();
             $table->string('question');
             $table->string('explication')->nullable();
             $table->boolean('etat');
