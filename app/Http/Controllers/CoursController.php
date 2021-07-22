@@ -28,7 +28,6 @@ class CoursController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-         'numero_cours' => 'required',
          'designation' => 'required',
          'prix' => 'required',
          'formation_id' =>'required'
@@ -50,13 +49,13 @@ class CoursController extends Controller
 
         Cours::create([
             'id_cours' => $id,
-            'numero_cours' => $request->get('numero_cours'),
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
             'formation_id' => $request->get('formation_id'),
             'etat' => 0,
-            'nombre_chapitres' => 0
+            'nombre_chapitres' => 0,
+            'numero_cours' => 1
         ]);
 
         return redirect('/cours')->with('success','Cours créé avec succès');
@@ -103,7 +102,6 @@ class CoursController extends Controller
         }
 
         Cours::where('cours_id', $id)->update([
-            'numero_cours' => $request->get('numero_cours'),
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),

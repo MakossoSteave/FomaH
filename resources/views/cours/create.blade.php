@@ -15,12 +15,6 @@
     <h2 class="title is-2 has-text-centered mt-6">Ajouter un cours</h2>
     <form action="{{ route('cours.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
         @csrf
-        <div class="field">
-            <label class="label">Numero du cours</label>
-                <div class="control">
-                    <input name="numero_cours" class="input" type="number" placeholder="Numero du cours">
-                </div>
-        </div>
 
         <div class="field">
             <label class="label">Titre du cours</label>
