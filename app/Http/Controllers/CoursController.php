@@ -71,11 +71,11 @@ class CoursController extends Controller
         return redirect('/cours')->with('success','Cours créé avec succès');
     }
 
-    public function findOne($id)
+    public function show($id)
     {
        $cours = Cours::find($id);
 
-       return view('cours.getOne',compact(['cours']));
+       return view('cours.show',compact(['cours']));
     }
 
     public function edit($id)
@@ -100,10 +100,10 @@ class CoursController extends Controller
             $image = time().$filename;
             $file->move($destinationPath, $image);
         } else {
-            $image = null;
+            $image = $request->get('image-link');
         }
 
-        Cours::where('cours_id', $id)->update([
+        Cours::where('id_cours', $id)->update([
             'numero_cours' => $request->get('numero_cours'),
             'designation' => $request->get('designation'),
             'image' => $image,
@@ -118,7 +118,8 @@ class CoursController extends Controller
 
     public function destroy($id)
     {
-        Cours::where('cours_id',$id)->delete();
+        FormationsContenirCours::where('id_cours',$id)->delete();
+        Cours::where('id_cours',$id)->delete();
 
         return redirect('/cours')->with('success','Cours supprimé avec succes');
     }

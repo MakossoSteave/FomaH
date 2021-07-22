@@ -79,7 +79,7 @@
                 </div>
         </div>
 
-            <div class="control mt-4">
+            <div class="control mt-4 mb-4">
                 <button type="submit" class="button is-fullwidth is-link is-rounded">Créer</button>
             </div>
         </div>
