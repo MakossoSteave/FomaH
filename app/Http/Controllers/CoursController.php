@@ -9,10 +9,11 @@ class CoursController extends Controller
 {
     public function index()
     {
-        $cours = Cours::select('cours.*', 'formations.libelle')
+        $cours = Cours::select('cours.*', 'formations.libelle','formateurs.id as formateurID','formateurs.nom as formateurNom','formateurs.prenom as formateurPrenom')
         ->leftJoin('formations_contenir_cours', 'cours.id_cours', '=', 'formations_contenir_cours.id_cours')
         ->leftJoin('formations', 'formations.id',"=","formations_contenir_cours.id_formation")
-        ->orderBy('numero_cours','asc')
+        ->leftJoin('formateurs', 'formateurs.id',"=","cours.formateur")
+        ->orderBy('created_at','asc')
         ->paginate(5)->setPath('cours');
                    
         return view('cours.index',compact(['cours']));
@@ -49,7 +50,7 @@ class CoursController extends Controller
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
-            'formateur' => 'Jhon Doe',
+            'formateur' => 1,
             'etat' => 0,
             'nombre_chapitres' => 0,
             'numero_cours' => 1
@@ -100,7 +101,7 @@ class CoursController extends Controller
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
-            'formateur' => 'Jhon Doe',
+            'formateur' => 1,
             'etat' => 0,
             'nombre_chapitres' => 0
         ]);
