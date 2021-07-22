@@ -23,8 +23,7 @@ class CreateCoursTable extends Migration
             $table->integer('nombre_chapitres');
             $table->float('prix');
             $table->boolean('etat');
-            $table->bigInteger('formation_id')->unsigned()->index();
-            $table->foreign('formation_id')->references('id')->on('formations')->onDelete('cascade');
+            $table->string('formateur');
             $table->timestamps();
         });
     }

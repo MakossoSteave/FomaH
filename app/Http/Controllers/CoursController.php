@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Formation;
 use App\Models\Cours;
 
 class CoursController extends Controller
@@ -11,7 +10,8 @@ class CoursController extends Controller
     public function index()
     {
         $cours = Cours::select('cours.*', 'formations.libelle')
-        ->join('formations', 'formations.id', '=', 'cours.formation_id')
+        ->join('formations_contenir_cours', 'cours.id_cours', '=', 'formations_contenir_cours.id_cours')
+        ->join('formations', 'formations.id',"=","formations_contenir_cours.id_formation")
         ->orderBy('numero_cours','asc')
         ->paginate(5)->setPath('cours');
                    
@@ -20,9 +20,7 @@ class CoursController extends Controller
 
     public function create()
     {
-        $formations = Formation::all();
-
-        return view('cours.create',compact(['formations']));
+        return view('cours.create');
     }
 
     public function store(Request $request)
@@ -30,8 +28,7 @@ class CoursController extends Controller
         $request->validate([
          'numero_cours' => 'required',
          'designation' => 'required',
-         'prix' => 'required',
-         'formation_id' =>'required'
+         'prix' => 'required'
         ]);
 
         do {
@@ -54,7 +51,7 @@ class CoursController extends Controller
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
-            'formation_id' => $request->get('formation_id'),
+            'formateur' => 'Jhon Doe',
             'etat' => 0,
             'nombre_chapitres' => 0
         ]);
@@ -72,9 +69,8 @@ class CoursController extends Controller
     public function edit($id)
     {
        $cours = Cours::find($id);
-       $formations = Formation::all();
 
-       return view('cours.edit',compact(['cours'], ['formations']));
+       return view('cours.edit',compact(['cours']));
     }
 
     public function update(Request $request, $id)
@@ -82,8 +78,7 @@ class CoursController extends Controller
         $request->validate([
             'numero_cours' => 'required',
             'designation' => 'required',
-            'prix' => 'required',
-            'formation_id' =>'required'
+            'prix' => 'required'
         ]);
 
         if ($request->hasFile('image')) {
@@ -101,7 +96,7 @@ class CoursController extends Controller
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
-            'formation_id' => $request->get('formation_id'),
+            'formateur' => 'Jhon Doe',
             'etat' => 0,
             'nombre_chapitres' => 0
         ]);

@@ -23,10 +23,13 @@
                 <img class="image is-4by3" src="{{ URL::asset('/') }}img/cours/{{$cour->image}}" alt="Placeholder image">
             </div>
             <div class="media-content">
-                <p class="title is-4">Cours n°{{$cour->numero_cours}}</p>
+                <div class="flex-formateur">
+                    <p class="title is-4">Cours n°{{$cour->numero_cours}}</p>
+                    <p class="title is-4"><span class="subtitle is-6">Créé par</span> {{$cour->formateur}}</p>
+                </div>
                 <p class="subtitle is-6">{{$cour->designation}}</p>
             </div>
-            </div>
+        </div>
 
             <div class="content">
                 <p class="title is-6">Nombre de chapitres: {{$cour->nombre_chapitres}}</p>
