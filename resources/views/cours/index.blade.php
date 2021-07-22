@@ -2,34 +2,43 @@
 
 @section('content')
 
-@if($cours->isEmpty())
+<div class="container">
+    @if (session('success'))
+        <div class="notification is-success has-text-centered my-4">
+            {{ session('success') }}
+        </div>
+    @endif
 
-<p>Aucun cours n'existe pour cette formation</p>
+    @if($cours->isEmpty())
+        <div class="notification is-warning has-text-centered my-4">
+            Aucun cours n'existe pour cette formation
+        </div>
+    @else
 
-@else
-<?PHP highlight_string("<?php\n\$data =\n" . var_export($cours, true) . ";\n?>");
-?>
-@foreach ($cours as $cour)
+    @foreach ($cours as $cour)
+    <div class="card my-6">
+        <div class="card-content">
+            <div class="media">
+            <div class="media-left">
+                <img class="image is-4by3" src="{{ URL::asset('/') }}img/cours/{{$cour->image}}" alt="Placeholder image">
+            </div>
+            <div class="media-content">
+                <p class="title is-4">Cours n°{{$cour->numero_cours}}</p>
+                <p class="subtitle is-6">{{$cour->designation}}</p>
+            </div>
+            </div>
 
-{{$cour->numero_cours}}
+            <div class="content">
+                <p class="title is-6">Nombre de chapitres: {{$cour->nombre_chapitres}}</p>
+                <p class="title is-6">Prix: {{$cour->prix}}€</p>
+                <p class="title is-6">{{$cour->libelle}}</p>
+            </div>
+        </div>
+    </div>
 
-{{$cour->designation}}
+    @endforeach
 
-{{$cour->image}}
-
-{{$cour->numero_cours}}
-
-{{$cour->nombre_chapitres}}
-
-{{$cour->prix}}
-
-{{$cour->formation_id}}</br>
-formation:</br>
-Image = {{$cour->formationImage}}
-@endforeach
-
-
-
-@endif
+    @endif
+</div>
 
 @endsection

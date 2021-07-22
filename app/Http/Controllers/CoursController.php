@@ -10,11 +10,10 @@ class CoursController extends Controller
 {
     public function index()
     {
-        $cours = Cours::join('formations', 'formations.id', '=', 'cours.formation_id')
-        ->select('cours.*','formations.image as formationImage')
-        ->orderBy('numero_cours','desc')
+        $cours = Cours::select('cours.*', 'formations.libelle')
+        ->join('formations', 'formations.id', '=', 'cours.formation_id')
+        ->orderBy('numero_cours','asc')
         ->paginate(5)->setPath('cours');
-      
                    
         return view('cours.index',compact(['cours']));
     }
@@ -23,7 +22,7 @@ class CoursController extends Controller
     {
         $formations = Formation::all();
 
-        return view('cours.addCours',compact(['formations']));
+        return view('cours.create',compact(['formations']));
     }
 
     public function store(Request $request)
@@ -31,8 +30,6 @@ class CoursController extends Controller
         $request->validate([
          'numero_cours' => 'required',
          'designation' => 'required',
-         'image' => 'required',
-         'nombre_chapitres' => 'required',
          'prix' => 'required',
          'formation_id' =>'required'
         ]);
@@ -41,9 +38,28 @@ class CoursController extends Controller
             $id = rand(1000000, 99999999);
         } while(Cours::find($id) != null);
 
-        Cours::create($request->all() + ['etat' => 0] + ['cours_id' => $id]);
+        if ($request->hasFile('image')) {
+            $destinationPath = public_path('img/cours/');
+            $file = $request->file('image');
+            $filename = $file->getClientOriginalName();
+            $image = time().$filename;
+            $file->move($destinationPath, $image);
+        } else {
+            $image = null;
+        }
 
-        return redirect()->back()->with('success','Create Successfully');
+        Cours::create([
+            'id_cours' => $id,
+            'numero_cours' => $request->get('numero_cours'),
+            'designation' => $request->get('designation'),
+            'image' => $image,
+            'prix' => $request->get('prix'),
+            'formation_id' => $request->get('formation_id'),
+            'etat' => 0,
+            'nombre_chapitres' => 0
+        ]);
+
+        return redirect('/cours')->with('success','Cours créé avec succès');
     }
 
     public function findOne($id)
@@ -71,15 +87,32 @@ class CoursController extends Controller
         $request->validate([
             'numero_cours' => 'required',
             'designation' => 'required',
-            'image' => 'required',
-            'nombre_chapitres' => 'required',
             'prix' => 'required',
             'formation_id' =>'required'
         ]);
 
-        Cours::where('cours_id',$id)->update($request->all());
+    
+        if ($request->hasFile('image')) {
+            $destinationPath = public_path('img/cours/');
+            $file = $request->file('image');
+            $filename = $file->getClientOriginalName();
+            $image = time().$filename;
+            $file->move($destinationPath, $image);
+        } else {
+            $image = null;
+        }
 
-        return redirect()->back()->with('success','Modifié avec succes');
+        Cours::where('cours_id', $id)->update([
+            'numero_cours' => $request->get('numero_cours'),
+            'designation' => $request->get('designation'),
+            'image' => $image,
+            'prix' => $request->get('prix'),
+            'formation_id' => $request->get('formation_id'),
+            'etat' => 0,
+            'nombre_chapitres' => 0
+        ]);
+
+        return redirect('/cours')->with('success','Cours modifié avec succes');
     }
     public function Update_numero_cours($id_cours,$operation)
     {
@@ -99,6 +132,6 @@ class CoursController extends Controller
     {
         Cours::where('cours_id',$id)->delete();
 
-        return redirect()->back()->with('success','Supprimé avec succes');
+        return redirect('/cours')->with('success','Cours supprimé avec succes');
     }
 }

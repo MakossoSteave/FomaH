@@ -51,6 +51,8 @@ Route::get('/etatFormation/{id}', [App\Http\Controllers\FormationController::cla
 Route::get('/cours', [App\Http\Controllers\CoursController::class, 'index'])->name('cours');
 Route::get('/addCours', [App\Http\Controllers\CoursController::class, 'create'])->name('addCours');
 
+
+
 Route::resource('cours','App\Http\Controllers\CoursController');
 Route::resource('centre','App\Http\Controllers\FormationController');
 Route::resource('stagiaire','App\Http\Controllers\StagiaireController');
