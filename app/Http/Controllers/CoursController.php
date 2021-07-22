@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+
+use App\Models\FormationsContenirCours;
+use App\Models\Formation;
 use App\Models\Cours;
 
 class CoursController extends Controller
@@ -21,7 +25,9 @@ class CoursController extends Controller
 
     public function create()
     {
-        return view('cours.create');
+        $formations = Formation::orderBy('libelle','asc')->get();
+
+        return view('cours.create', compact(['formations']));
     }
 
     public function store(Request $request)
@@ -54,6 +60,11 @@ class CoursController extends Controller
             'etat' => 0,
             'nombre_chapitres' => 0,
             'numero_cours' => 1
+        ]);
+
+        FormationsContenirCours::create([
+            'id_cours' => $id,
+            'id_formation' => $request->get('formation_id')
         ]);
 
         return redirect('/cours')->with('success','Cours créé avec succès');
