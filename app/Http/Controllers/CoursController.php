@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+
+use App\Models\FormationsContenirCours;
+use App\Models\Formation;
 use App\Models\Cours;
 
 class CoursController extends Controller
@@ -12,6 +16,7 @@ class CoursController extends Controller
         $cours = Cours::select('cours.*', 'formations.libelle')
         ->join('formations_contenir_cours', 'cours.id_cours', '=', 'formations_contenir_cours.id_cours')
         ->join('formations', 'formations.id',"=","formations_contenir_cours.id_formation")
+        ->distinct()
         ->orderBy('numero_cours','asc')
         ->paginate(5)->setPath('cours');
                    
@@ -20,7 +25,9 @@ class CoursController extends Controller
 
     public function create()
     {
-        return view('cours.create');
+        $formations = Formation::orderBy('libelle','asc')->get();
+
+        return view('cours.create', compact(['formations']));
     }
 
     public function store(Request $request)
@@ -51,9 +58,14 @@ class CoursController extends Controller
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
-            'formateur' => 'Jhon Doe',
+            'formateur' => Auth::user()->name,
             'etat' => 0,
             'nombre_chapitres' => 0
+        ]);
+
+        FormationsContenirCours::create([
+            'id_cours' => $id,
+            'id_formation' => $request->get('formation_id')
         ]);
 
         return redirect('/cours')->with('success','Cours créé avec succès');
@@ -96,7 +108,7 @@ class CoursController extends Controller
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
-            'formateur' => 'Jhon Doe',
+            'formateur' => $request->get('formateur'),
             'etat' => 0,
             'nombre_chapitres' => 0
         ]);

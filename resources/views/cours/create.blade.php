@@ -66,8 +66,21 @@
                 </div>
         </div>
 
+        <div class="field">
+            <label class="label">Choisir la formation</label>
+                <div class="control">
+                    <div class="select">
+                    <select name="formation_id">
+                        @foreach ($formations as $formation)
+                            <option value="{{$formation->id}}">{{$formation->libelle}}</option>
+                        @endforeach
+                    </select>
+                    </div>
+                </div>
+        </div>
+
             <div class="control mt-4">
-                <button type="submit" class="button is-fullwidth is-link is-rounded mb-4">Créer</button>
+                <button type="submit" class="button is-fullwidth is-link is-rounded">Créer</button>
             </div>
         </div>
     </form>

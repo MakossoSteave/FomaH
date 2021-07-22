@@ -24,12 +24,6 @@
 
 {{$cours->formation_id}}
 
-@foreach ($formations as $formation)
-
-{{$formation->libelle}}
-
-@endforeach
-
 @endif
 
 @endsection
