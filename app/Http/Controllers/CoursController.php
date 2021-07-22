@@ -10,8 +10,8 @@ class CoursController extends Controller
     public function index()
     {
         $cours = Cours::select('cours.*', 'formations.libelle')
-        ->join('formations_contenir_cours', 'cours.id_cours', '=', 'formations_contenir_cours.id_cours')
-        ->join('formations', 'formations.id',"=","formations_contenir_cours.id_formation")
+        ->leftJoin('formations_contenir_cours', 'cours.id_cours', '=', 'formations_contenir_cours.id_cours')
+        ->leftJoin('formations', 'formations.id',"=","formations_contenir_cours.id_formation")
         ->orderBy('numero_cours','asc')
         ->paginate(5)->setPath('cours');
                    
