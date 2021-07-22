@@ -19,9 +19,9 @@ class FormationController extends Controller
 
     public function create()
     {
-        $categories = Categorie::all();
+        $Categorie = Categorie::all();
 
-        return view('centre.Ajoutforma',compact(['categories']));
+        return view('centre.Ajoutforma',compact(['Categorie']));
     }
 
     public function store(Request $request)
@@ -30,19 +30,17 @@ class FormationController extends Controller
          'libelle' => 'required',
          'description' => 'required',
          'volume_horaire' => 'required',
-         'nombre_cours_total' => 'required',
-         'nombre_chapitre_total' => 'required',
          'reference' => 'required',
          'prix' => 'required',
          'userRef'=>'required',
          'categorie_id' =>'required'
         ]);
         do {
-            $id = rand(1000000, 99999999);
+            $id = rand(10000000, 99999999);
         } while(Formation::find($id)!=null);
 
-        Formation::create($request->all() + ['etat' => 0] + ['id' => $id]);
-
+        Formation::create($request->all() + ['etat' => 0] + ['id' => $id]+ ['nombre_cours_total' => 0]+ ['nombre_chapitre_total' => 0]);
+       // $this->etat($id);
         return redirect()->back()->with('success','Create Successfully');
     }
 
@@ -56,9 +54,9 @@ class FormationController extends Controller
     public function edit($id)
     {
        $data = Formation::find($id);
-       $categories = Categorie::all();
+       $Categorie = Categorie::all();
 
-       return view('centre.formation.edit',compact(['data'], ['categories']));
+       return view('centre.formation.edit',compact(['data'], ['Categorie']));
     }
 
     public function update(Request $request, $id)
@@ -67,18 +65,38 @@ class FormationController extends Controller
          'libelle' => 'required',
          'description' => 'required',
          'volume_horaire' => 'required',
-         'nombre_cours_total' => 'required',
-         'nombre_chapitre_total' => 'required',
          'prix' => 'required',
          'userRef'=>'required',
-         'categorie_id' =>'required'
+         'categorie_id' =>'required',
+         'etat' => 'required'
         ]);
 
-        Formation::where('id',$id)->update($request->all());
+        Formation::where('id',$id)->update($request->all());   
+        // $this->Update_nombre_chapitre_total($id,-1);
         return redirect()->back()->with('success','Modifié avec succes');
         
     }
-
+    public function Update_nombre_cours_total($id,$operation)
+    {
+        $formation = Formation::find($id);
+        $nombre_cours_total = $formation->nombre_cours_total+$operation;
+        if($nombre_cours_total<0) $nombre_cours_total=0;
+        Formation::where('id', $id)->update(array('nombre_cours_total' => $nombre_cours_total));
+    }
+    public function Update_nombre_chapitre_total($id,$operation)
+    {
+        $formation = Formation::find($id);
+        $nombre_chapitre_total = $formation->nombre_chapitre_total+$operation;
+        if($nombre_chapitre_total<0) $nombre_chapitre_total=0;
+        Formation::where('id', $id)->update(array('nombre_chapitre_total' => $nombre_chapitre_total));
+    }
+    public function etat($id)
+    {
+        $formation = Formation::find($id);
+        $etat = !$formation->etat;
+        Formation::where('id', $id)->update(array('etat' => $etat));
+        return redirect()->back()->with('success','Modifié avec succes');
+    }
     public function destroy($id)
     {
         Formation::where('id',$id)->delete();

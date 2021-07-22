@@ -36,7 +36,7 @@
             <div class="media-content">
                 <div class="flex">
                     <p class="title is-4">Cours n°{{$cour->numero_cours}}</p>
-                    <p class="title is-4"><span class="subtitle is-6">Créé par</span> {{$cour->formateur}}</p>
+                    <p class="title is-4"><span class="subtitle is-6">Créé par</span> {{$cour->formateurPrenom}} {{$cour->formateurNom}}</p>
                 </div>
                 <p class="subtitle is-6">{{$cour->designation}}</p>
             </div>

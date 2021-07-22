@@ -17,12 +17,7 @@
         @csrf
         @method('PUT')
         <input name="id_cours" type="hidden" value="{{$cours->id_cours}}">
-        <div class="field">
-            <label class="label">Numero du cours</label>
-                <div class="control">
-                    <input name="numero_cours" class="input" type="number" placeholder="Numero du cours" value="{{$cours->numero_cours}}">
-                </div>
-        </div>
+        <input name="numero_cours" type="hidden" value="{{$cours->numero_cours}}">
 
         <div class="field">
             <label class="label">Titre du cours</label>

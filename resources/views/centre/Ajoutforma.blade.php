@@ -90,29 +90,13 @@
                             class="shadow appearance-none border border rounded w-full h-12 py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
                             id="password" name="volume_horaire" type="number" placeholder="Nombre d'heure">
                     </div>
-                    <div class="mb-4">
-                        <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
-                            Nombre de cours
-                        </label>
-                        <input
-                            class="shadow appearance-none border border rounded w-full h-12 py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                            id="password" name="nombre_cours_total" type="number" placeholder="Nombre de cours">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
-                            Nombre de chapitre
-                        </label>
-                        <input
-                            class="shadow appearance-none border border rounded w-full h-12 py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                            id="password" name="nombre_chapitre_total" type="number" placeholder="Nombre de chapitre">
-                    </div>
                     <!-- <input id="etat" name="etat" type="hidden" value="1"> -->
                     <div class="mb-6">
                         <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
                             Categorie
                         </label>
                             <select class="form-select block w-full mt-1"  name="categorie_id">
-                                @foreach($categories as $categorie)
+                                @foreach($Categorie as $categorie)
                                 <option value="{{$categorie->id}}">{{$categorie->designation}}</option>
                                 @endforeach
                             </select>

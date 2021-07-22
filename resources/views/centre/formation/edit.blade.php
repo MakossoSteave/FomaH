@@ -24,6 +24,7 @@
                                 </ul>
                             </div>
                             @endif
+                          
                             <form class="max-w-md mb-2 form-input" action="{{ route('centre.update', $data->id) }}"
                                 method="POST">
                                 @csrf
@@ -78,26 +79,35 @@
                                 </div>
                                 <div class="mb-4">
                                     <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
-                                        Nombre de cours
+                                        Etat
                                     </label>
-                                    <input
-                                        class="shadow appearance-none border border rounded w-full h-12 py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                                        id="password" name="nombre_cours_total" type="number" placeholder="Nombre de cours" value="{{$data->nombre_cours_total}}">
-                                </div>
-                                <div class="mb-4">
-                                    <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
-                                        Nombre de chapitre
-                                    </label>
-                                    <input
-                                        class="shadow appearance-none border border rounded w-full h-12 py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                                        id="password" name="nombre_chapitre_total" type="number" placeholder="Nombre de chapitre" value="{{$data->nombre_chapitre_total}}">
+                                    
+                                    <select class="form-select block w-full mt-1"  name="etat">
+                                          
+                                            <option 
+                                            @if($data->etat == 1) value="1"
+                                            @else value="0"
+                                            @endif selected>
+                                            @if($data->etat == 1) Activé
+                                            @else Désactivé
+                                            @endif
+                                            </option>
+                                            <option
+                                            @if(!$data->etat == 1) value="1"
+                                            @else value="0"
+                                            @endif>
+                                            @if(!$data->etat == 1) Activé
+                                            @else Désactivé
+                                            @endif
+                                            </option>
+                                        </select>
                                 </div>
                                 <div class="mb-6">
                                     <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
                                         Categorie
                                     </label>
                                         <select class="form-select block w-full mt-1"  name="categorie_id">
-                                            @foreach($categories as $categorie)
+                                            @foreach($Categorie as $categorie)
                                             <option value="{{$categorie->id}}" @if($data->categorie_id == $categorie->id) selected @endif>{{$categorie->designation}}</option>
                                             @endforeach
                                         </select>
