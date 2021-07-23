@@ -52,8 +52,13 @@ class CoursController extends Controller
         }
       
         $utilisateurID = Auth::user()->id;
-        $formateur= new FormateurController;
-        $formateurID= $formateur->findFormateurID($utilisateurID);
+
+        $numero_cours = Cours::select('cours.numero_cours')
+        ->leftJoin('formations_contenir_cours', 'cours.id_cours', '=', 'formations_contenir_cours.id_cours')
+        ->leftJoin('formations', 'formations.id',"=","formations_contenir_cours.id_formation")
+        ->where('formations.id','=',$request->get('formation_id'))
+        ->max('numero_cours');
+
         Cours::create([
             'id_cours' => $id,
             'designation' => $request->get('designation'),
@@ -62,7 +67,7 @@ class CoursController extends Controller
             'formateur' =>  $utilisateurID,
             'etat' => 0,
             'nombre_chapitres' => 0,
-            'numero_cours' => 1
+            'numero_cours' => $numero_cours++
         ]);
 
         FormationsContenirCours::create([
