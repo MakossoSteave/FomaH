@@ -16,9 +16,14 @@ class ChapitreController extends Controller
     }
 
     public function filter($id)
-    {
-        $chapitres = Chapitre::where('id_cours', $id)->get();
+    { /* $chapitre = Chapitre::where("id_cours",$id_Cours)
+        ->orderBy('created_at','asc')
+        ->paginate(5)/*->setPath('chapitre');
                    
+        return view('chapitre.index',compact(['chapitre']));*/ 
+        $chapitres = Chapitre::where('id_cours', $id)
+        ->orderBy('created_at','asc')
+        ->get();          
         return view('chapitre.filter',compact(['chapitres']));
     }
     

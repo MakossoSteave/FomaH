@@ -14,7 +14,7 @@ class FormationsContenirCours extends Model
     protected $primaryKey = 'id_formation';
     
     protected $fillable=[
-        'id_formation', 'id_cours'
+        'id_formation', 'id_cours', 'numero_cours'
     ];
 
     public function cours()

@@ -50,12 +50,9 @@ class CoursController extends Controller
         }
       
         $utilisateurID = Auth::user()->id;
-
-        $numero_cours = Cours::select('cours.numero_cours')
-        ->join('formations_contenir_cours', 'cours.id_cours', '=', 'formations_contenir_cours.id_cours')
-        ->join('formations', 'formations.id',"=","formations_contenir_cours.id_formation")
-        ->where("formations_contenir_cours.id_formation","=",$request->get('formation_id'))
-        ->max('numero_cours');
+        $formateur= new FormateurController;
+        $formateurID= $formateur->findFormateurID($utilisateurID);
+        $numero_cours = FormationsContenirCours::where("id_formation","=",$request->get('formation_id'))->max('numero_cours');
 
         if ($numero_cours == null) {
             $numero_cours = 1;
@@ -68,17 +65,19 @@ class CoursController extends Controller
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
-            'formateur' =>  $utilisateurID,
+            'formateur' =>  $formateurID,
             'etat' => 0,
-            'nombre_chapitres' => 0,
-            'numero_cours' => $numero_cours
+            'nombre_chapitres' => 0
         ]);
 
-        FormationsContenirCours::create([
-            'id_cours' => $id,
-            'id_formation' => $request->get('formation_id')
-        ]);
-
+        if($request->get('formation_id')!="") {
+                FormationsContenirCours::create([
+                'id_cours' => $id,
+                'id_formation' => $request->get('formation_id'),
+                'numero_cours' => $numero_cours
+            ]);
+        }
+       
         return redirect('/cours')->with('success','Cours créé avec succès');
     }
 
@@ -106,9 +105,9 @@ class CoursController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'numero_cours' => 'required',
             'designation' => 'required',
-            'prix' => 'required'
+            'prix' => 'required',
+            'etat' => 'required'
         ]);
 
     
@@ -123,12 +122,11 @@ class CoursController extends Controller
         }
 
         Cours::where('id_cours', $id)->update([
-            'numero_cours' => $request->get('numero_cours'),
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
             'formateur' => $request->get('formateur'),
-            'etat' => 0,
+            'etat' => $request->get('etat'),
             'nombre_chapitres' => 0
         ]);
 
@@ -151,6 +149,13 @@ class CoursController extends Controller
         Cours::where('id_cours', $id_cours)->update(array('nombre_chapitres' => $nombre_chapitres));
     }
 
+    public function etat($id)
+    {
+        $cours = Cours::find($id);
+        $etat = !$cours->etat;
+        Cours::where('id_cours', $id)->update(array('etat' => $etat));
+        return redirect()->back()->with('success','Modifié avec succes');
+    }
     public function destroy($id)
     {
         FormationsContenirCours::where('id_cours',$id)->delete();

@@ -51,6 +51,7 @@ Route::get('/etatFormation/{id}', [App\Http\Controllers\FormationController::cla
 
 Route::get('/cours', [App\Http\Controllers\CoursController::class, 'index'])->name('cours');
 Route::get('/addCours', [App\Http\Controllers\CoursController::class, 'create'])->name('addCours');
+Route::get('/etatCours/{id}', [App\Http\Controllers\CoursController::class, 'etat'])->name('etatCours');
 
 Route::get('/chapitres', [App\Http\Controllers\ChapitreController::class, 'index'])->name('chapitre');
 Route::get('/chapitre/{id}', [App\Http\Controllers\ChapitreController::class, 'filter'])->name('chapitre.filter');
@@ -58,5 +59,6 @@ Route::get('/addChapitre/{id}', [App\Http\Controllers\CoursController::class, 'c
 
 Route::resource('chapitre','App\Http\Controllers\ChapitreController');
 Route::resource('cours','App\Http\Controllers\CoursController');
+Route::resource('chapitre','App\Http\Controllers\ChapitreController');
 Route::resource('centre','App\Http\Controllers\FormationController');
 Route::resource('stagiaire','App\Http\Controllers\StagiaireController');

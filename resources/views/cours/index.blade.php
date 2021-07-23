@@ -30,11 +30,20 @@
     <div class="card my-6">
         <div class="card-content">
             <div class="media">
+            @if(! empty($cour->image))
             <div class="media-left">
                 <img class="image is-4by3" src="{{ URL::asset('/') }}img/cours/{{$cour->image}}" alt="Placeholder image">
             </div>
+            @endif
             <div class="media-content">
                 <div class="flex">
+                <a class="{{ $cour->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatCours', $cour->id_cours) }}">
+                        @if($cour->etat == 1) 
+                        Activé
+                        @else
+                        Désactivé
+                        @endif
+                </a>
                 <p class="title is-4">{{$cour->designation}}</p>
                 <p class="subtitle is-4 forma-marg"><span class="subtitle is-6">Créé par</span> {{$cour->formateurPrenom}} {{$cour->formateurNom}}</p>
                 </div>
