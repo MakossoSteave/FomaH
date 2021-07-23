@@ -139,6 +139,14 @@ class CoursController extends Controller
         if($nombre_chapitres<0) $nombre_chapitres=0;
         Cours::where('id_cours', $id_cours)->update(array('nombre_chapitres' => $nombre_chapitres));
     }
+
+    public function etat($id)
+    {
+        $cours = Cours::find($id);
+        $etat = !$cours->etat;
+        Cours::where('id_cours', $id)->update(array('etat' => $etat));
+        return redirect()->back()->with('success','Modifié avec succes');
+    }
     public function destroy($id)
     {
         FormationsContenirCours::where('id_cours',$id)->delete();

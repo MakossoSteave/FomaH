@@ -7,12 +7,14 @@ use App\Models\Chapitre;
 use App\Http\Controllers\CoursController;
 class ChapitreController extends Controller
 {
-   /* public function create()
+    public function index($id_Cours)
     {
-        $Categorie = Categorie::all();
-
-        return view('centre.Ajoutforma',compact(['Categorie']));
-    }*/
+        $chapitre = Chapitre::where("id_cours",$id_Cours)
+        ->orderBy('created_at','asc')
+        ->paginate(5)/*->setPath('chapitre')*/;
+                   
+        return view('chapitre.index',compact(['chapitre']));
+    }
 
     public function store(Request $request)
     {
@@ -32,11 +34,16 @@ class ChapitreController extends Controller
         return redirect()->back()->with('success','Create Successfully');
     }
 
-    public function show($id_chapitre)
+    public function show($id_Cours)
     {
-       $data =  Chapitre::find($id_chapitre);
+    /*   $data =  Chapitre::find($id_chapitre);
 
-       return view('centre.Chapitre.show',compact(['data']));
+       return view('centre.Chapitre.show',compact(['data']));*/
+       $chapitre = Chapitre::where("id_cours",$id_Cours)
+       ->orderBy('created_at','asc')
+       ->paginate(5)/*->setPath('chapitre')*/;
+                  
+       return view('chapitre.index',compact(['chapitre']));
     }
 
     public function edit($id_chapitre)

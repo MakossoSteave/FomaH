@@ -50,6 +50,7 @@ Route::get('/Ajoutforma', [App\Http\Controllers\FormationController::class, 'cre
 Route::get('/etatFormation/{id}', [App\Http\Controllers\FormationController::class, 'etat'])->name('etat');
 Route::get('/cours', [App\Http\Controllers\CoursController::class, 'index'])->name('cours');
 Route::get('/addCours', [App\Http\Controllers\CoursController::class, 'create'])->name('addCours');
+Route::get('/etatCours/{id}', [App\Http\Controllers\CoursController::class, 'etat'])->name('etatCours');
 
 
 
