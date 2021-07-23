@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 20 juil. 2021 à 23:19
+-- Généré le : ven. 23 juil. 2021 à 17:32
 -- Version du serveur :  10.4.17-MariaDB
 -- Version de PHP : 8.0.0
 
@@ -20,7 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `perfectingenieurie`
 --
-
+CREATE DATABASE `perfectingenieurie`;
 -- --------------------------------------------------------
 
 --
@@ -78,8 +78,8 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `designation`, `created_at`, `updated_at`) VALUES
-(1, 'Informatique', '2021-07-20 10:50:36', '2021-07-20 10:50:36'),
-(2, 'Management', '2021-07-20 11:11:06', '2021-07-20 11:11:06');
+(1, 'Informatique', '2021-07-20 06:50:36', '2021-07-20 06:50:36'),
+(2, 'Management', '2021-07-20 07:11:06', '2021-07-20 07:11:06');
 
 -- --------------------------------------------------------
 
@@ -98,6 +98,13 @@ CREATE TABLE `chapitres` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `chapitres`
+--
+
+INSERT INTO `chapitres` (`id_chapitre`, `numero_chapitre`, `designation`, `image`, `video`, `etat`, `id_cours`, `created_at`, `updated_at`) VALUES
+(12345678, 1, 'mamp', 'mamp.png', '607d86ffe4ac3.mp4', 0, 95027475, '2021-07-23 06:00:57', '2021-07-23 06:00:57');
 
 -- --------------------------------------------------------
 
@@ -134,16 +141,25 @@ CREATE TABLE `contenir_documents_projets` (
 
 CREATE TABLE `cours` (
   `id_cours` bigint(20) UNSIGNED NOT NULL,
-  `numero_cours` int(10) UNSIGNED NOT NULL,
   `designation` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `image` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nombre_chapitres` int(11) NOT NULL,
   `prix` double(8,2) NOT NULL,
   `etat` tinyint(1) NOT NULL,
-  `formation_id` bigint(20) UNSIGNED NOT NULL,
+  `formateur` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `cours`
+--
+
+INSERT INTO `cours` (`id_cours`, `designation`, `image`, `nombre_chapitres`, `prix`, `etat`, `formateur`, `created_at`, `updated_at`) VALUES
+(43855550, 'phpC2N2', NULL, 0, 2.00, 0, 1, '2021-07-23 12:31:04', '2021-07-23 12:31:04'),
+(78750127, 'phpC2N1', NULL, 0, 1.00, 0, 1, '2021-07-23 12:30:53', '2021-07-23 12:30:53'),
+(95027475, 'Les sessions', '1626963126session.png', 0, 100.00, 1, 1, '2021-07-22 10:12:06', '2021-07-23 08:06:36'),
+(95597804, 'phpC3N4', NULL, 0, 1.00, 0, 1, '2021-07-23 13:03:12', '2021-07-23 13:03:12');
 
 -- --------------------------------------------------------
 
@@ -214,12 +230,21 @@ CREATE TABLE `faire_projets` (
 
 CREATE TABLE `formateurs` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `nom` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `prenom` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parcours` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cv` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `formateurs`
+--
+
+INSERT INTO `formateurs` (`id`, `nom`, `prenom`, `parcours`, `cv`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, 'doe', 'john', '', '', 4, '2021-07-22 10:59:56', '2021-07-22 10:59:56');
 
 -- --------------------------------------------------------
 
@@ -235,9 +260,9 @@ CREATE TABLE `formations` (
   `volume_horaire` int(11) NOT NULL,
   `nombre_cours_total` int(11) NOT NULL,
   `nombre_chapitre_total` int(11) NOT NULL,
-  `reference` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `reference` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `prix` int(11) NOT NULL,
-  `userRef` int(11) NOT NULL,
+  `userRef` int(11) DEFAULT NULL,
   `_token` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `_method` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `etat` tinyint(1) NOT NULL,
@@ -245,6 +270,37 @@ CREATE TABLE `formations` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `formations`
+--
+
+INSERT INTO `formations` (`id`, `libelle`, `description`, `image`, `volume_horaire`, `nombre_cours_total`, `nombre_chapitre_total`, `reference`, `prix`, `userRef`, `_token`, `_method`, `etat`, `categorie_id`, `created_at`, `updated_at`) VALUES
+(31088407, 'PHP', 'php', NULL, 20, 3, 0, '1', 1000, 5, 'xDMk57fgbIuBl9EEsnlRKinbyOLQrpMeuTaldPaB', 'PUT', 0, 1, '2021-07-22 03:15:40', '2021-07-23 13:03:31'),
+(55387986, 'java', 'java', NULL, 20, 0, 0, '1', 1, 4, NULL, NULL, 0, 1, '2021-07-23 11:05:16', '2021-07-23 13:03:32');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `formations_contenir_cours`
+--
+
+CREATE TABLE `formations_contenir_cours` (
+  `id_formation` bigint(20) UNSIGNED NOT NULL,
+  `id_cours` bigint(20) UNSIGNED NOT NULL,
+  `numero_cours` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `formations_contenir_cours`
+--
+
+INSERT INTO `formations_contenir_cours` (`id_formation`, `id_cours`, `numero_cours`, `created_at`, `updated_at`) VALUES
+(31088407, 43855550, 2, '2021-07-23 12:31:04', '2021-07-23 12:31:04'),
+(31088407, 78750127, 1, '2021-07-23 12:30:53', '2021-07-23 12:30:53'),
+(31088407, 95597804, 3, '2021-07-23 13:03:12', '2021-07-23 13:03:32');
 
 -- --------------------------------------------------------
 
@@ -331,7 +387,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (34, '2021_07_15_000032_create_suivre_cours_table', 1),
 (35, '2021_07_15_000033_create_session_table', 1),
 (36, '2021_07_15_000034_create_lier_session_stagiaire_table', 1),
-(37, '2021_07_15_000035_create_titre_table', 1);
+(37, '2021_07_15_000035_create_titre_table', 1),
+(38, '2021_07_15_000036_create_formations_contenir_cours_table', 1);
 
 -- --------------------------------------------------------
 
@@ -684,6 +741,16 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`id`, `image`, `name`, `status_id`, `email`, `email_verified_at`, `password`, `role_id`, `preference`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, NULL, 'malek', NULL, 'mt@gmail.com', NULL, '$2y$10$vS3kiCg0ALi9kVXRhAoAkOG42AguL2W1If6Z7V2BihowhQjwFPSVS', 3, NULL, NULL, '2021-07-22 03:13:56', '2021-07-22 03:13:56'),
+(2, NULL, 'formation', NULL, 'formation@gmail.com', NULL, '$2y$10$pHNxyHEB7bdIdYVX0lIKJeSWlqTUAsELsnrOxrnnSmSk8oY8KADWK', 2, NULL, NULL, '2021-07-22 03:14:58', '2021-07-22 03:14:58'),
+(3, NULL, 'admin', NULL, 'admin@gmail.com', NULL, '$2y$10$pHNxyHEB7bdIdYVX0lIKJeSWlqTUAsELsnrOxrnnSmSk8oY8KADWK', 1, NULL, NULL, '2021-07-22 05:16:30', '2021-07-22 05:16:30'),
+(4, NULL, 'doe', NULL, 'doe@gmail.com', NULL, '$2y$10$pHNxyHEB7bdIdYVX0lIKJeSWlqTUAsELsnrOxrnnSmSk8oY8KADWK', 4, NULL, NULL, '2021-07-22 10:58:40', '2021-07-22 10:58:40');
+
+--
 -- Index pour les tables déchargées
 --
 
@@ -740,8 +807,8 @@ ALTER TABLE `contenir_documents_projets`
 -- Index pour la table `cours`
 --
 ALTER TABLE `cours`
-  ADD PRIMARY KEY (`id_cours`,`numero_cours`),
-  ADD KEY `cours_formation_id_index` (`formation_id`);
+  ADD PRIMARY KEY (`id_cours`),
+  ADD KEY `cours_formateur_index` (`formateur`);
 
 --
 -- Index pour la table `documents`
@@ -783,6 +850,13 @@ ALTER TABLE `formateurs`
 ALTER TABLE `formations`
   ADD PRIMARY KEY (`id`),
   ADD KEY `formations_categorie_id_index` (`categorie_id`);
+
+--
+-- Index pour la table `formations_contenir_cours`
+--
+ALTER TABLE `formations_contenir_cours`
+  ADD PRIMARY KEY (`id_formation`,`id_cours`),
+  ADD KEY `formations_contenir_cours_id_cours_foreign` (`id_cours`);
 
 --
 -- Index pour la table `lier_sessions_stagiaires`
@@ -970,6 +1044,12 @@ ALTER TABLE `categories`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT pour la table `cours`
+--
+ALTER TABLE `cours`
+  MODIFY `id_cours` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99563544;
+
+--
 -- AUTO_INCREMENT pour la table `documents`
 --
 ALTER TABLE `documents`
@@ -991,13 +1071,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT pour la table `formateurs`
 --
 ALTER TABLE `formateurs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `formations`
 --
 ALTER TABLE `formations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97472748;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55387988;
 
 --
 -- AUTO_INCREMENT pour la table `meeting_en_lignes`
@@ -1009,7 +1089,7 @@ ALTER TABLE `meeting_en_lignes`
 -- AUTO_INCREMENT pour la table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT pour la table `mots_cles`
@@ -1111,7 +1191,7 @@ ALTER TABLE `types_inscriptions`
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Contraintes pour les tables déchargées
@@ -1163,7 +1243,7 @@ ALTER TABLE `contenir_documents_projets`
 -- Contraintes pour la table `cours`
 --
 ALTER TABLE `cours`
-  ADD CONSTRAINT `cours_formation_id_foreign` FOREIGN KEY (`formation_id`) REFERENCES `formations` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `cours_formateur_foreign` FOREIGN KEY (`formateur`) REFERENCES `formateurs` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `exercices`
@@ -1189,6 +1269,13 @@ ALTER TABLE `formateurs`
 --
 ALTER TABLE `formations`
   ADD CONSTRAINT `formations_categorie_id_foreign` FOREIGN KEY (`categorie_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `formations_contenir_cours`
+--
+ALTER TABLE `formations_contenir_cours`
+  ADD CONSTRAINT `formations_contenir_cours_id_cours_foreign` FOREIGN KEY (`id_cours`) REFERENCES `cours` (`id_cours`),
+  ADD CONSTRAINT `formations_contenir_cours_id_formation_foreign` FOREIGN KEY (`id_formation`) REFERENCES `formations` (`id`);
 
 --
 -- Contraintes pour la table `lier_sessions_stagiaires`

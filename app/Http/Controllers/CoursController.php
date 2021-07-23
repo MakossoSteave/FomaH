@@ -160,6 +160,8 @@ class CoursController extends Controller
     }
     public function destroy($id)
     {
+        // nombre de chapitres du cours
+        $nombreChapitresCours=Cours::where('id_cours',$id)->value('nombre_chapitres');
         // toutes les id formations qui contienent le cours
      
         $formationContenirCours = FormationsContenirCours::
@@ -175,6 +177,10 @@ class CoursController extends Controller
             // Mettre à jour le nombre de cours total dans chaque formations
 
             $Formation->Update_nombre_cours_total($f->id_formation,-1);
+
+            // Mettre à jour le nombre de chapitre total dans chaque formations
+
+            $Formation->Update_nombre_chapitre_total($f->id_formation,-$nombreChapitresCours);
             // Mettre à jour le numero de cours dans chaque formations
 
             FormationsContenirCours::where('id_formation',$f->id_formation)
