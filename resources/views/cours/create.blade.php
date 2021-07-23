@@ -65,6 +65,7 @@
                 <div class="control">
                     <div class="select">
                     <select name="formation_id">
+                    <option value="" selected></option>
                         @foreach ($formations as $formation)
                             <option value="{{$formation->id}}">{{$formation->libelle}}</option>
                         @endforeach

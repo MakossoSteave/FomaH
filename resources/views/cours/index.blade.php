@@ -9,7 +9,7 @@
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
         <a href="{{ url('addCours')}}" class="has-icons-right" id="link-black">
-            Ajouter une formation
+            Ajouter un cours
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
     </div>
@@ -50,7 +50,7 @@
                         <p class="title is-6">{{$cour->libelle}}</p>
                     </div>
                     <div class="flex-bottom">
-                        <form action="" method="GET">
+                        <form action="{{ route('chapitre.index', $cour->id_cours) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-primary">Voir les chapitres</button>
                         </form>

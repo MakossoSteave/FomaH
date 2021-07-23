@@ -59,17 +59,18 @@ class CoursController extends Controller
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
-            'formateur' =>  $utilisateurID,
+            'formateur' =>  $formateurID,
             'etat' => 0,
             'nombre_chapitres' => 0,
             'numero_cours' => 1
         ]);
-        /*
-        FormationsContenirCours::create([
+        if($request->get('formation_id')!="") { FormationsContenirCours::create([
             'id_cours' => $id,
             'id_formation' => $request->get('formation_id')
         ]);
-        */
+    }
+       
+        
 
         return redirect('/cours')->with('success','Cours créé avec succès');
     }
