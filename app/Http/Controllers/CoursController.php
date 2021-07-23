@@ -36,7 +36,7 @@ class CoursController extends Controller
         ]);
 
         do {
-            $id = rand(1000000, 99999999);
+            $id = rand(10000000, 99999999);
         } while(Cours::find($id) != null);
 
         if ($request->hasFile('image')) {
