@@ -54,10 +54,16 @@ class CoursController extends Controller
         $utilisateurID = Auth::user()->id;
 
         $numero_cours = Cours::select('cours.numero_cours')
-        ->leftJoin('formations_contenir_cours', 'cours.id_cours', '=', 'formations_contenir_cours.id_cours')
-        ->leftJoin('formations', 'formations.id',"=","formations_contenir_cours.id_formation")
-        ->where('formations.id','=',$request->get('formation_id'))
+        ->join('formations_contenir_cours', 'cours.id_cours', '=', 'formations_contenir_cours.id_cours')
+        ->join('formations', 'formations.id',"=","formations_contenir_cours.id_formation")
+        ->where("formations_contenir_cours.id_formation","=",$request->get('formation_id'))
         ->max('numero_cours');
+
+        if ($numero_cours == null) {
+            $numero_cours = 1;
+        } else {
+            $numero_cours = $numero_cours+1;
+        }
 
         Cours::create([
             'id_cours' => $id,
@@ -67,7 +73,7 @@ class CoursController extends Controller
             'formateur' =>  $utilisateurID,
             'etat' => 0,
             'nombre_chapitres' => 0,
-            'numero_cours' => $numero_cours++
+            'numero_cours' => $numero_cours
         ]);
 
         FormationsContenirCours::create([
@@ -84,12 +90,14 @@ class CoursController extends Controller
 
        return view('cours.show',compact(['cours']));
     }
+
     public function findCours($id)
     {
        $cours = Cours::find($id);
 
        return $cours;
     }
+    
     public function edit($id)
     {
        $cours = Cours::find($id);
@@ -128,13 +136,15 @@ class CoursController extends Controller
 
         return redirect('/cours')->with('success','Cours modifié avec succes');
     }
-    public function Update_numero_cours($id_cours,$operation)
-    {
-        $Cours = Cours::find($id_cours);
-        $numero_cours = $Cours->numero_cours+$operation;
-        if($numero_cours<0) $numero_cours=0;
-        Cours::where('id_cours', $id_cours)->update(array('numero_cours' => $numero_cours));
-    }
+
+    // public function Update_numero_cours($id_cours,$operation)
+    // {
+    //     $Cours = Cours::find($id_cours);
+    //     $numero_cours = $Cours->numero_cours+$operation;
+    //     if($numero_cours<0) $numero_cours=0;
+    //     Cours::where('id_cours', $id_cours)->update(array('numero_cours' => $numero_cours));
+    // }
+
     public function Update_nombre_chapitres($id_cours,$operation)
     {
         $Cours = Cours::find($id_cours);
@@ -142,6 +152,7 @@ class CoursController extends Controller
         if($nombre_chapitres<0) $nombre_chapitres=0;
         Cours::where('id_cours', $id_cours)->update(array('nombre_chapitres' => $nombre_chapitres));
     }
+
     public function destroy($id)
     {
         FormationsContenirCours::where('id_cours',$id)->delete();
