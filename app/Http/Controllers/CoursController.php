@@ -161,8 +161,7 @@ class CoursController extends Controller
     public function destroy($id)
     {
         // toutes les id formations qui contienent le cours
-      /*  $formationContenirCoursID = FormationsContenirCours::
-        select('id_formation')->where('id_cours',$id)->distinct();*/
+     
         $formationContenirCours = FormationsContenirCours::
             where('id_cours',$id)->get();
         // Supprimer le cours des formations
