@@ -6,22 +6,22 @@ use App\Models\Categorie;
 use App\Models\Formation;
 use Illuminate\Http\Request;
 
-class FormationController extends Controller
+class FormationAdminController extends Controller
 
 {
 
     public function index()
     {
-        $data = Formation::orderBy('id','desc')->paginate(3)->setPath('centre');
+        $formations = Formation::orderBy('id','desc')->paginate(3)->setPath('centre');
                    
-        return view('centre..index',compact(['data']));
+        return view('admin.formation.index',compact(['formations']));
     }
 
     public function create()
     {
         $Categorie = Categorie::all();
 
-        return view('centre.Ajoutforma',compact(['Categorie']));
+        return view('admin.formation.create',compact(['Categorie']));
     }
 
     public function store(Request $request)
@@ -30,9 +30,7 @@ class FormationController extends Controller
          'libelle' => 'required',
          'description' => 'required',
          'volume_horaire' => 'required',
-         'reference' => 'required',
          'prix' => 'required',
-         'userRef'=>'required',
          'categorie_id' =>'required'
         ]);
         do {
@@ -48,7 +46,7 @@ class FormationController extends Controller
     {
        $data =  Formation::find($id);
 
-       return view('centre.formation.show',compact(['data']));
+       return view('admin.formation.show',compact(['data']));
     }
 
     public function edit($id)
@@ -56,7 +54,7 @@ class FormationController extends Controller
        $data = Formation::find($id);
        $Categorie = Categorie::all();
 
-       return view('centre.formation.edit',compact(['data'], ['Categorie']));
+       return view('admin.formation.edit',compact(['data'], ['Categorie']));
     }
 
     public function update(Request $request, $id)
@@ -66,7 +64,6 @@ class FormationController extends Controller
          'description' => 'required',
          'volume_horaire' => 'required',
          'prix' => 'required',
-         'userRef'=>'required',
          'categorie_id' =>'required',
          'etat' => 'required'
         ]);
@@ -75,6 +72,30 @@ class FormationController extends Controller
         // $this->Update_nombre_chapitre_total($id,-1);
         return redirect()->back()->with('success','Modifié avec succes');
         
+    }
+
+    public function Update_nombre_cours_total($id,$operation)
+    {
+        $formation = Formation::find($id);
+        $nombre_cours_total = $formation->nombre_cours_total+$operation;
+        if($nombre_cours_total<0) $nombre_cours_total=0;
+        Formation::where('id', $id)->update(array('nombre_cours_total' => $nombre_cours_total));
+    }
+
+    public function Update_nombre_chapitre_total($id,$operation)
+    {
+        $formation = Formation::find($id);
+        $nombre_chapitre_total = $formation->nombre_chapitre_total+$operation;
+        if($nombre_chapitre_total<0) $nombre_chapitre_total=0;
+        Formation::where('id', $id)->update(array('nombre_chapitre_total' => $nombre_chapitre_total));
+    }
+
+    public function etat($id)
+    {
+        $formation = Formation::find($id);
+        $etat = !$formation->etat;
+        Formation::where('id', $id)->update(array('etat' => $etat));
+        return redirect()->back()->with('success','Modifié avec succes');
     }
 
     public function destroy($id)

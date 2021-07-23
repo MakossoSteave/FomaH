@@ -18,14 +18,14 @@ class CoursController extends Controller
         ->orderBy('created_at','asc')
         ->paginate(5)->setPath('cours');
                    
-        return view('cours.index',compact(['cours']));
+        return view('admin.cours.index',compact(['cours']));
     }
 
     public function create()
     {
         $formations = Formation::orderBy('libelle','asc')->get();
 
-        return view('cours.create', compact(['formations']));
+        return view('admin.cours.create', compact(['formations']));
     }
 
     public function store(Request $request)
@@ -87,7 +87,7 @@ class CoursController extends Controller
     {
        $cours = Cours::find($id);
 
-       return view('cours.show',compact(['cours']));
+       return view('admin.cours.show',compact(['cours']));
     }
 
     public function findCours($id)
@@ -101,7 +101,7 @@ class CoursController extends Controller
     {
        $cours = Cours::find($id);
 
-       return view('cours.edit',compact(['cours']));
+       return view('admin.cours.edit',compact(['cours']));
     }
 
     public function update(Request $request, $id)
