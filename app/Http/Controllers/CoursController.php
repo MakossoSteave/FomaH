@@ -13,9 +13,7 @@ class CoursController extends Controller
 {
     public function index()
     {
-        $cours = Cours::select('cours.*', 'formations.libelle','formateurs.id as formateurID','formateurs.nom as formateurNom','formateurs.prenom as formateurPrenom')
-        ->leftJoin('formations_contenir_cours', 'cours.id_cours', '=', 'formations_contenir_cours.id_cours')
-        ->leftJoin('formations', 'formations.id',"=","formations_contenir_cours.id_formation")
+        $cours = Cours::select('cours.*', 'formateurs.id as formateurID','formateurs.nom as formateurNom','formateurs.prenom as formateurPrenom')
         ->leftJoin('formateurs', 'formateurs.id',"=","cours.formateur")
         ->orderBy('created_at','asc')
         ->paginate(5)->setPath('cours');
@@ -97,7 +95,7 @@ class CoursController extends Controller
 
        return $cours;
     }
-    
+
     public function edit($id)
     {
        $cours = Cours::find($id);

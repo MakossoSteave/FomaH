@@ -35,10 +35,9 @@
             </div>
             <div class="media-content">
                 <div class="flex">
-                    <p class="title is-4">Cours n°{{$cour->numero_cours}}</p>
-                    <p class="title is-4 forma-marg"><span class="subtitle is-6">Créé par</span> {{$cour->formateurPrenom}} {{$cour->formateurNom}}</p>
+                <p class="title is-4">{{$cour->designation}}</p>
+                <p class="subtitle is-4 forma-marg"><span class="subtitle is-6">Créé par</span> {{$cour->formateurPrenom}} {{$cour->formateurNom}}</p>
                 </div>
-                <p class="subtitle is-6">{{$cour->designation}}</p>
             </div>
         </div>
 
@@ -47,7 +46,6 @@
                     <div>
                         <p class="title is-6">Nombre de chapitres: {{$cour->nombre_chapitres}}</p>
                         <p class="title is-6">Prix: {{$cour->prix}}€</p>
-                        <p class="title is-6">{{$cour->libelle}}</p>
                     </div>
                     <div class="flex-bottom">
                         <form action="{{ route('chapitre.filter', $cour->id_cours) }}" method="GET">

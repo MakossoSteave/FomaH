@@ -20,6 +20,7 @@ class CreateFormationsContenirCoursTable extends Migration
             $table->primary(['id_formation', 'id_cours']);
             $table->foreign('id_cours')->references('id_cours')->on('cours');    
             $table->foreign('id_formation')->references('id')->on('formations');
+            $table->integer('numero_cours');
             $table->timestamps();
         });
     }

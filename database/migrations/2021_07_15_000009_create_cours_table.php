@@ -15,9 +15,7 @@ class CreateCoursTable extends Migration
     {
         Schema::create('cours', function (Blueprint $table) {
             $table->engine='InnoDB';
-            $table->bigInteger('id_cours')->unsigned();
-            $table->integer('numero_cours')->unsigned();
-            $table->primary(['id_cours', 'numero_cours']);
+            $table->id('id_cours')->unsigned();
             $table->string('designation');
             $table->string('image')->nullable();
             $table->integer('nombre_chapitres');
