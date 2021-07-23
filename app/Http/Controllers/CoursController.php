@@ -52,7 +52,8 @@ class CoursController extends Controller
         }
       
         $utilisateurID = Auth::user()->id;
-
+        $formateur= new FormateurController;
+        $formateurID= $formateur->findFormateurID($utilisateurID);
         $numero_cours = Cours::select('cours.numero_cours')
         ->leftJoin('formations_contenir_cours', 'cours.id_cours', '=', 'formations_contenir_cours.id_cours')
         ->leftJoin('formations', 'formations.id',"=","formations_contenir_cours.id_formation")
@@ -104,7 +105,8 @@ class CoursController extends Controller
         $request->validate([
             'numero_cours' => 'required',
             'designation' => 'required',
-            'prix' => 'required'
+            'prix' => 'required',
+            'etat' => 'required'
         ]);
 
     
@@ -124,7 +126,7 @@ class CoursController extends Controller
             'image' => $image,
             'prix' => $request->get('prix'),
             'formateur' => $request->get('formateur'),
-            'etat' => 0,
+            'etat' => $request->get('etat'),
             'nombre_chapitres' => 0
         ]);
 

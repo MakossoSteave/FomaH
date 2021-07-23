@@ -63,7 +63,29 @@
                     <input name="prix" class="input" type="number" placeholder="Prix" value="{{$cours->prix}}">
                 </div>
         </div>
-
+        <div class="field">
+            <label class="label">Etat</label>
+                                    
+                                    <select class="form-select block w-full mt-1"  name="etat">
+                                          
+                                            <option 
+                                            @if($cours->etat == 1) value="1"
+                                            @else value="0"
+                                            @endif selected>
+                                            @if($cours->etat == 1) Activé
+                                            @else Désactivé
+                                            @endif
+                                            </option>
+                                            <option
+                                            @if(!$cours->etat == 1) value="1"
+                                            @else value="0"
+                                            @endif>
+                                            @if(!$cours->etat == 1) Activé
+                                            @else Désactivé
+                                            @endif
+                                            </option>
+                                        </select>
+        </div>
         <input name="formateur" type="hidden" value="{{$cours->formateur}}">
 
             <div class="control mt-4 mb-4">
