@@ -51,14 +51,7 @@ class CoursController extends Controller
       
         $utilisateurID = Auth::user()->id;
         $formateur= new FormateurController;
-        $formateurID= $formateur->findFormateurID($utilisateurID);
-        $numero_cours = FormationsContenirCours::where("id_formation","=",$request->get('formation_id'))->max('numero_cours');
-
-        if ($numero_cours == null) {
-            $numero_cours = 1;
-        } else {
-            $numero_cours = $numero_cours+1;
-        }
+        $formateurID= $formateur->findFormateurID($utilisateurID);      
 
         Cours::create([
             'id_cours' => $id,
@@ -71,6 +64,13 @@ class CoursController extends Controller
         ]);
 
         if($request->get('formation_id')!="") {
+            $numero_cours = FormationsContenirCours::where("id_formation","=",$request->get('formation_id'))->max('numero_cours');
+
+            if ($numero_cours == null) {
+                $numero_cours = 1;
+            } else {
+                $numero_cours = $numero_cours+1;
+            }
                 FormationsContenirCours::create([
                 'id_cours' => $id,
                 'id_formation' => $request->get('formation_id'),
@@ -160,14 +160,26 @@ class CoursController extends Controller
     }
     public function destroy($id)
     {
-        $formationContenirCours = FormationsContenirCours::where('id_cours',$id)->get();
+        // toutes les id formations qui contienent le cours
+        $formationContenirCoursID = FormationsContenirCours::where('id_cours',$id)->select('id_formation')->distinct();
+        // Supprimer le cours des formations
         FormationsContenirCours::where('id_cours',$id)->delete();
+        
         $Formation= new FormationController;
-        foreach($formationContenirCours as $f)
+
+        
+        foreach($formationContenirCoursID as $f)
         {
-            $Formation->Update_nombre_cours_total($f->id_formation,-1);
+            // Mettre à jour le nombre de cours total dans chaque formations
+
+            $Formation->Update_nombre_cours_total($f,-1);
+            // Mettre à jour le numero de cours dans chaque formations
+
+            FormationsContenirCours::where('id_formation',$f)
+            ->where("numero_cours",">",1)
+            ->decrement('numero_cours',1);
         }
-       
+        // Supprimer le cours
         Cours::where('id_cours',$id)->delete();
 
         return redirect('/cours')->with('success','Cours supprimé avec succes');
