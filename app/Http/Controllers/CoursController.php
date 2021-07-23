@@ -160,7 +160,10 @@ class CoursController extends Controller
     }
     public function destroy($id)
     {
+        $formationID = FormationsContenirCours::where('id_cours',$id)->value('id_formation');
         FormationsContenirCours::where('id_cours',$id)->delete();
+        $Formation= new FormationController;
+        $Formation->Update_nombre_cours_total($formationID,-1);
         Cours::where('id_cours',$id)->delete();
 
         return redirect('/cours')->with('success','Cours supprimé avec succes');
