@@ -76,6 +76,8 @@ class CoursController extends Controller
                 'id_formation' => $request->get('formation_id'),
                 'numero_cours' => $numero_cours
             ]);
+           $Formation= new FormationController;
+           $Formation->Update_nombre_cours_total($request->get('formation_id'),1);
         }
        
         return redirect('/cours')->with('success','Cours créé avec succès');
