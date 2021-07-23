@@ -64,11 +64,12 @@ class CoursController extends Controller
             'nombre_chapitres' => 0,
             'numero_cours' => 1
         ]);
-/*
+        /*
         FormationsContenirCours::create([
             'id_cours' => $id,
             'id_formation' => $request->get('formation_id')
-        ]);*/
+        ]);
+        */
 
         return redirect('/cours')->with('success','Cours créé avec succès');
     }
