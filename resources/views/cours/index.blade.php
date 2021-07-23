@@ -45,8 +45,7 @@
                         @endif
   </a>
                     <p class="title is-4">Cours n°{{$cour->numero_cours}}</p>
-                   
-                    <p class="title is-4"><span class="subtitle is-6">Créé par</span> {{$cour->formateurPrenom}} {{$cour->formateurNom}}</p>
+                    <p class="title is-4 forma-marg"><span class="subtitle is-6">Créé par</span> {{$cour->formateurPrenom}} {{$cour->formateurNom}}</p>
                 </div>
                 <p class="subtitle is-6">{{$cour->designation}}</p>
             </div>
@@ -60,7 +59,7 @@
                         <p class="title is-6">{{$cour->libelle}}</p>
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('chapitre.show', $cour->id_cours) }}" method="GET">
+                        <form action="{{ route('chapitre.filter', $cour->id_cours) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-primary">Voir les chapitres</button>
                         </form>

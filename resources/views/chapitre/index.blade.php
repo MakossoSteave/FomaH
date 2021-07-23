@@ -20,67 +20,67 @@
         </div>
     @endif
 
-    @if($chapitre->isEmpty())
+    @if($chapitres->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
             Aucun chapitre n'existe pour ce cours
         </div>
     @else
 
-    @foreach ($chapitre as $chap)
+    @foreach ($chapitres as $chapitre)
     <div class="card my-6">
         <div class="card-content">
             <div class="media">
-            @if(! empty($chap->image))
+            @if(! empty($chapitre->image))
             <div class="media-left">
-                <img class="image is-4by3" src="{{ URL::asset('/') }}img/chapitre/{{$chap->image}}" alt="Placeholder image">
+                <img class="image is-4by3" src="{{ URL::asset('/') }}img/chapitre/{{$chapitre->image}}" alt="Placeholder image">
             </div>
             @endif
             <div class="media-content">
                 <div class="flex">
-                    <p class="title is-4">chapitre n°{{$chap->numero_chapitre}}</p>
-                   <!-- <p class="title is-4"><span class="subtitle is-6">Créé par</span> {{$chap->formateurPrenom}} {{$chap->formateurNom}}</p>-->
+                    <p class="title is-4">chapitre n°{{$chapitre->numero_chapitre}}</p>
+                   <!-- <p class="title is-4"><span class="subtitle is-6">Créé par</span> {{$chapitre->formateurPrenom}} {{$chapitre->formateurNom}}</p>-->
                 </div>
-                <p class="subtitle is-6">{{$chap->designation}}</p>
+                <p class="subtitle is-6">{{$chapitre->designation}}</p>
             </div>
         </div>
 
             <div class="content">
                 <div class="flex">
                     <div>
-                      <!-- <p class="title is-6">Nombre de sections: {{$chap->nombre_chapitres}}</p>-->
-                      @if(! empty($chap->video))
+                      <!-- <p class="title is-6">Nombre de sections: {{$chapitre->nombre_chapitres}}</p>-->
+                      @if(! empty($chapitre->video))
                         <div class="media-left">
                             <video class="video is-4by3" width="320" height="240" controls>
-                            <source src="{{ URL::asset('/') }}vid/chapitre/{{$chap->video}}">
+                            <source src="{{ URL::asset('/') }}video/chapitre/{{$chapitre->video}}">
                             Your browser does not support the video tag.
                             </video> 
                         </div>
                         @endif
-                        <p class="title is-6">{{$chap->libelle}}</p>
+                        <p class="title is-6">{{$chapitre->libelle}}</p>
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('chapitre.show', $chap->id_cours) }}" method="GET">
+                        <form action="{{ route('chapitre.show', $chapitre->id_cours) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-primary">Voir les sections</button>
                         </form>
-                        <form action="{{ route('chapitre.edit', $chap->id_cours) }}" method="GET">
+                        <form action="{{ route('chapitre.edit', $chapitre->id_cours) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>
                             <p>
-                                <a class = "button is-danger button-card modal-button" data-target = "#{{$chap->id_cours}}">Supprimer</a>
+                                <a class = "button is-danger button-card modal-button" data-target = "#{{$chapitre->id_cours}}">Supprimer</a>
                             </p>
-                            <div id="{{$chap->id_cours}}" class="modal">
+                            <div id="{{$chapitre->id_cours}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
                                     <header class="modal-card-head">
-                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$chap->designation}}</p>
+                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$chapitre->designation}}</p>
                                     <button class="delete" aria-label="close"></button>
                                     </header>
                                     <section class="modal-card-body">
-                                        Souhaitez-vous supprimer le chapitre {{$chap->designation}} ?
+                                        Souhaitez-vous supprimer le chapitre {{$chapitre->designation}} ?
                                     </section>
-                                    <form action="{{ route('chapitre.destroy', $chap->id_cours) }}" method="POST">
+                                    <form action="{{ route('chapitre.destroy', $chapitre->id_cours) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <footer class="modal-card-foot">

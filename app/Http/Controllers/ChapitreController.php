@@ -4,16 +4,34 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Chapitre;
+use App\Models\Cours;
 use App\Http\Controllers\CoursController;
 class ChapitreController extends Controller
 {
-    public function index($id_Cours)
+    public function index()
     {
-        $chapitre = Chapitre::where("id_cours",$id_Cours)
-        ->orderBy('created_at','asc')
-        ->paginate(5)/*->setPath('chapitre')*/;
+        $chapitres = Chapitre::all();
                    
-        return view('chapitre.index',compact(['chapitre']));
+        return view('chapitre.index',compact(['chapitres']));
+    }
+
+    public function filter($id)
+    { /* $chapitre = Chapitre::where("id_cours",$id_Cours)
+        ->orderBy('created_at','asc')
+        ->paginate(5)/*->setPath('chapitre');
+                   
+        return view('chapitre.index',compact(['chapitre']));*/ 
+        $chapitres = Chapitre::where('id_cours', $id)
+        ->orderBy('created_at','asc')
+        ->get();          
+        return view('chapitre.filter',compact(['chapitres']));
+    }
+    
+    public function create()
+    {
+        $cours = Cours::all();
+
+        return view('chapitre.create',compact(['cours']));
     }
 
     public function store(Request $request)
@@ -34,24 +52,19 @@ class ChapitreController extends Controller
         return redirect()->back()->with('success','Create Successfully');
     }
 
-    public function show($id_Cours)
-    {
-    /*   $data =  Chapitre::find($id_chapitre);
+    // public function show($id_chapitre)
+    // {
+    //    $data =  Chapitre::find($id_chapitre);
 
-       return view('centre.Chapitre.show',compact(['data']));*/
-       $chapitre = Chapitre::where("id_cours",$id_Cours)
-       ->orderBy('created_at','asc')
-       ->paginate(5)/*->setPath('chapitre')*/;
-                  
-       return view('chapitre.index',compact(['chapitre']));
-    }
+    //    return view('chapitre.show',compact(['data']));
+    // }
 
     public function edit($id_chapitre)
     {
        $data = Chapitre::find($id_chapitre);
       
 
-       return view('centre.Chapitre.edit',compact(['data']));
+       return view('chapitre.edit',compact(['data']));
     }
 
     public function update(Request $request, $id_chapitre)
