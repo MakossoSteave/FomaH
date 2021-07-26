@@ -33,7 +33,7 @@ class CoursController extends Controller
         $request->validate([
          'designation' => 'required',
          'prix' => 'required',
-         'image' => 'mimes:jpeg,png,bmp,tiff |max:10000'
+         'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000'
         ]);
 
         do {
@@ -111,7 +111,7 @@ class CoursController extends Controller
             'designation' => 'required',
             'prix' => 'required',
             'etat' => 'required',
-            'image' => 'mimes:jpeg,png,bmp,tiff |max:10000'
+            'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000'
         ]);
 
     
