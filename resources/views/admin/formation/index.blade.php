@@ -55,6 +55,14 @@
                         </a>
                     </div>
                     <div class="flex-bottom">
+                        <form action="{{ route('coursFilter', $formation->id) }}" method="GET">
+                            @csrf
+                            <button type="submit" class="button button-card is-primary">Voir les cours</button>
+                        </form>
+                        <form action="{{ route('createCours', $formation->id) }}" method="GET">
+                            @csrf
+                            <button type="submit" class="button button-card is-link">Ajouter un cours</button>
+                        </form>
                         <form action="{{ route('cursus.edit', $formation->id) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>

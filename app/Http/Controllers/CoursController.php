@@ -23,9 +23,24 @@ class CoursController extends Controller
 
     public function create()
     {
+        $id = null;
+
         $formations = Formation::orderBy('libelle','asc')->get();
 
-        return view('admin.cours.create', compact(['formations']));
+        return view('admin.cours.create', compact(['formations'], 'id'));
+    }
+
+    public function filter($id)
+    {
+        $cours = Cours::select('cours.*', 'formations.libelle', 'formateurs.id as formateurID','formateurs.nom as formateurNom','formateurs.prenom as formateurPrenom')
+        ->join('formations_contenir_cours', 'cours.id_cours', '=', 'formations_contenir_cours.id_cours')
+        ->join('formations', 'formations.id',"=","formations_contenir_cours.id_formation")
+        ->join('formateurs', 'formateurs.id',"=","cours.formateur")
+        ->where('formations.id','=',$id)
+        ->orderBy('numero_cours','asc')
+        ->paginate(5)->setPath('cours');
+
+        return view('admin.cours.filter', compact(['cours']));
     }
 
     public function store(Request $request)
