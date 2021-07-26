@@ -15,8 +15,8 @@ class CoursController extends Controller
     {
         $cours = Cours::select('cours.*', 'formateurs.id as formateurID','formateurs.nom as formateurNom','formateurs.prenom as formateurPrenom')
         ->leftJoin('formateurs', 'formateurs.id',"=","cours.formateur")
-        ->orderBy('created_at','asc')
-        ->paginate(5)->setPath('cours');
+        ->orderBy('created_at','desc')
+        ->paginate(5);
                    
         return view('admin.cours.index',compact(['cours']));
     }
@@ -34,7 +34,8 @@ class CoursController extends Controller
     {
         $request->validate([
          'designation' => 'required',
-         'prix' => 'required'
+         'prix' => 'required',
+         'image' => 'mimes:jpeg,png,bmp,tiff |max:4096'
         ]);
 
         do {
@@ -78,7 +79,7 @@ class CoursController extends Controller
                 'id_formation' => $request->get('formation_id'),
                 'numero_cours' => $numero_cours
             ]);
-           $Formation= new FormationController;
+           $Formation= new FormationAdminController;
            $Formation->Update_nombre_cours_total($request->get('formation_id'),1);
         }
        
@@ -92,13 +93,13 @@ class CoursController extends Controller
        return view('admin.cours.show',compact(['cours']));
     }
 
-    public function findCours($id)
+  /*  public function findCours($id)
     {
-       $cours = Cours::find($id);
+       $cours = Cours::where('id_cours',$id)->get();
 
        return $cours;
     }
-
+*/
     public function edit($id)
     {
        $cours = Cours::find($id);
@@ -111,7 +112,8 @@ class CoursController extends Controller
         $request->validate([
             'designation' => 'required',
             'prix' => 'required',
-            'etat' => 'required'
+            'etat' => 'required',
+            'image' => 'mimes:jpeg,png,bmp,tiff |max:4096'
         ]);
 
     
@@ -171,7 +173,7 @@ class CoursController extends Controller
         // Supprimer le cours des formations
         FormationsContenirCours::where('id_cours',$id)->delete();
         
-        $Formation= new FormationController;
+        $Formation= new FormationAdminController;
 
         
         foreach($formationContenirCours as $f)

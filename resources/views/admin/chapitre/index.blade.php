@@ -8,7 +8,7 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-        <a href="{{ url('addChapitre')}}" class="has-icons-right" id="link-black">
+        <a href="{{ route('addChapitre', $idCours }}" class="has-icons-right" id="link-black">
             Ajouter un chapitre
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
@@ -86,7 +86,7 @@
     </div>
 
     @endforeach
-
+    {!! $chapitres->links() !!}
 </div>
 
 @endsection

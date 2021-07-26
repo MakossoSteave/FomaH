@@ -30,9 +30,11 @@
     <div class="card my-6">
         <div class="card-content">
             <div class="media">
+            @if(! empty($section->image))
             <div class="media-left">
                 <img class="image is-4by3" src="{{ URL::asset('/') }}img/section/{{$section->image}}" alt="Placeholder image">
             </div>
+            @endif
             <div class="media-content">
                 <p class="title is-4">{{$section->designation}}</p>
                 <p class="subtitle is-6">{{$section->contenu}}</p>

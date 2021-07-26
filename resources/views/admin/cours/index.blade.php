@@ -107,7 +107,7 @@
     </div>
 
     @endforeach
-
+    {!! $cours->links() !!}
     @endif
 </div>
 
