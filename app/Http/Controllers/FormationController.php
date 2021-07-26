@@ -76,27 +76,7 @@ class FormationController extends Controller
         return redirect()->back()->with('success','Modifié avec succes');
         
     }
-    public function Update_nombre_cours_total($id,$operation)
-    {
-        $formation = Formation::find($id);
-        $nombre_cours_total = $formation->nombre_cours_total+$operation;
-        if($nombre_cours_total<0) $nombre_cours_total=0;
-        Formation::where('id', $id)->update(array('nombre_cours_total' => $nombre_cours_total));
-    }
-    public function Update_nombre_chapitre_total($id,$operation)
-    {
-        $formation = Formation::find($id);
-        $nombre_chapitre_total = $formation->nombre_chapitre_total+$operation;
-        if($nombre_chapitre_total<0) $nombre_chapitre_total=0;
-        Formation::where('id', $id)->update(array('nombre_chapitre_total' => $nombre_chapitre_total));
-    }
-    public function etat($id)
-    {
-        $formation = Formation::find($id);
-        $etat = !$formation->etat;
-        Formation::where('id', $id)->update(array('etat' => $etat));
-        return redirect()->back()->with('success','Modifié avec succes');
-    }
+
     public function destroy($id)
     {
         Formation::where('id',$id)->delete();

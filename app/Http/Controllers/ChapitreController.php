@@ -12,7 +12,7 @@ class ChapitreController extends Controller
     {
         $chapitres = Chapitre::all();
                    
-        return view('chapitre.index',compact(['chapitres']));
+        return view('admin.chapitre.index',compact(['chapitres']));
     }
 
     public function filter($id)
@@ -24,14 +24,14 @@ class ChapitreController extends Controller
         $chapitres = Chapitre::where('id_cours', $id)
         ->orderBy('created_at','asc')
         ->get();          
-        return view('chapitre.filter',compact(['chapitres']));
+        return view('admin.chapitre.filter',compact(['chapitres']));
     }
     
     public function create()
     {
         $cours = Cours::all();
 
-        return view('chapitre.create',compact(['cours']));
+        return view('admin.chapitre.create',compact(['cours']));
     }
 
     public function store(Request $request)
@@ -64,7 +64,7 @@ class ChapitreController extends Controller
        $data = Chapitre::find($id_chapitre);
       
 
-       return view('chapitre.edit',compact(['data']));
+       return view('admin.chapitre.edit',compact(['data']));
     }
 
     public function update(Request $request, $id_chapitre)

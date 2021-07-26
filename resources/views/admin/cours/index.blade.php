@@ -37,13 +37,6 @@
             @endif
             <div class="media-content">
                 <div class="flex">
-                <a class="{{ $cour->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatCours', $cour->id_cours) }}">
-                        @if($cour->etat == 1) 
-                        Activé
-                        @else
-                        Désactivé
-                        @endif
-                </a>
                 <p class="title is-4">{{$cour->designation}}</p>
                 <p class="subtitle is-4 forma-marg"><span class="subtitle is-6">Créé par</span> {{$cour->formateurPrenom}} {{$cour->formateurNom}}</p>
                 </div>
@@ -55,6 +48,13 @@
                     <div>
                         <p class="title is-6">Nombre de chapitres: {{$cour->nombre_chapitres}}</p>
                         <p class="title is-6">Prix: {{$cour->prix}}€</p>
+                        <a class="{{ $cour->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatCours', $cour->id_cours) }}">
+                        @if($cour->etat == 1) 
+                        Activé
+                        @else
+                        Désactivé
+                        @endif
+                        </a>
                     </div>
                     <div class="flex-bottom">
                         <form action="{{ route('chapitre.filter', $cour->id_cours) }}" method="GET">
