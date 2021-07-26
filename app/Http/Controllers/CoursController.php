@@ -90,13 +90,13 @@ class CoursController extends Controller
        return view('admin.cours.show',compact(['cours']));
     }
 
-    public function findCours($id)
+  /*  public function findCours($id)
     {
-       $cours = Cours::find($id);
+       $cours = Cours::where('id_cours',$id)->get();
 
        return $cours;
     }
-
+*/
     public function edit($id)
     {
        $cours = Cours::find($id);
