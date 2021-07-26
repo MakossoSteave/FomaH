@@ -8,8 +8,8 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-        <a href="{{ route('addChapitre', $idCours ) }}" class="has-icons-right" id="link-black">
-            Ajouter un chapitre
+        <a href="{{ url('addCours')}}" class="has-icons-right" id="link-black">
+            Ajouter un cours
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
     </div>
@@ -20,67 +20,66 @@
         </div>
     @endif
 
-    @if($chapitres->isEmpty())
+    @if($cours->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
-            Aucun chapitre n'existe pour ce cours
+            Aucun cours n'existe pour cette formation
         </div>
     @else
 
-    @foreach ($chapitres as $chapitre)
+    @foreach ($cours as $cour)
     <div class="card my-6">
         <div class="card-content">
             <div class="media">
-            @if(! empty($chapitre->image))
+            @if(! empty($cour->image))
             <div class="media-left">
-                <img class="image is-4by3" src="{{ URL::asset('/') }}img/chapitre/{{$chapitre->image}}" alt="Placeholder image">
+                <img class="image is-4by3" src="{{ URL::asset('/') }}img/cours/{{$cour->image}}" alt="Placeholder image">
             </div>
             @endif
             <div class="media-content">
                 <div class="flex">
-                    <p class="title is-4">chapitre n°{{$chapitre->numero_chapitre}}</p>
-                   <!-- <p class="title is-4"><span class="subtitle is-6">Créé par</span> {{$chapitre->formateurPrenom}} {{$chapitre->formateurNom}}</p>-->
+                <p class="title is-4">{{$cour->designation}}</p>
+                <p class="subtitle is-4 forma-marg"><span class="subtitle is-6">Créé par</span> {{$cour->formateurPrenom}} {{$cour->formateurNom}}</p>
                 </div>
-                <p class="subtitle is-6">{{$chapitre->designation}}</p>
             </div>
         </div>
 
             <div class="content">
                 <div class="flex">
                     <div>
-                      <!-- <p class="title is-6">Nombre de sections: {{$chapitre->nombre_chapitres}}</p>-->
-                      @if(! empty($chapitre->video))
-                        <div class="media-left">
-                            <video class="video is-4by3" width="320" height="240" controls>
-                            <source src="{{ URL::asset('/') }}video/chapitre/{{$chapitre->video}}">
-                            Your browser does not support the video tag.
-                            </video> 
-                        </div>
+                        <p class="title is-6">Nombre de chapitres: {{$cour->nombre_chapitres}}</p>
+                        <p class="title is-6">Prix: {{$cour->prix}}€</p>
+                        <p class="title is-6">Formation : {{$cour->libelle}}</p>
+                        <a class="{{ $cour->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatCours', $cour->id_cours) }}">
+                        @if($cour->etat == 1) 
+                        Activé
+                        @else
+                        Désactivé
                         @endif
-                        <p class="title is-6">{{$chapitre->libelle}}</p>
+                        </a>
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('section', $chapitre->id_chapitre) }}" method="GET">
+                        <form action="{{ route('chapitre', $cour->id_cours) }}" method="GET">
                             @csrf
-                            <button type="submit" class="button button-card is-primary">Voir les sections</button>
+                            <button type="submit" class="button button-card is-primary">Voir les chapitres</button>
                         </form>
-                        <form action="{{ route('chapitre.edit', $chapitre->id_cours) }}" method="GET">
+                        <form action="{{ route('cours.edit', $cour->id_cours) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>
                             <p>
-                                <a class = "button is-danger button-card modal-button" data-target = "#{{$chapitre->id_cours}}">Supprimer</a>
+                                <a class = "button is-danger button-card modal-button" data-target = "#{{$cour->id_cours}}">Supprimer</a>
                             </p>
-                            <div id="{{$chapitre->id_cours}}" class="modal">
+                            <div id="{{$cour->id_cours}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
                                     <header class="modal-card-head">
-                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$chapitre->designation}}</p>
+                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$cour->designation}}</p>
                                     <button class="delete" aria-label="close"></button>
                                     </header>
                                     <section class="modal-card-body">
-                                        Souhaitez-vous supprimer le chapitre {{$chapitre->designation}} ?
+                                        Souhaitez-vous supprimer le cours {{$cour->designation}} ?
                                     </section>
-                                    <form action="{{ route('chapitre.destroy', $chapitre->id_cours) }}" method="POST">
+                                    <form action="{{ route('cours.destroy', $cour->id_cours) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <footer class="modal-card-foot">
@@ -109,7 +108,7 @@
     </div>
 
     @endforeach
-    {!! $chapitres->links() !!}
+    {!! $cours->links() !!}
     @endif
 </div>
 

@@ -10,25 +10,17 @@ use App\Models\FormationsContenirCours;
 class ChapitreController extends Controller
 {
  
-    public function index()
+    public function index(Request $request,$id)
     {
-        $chapitres = Chapitre::all() ->orderBy('created_at','asc')
-        ->paginate(5);
-        return view('admin.chapitre.index',compact(['chapitres']));
-    }
-
-    public function filter(Request $request,$id)
-    { /* $chapitre = Chapitre::where("id_cours",$id_Cours)
-        ->orderBy('created_at','asc')
-        ->paginate(5)/*->setPath('chapitre');
-                   
-        return view('chapitre.index',compact(['chapitre']));*/ 
         $request->session()->put('idCours', $id);
+
         $this->idCours=$id;
+
         $chapitres = Chapitre::where('id_cours', $id)
         ->orderBy('numero_chapitre','asc')
-        ->paginate(5);          
-        return view('admin.chapitre.filter',compact(['chapitres']),['idCours' => $request->session()->get('idCours')]);
+        ->paginate(5);  
+
+        return view('admin.chapitre.index',compact(['chapitres']),['idCours' => $request->session()->get('idCours')]);
     }
     
     public function create(Request $request)

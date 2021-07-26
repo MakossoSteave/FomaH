@@ -57,7 +57,7 @@
                         </a>
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('chapitre.filter', $cour->id_cours) }}" method="GET">
+                        <form action="{{ route('chapitre', $cour->id_cours) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-primary">Voir les chapitres</button>
                         </form>
