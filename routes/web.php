@@ -68,6 +68,11 @@ Route::get('/cursus', [App\Http\Controllers\FormationAdminController::class, 'in
 Route::get('/addFormation', [App\Http\Controllers\FormationAdminController::class, 'create'])->name('addformation');
 Route::get('/etatFormation/{id}', [App\Http\Controllers\FormationAdminController::class, 'etat'])->name('etatFormation');
 
+Route::get('/section/{id}', [App\Http\Controllers\SectionController::class, 'index'])->name('section');
+Route::get('/addSection/{id}', [App\Http\Controllers\SectionController::class, 'create'])->name('addSection');
+Route::get('/etatFormation/{id}', [App\Http\Controllers\SectionController::class, 'etat'])->name('etatSection');
+
+Route::resource('section','App\Http\Controllers\SectionController');
 Route::resource('cursus','App\Http\Controllers\FormationAdminController');
 Route::resource('cours','App\Http\Controllers\CoursController');
 Route::resource('chapitre','App\Http\Controllers\ChapitreController');

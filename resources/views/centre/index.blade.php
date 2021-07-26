@@ -163,7 +163,7 @@
                     <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3">
                         {{$formation->libelle}}  
                     </h3>
-                    <a class="{{ $formation->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etat', $formation->id) }}">
+                    <a class="{{ $formation->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatFormation', $formation->id) }}">
                         @if($formation->etat == 1) 
                         Activé
                         @else

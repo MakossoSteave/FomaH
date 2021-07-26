@@ -8,7 +8,7 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-        <a href="{{ url('addCours')}}" class="has-icons-right" id="link-black">
+        <a href="{{ route('addChapitre', $idCours ) }}" class="has-icons-right" id="link-black">
             Ajouter un chapitre
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
@@ -59,7 +59,7 @@
                         <p class="title is-6">{{$chapitre->libelle}}</p>
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('chapitre.show', $chapitre->id_cours) }}" method="GET">
+                        <form action="{{ route('section', $chapitre->id_chapitre) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-primary">Voir les sections</button>
                         </form>
@@ -109,7 +109,7 @@
     </div>
 
     @endforeach
-
+    {!! $chapitres->links() !!}
     @endif
 </div>
 

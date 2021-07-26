@@ -31,7 +31,8 @@ class FormationAdminController extends Controller
          'description' => 'required',
          'volume_horaire' => 'required',
          'prix' => 'required',
-         'categorie_id' =>'required'
+         'categorie_id' =>'required',
+         'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000'
         ]);
 
         do {
@@ -87,7 +88,8 @@ class FormationAdminController extends Controller
          'volume_horaire' => 'required',
          'prix' => 'required',
          'categorie_id' =>'required',
-         'etat' => 'required'
+         'etat' => 'required',
+         'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000'
         ]);
 
         if ($request->hasFile('image')) {
