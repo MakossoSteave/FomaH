@@ -70,7 +70,7 @@ class ChapitreController extends Controller
         Chapitre::create(['designation' => $request->get('designation')] + ['numero_chapitre' => $numero_chapitre[0]+1] + ['id_chapitre' => $id_chapitre]+['video'=>$video]+['image'=>$image]+['etat'=>0]+['id_cours'=>$idCours]);
         // $this->etat($id_chapitre);
         
-        return redirect('/chapitre/'.intval($request->session()->get('idCours')))->with('success','Chapitre créé avec succès');
+        return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Chapitre créé avec succès');
     }
 
     // public function show($id_chapitre)
@@ -99,7 +99,7 @@ class ChapitreController extends Controller
         ]);
 
         Chapitre::where('id_chapitre',$id_chapitre)->update($request->all());   
-        return redirect()->back()->with('success','Modifié avec succes');
+        return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Modifié avec succes');
         
     }
     public function Update_numero_chapitre($id_chapitre,$operation)
