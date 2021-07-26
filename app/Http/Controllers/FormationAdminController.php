@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
+use App\Models\FormationsContenirCours;
 use App\Models\Categorie;
 use App\Models\Formation;
-use Illuminate\Http\Request;
+use App\Models\Cours;
 
 class FormationAdminController extends Controller
 
@@ -112,6 +115,32 @@ class FormationAdminController extends Controller
        // $this->etat($id);
         return redirect('/cursus')->with('success','Formation modifié avec succès');
         
+    }
+
+    public function createCours($id)
+    {
+       $cours = Cours::all();
+
+       return view('admin.formation.cours.create',compact(['cours'], 'id'));
+    }
+
+    public function addCours(Request $request, $id)
+    {
+        $numero_cours = FormationsContenirCours::where("id_formation","=",$id)->max('numero_cours');
+
+        if ($numero_cours == null) {
+            $numero_cours = 1;
+        } else {
+            $numero_cours = $numero_cours+1;
+        }
+
+        FormationsContenirCours::create([
+            'id_cours' => $request->get('id_cours'),
+            'id_formation' => $id,
+            'numero_cours' => $numero_cours
+        ]);
+
+       return redirect('/cursus')->with('success','Le cours a été ajouté avec succès');
     }
 
     public function Update_nombre_cours_total($id,$operation)
