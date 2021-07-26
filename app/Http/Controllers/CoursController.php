@@ -76,7 +76,7 @@ class CoursController extends Controller
                 'id_formation' => $request->get('formation_id'),
                 'numero_cours' => $numero_cours
             ]);
-           $Formation= new FormationController;
+           $Formation= new FormationAdminController;
            $Formation->Update_nombre_cours_total($request->get('formation_id'),1);
         }
        
@@ -169,7 +169,7 @@ class CoursController extends Controller
         // Supprimer le cours des formations
         FormationsContenirCours::where('id_cours',$id)->delete();
         
-        $Formation= new FormationController;
+        $Formation= new FormationAdminController;
 
         
         foreach($formationContenirCours as $f)
