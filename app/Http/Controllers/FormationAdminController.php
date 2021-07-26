@@ -19,9 +19,9 @@ class FormationAdminController extends Controller
 
     public function create()
     {
-        $Categorie = Categorie::all();
+        $categories = Categorie::all();
 
-        return view('admin.formation.create',compact(['Categorie']));
+        return view('admin.formation.create',compact(['categories']));
     }
 
     public function store(Request $request)
@@ -33,13 +33,35 @@ class FormationAdminController extends Controller
          'prix' => 'required',
          'categorie_id' =>'required'
         ]);
+
         do {
             $id = rand(10000000, 99999999);
         } while(Formation::find($id)!=null);
 
-        Formation::create($request->all() + ['etat' => 0] + ['id' => $id]+ ['nombre_cours_total' => 0]+ ['nombre_chapitre_total' => 0]);
+        if ($request->hasFile('image')) {
+            $destinationPath = public_path('img/formation/');
+            $file = $request->file('image');
+            $filename = $file->getClientOriginalName();
+            $image = time().$filename;
+            $file->move($destinationPath, $image);
+        } else {
+            $image = null;
+        }
+
+        Formation::create([
+            'id' => $id,
+            'libelle' => $request->get('libelle'),
+            'description' => $request->get('description'),
+            'image' => $image,
+            'volume_horaire' => $request->get('volume_horaire'),
+            'prix' => $request->get('prix'),
+            'etat' => 0,
+            'nombre_cours_total' => 0,
+            'nombre_chapitre_total' => 0,
+            'categorie_id' => $request->get('categorie_id')
+        ]);
        // $this->etat($id);
-        return redirect()->back()->with('success','Create Successfully');
+        return redirect('/cursus')->with('success','Formation créé avec succès');
     }
 
     public function show($id)
@@ -51,10 +73,10 @@ class FormationAdminController extends Controller
 
     public function edit($id)
     {
-       $data = Formation::find($id);
-       $Categorie = Categorie::all();
+       $formation = Formation::find($id);
+       $categories = Categorie::all();
 
-       return view('admin.formation.edit',compact(['data'], ['Categorie']));
+       return view('admin.formation.edit',compact(['formation'], ['categories']));
     }
 
     public function update(Request $request, $id)
@@ -68,9 +90,27 @@ class FormationAdminController extends Controller
          'etat' => 'required'
         ]);
 
-        Formation::where('id',$id)->update($request->all());   
-        // $this->Update_nombre_chapitre_total($id,-1);
-        return redirect()->back()->with('success','Modifié avec succes');
+        if ($request->hasFile('image')) {
+            $destinationPath = public_path('img/formation/');
+            $file = $request->file('image');
+            $filename = $file->getClientOriginalName();
+            $image = time().$filename;
+            $file->move($destinationPath, $image);
+        } else {
+            $image = $request->get('image-link');
+        }
+
+        Formation::where('id',$id)->update([
+            'libelle' => $request->get('libelle'),
+            'description' => $request->get('description'),
+            'image' => $image,
+            'volume_horaire' => $request->get('volume_horaire'),
+            'prix' => $request->get('prix'),
+            'etat' => $request->get('etat'),
+            'categorie_id' => $request->get('categorie_id')
+        ]);
+       // $this->etat($id);
+        return redirect('/cursus')->with('success','Formation modifié avec succès');
         
     }
 
