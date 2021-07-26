@@ -86,7 +86,7 @@
     </div>
 
     @endforeach
-
+    {!! $chapitres->links() !!}
 </div>
 
 @endsection
