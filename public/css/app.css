@@ -14,12 +14,8 @@
 }
 
 #center-cours-select {
-    width: 24em;
+    width: 6em;
     margin: auto;
-}
-
-#marg-select {
-    margin-left: 5em;
 }
 
 .user {
@@ -60,4 +56,8 @@
     cursor: pointer;
     margin-left: 1em;
     margin-right: 0.5em;
+}
+
+.width-forma-button {
+    width: 20em;
 }

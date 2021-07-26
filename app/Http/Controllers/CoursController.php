@@ -23,9 +23,11 @@ class CoursController extends Controller
 
     public function create()
     {
+        $id = null;
+
         $formations = Formation::orderBy('libelle','asc')->get();
 
-        return view('admin.cours.create', compact(['formations']));
+        return view('admin.cours.create', compact(['formations'], 'id'));
     }
 
     public function store(Request $request)

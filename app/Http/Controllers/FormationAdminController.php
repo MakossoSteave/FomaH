@@ -143,6 +143,13 @@ class FormationAdminController extends Controller
        return redirect('/cursus')->with('success','Le cours a été ajouté avec succès');
     }
 
+    public function newCours($id)
+    {
+        $formations = Formation::orderBy('libelle','asc')->get();
+
+       return view('admin.cours.create', compact(['formations'], 'id'));
+    }
+
     public function Update_nombre_cours_total($id,$operation)
     {
         $formation = Formation::find($id);

@@ -16,10 +16,10 @@
     <form action="{{ route('addCours', $id) }}" method="POST" enctype="multipart/form-data" class="mt-6">
         @csrf
 
-        <div class="field" id="center-cours-select">
+        <div class="field has-text-centered">
             <label class="label is-size-3">Choisir le cours à ajouter</label>
                 <div class="control">
-                    <div class="select is-large mt-4 mb-4" id="marg-select">
+                    <div class="select is-large mt-4 mb-4" id="center-cours-select">
                     <select name="id_cours">
                         @foreach ($cours as $cour)
                             <option value="{{$cour->id_cours}}">{{$cour->designation}}</option>
@@ -27,10 +27,20 @@
                     </select>
                     </div>
                 </div>
-        </div>
-
             <div class="control mt-4 mb-4">
-                <button type="submit" class="button is-fullwidth is-link is-rounded">Ajouter</button>
+                <button type="submit" class="button width-forma-button is-link is-rounded">Ajouter</button>
+            </div>
+        </div>
+    </form>
+
+    <form action="{{ route('newCours', $id) }}" method="GET" enctype="multipart/form-data" class="mt-6">
+        @csrf
+
+        <div class="field has-text-centered mt-4">
+            <p class="field has-text-centered mt-2">Ou</p>
+                <label class="label is-size-3">Créer le cours à ajouter</label>
+            <div class="control mt-4 mb-4">
+                <button type="submit" class="button width-forma-button is-link is-rounded">Créer</button>
             </div>
         </div>
     </form>

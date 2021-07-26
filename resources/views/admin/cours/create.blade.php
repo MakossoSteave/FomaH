@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container is-max-desktop">
     @if ($errors->any())
     <div class="notification is-danger">
@@ -65,9 +66,9 @@
                 <div class="control">
                     <div class="select">
                     <select name="formation_id">
-                    <option value="" selected>Aucune</option>
+                    <option value="" {{ ($id == null) ?  'selected' : ''}}>Aucune</option>
                         @foreach ($formations as $formation)
-                            <option value="{{$formation->id}}">{{$formation->libelle}}</option>
+                            <option value="{{$formation->id}}" {{ ($id == $formation->id) ? 'selected' : '' }}>{{$formation->libelle}}</option>
                         @endforeach
                     </select>
                     </div>
