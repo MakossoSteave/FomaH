@@ -32,7 +32,8 @@ class SectionController extends Controller
     {
         $request->validate([
          'designation' => 'required',
-         'contenu' => 'required'
+         'contenu' => 'required',
+         'image' => 'mimes:jpeg,png,bmp,tiff |max:10000'
         ]);
 
         do {
@@ -55,8 +56,7 @@ class SectionController extends Controller
             'contenu' => $request->get('contenu'),
             'image' => $image,
             'etat' => 0,
-            'id_chapitre' => $request->get('id_chapitre'),
-            'image' => 'mimes:jpeg,png,bmp,tiff |max:10000'
+            'id_chapitre' => $request->get('id_chapitre')
         ]);
        
         return redirect('/section/'.intval($request->get('id_chapitre')))->with('success','Section créé avec succès');
