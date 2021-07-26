@@ -59,7 +59,7 @@
                         <p class="title is-6">{{$chapitre->libelle}}</p>
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('chapitre.show', $chapitre->id_cours) }}" method="GET">
+                        <form action="{{ route('section', $chapitre->id_chapitre) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-primary">Voir les sections</button>
                         </form>

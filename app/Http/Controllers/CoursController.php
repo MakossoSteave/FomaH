@@ -15,7 +15,7 @@ class CoursController extends Controller
     {
         $cours = Cours::select('cours.*', 'formateurs.id as formateurID','formateurs.nom as formateurNom','formateurs.prenom as formateurPrenom')
         ->leftJoin('formateurs', 'formateurs.id',"=","cours.formateur")
-        ->orderBy('created_at','asc')
+        ->orderBy('created_at','desc')
         ->paginate(5);
                    
         return view('admin.cours.index',compact(['cours']));
@@ -32,7 +32,8 @@ class CoursController extends Controller
     {
         $request->validate([
          'designation' => 'required',
-         'prix' => 'required'
+         'prix' => 'required',
+         'image' => 'mimes:jpeg,png,bmp,tiff |max:4096'
         ]);
 
         do {
@@ -109,7 +110,8 @@ class CoursController extends Controller
         $request->validate([
             'designation' => 'required',
             'prix' => 'required',
-            'etat' => 'required'
+            'etat' => 'required',
+            'image' => 'mimes:jpeg,png,bmp,tiff |max:4096'
         ]);
 
     

@@ -9,7 +9,7 @@ use App\Http\Controllers\CoursController;
 use App\Models\FormationsContenirCours;
 class ChapitreController extends Controller
 {
-    private $idCours;
+ 
     public function index()
     {
         $chapitres = Chapitre::all() ->orderBy('created_at','asc')
@@ -43,7 +43,8 @@ class ChapitreController extends Controller
     {
         $request->validate([
          'designation' => 'required',
-         'video' => 'required'
+         'video' => 'required',
+         'image' => 'mimes:jpeg,png,bmp,tiff |max:4096'
         ]);
       do {
             $id_chapitre = rand(10000000, 99999999);
@@ -53,7 +54,10 @@ class ChapitreController extends Controller
         $numero_chapitre=((Cours::where('id_cours',$idCours)->pluck('nombre_chapitres')));//numero chapitre = nombre chapitre total cours+1
         $Cours->Update_nombre_chapitres($idCours,1);//ajouter +1 au nombre total de chapitre cours
         $Formation = new FormationAdminController;
+        $FindCours=FormationsContenirCours::where('id_cours',$idCours)->count();
+        if($FindCours!=0){
         $Formation->Update_nombre_chapitre_total(FormationsContenirCours::where('id_cours',$idCours)->value('id_formation'),1);
+        }
 
         if ($request->hasFile('image')) {
             $destinationPath = public_path('img/chapitre/');
@@ -73,7 +77,8 @@ class ChapitreController extends Controller
        
         Chapitre::create(['designation' => $request->get('designation')] + ['numero_chapitre' => $numero_chapitre[0]+1] + ['id_chapitre' => $id_chapitre]+['video'=>$video]+['image'=>$image]+['etat'=>0]+['id_cours'=>$idCours]);
         // $this->etat($id_chapitre);
-        return redirect()->back()->with('success','Create Successfully');
+        
+        return redirect('/chapitre/'.intval($request->session()->get('idCours')))->with('success','Chapitre créé avec succès');
     }
 
     // public function show($id_chapitre)
@@ -96,8 +101,8 @@ class ChapitreController extends Controller
         $request->validate([
             'designation' => 'required',
             'video' => 'required',
-            'id_cours' => 'required',
-            'etat' => 'required'
+            'etat' => 'required',
+            'image' => 'mimes:jpeg,png,bmp,tiff |max:4096'
         ]);
 
         Chapitre::where('id_chapitre',$id_chapitre)->update($request->all());   
