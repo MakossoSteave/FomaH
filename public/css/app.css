@@ -1,11 +1,49 @@
-.custom-margin {
-    margin-right: 4.5em;
+#navbarBasicExample {
+    display: flex;
+    justify-content: space-between;
+}
+
+#logout-form:focus {
+    outline: none;
+}
+
+.image.is-4by3 {
+    padding-top: 0;
+    width: 14em;
+    margin-right: 1em;
 }
 
 .user {
     margin-top: 1em;
     display: flex;
     justify-content: space-between;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-bottom {
+    align-self: flex-end;
+    display: inherit;
+}
+
+.button-card {
+    width: 10em;
+    margin-right: 1em;
+}
+
+.forma-marg {
+    margin-right: .7em;
+}
+
+#link-black {
+    color: black;
+}
+
+#link-black:hover {
+    opacity: 60%;
 }
 
 .fas {

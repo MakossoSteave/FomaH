@@ -16,8 +16,9 @@ class CreateFormateurTable extends Migration
         Schema::create('formateurs', function (Blueprint $table) {
             $table->engine='InnoDB';
             $table->id();
-            $table->string('prenom');
             $table->integer('telephone');
+            $table->string('nom');
+            $table->string('prenom');
             $table->string('parcours');
             $table->string('cv');
             $table->bigInteger('user_id')->unsigned()->index();

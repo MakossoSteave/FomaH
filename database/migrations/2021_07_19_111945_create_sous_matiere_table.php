@@ -15,9 +15,11 @@ class CreateSousMatiereTable extends Migration
     public function up()
     {
         Schema::create('sous_matieres', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+            $table->engine='InnoDB';
             $table->id();
             $table->string('designation_sous_matiere');
+            $table->bigInteger('designation_matiere_id')->unsigned()->index();
+            $table->foreign('designation_matiere_id')->references('id')->on('matieres');
             $table->timestamps();
         });
         /*

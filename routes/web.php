@@ -35,12 +35,18 @@ Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'i
 Route::get('/intranet', [App\Http\Controllers\IntranetController::class, 'index'])->name('intranet');
 Route::get('parametre/{id}', [
     'as' => 'parametre',
-    'uses' => 'App\Http\Controllers\parametreController@show',
+    'uses' => 'App\Http\Controllers\parametreController@show'
 ]);
-Route::get('competence/{id}', [
-    'as' => 'competence',
-    'uses' => 'App\Http\Controllers\competenceController@show',
+Route::get('competence1/{id}', [
+    'as' => 'competence1',
+    'uses' => 'App\Http\Controllers\competenceController@show1',
 ]);
+Route::get('competence2/{id}', [
+    'as' => 'competence2',
+    'uses' => 'App\Http\Controllers\competenceController@show2',
+]);
+
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 Route::get('/formationshow', [App\Http\Controllers\formationshowController::class, 'index'])->name('formationshow');
 Route::get('message/{id}', [
@@ -52,7 +58,18 @@ Route::get('/Ajoutforma', [App\Http\Controllers\FormationController::class, 'cre
 
 Route::get('/cours', [App\Http\Controllers\CoursController::class, 'index'])->name('cours');
 Route::get('/addCours', [App\Http\Controllers\CoursController::class, 'create'])->name('addCours');
+Route::get('/etatCours/{id}', [App\Http\Controllers\CoursController::class, 'etat'])->name('etatCours');
 
+Route::get('/chapitres', [App\Http\Controllers\ChapitreController::class, 'index'])->name('chapitre');
+Route::get('/chapitre/{id}', [App\Http\Controllers\ChapitreController::class, 'filter'])->name('chapitre.filter');
+Route::get('/addChapitre/{id}', [App\Http\Controllers\ChapitreController::class, 'create'])->name('addChapitre');
+
+Route::get('/cursus', [App\Http\Controllers\FormationAdminController::class, 'index'])->name('cursus');
+Route::get('/addFormation', [App\Http\Controllers\FormationAdminController::class, 'create'])->name('addformation');
+Route::get('/etatFormation/{id}', [App\Http\Controllers\FormationAdminController::class, 'etat'])->name('etatFormation');
+
+Route::resource('cursus','App\Http\Controllers\FormationAdminController');
 Route::resource('cours','App\Http\Controllers\CoursController');
+Route::resource('chapitre','App\Http\Controllers\ChapitreController');
 Route::resource('centre','App\Http\Controllers\FormationController');
 Route::resource('stagiaire','App\Http\Controllers\StagiaireController');

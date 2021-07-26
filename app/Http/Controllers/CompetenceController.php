@@ -10,7 +10,16 @@ use  Illuminate\View\View;
 class competenceController extends Controller
 {
     
-    public function show(user $id) : View
+    public function show1(user $id) : View
+    {
+        $Matieres = Matiere::all();
+        $Sous_matieres = Sous_matiere::all();
+
+        return View('formateur.competence', compact('id',['Matieres','Sous_matieres']));
+
+    }
+
+    public function show2(user $id) : View
     {
         $Matieres = Matiere::all();
         $Sous_matieres = Sous_matiere::all();

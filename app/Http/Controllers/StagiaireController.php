@@ -16,16 +16,16 @@ class StagiaireController extends Controller
     }
     public function show($id)
     {
-       // $formation  = Formations::find($ids);
-        $formations = Formation ::find($id);
-        $user = $formations->userRef;
+       // $formation  = Formation::find($ids);
+        $Formation = Formation ::find($id);
+        $user = $Formation->userRef;
         $al = User:: find($user);
         $referenceee = Formation::where("userRef",$user)->take(10)->get();
         
       
         //$databis =Formation::all();
 
-       return view('stagiaire.formation.Show',compact(['formations','al', 'referenceee']));
+       return view('stagiaire.formation.Show',compact(['Formation','al', 'referenceee']));
     }
     
 }

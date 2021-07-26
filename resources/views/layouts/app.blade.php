@@ -68,7 +68,10 @@
                     </span>
 
                     <span class="icon is-medium">
-                        <i class="fas fa-power-off"></i>
+                        <form action="{{ route('logout')}}" method="POST">
+                            @csrf
+                            <button id="logout-form" class="submit"><i class="fas fa-power-off"></i></button>
+                        </form>
                     </span>
                 </div>
             </div>
@@ -79,7 +82,7 @@
             <div class="py-2 bg-indigo-100 lg:bg-white flex justify-center lg:justify-start lg:px-12">
                 <div class="cursor-pointer flex items-center">
                     <div>
-                        <a class="navbar-item" href="/"><svg class="w-10 text-indigo-500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 225 225" style="enable-background:new 0 0 225 225;" xml:space="preserve">
+                        <a class="navbar-item" href="/admin"><svg class="w-10 text-indigo-500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 225 225" style="enable-background:new 0 0 225 225;" xml:space="preserve">
                                 <style type="text/css">
                                 .st0 {
                                     fill: none;
@@ -109,12 +112,12 @@
             </div>
 
             <div id="navbarBasicExample" class="navbar-menu">
-                <a class="navbar-item custom-margin">
+                <a class="navbar-item">
                     Session
                 </a>
 
                 <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link custom-margin">
+                    <a class="navbar-link" href="{{ url('cursus')}}">
                     Cursus
                     </a>
 
@@ -126,12 +129,12 @@
                 </div>
 
                 <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link custom-margin">
+                    <a class="navbar-link" href="{{ url('cours')}}">
                     Cours
                     </a>
 
                     <div class="navbar-dropdown">
-                    <a class="navbar-item">
+                    <a class="navbar-item" href="{{ url('chapitres')}}">
                         Chapitres
                     </a>
                     <a class="navbar-item">
@@ -149,19 +152,19 @@
                     </div>
                 </div>
 
-                <a class="navbar-item custom-margin">
+                <a class="navbar-item">
                     Formateur
                 </a>
 
-                <a class="navbar-item custom-margin">
+                <a class="navbar-item">
                     Stagiaire
                 </a>
 
-                <a class="navbar-item custom-margin">
+                <a class="navbar-item">
                     Titre
                 </a>
 
-                <a class="navbar-item custom-margin">
+                <a class="navbar-item">
                     Catégorie
                 </a>
 

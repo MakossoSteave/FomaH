@@ -15,9 +15,11 @@ class CreateMatiereTable extends Migration
     public function up()
     {
         Schema::create('matieres', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+            $table->engine='InnoDB';
             $table->id();
             $table->string('designation_matiere');
+            $table->bigInteger('categorie_id')->unsigned()->index();
+            $table->foreign('categorie_id')->references('id')->on('categories');
             $table->timestamps();
         });
         /*

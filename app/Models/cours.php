@@ -10,8 +10,10 @@ class Cours extends Model
     use HasFactory;
 
     public $incrementing = false;
+
+    protected $primaryKey = 'id_cours';
     
     protected $fillable=[
-        'id_cours', 'numero_cours','designation','image','nombre_chapitre','prix','etat', 'formation_id'
+        'id_cours', 'numero_cours','designation','image','nombre_chapitres','prix','etat', 'formateur'
     ];
 }
