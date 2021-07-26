@@ -56,7 +56,7 @@ class SectionController extends Controller
             'image' => $image,
             'etat' => 0,
             'id_chapitre' => $request->get('id_chapitre'),
-            'image' => 'mimes:jpeg,png,bmp,tiff |max:4096'
+            'image' => 'mimes:jpeg,png,bmp,tiff |max:10000'
         ]);
        
         return redirect('/section/'.intval($request->get('id_chapitre')))->with('success','Section créé avec succès');
@@ -82,7 +82,7 @@ class SectionController extends Controller
             'designation' => 'required',
             'contenu' => 'required',
             'etat' => 'required',
-            'image' => 'mimes:jpeg,png,bmp,tiff |max:4096'
+            'image' => 'mimes:jpeg,png,bmp,tiff |max:10000'
         ]);
     
         if ($request->hasFile('image')) {

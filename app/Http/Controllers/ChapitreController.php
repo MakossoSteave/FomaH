@@ -43,8 +43,8 @@ class ChapitreController extends Controller
     {
         $request->validate([
          'designation' => 'required',
-         'video' => 'required',
-         'image' => 'mimes:jpeg,png,bmp,tiff |max:4096'
+         'video' => 'required|mimes:mp4,mov,ogg,qt ',
+         'image' => 'mimes:jpeg,png,bmp,tiff |max:10000'
         ]);
       do {
             $id_chapitre = rand(10000000, 99999999);
@@ -102,7 +102,8 @@ class ChapitreController extends Controller
             'designation' => 'required',
             'video' => 'required',
             'etat' => 'required',
-            'image' => 'mimes:jpeg,png,bmp,tiff |max:4096'
+            'image' => 'mimes:jpeg,png,bmp,tiff |max:10000',
+            'video' => 'required | mimes:mp4,mov,ogg,qt '
         ]);
 
         Chapitre::where('id_chapitre',$id_chapitre)->update($request->all());   

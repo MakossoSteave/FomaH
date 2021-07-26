@@ -55,7 +55,7 @@
 
         <div class="field">
             <label class="label">Ajouter une video</label>
-            <div id="file-js-video-chapitre" class="file has-name">
+            <div id="file-js-video-chapitre" class="file has-name" >
                     <label class="file-label">
                         <input class="file-input" type="file" name="video">
                         <span class="file-cta">
