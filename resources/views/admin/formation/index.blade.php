@@ -20,6 +20,12 @@
         </div>
     @endif
 
+    @if($formations->isEmpty())
+        <div class="notification is-warning has-text-centered my-4">
+            Aucune formation n'existe
+        </div>
+    @else
+
     @foreach ($formations as $formation)
     <div class="card my-6">
         <div class="card-content">
@@ -95,6 +101,8 @@
     </div>
 
     @endforeach
+
+    @endif
 
 </div>
 

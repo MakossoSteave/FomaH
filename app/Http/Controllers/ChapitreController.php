@@ -12,8 +12,8 @@ class ChapitreController extends Controller
     private $idCours;
     public function index()
     {
-        $chapitres = Chapitre::all();
-                   
+        $chapitres = Chapitre::all() ->orderBy('created_at','asc')
+        ->paginate(5);
         return view('admin.chapitre.index',compact(['chapitres']));
     }
 
@@ -26,8 +26,8 @@ class ChapitreController extends Controller
         $request->session()->put('idCours', $id);
         $this->idCours=$id;
         $chapitres = Chapitre::where('id_cours', $id)
-        ->orderBy('created_at','asc')
-        ->get();          
+        ->orderBy('numero_chapitre','asc')
+        ->paginate(5);          
         return view('admin.chapitre.filter',compact(['chapitres']),['idCours' => $request->session()->get('idCours')]);
     }
     

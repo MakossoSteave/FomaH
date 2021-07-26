@@ -16,7 +16,7 @@ class CoursController extends Controller
         $cours = Cours::select('cours.*', 'formateurs.id as formateurID','formateurs.nom as formateurNom','formateurs.prenom as formateurPrenom')
         ->leftJoin('formateurs', 'formateurs.id',"=","cours.formateur")
         ->orderBy('created_at','asc')
-        ->paginate(5)->setPath('cours');
+        ->paginate(5);
                    
         return view('admin.cours.index',compact(['cours']));
     }

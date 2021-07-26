@@ -8,8 +8,8 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-        <a href="{{ route('addChapitre', $idCours ) }}" class="has-icons-right" id="link-black">
-            Ajouter un chapitre
+        <a href="{{ route('addSection', $idChapitre) }}" class="has-icons-right" id="link-black">
+            Ajouter une section
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
     </div>
@@ -20,67 +20,55 @@
         </div>
     @endif
 
-    @if($chapitres->isEmpty())
+    @if($sections->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
-            Aucun chapitre n'existe pour ce cours
+            Aucune section n'existe pour ce chapitre
         </div>
     @else
 
-    @foreach ($chapitres as $chapitre)
+    @foreach ($sections as $section)
     <div class="card my-6">
         <div class="card-content">
             <div class="media">
-            @if(! empty($chapitre->image))
             <div class="media-left">
-                <img class="image is-4by3" src="{{ URL::asset('/') }}img/chapitre/{{$chapitre->image}}" alt="Placeholder image">
+                <img class="image is-4by3" src="{{ URL::asset('/') }}img/section/{{$section->image}}" alt="Placeholder image">
             </div>
-            @endif
             <div class="media-content">
-                <div class="flex">
-                    <p class="title is-4">chapitre n°{{$chapitre->numero_chapitre}}</p>
-                   <!-- <p class="title is-4"><span class="subtitle is-6">Créé par</span> {{$chapitre->formateurPrenom}} {{$chapitre->formateurNom}}</p>-->
-                </div>
-                <p class="subtitle is-6">{{$chapitre->designation}}</p>
+                <p class="title is-4">{{$section->designation}}</p>
+                <p class="subtitle is-6">{{$section->contenu}}</p>
             </div>
         </div>
 
             <div class="content">
                 <div class="flex">
                     <div>
-                      <!-- <p class="title is-6">Nombre de sections: {{$chapitre->nombre_chapitres}}</p>-->
-                      @if(! empty($chapitre->video))
-                        <div class="media-left">
-                            <video class="video is-4by3" width="320" height="240" controls>
-                            <source src="{{ URL::asset('/') }}video/chapitre/{{$chapitre->video}}">
-                            Your browser does not support the video tag.
-                            </video> 
-                        </div>
+                        <a class="{{ $section->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatSection', $section->id) }}">
+                        @if($section->etat == 1) 
+                        Activé
+                        @else
+                        Désactivé
                         @endif
-                        <p class="title is-6">{{$chapitre->libelle}}</p>
+                        </a>
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('chapitre.show', $chapitre->id_cours) }}" method="GET">
-                            @csrf
-                            <button type="submit" class="button button-card is-primary">Voir les sections</button>
-                        </form>
-                        <form action="{{ route('chapitre.edit', $chapitre->id_cours) }}" method="GET">
+                        <form action="{{ route('section.edit', $section->id) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>
                             <p>
-                                <a class = "button is-danger button-card modal-button" data-target = "#{{$chapitre->id_cours}}">Supprimer</a>
+                                <a class = "button is-danger button-card modal-button" data-target = "#{{$section->id}}">Supprimer</a>
                             </p>
-                            <div id="{{$chapitre->id_cours}}" class="modal">
+                            <div id="{{$section->id}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
                                     <header class="modal-card-head">
-                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$chapitre->designation}}</p>
+                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$section->designation}}</p>
                                     <button class="delete" aria-label="close"></button>
                                     </header>
                                     <section class="modal-card-body">
-                                        Souhaitez-vous supprimer le chapitre {{$chapitre->designation}} ?
+                                        Souhaitez-vous supprimer la section {{$section->designation}} ?
                                     </section>
-                                    <form action="{{ route('chapitre.destroy', $chapitre->id_cours) }}" method="POST">
+                                    <form action="{{ route('section.destroy', $section->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <footer class="modal-card-foot">
@@ -109,8 +97,9 @@
     </div>
 
     @endforeach
-    {!! $chapitres->links() !!}
+
     @endif
+
 </div>
 
 @endsection
