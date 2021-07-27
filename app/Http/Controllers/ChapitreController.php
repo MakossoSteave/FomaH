@@ -40,7 +40,7 @@ class ChapitreController extends Controller
         ]);
       do {
             $id_chapitre = rand(10000000, 99999999);
-        } while((Chapitre::where("id_chapitre",$id_chapitre))->count()!=0);
+        } while((Chapitre::find($id_chapitre))!=null);
         $Cours = new CoursController;
         $idCours= $request->session()->get('idCours');
         $numero_chapitre=((Cours::where('id_cours',$idCours)->pluck('nombre_chapitres')));//numero chapitre = nombre chapitre total cours+1
@@ -82,10 +82,10 @@ class ChapitreController extends Controller
 
     public function edit($id_chapitre)
     {
-       $data = Chapitre::find($id_chapitre);
+       $chapitre = Chapitre::find($id_chapitre);
       
 
-       return view('admin.chapitre.edit',compact(['data']));
+       return view('admin.chapitre.edit',compact(['chapitre']));
     }
 
     public function update(Request $request, $id_chapitre)

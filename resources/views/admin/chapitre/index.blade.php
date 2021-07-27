@@ -77,7 +77,7 @@
                             @csrf
                             <button type="submit" class="button button-card is-primary">Voir les sections</button>
                         </form>
-                        <form action="{{ route('chapitre.edit', $chapitre->id_cours) }}" method="GET">
+                        <form action="{{ route('chapitre.edit', $chapitre->id_chapitre) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>
