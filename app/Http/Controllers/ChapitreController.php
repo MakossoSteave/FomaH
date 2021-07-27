@@ -162,8 +162,8 @@ class ChapitreController extends Controller
         $Cours = new CoursController;
         $Cours->Update_nombre_chapitres($Chapitre->id_cours,-1);//ajouter +1 au nombre total de chapitre cours
         $Formation = new FormationAdminController;
-        $FindCours=FormationsContenirCours::where('id_cours',$Chapitre->id_cours)->count();
-        if($FindCours!=0){
+        $FindCours=FormationsContenirCours::where('id_cours',$Chapitre->id_cours)->first();
+        if($FindCours!=null){
         $Formation->Update_nombre_chapitre_total(FormationsContenirCours::where('id_cours',$Chapitre->id_cours)->value('id_formation'),-1);
         }
         Chapitre::where('id_cours',$Chapitre->id_cours)
