@@ -92,13 +92,36 @@ class ChapitreController extends Controller
     {
         $request->validate([
             'designation' => 'required',
-            'video' => 'required',
             'etat' => 'required',
             'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000',
-            'video' => 'required|mimes:mp4,mov,ogg,qt |max:2097152'
+            'video' => 'mimes:mp4,mov,ogg,qt |max:2097152'
         ]);
-
-        Chapitre::where('id_chapitre',$id_chapitre)->update($request->all());   
+        if ($request->hasFile('image')) {
+            $destinationPath = public_path('img/chapitre/');
+            $file = $request->file('image');
+            $filename = $file->getClientOriginalName();
+            $image = time().$filename;
+            $file->move($destinationPath, $image);
+        } else {
+            $chapitre=Chapitre::find($id_chapitre);
+            $image = $chapitre->image;
+        }
+        if ($request->hasFile('video')) {
+            $destinationPathVideo = public_path('video/chapitre/');
+            $fileVideo = $request->file('video');
+            $filenameVideo = $fileVideo->getClientOriginalName();
+            $video = time().$filenameVideo;
+            $fileVideo->move($destinationPathVideo, $video);
+        } else {
+            $chapitre=Chapitre::find($id_chapitre);
+            $video = $chapitre->video;
+        }
+        Chapitre::where('id_chapitre',$id_chapitre)->update([
+            'designation' => $request->get('designation'),
+            'image' => $image,
+            'video' => $video,
+            'etat' => $request->get('etat')
+        ]);   
         return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Modifié avec succes');
         
     }
