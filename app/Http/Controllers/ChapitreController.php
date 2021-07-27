@@ -7,6 +7,8 @@ use App\Models\Chapitre;
 use App\Models\Cours;
 use App\Http\Controllers\CoursController;
 use App\Models\FormationsContenirCours;
+//use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 class ChapitreController extends Controller
 {
  
@@ -33,21 +35,27 @@ class ChapitreController extends Controller
 
     public function store(Request $request)
     {
+        $idCours = $request->session()->get('idCours');
+        $this->CoursID = $idCours;
         $request->validate([
-         'designation' => 'required',
+         'designation' => ['required', Rule::unique('chapitres')->where(function ($query) use($idCours) {
+             
+            return $query->where('id_cours', $idCours);
+        })] ,
          'video' => 'required|mimes:mp4,mov,ogg,qt |max:2097152',
          'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000'
         ]);
       do {
             $id_chapitre = rand(10000000, 99999999);
         } while((Chapitre::find($id_chapitre))!=null);
+       // Chapitre::where
         $Cours = new CoursController;
-        $idCours= $request->session()->get('idCours');
-        $numero_chapitre=((Cours::where('id_cours',$idCours)->pluck('nombre_chapitres')));//numero chapitre = nombre chapitre total cours+1
+        
+        $numero_chapitre=((Cours::where('id_cours',$idCours)->value('nombre_chapitres')));//numero chapitre = nombre chapitre total cours+1
         $Cours->Update_nombre_chapitres($idCours,1);//ajouter +1 au nombre total de chapitre cours
         $Formation = new FormationAdminController;
-        $FindCours=FormationsContenirCours::where('id_cours',$idCours)->count();
-        if($FindCours!=0){
+        $FindCours=FormationsContenirCours::where('id_cours',$idCours)->first();
+        if($FindCours!=null){
         $Formation->Update_nombre_chapitre_total(FormationsContenirCours::where('id_cours',$idCours)->value('id_formation'),1);
         }
 
@@ -67,7 +75,7 @@ class ChapitreController extends Controller
             $video = time().$filenameVideo;
             $fileVideo->move($destinationPathVideo, $video);
        
-        Chapitre::create(['designation' => $request->get('designation')] + ['numero_chapitre' => $numero_chapitre[0]+1] + ['id_chapitre' => $id_chapitre]+['video'=>$video]+['image'=>$image]+['etat'=>0]+['id_cours'=>$idCours]);
+        Chapitre::create(['designation' => $request->get('designation')] + ['numero_chapitre' => $numero_chapitre+1] + ['id_chapitre' => $id_chapitre]+['video'=>$video]+['image'=>$image]+['etat'=>0]+['id_cours'=>$idCours]);
         // $this->etat($id_chapitre);
         
         return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Chapitre créé avec succès');
@@ -90,9 +98,17 @@ class ChapitreController extends Controller
 
     public function update(Request $request, $id_chapitre)
     {
+        $Cours = Chapitre::find($id_chapitre);
+        $idCours = $Cours->id_cours;
         $request->validate([
-            'designation' => 'required',
-            'etat' => 'required',
+         'designation' => ['required', Rule::unique('chapitres')->where(function ($query) use($idCours,$id_chapitre){
+             
+            return $query->where('id_cours', $idCours)
+            ->where('id_chapitre',"!=", $id_chapitre);
+        })] ,
+            'etat' => [
+                'required',
+                 Rule::in(['0', '1'])],
             'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000',
             'video' => 'mimes:mp4,mov,ogg,qt |max:2097152'
         ]);
