@@ -134,9 +134,6 @@
                     </a>
 
                     <div class="navbar-dropdown">
-                    <a class="navbar-item" href="{{ url('chapitres')}}">
-                        Chapitres
-                    </a>
                     <a class="navbar-item">
                         Projets
                     </a>
@@ -164,7 +161,7 @@
                     Titre
                 </a>
 
-                <a class="navbar-item">
+                <a class="navbar-item" href="{{ url('categorie')}}">
                     Catégorie
                 </a>
 

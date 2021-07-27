@@ -8,8 +8,8 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-        <a href="{{ route('addChapitre', $idCours ) }}" class="has-icons-right" id="link-black">
-            Ajouter un chapitre
+        <a href="{{ route('addCategorie') }}" class="has-icons-right" id="link-black">
+            Ajouter une categorie
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
     </div>
@@ -20,34 +20,20 @@
         </div>
     @endif
 
-    @if($chapitres->isEmpty())
+    @if($categories->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
             Aucun chapitre n'existe pour ce cours
         </div>
     @else
 
-    @foreach ($chapitres as $chapitre)
+    @foreach ($categories as $categorie)
     <div class="card my-6">
         <div class="card-content">
             <div class="media">
-            @if(! empty($chapitre->video))
-            <div class="media-left">
-                <video class="video is-4by3" width="320" height="240" controls>
-                <source src="{{ URL::asset('/') }}video/chapitre/{{$chapitre->video}}">
-                Your browser does not support the video tag.
-                </video> 
-            </div>
-            @endif
-            @if(! empty($chapitre->image))
-            <div class="media-left">
-                <img class="image is-4by3" src="{{ URL::asset('/') }}img/chapitre/{{$chapitre->image}}" alt="Placeholder image">
-            </div>
-            @endif
             <div class="media-content">
                 <div class="flex">
-                    <p class="title is-4">Chapitre n°{{$chapitre->numero_chapitre}}</p>
+                    <p class="title is-4">{{$categorie->designation}}</p>
                 </div>
-                <p class="subtitle is-6">{{$chapitre->designation}}</p>
             </div>
         </div>
 
@@ -56,28 +42,24 @@
                     <div>
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('section', $chapitre->id_chapitre) }}" method="GET">
-                            @csrf
-                            <button type="submit" class="button button-card is-primary">Voir les sections</button>
-                        </form>
-                        <form action="{{ route('chapitre.edit', $chapitre->id_cours) }}" method="GET">
+                        <form action="{{ route('categorie.edit', $categorie->id) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>
                             <p>
-                                <a class = "button is-danger button-card modal-button" data-target = "#{{$chapitre->id_cours}}">Supprimer</a>
+                                <a class = "button is-danger button-card modal-button" data-target = "#{{$categorie->id}}">Supprimer</a>
                             </p>
-                            <div id="{{$chapitre->id_cours}}" class="modal">
+                            <div id="{{$categorie->id}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
                                     <header class="modal-card-head">
-                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$chapitre->designation}}</p>
+                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$categorie->designation}}</p>
                                     <button class="delete" aria-label="close"></button>
                                     </header>
                                     <section class="modal-card-body">
-                                        Souhaitez-vous supprimer le chapitre {{$chapitre->designation}} ?
+                                        Souhaitez-vous supprimer la catégorie {{$categorie->designation}} ?
                                     </section>
-                                    <form action="{{ route('chapitre.destroy', $chapitre->id_cours) }}" method="POST">
+                                    <form action="{{ route('categorie.destroy', $categorie->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <footer class="modal-card-foot">
@@ -106,7 +88,7 @@
     </div>
 
     @endforeach
-    {!! $chapitres->links() !!}
+    
     @endif
 </div>
 
