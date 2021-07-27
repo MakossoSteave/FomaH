@@ -82,9 +82,9 @@
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>
                             <p>
-                                <a class = "button is-danger button-card modal-button" data-target = "#{{$chapitre->id_cours}}">Supprimer</a>
+                                <a class = "button is-danger button-card modal-button" data-target = "#{{$chapitre->id_chapitre}}">Supprimer</a>
                             </p>
-                            <div id="{{$chapitre->id_cours}}" class="modal">
+                            <div id="{{$chapitre->id_chapitre}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
                                     <header class="modal-card-head">
@@ -94,7 +94,7 @@
                                     <section class="modal-card-body">
                                         Souhaitez-vous supprimer le chapitre {{$chapitre->designation}} ?
                                     </section>
-                                    <form action="{{ route('chapitre.destroy', $chapitre->id_cours) }}" method="POST">
+                                    <form action="{{ route('chapitre.destroy', $chapitre->id_chapitre) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <footer class="modal-card-foot">
