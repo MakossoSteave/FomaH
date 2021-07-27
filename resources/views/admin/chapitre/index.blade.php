@@ -42,6 +42,20 @@
                 </div>
                 <p class="subtitle is-6">{{$chapitre->designation}}</p>
             </div>
+            <div class="media-content">
+                <div class="flex">
+               
+                <p class="title column is-9 {{ ! empty($chapitre->image) ? 'is-offset-7' : 'is-offset-8'  }}"> 
+                <a class="{{ $chapitre->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatChapitre', $chapitre->id_chapitre) }}">
+                        @if($chapitre->etat == 1) 
+                        Activé
+                        @else
+                        Désactivé
+                        @endif
+                        </a>
+                </p>
+                </div>
+            </div>
         </div>
 
             <div class="content">

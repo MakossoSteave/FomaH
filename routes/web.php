@@ -55,6 +55,7 @@ Route::get('/etatCours/{id}', [App\Http\Controllers\CoursController::class, 'eta
 
 Route::get('/chapitres/{id}', [App\Http\Controllers\ChapitreController::class, 'index'])->name('chapitre');
 Route::get('/addChapitre/{id}', [App\Http\Controllers\ChapitreController::class, 'create'])->name('addChapitre');
+Route::get('/etatChapitre/{id}', [App\Http\Controllers\ChapitreController::class, 'etat'])->name('etatChapitre');
 
 Route::get('/cursus', [App\Http\Controllers\FormationAdminController::class, 'index'])->name('cursus');
 Route::get('/addFormation', [App\Http\Controllers\FormationAdminController::class, 'create'])->name('addformation');
