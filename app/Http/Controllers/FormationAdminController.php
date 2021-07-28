@@ -8,6 +8,7 @@ use App\Models\FormationsContenirCours;
 use App\Models\Categorie;
 use App\Models\Formation;
 use App\Models\Cours;
+use Illuminate\Validation\Rule;
 
 class FormationAdminController extends Controller
 
@@ -30,10 +31,10 @@ class FormationAdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-         'libelle' => 'required',
+         'libelle' => ['required','unique|formations'],
          'description' => 'required',
-         'volume_horaire' => 'required',
-         'prix' => 'required',
+         'volume_horaire' =>  ['required','numeric','min:0'],
+         'prix' =>  ['required','numeric','min:0'],
          'categorie_id' =>'required',
          'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000'
         ]);
@@ -86,12 +87,17 @@ class FormationAdminController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-         'libelle' => 'required',
+         'libelle' =>['required', Rule::unique('formations')->where(function ($query) use($id) {
+             
+            return $query->where('id',"!=", $id);
+        })] ,
          'description' => 'required',
-         'volume_horaire' => 'required',
-         'prix' => 'required',
+         'volume_horaire' =>  ['required','numeric','min:0'],
+         'prix' =>  ['required','numeric','min:0'],
          'categorie_id' =>'required',
-         'etat' => 'required',
+         'etat' => [
+            'required',
+             Rule::in(['0', '1'])],
          'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000'
         ]);
 
