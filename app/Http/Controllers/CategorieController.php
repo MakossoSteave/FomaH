@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 use App\Models\Categorie;
-
+use Illuminate\Validation\Rule;
 class CategorieController extends Controller
 {
     public function index()
@@ -24,7 +24,7 @@ class CategorieController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-         'designation' => 'required'
+         'designation' => ['required','unique:categories']
         ]);
 
         do {
@@ -47,7 +47,10 @@ class CategorieController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'designation' => 'required'
+            'designation' => ['required', Rule::unique('categories')->where(function ($query) use($id) {
+             
+                return $query->where('id',"!=", $id);
+            })]
         ]);
 
         Categorie::where('id', $id)->update(['designation' => $request->get('designation')]);
