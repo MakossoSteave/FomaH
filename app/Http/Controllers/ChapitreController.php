@@ -9,6 +9,8 @@ use App\Http\Controllers\CoursController;
 use App\Models\FormationsContenirCours;
 //use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\Rules\FilenameImage;
+use App\Rules\FilenameVideo;
 class ChapitreController extends Controller
 {
  
@@ -42,8 +44,10 @@ class ChapitreController extends Controller
              
             return $query->where('id_cours', $idCours);
         })] ,
-         'video' => 'required|mimes:mp4,mov,ogg,qt |max:2097152',
-         'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000'
+         'video' => ['required','mimes:mp4,mov,ogg,qt ','max:2097152',
+         new FilenameVideo('/^[a-z]{0,191}$/')],
+         'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+         new FilenameImage('/^[a-z]{0,191}$/')]
         ]);
       do {
             $id_chapitre = rand(10000000, 99999999);
@@ -109,8 +113,10 @@ class ChapitreController extends Controller
             'etat' => [
                 'required',
                  Rule::in(['0', '1'])],
-            'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000',
-            'video' => 'mimes:mp4,mov,ogg,qt |max:2097152'
+                 'video' => ['mimes:mp4,mov,ogg,qt ','max:2097152',
+                 new FilenameVideo('/^[a-z]{0,191}$/')],
+                 'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+                 new FilenameImage('/^[a-z]{0,191}$/')]
         ]);
         if ($request->hasFile('image')) {
             $destinationPath = public_path('img/chapitre/');

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Section;
 use Illuminate\Validation\Rule;
+use App\Rules\FilenameImage;
 
 class SectionController extends Controller
 {
@@ -36,7 +37,8 @@ class SectionController extends Controller
              
                 return $query->where('id_chapitre', $request->get('id_chapitre'));})] ,
          'contenu' => ['required','max:5000'],
-         'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000'
+         'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+         new FilenameImage('/^[a-z]{0,191}$/')]
         ]);
 
         do {
@@ -89,7 +91,8 @@ class SectionController extends Controller
             'etat' => [
                 'required',
                  Rule::in(['0', '1'])],
-            'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000'
+                 'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+                 new FilenameImage('/^[a-z]{0,191}$/')]
         ]);
     
         if ($request->hasFile('image')) {

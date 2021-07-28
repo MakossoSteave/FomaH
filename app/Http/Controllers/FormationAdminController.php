@@ -9,6 +9,7 @@ use App\Models\Categorie;
 use App\Models\Formation;
 use App\Models\Cours;
 use Illuminate\Validation\Rule;
+use App\Rules\FilenameImage;
 
 class FormationAdminController extends Controller
 
@@ -36,7 +37,8 @@ class FormationAdminController extends Controller
          'volume_horaire' =>  ['required','numeric','min:0'],
          'prix' =>  ['required','numeric','min:0'],
          'categorie_id' =>'required',
-         'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000'
+         'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+         new FilenameImage('/^[a-z]{0,191}$/')]
         ]);
 
         do {
@@ -98,7 +100,8 @@ class FormationAdminController extends Controller
          'etat' => [
             'required',
              Rule::in(['0', '1'])],
-         'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000'
+             'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+             new FilenameImage('/^[a-z]{0,191}$/')]
         ]);
 
         if ($request->hasFile('image')) {

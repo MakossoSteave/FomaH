@@ -9,6 +9,8 @@ use App\Models\FormationsContenirCours;
 use App\Models\Formation;
 use App\Models\Cours;
 use Illuminate\Validation\Rule;
+use App\Rules\FilenameImage;
+
 class CoursController extends Controller
 {
     public function index()
@@ -48,7 +50,8 @@ class CoursController extends Controller
         $request->validate([
          'designation' => ['required','max:191', 'unique:cours'],
          'prix' => ['required','numeric','min:0'],
-         'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000'
+         'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+                 new FilenameImage('/^[a-z]{0,191}$/')]
         ]);
 
         do {
@@ -131,7 +134,8 @@ class CoursController extends Controller
             'etat' => [
                 'required',
                  Rule::in(['0', '1'])],
-            'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000'
+                 'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+                 new FilenameImage('/^[a-z]{0,191}$/')]
         ]);
 
     
