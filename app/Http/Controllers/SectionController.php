@@ -32,10 +32,10 @@ class SectionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'designation' => ['required', Rule::unique('sections')->where(function ($query) use($request) {
+            'designation' => ['required','max:191', Rule::unique('sections')->where(function ($query) use($request) {
              
                 return $query->where('id_chapitre', $request->get('id_chapitre'));})] ,
-         'contenu' => 'required',
+         'contenu' => ['required'],'max:5000',
          'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000'
         ]);
 
@@ -82,10 +82,10 @@ class SectionController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'designation' => ['required', Rule::unique('sections')->where(function ($query) use($request,$id) {
+            'designation' => ['required','max:191', Rule::unique('sections')->where(function ($query) use($request,$id) {
              return $query->where('id_chapitre', $request->get('id_chapitre'))
                          ->where("id","!=",$id);})] ,
-            'contenu' => 'required',
+            'contenu' => ['required','max:5000'],
             'etat' => [
                 'required',
                  Rule::in(['0', '1'])],

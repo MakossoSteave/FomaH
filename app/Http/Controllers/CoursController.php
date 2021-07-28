@@ -46,7 +46,7 @@ class CoursController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-         'designation' => ['required', 'unique:cours'],
+         'designation' => ['required','max:191', 'unique:cours'],
          'prix' => ['required','numeric','min:0'],
          'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000'
         ]);
@@ -123,7 +123,7 @@ class CoursController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'designation' => ['required', Rule::unique('cours')->where(function ($query) use($id) {
+            'designation' => ['required','max:191', Rule::unique('cours')->where(function ($query) use($id) {
              
                 return $query->where('id_cours',"!=", $id);
             })] ,

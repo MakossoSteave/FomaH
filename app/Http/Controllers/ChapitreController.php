@@ -38,7 +38,7 @@ class ChapitreController extends Controller
         $idCours = $request->session()->get('idCours');
         $this->CoursID = $idCours;
         $request->validate([
-         'designation' => ['required', Rule::unique('chapitres')->where(function ($query) use($idCours) {
+         'designation' => ['required','max:191', Rule::unique('chapitres')->where(function ($query) use($idCours) {
              
             return $query->where('id_cours', $idCours);
         })] ,
@@ -101,7 +101,7 @@ class ChapitreController extends Controller
         $Cours = Chapitre::find($id_chapitre);
         $idCours = $Cours->id_cours;
         $request->validate([
-         'designation' => ['required', Rule::unique('chapitres')->where(function ($query) use($idCours,$id_chapitre){
+         'designation' => ['required','max:191', Rule::unique('chapitres')->where(function ($query) use($idCours,$id_chapitre){
              
             return $query->where('id_cours', $idCours)
             ->where('id_chapitre',"!=", $id_chapitre);

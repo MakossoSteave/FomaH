@@ -24,7 +24,7 @@ class CategorieController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-         'designation' => ['required','unique:categories']
+         'designation' => ['required','unique:categories','max:191']
         ]);
 
         do {
@@ -47,7 +47,7 @@ class CategorieController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'designation' => ['required', Rule::unique('categories')->where(function ($query) use($id) {
+            'designation' => ['required','max:191', Rule::unique('categories')->where(function ($query) use($id) {
              
                 return $query->where('id',"!=", $id);
             })]

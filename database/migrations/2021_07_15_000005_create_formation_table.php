@@ -17,7 +17,7 @@ class CreateFormationTable extends Migration
             $table->engine='InnoDB';
             $table->id();
             $table->string('libelle');
-            $table->string('description');
+            $table->string('description',1000);
             $table->string('image')->nullable();
             $table->integer('volume_horaire');
             $table->integer('nombre_cours_total');

@@ -31,8 +31,8 @@ class FormationAdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-         'libelle' => ['required','unique|formations'],
-         'description' => 'required',
+         'libelle' => ['required','max:191','unique|formations'],
+         'description' => ['required','max:1000'],
          'volume_horaire' =>  ['required','numeric','min:0'],
          'prix' =>  ['required','numeric','min:0'],
          'categorie_id' =>'required',
@@ -87,11 +87,11 @@ class FormationAdminController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-         'libelle' =>['required', Rule::unique('formations')->where(function ($query) use($id) {
+         'libelle' =>['required','max:191', Rule::unique('formations')->where(function ($query) use($id) {
              
             return $query->where('id',"!=", $id);
         })] ,
-         'description' => 'required',
+         'description' => ['required','max:1000'],
          'volume_horaire' =>  ['required','numeric','min:0'],
          'prix' =>  ['required','numeric','min:0'],
          'categorie_id' =>'required',
