@@ -38,22 +38,26 @@
                 </video> 
             </div>
             @endif
-            @if(! empty($chapitre->image))
+           
+            <div class="columns">
+  <div class="column is-narrow">
+    <div style="width: 600px;">
+   
+      <p class="title is-5">Chapitre n°{{$chapitre->numero_chapitre}}</p>
+      <p class="subtitle">{{$chapitre->designation}}</p>
+       
+    @if(! empty($chapitre->image))
             <div class="media-left">
-                <img class="image is-4by3" src="{{ URL::asset('/') }}img/chapitre/{{$chapitre->image}}" alt="Placeholder image">
+                <img class="image"  style="width: 60px;" src="{{ URL::asset('/') }}img/chapitre/{{$chapitre->image}}" alt="Placeholder image">
             </div>
             @endif
-            <div class="media-content">
-                <div class="flex">
-                    <p class="title is-4">Chapitre n°{{$chapitre->numero_chapitre}}</p>
-                </div>
-                <p class="subtitle is-6">{{$chapitre->designation}}</p>
-            </div>
-            <div class="media-content">
-                <div class="flex">
-               
-                <p class="title column is-6 {{ ! empty($chapitre->image) ? 'is-offset-8' : 'is-offset-9'  }}"> 
-                <a class="{{ $chapitre->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatChapitre', $chapitre->id_chapitre) }}">
+    </div>
+  </div>
+  <div class="column">
+    
+      
+      <p class="subtitle is-half" > 
+                <a class="{{ $chapitre->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8 " href="{{ route('etatChapitre', $chapitre->id_chapitre) }}">
                         @if($chapitre->etat == 1) 
                         Activé
                         @else
@@ -61,10 +65,10 @@
                         @endif
                         </a>
                 </p>
-                </div>
-            </div>
-        </div>
+    </div>
+  </div>
 
+</div>
             <div class="content">
                 <div class="flex">
                     <div>

@@ -33,7 +33,7 @@ class SectionController extends Controller
         $request->validate([
          'designation' => 'required',
          'contenu' => 'required',
-         'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000'
+         'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000'
         ]);
 
         do {
@@ -82,7 +82,7 @@ class SectionController extends Controller
             'designation' => 'required',
             'contenu' => 'required',
             'etat' => 'required',
-            'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000'
+            'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000'
         ]);
     
         if ($request->hasFile('image')) {

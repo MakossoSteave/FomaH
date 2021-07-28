@@ -43,7 +43,7 @@ class ChapitreController extends Controller
             return $query->where('id_cours', $idCours);
         })] ,
          'video' => 'required|mimes:mp4,mov,ogg,qt |max:2097152',
-         'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000'
+         'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000'
         ]);
       do {
             $id_chapitre = rand(10000000, 99999999);
@@ -109,7 +109,7 @@ class ChapitreController extends Controller
             'etat' => [
                 'required',
                  Rule::in(['0', '1'])],
-            'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000',
+            'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000',
             'video' => 'mimes:mp4,mov,ogg,qt |max:2097152'
         ]);
         if ($request->hasFile('image')) {
