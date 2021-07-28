@@ -51,7 +51,7 @@ class CoursController extends Controller
          'designation' => ['required','max:191', 'unique:cours'],
          'prix' => ['required','numeric','min:0'],
          'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
-                 new FilenameImage('/^[a-z]{0,191}$/')]
+                 new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
         ]);
 
         do {
@@ -135,7 +135,7 @@ class CoursController extends Controller
                 'required',
                  Rule::in(['0', '1'])],
                  'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
-                 new FilenameImage('/^[a-z]{0,191}$/')]
+                 new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
         ]);
 
     
