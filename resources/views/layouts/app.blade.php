@@ -143,7 +143,7 @@
                     <a class="navbar-item">
                         Documents
                     </a>
-                    <a class="navbar-item">
+                    <a class="navbar-item" href="{{ url('qcm')}}">
                         QCM
                     </a>
                     </div>
