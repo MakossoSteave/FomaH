@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\FormationsContenirCours;
 use App\Models\Formation;
 use App\Models\Cours;
-
+use Illuminate\Validation\Rule;
 class CoursController extends Controller
 {
     public function index()
@@ -46,8 +46,8 @@ class CoursController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-         'designation' => 'required',
-         'prix' => 'required',
+         'designation' => ['required', 'unique:cours'],
+         'prix' => ['required','numeric','min:0'],
          'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000'
         ]);
 
@@ -123,9 +123,14 @@ class CoursController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'designation' => 'required',
-            'prix' => 'required',
-            'etat' => 'required',
+            'designation' => ['required', Rule::unique('cours')->where(function ($query) use($id) {
+             
+                return $query->where('id_cours',"!=", $id);
+            })] ,
+            'prix' => ['required','numeric','min:0'],
+            'etat' => [
+                'required',
+                 Rule::in(['0', '1'])],
             'image' => 'mimes:jpeg,png,bmp,tiff,jfif,gif,GIF |max:10000'
         ]);
 
