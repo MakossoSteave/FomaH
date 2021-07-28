@@ -17,7 +17,7 @@ class CreateSectionTable extends Migration
             $table->engine='InnoDB';
             $table->id();;
             $table->string('designation');
-            $table->string('contenu');
+            $table->string('contenu',5000);
             $table->string('image')->nullable();
             $table->boolean('etat');
             $table->bigInteger('id_chapitre')->unsigned()->index();
