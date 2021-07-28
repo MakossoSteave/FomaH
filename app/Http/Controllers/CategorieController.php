@@ -31,7 +31,7 @@ class CategorieController extends Controller
             $id = rand(10000000, 99999999);
         } while(Categorie::find($id) != null); 
 
-        Categorie::create($request->all());
+        Categorie::create($request->all()+['id' => $id]);
        
         return redirect('/categorie')->with('success','Categorie créé avec succès');
     }

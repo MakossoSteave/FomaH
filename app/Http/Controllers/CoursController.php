@@ -127,7 +127,7 @@ class CoursController extends Controller
              
                 return $query->where('id_cours',"!=", $id);
             })] ,
-            'prix' => ['required','numeric','min:0'],
+            'prix' => ['required','numeric|min:0'],
             'etat' => [
                 'required',
                  Rule::in(['0', '1'])],
