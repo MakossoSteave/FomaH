@@ -22,7 +22,7 @@
 
     @if($qcms->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
-            Aucun qcm n'existe pour ce cours
+            Aucun QCM n'existe pour ce cours
         </div>
     @else
 
