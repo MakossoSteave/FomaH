@@ -164,6 +164,28 @@ class CoursController extends Controller
                 $etat=0;
                 $etatCanChange=false;
             }
+        }else {
+            $cursus =  FormationsContenirCours::select('id_formation')
+            ->where('id_cours',$id)->get() ;
+         
+           foreach($cursus as $c) {
+                $coursDeLaFormation = FormationsContenirCours::select('id_cours')
+                ->where('id_formation',$c->id_formation)
+                ->get();
+                
+                $cours = Cours::where('etat',"=",1)
+                ->whereIn('id_cours',$coursDeLaFormation)
+                ->where('id_cours',"!=",$id)
+                ->count();
+            
+            if( $cours==0){
+
+     Formation::where('id',$c->id_formation)->update([
+                        
+                        'etat' => 0
+                       
+                    ]);}
+            }
         }
       
         Cours::where('id_cours', $id)->update([
@@ -211,6 +233,28 @@ class CoursController extends Controller
             if($chapitre ==0){
                 $etat=0;
                 $etatCanChange=false;
+            }
+        }else {
+            $cursus =  FormationsContenirCours::select('id_formation')
+            ->where('id_cours',$id)->get() ;
+         
+           foreach($cursus as $c) {
+                $coursDeLaFormation = FormationsContenirCours::select('id_cours')
+                ->where('id_formation',$c->id_formation)
+                ->get();
+                
+                $cours = Cours::where('etat',"=",1)
+                ->whereIn('id_cours',$coursDeLaFormation)
+                ->where('id_cours',"!=",$id)
+                ->count();
+            
+            if( $cours==0){
+
+     Formation::where('id',$c->id_formation)->update([
+                        
+                        'etat' => 0
+                       
+                    ]);}
             }
         }
         if(!$etatCanChange){
