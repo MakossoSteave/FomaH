@@ -156,7 +156,7 @@ class FormationAdminController extends Controller
         $CoursNombreChapitre = $Cours->nombre_chapitres;
         $this->Update_nombre_chapitre_total($id,$CoursNombreChapitre);
 
-       return redirect('/cursus')->with('success','Le cours a été ajouté avec succès');
+       return redirect('/cours/'.intval($id))->with('success','Le cours a été ajouté avec succès');
     }
 
     public function newCours($id)
