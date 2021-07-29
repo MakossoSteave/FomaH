@@ -41,10 +41,30 @@ Route::get('competence1/{id}', [
     'as' => 'competence1',
     'uses' => 'App\Http\Controllers\competenceController@show1',
 ]);
-Route::get('competence2/{id}', [
-    'as' => 'competence2',
-    'uses' => 'App\Http\Controllers\competenceController@show2',
+
+
+Route::get('dropdown/{id}', [
+    'as' => 'dropdown',
+    'uses' => 'App\Http\Controllers\DropdownController@index',
 ]);
+use App\Http\Controllers\DropdownController;
+//Route::get('dropdown/{id}',[DropdownController::class, 'index']);
+Route::get('getState',[DropdownController::class, 'getState'])->name('getState');
+Route::get('getCity',[DropdownController::class, 'getCity'])->name('getCity');
+
+
+Route::get('dropdownn/{id}', [
+    'as' => 'dropdownn',
+    'uses' => 'App\Http\Controllers\DropdownnController@index',
+]);
+use App\Http\Controllers\DropdownnController;
+//Route::get('dropdown/{id}',[DropdownController::class, 'index']);
+Route::get('getMatiere',[DropdownnController::class, 'getMatiere'])->name('getMatiere');
+Route::get('getSousMatiere',[DropdownnController::class, 'getSousMatiere'])->name('getSousMatiere');
+
+
+
+
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
@@ -73,3 +93,6 @@ Route::resource('cours','App\Http\Controllers\CoursController');
 Route::resource('chapitre','App\Http\Controllers\ChapitreController');
 Route::resource('centre','App\Http\Controllers\FormationController');
 Route::resource('stagiaire','App\Http\Controllers\StagiaireController');
+
+
+

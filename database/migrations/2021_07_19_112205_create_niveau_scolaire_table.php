@@ -15,7 +15,7 @@ class CreateNiveauScolaireTable extends Migration
     public function up()
     {
         Schema::create('niveau_scolaires', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+            $table->engine='InnoDB';
             $table->id();
             $table->string('designation_niveau_scolaire');
             $table->timestamps();
