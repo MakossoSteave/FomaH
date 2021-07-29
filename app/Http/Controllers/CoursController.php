@@ -230,7 +230,7 @@ class CoursController extends Controller
         // nombre de chapitres du cours
         $nombreChapitresCours=Cours::where('id_cours',$id)->value('nombre_chapitres');
         // toutes les id formations qui contienent le cours
-     
+        $this->checkEtat($id);
         $formationContenirCours = FormationsContenirCours::
             where('id_cours',$id)->get();
         // Supprimer le cours des formations
@@ -254,7 +254,7 @@ class CoursController extends Controller
             ->where("numero_cours",">",$f->numero_cours)
             ->decrement('numero_cours',1);
         }
-        $this->checkEtat($id);
+        
         // Supprimer le cours
         Cours::where('id_cours',$id)->delete();
 
