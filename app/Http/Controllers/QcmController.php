@@ -90,7 +90,14 @@ class QcmController extends Controller
 
     public function edit($id)
     {
-       $qcm = Qcm::find($id);
+        $qcm = Qcm::with(['Question_qcm' => function($query){
+            $query->where('question_qcm.qcm_id', 77360029)
+            ->with(['Reponse_question_qcm' => function($subquery){
+                $subquery->where('reponse_question_qcm.question_qcm_id', 35405809);
+            }]);
+        }])->get();
+
+        // $qcm = Qcm::find($id);
 
        return view('admin.qcm.edit',compact(['qcm']));
     }
