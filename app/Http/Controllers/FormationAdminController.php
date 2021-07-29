@@ -113,18 +113,39 @@ class FormationAdminController extends Controller
         } else {
             $image = $request->get('image-link');
         }
-
+        $etat = $request->get('etat');
+        $etatCanChange=true;
+        if($etat==1){
+        
+            $coursDeLaFormation = FormationsContenirCours::select('id_cours')
+            ->where('id_formation',$id)
+            ->get();
+            $cours = Cours::where('etat',"=",1)
+           
+            ->whereIn('id_cours',$coursDeLaFormation)
+            ->count();
+            
+            if( $cours ==0){
+                $etat=0;
+                $etatCanChange=false;
+            }
+        }
         Formation::where('id',$id)->update([
             'libelle' => $request->get('libelle'),
             'description' => $request->get('description'),
             'image' => $image,
             'volume_horaire' => $request->get('volume_horaire'),
             'prix' => $request->get('prix'),
-            'etat' => $request->get('etat'),
+            'etat' => $etat,
             'categorie_id' => $request->get('categorie_id')
         ]);
-       // $this->etat($id);
-        return redirect('/cursus')->with('success','Formation modifié avec succès');
+        if(!$etatCanChange){
+            return redirect('/cursus')->with('success','Formation modifié avec succès')
+            ->with('error',"L'état ne peut pas être modifié car aucun cours n'est actif ! ");
+        }else {
+            return redirect('/cursus')->with('success','Formation modifié avec succès');
+        }
+      
         
     }
 
@@ -194,8 +215,29 @@ class FormationAdminController extends Controller
     {
         $formation = Formation::find($id);
         $etat = !$formation->etat;
+        $etatCanChange=true;
+        if($etat==1){
+        
+            $coursDeLaFormation = FormationsContenirCours::select('id_cours')
+            ->where('id_formation',$id)
+            ->get();
+            $cours = Cours::where('etat',"=",1)
+           
+            ->whereIn('id_cours',$coursDeLaFormation)
+            ->count();
+            
+            if( $cours ==0){
+                $etat=0;
+                $etatCanChange=false;
+            }
+        }
+        if(!$etatCanChange){
+            return redirect()->back()->with('error',"L'état ne peut pas être modifié car aucun cours n'est actif ! ");
+        }else {
         Formation::where('id', $id)->update(array('etat' => $etat));
         return redirect()->back()->with('success','Modifié avec succes');
+        }
+       
     }
 
     public function destroy($id)
