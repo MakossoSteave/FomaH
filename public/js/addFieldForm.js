@@ -2,7 +2,6 @@ var counter = 0;
 
 function addQuestion(){
 
-
     var addQuestion = $("#addQuestion");
 
     addQuestion.append("<div class='field' id='questionReponse"+counter+"'></div>");

@@ -12,6 +12,10 @@
             </ul>
     </div>
     @endif
-    edit
+
+    <pre>
+    {{var_dump($qcm)}}
+    </pre>
+
 </div>
 @endsection

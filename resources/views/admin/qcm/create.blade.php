@@ -22,20 +22,7 @@
                     <input name="designation" class="input" type="text" placeholder="Titre du QCM">
                 </div>
         </div>
-
-        <!-- <div class="field">
-            <label class="label">Question</label>
-                <div class="control">
-                    <input name="question" class="input" type="text" placeholder="Question">
-                </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Explication</label>
-                <div class="control">
-                    <input name="explication" class="input" type="text" placeholder="Explication">
-                </div>
-        </div> -->
+        
         <div id="addQuestion"></div>
         
         <div class="flex">

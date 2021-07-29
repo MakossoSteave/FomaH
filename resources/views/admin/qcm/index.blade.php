@@ -9,7 +9,7 @@
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
         <a href="{{ url('addQcm')}}" class="has-icons-right" id="link-black">
-            Ajouter un qcm
+            Ajouter un QCM
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
     </div>
