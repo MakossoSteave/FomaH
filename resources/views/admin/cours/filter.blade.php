@@ -19,7 +19,13 @@
             {{ session('success') }}
         </div>
     @endif
-
+    
+    @if (session('error'))
+        <div class="notification is-danger has-text-centered my-4">
+        <button class="delete"></button>
+            {{ session('error') }}
+        </div>
+    @endif
     @if($cours->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
             Aucun cours n'existe pour cette formation

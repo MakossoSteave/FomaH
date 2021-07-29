@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\FormationsContenirCours;
 use App\Models\Formation;
 use App\Models\Cours;
+use App\Models\Chapitre;
 use Illuminate\Validation\Rule;
 use App\Rules\FilenameImage;
 
@@ -153,17 +154,33 @@ class CoursController extends Controller
         } else {
             $image = $request->get('image-link');
         }
-
+        $etat = $request->get('etat');
+        $etatCanChange=true;
+        if($etat==1){
+            $chapitre =  Chapitre::where('id_cours',$id)
+            ->where('etat',1)
+            ->count();
+            if($chapitre ==0){
+                $etat=0;
+                $etatCanChange=false;
+            }
+        }
+      
         Cours::where('id_cours', $id)->update([
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
             'formateur' => $request->get('formateur'),
-            'etat' => $request->get('etat'),
+            'etat' => $etat,
             'nombre_chapitres' => 0
         ]);
-
-        return redirect('/cours')->with('success','Cours modifié avec succes');
+        if(!$etatCanChange){
+            return redirect('/cours')->with('success','Cours modifié avec succes')
+            ->with('error',"L'état ne peut pas être modifié car aucun chapitre n'est actif ! ");
+        }else {
+            return redirect('/cours')->with('success','Cours modifié avec succes');
+        }
+       
     }
 
     // public function Update_numero_cours($id_cours,$operation)
@@ -186,8 +203,23 @@ class CoursController extends Controller
     {
         $cours = Cours::find($id);
         $etat = !$cours->etat;
+        $etatCanChange=true;
+        if($etat==1){
+            $chapitre =  Chapitre::where('id_cours',$id)
+            ->where('etat',1)
+            ->count();
+            if($chapitre ==0){
+                $etat=0;
+                $etatCanChange=false;
+            }
+        }
+        if(!$etatCanChange){
+            return redirect()->back()->with('error',"L'état ne peut pas être modifié car aucun chapitre n'est actif ! "); 
+        }
+        else {
         Cours::where('id_cours', $id)->update(array('etat' => $etat));
         return redirect()->back()->with('success','Modifié avec succes');
+    }
     }
     public function destroy($id)
     {
