@@ -165,27 +165,7 @@ class CoursController extends Controller
                 $etatCanChange=false;
             }
         }else {
-            $cursus =  FormationsContenirCours::select('id_formation')
-            ->where('id_cours',$id)->get() ;
-         
-           foreach($cursus as $c) {
-                $coursDeLaFormation = FormationsContenirCours::select('id_cours')
-                ->where('id_formation',$c->id_formation)
-                ->get();
-                
-                $cours = Cours::where('etat',"=",1)
-                ->whereIn('id_cours',$coursDeLaFormation)
-                ->where('id_cours',"!=",$id)
-                ->count();
-            
-            if( $cours==0){
-
-     Formation::where('id',$c->id_formation)->update([
-                        
-                        'etat' => 0
-                       
-                    ]);}
-            }
+            $this->checkEtat($id);
         }
       
         Cours::where('id_cours', $id)->update([
@@ -235,27 +215,7 @@ class CoursController extends Controller
                 $etatCanChange=false;
             }
         }else {
-            $cursus =  FormationsContenirCours::select('id_formation')
-            ->where('id_cours',$id)->get() ;
-         
-           foreach($cursus as $c) {
-                $coursDeLaFormation = FormationsContenirCours::select('id_cours')
-                ->where('id_formation',$c->id_formation)
-                ->get();
-                
-                $cours = Cours::where('etat',"=",1)
-                ->whereIn('id_cours',$coursDeLaFormation)
-                ->where('id_cours',"!=",$id)
-                ->count();
-            
-            if( $cours==0){
-
-     Formation::where('id',$c->id_formation)->update([
-                        
-                        'etat' => 0
-                       
-                    ]);}
-            }
+            $this->checkEtat($id);
         }
         if(!$etatCanChange){
             return redirect()->back()->with('error',"L'état ne peut pas être modifié car aucun chapitre n'est actif ! "); 
@@ -294,9 +254,33 @@ class CoursController extends Controller
             ->where("numero_cours",">",$f->numero_cours)
             ->decrement('numero_cours',1);
         }
+        $this->checkEtat($id);
         // Supprimer le cours
         Cours::where('id_cours',$id)->delete();
 
         return redirect()->back()->with('success','Cours supprimé avec succes');
+    }
+    private function checkEtat($id){
+        $cursus =  FormationsContenirCours::select('id_formation')
+        ->where('id_cours',$id)->get() ;
+     
+       foreach($cursus as $c) {
+            $coursDeLaFormation = FormationsContenirCours::select('id_cours')
+            ->where('id_formation',$c->id_formation)
+            ->get();
+            
+            $cours = Cours::where('etat',"=",1)
+            ->whereIn('id_cours',$coursDeLaFormation)
+            ->where('id_cours',"!=",$id)
+            ->count();
+        
+        if( $cours==0){
+
+ Formation::where('id',$c->id_formation)->update([
+                    
+                    'etat' => 0
+                   
+                ]);}
+        }
     }
 }
