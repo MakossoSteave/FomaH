@@ -130,7 +130,15 @@ class FormationAdminController extends Controller
 
     public function createCours($id)
     {
-       $cours = Cours::all();
+        $coursDeLaFormation = Cours::select('cours.id_cours')
+       
+       ->leftJoin('formations_contenir_cours', 'formations_contenir_cours.id_cours', '=','cours.id_cours')
+        ->where('formations_contenir_cours.id_formation',"=",$id)
+       ->get();
+
+        $cours = Cours::select('cours.*')
+        ->whereNotIn('id_cours',$coursDeLaFormation)
+        ->get();
 
        return view('admin.formation.cours.create',compact(['cours'], 'id'));
     }
