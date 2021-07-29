@@ -260,6 +260,24 @@ class FormationAdminController extends Controller
         $CoursNombreChapitre = $Cours->nombre_chapitres;
         $this->Update_nombre_chapitre_total($idFormation,-$CoursNombreChapitre);
 
+        $coursDeLaFormation = FormationsContenirCours::select('id_cours')
+            ->where('id_formation',$idFormation)
+            ->get();
+            
+            $coursNumber = Cours::where('etat',"=",1)
+            ->whereIn('id_cours',$coursDeLaFormation)
+            ->where('id_cours',"!=",$idCours)
+            ->count();
+        
+        if(  $coursNumber==0){
+
+ Formation::where('id',$idFormation)->update([
+                    
+                    'etat' => 0
+                   
+                ]);}
+
+
         FormationsContenirCours::where('id_cours',$idCours)
         ->where('id_formation',$idFormation)->delete();
 
