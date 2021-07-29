@@ -37,8 +37,16 @@
                 </div>
         </div> -->
         <div id="addQuestion"></div>
-
-        <a id="buttonAddQuestion" onclick="addQuestion()">Ajouter une question</a>
+        
+        <div class="flex">
+            <div></div>
+            <div class="mt-2 mb-2">
+                <a id="buttonAddQuestion" class="has-icons-right has-text-black" onclick="addQuestion()">
+                    Ajouter une question
+                    <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
+                </a>
+            </div>
+        </div>
 
         <div class="field">
             <label class="label">Choisir le chapitre du QCM</label>
