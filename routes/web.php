@@ -55,12 +55,14 @@ Route::get('/etatCours/{id}', [App\Http\Controllers\CoursController::class, 'eta
 
 Route::get('/chapitres/{id}', [App\Http\Controllers\ChapitreController::class, 'index'])->name('chapitre');
 Route::get('/addChapitre/{id}', [App\Http\Controllers\ChapitreController::class, 'create'])->name('addChapitre');
+Route::get('/etatChapitre/{id}', [App\Http\Controllers\ChapitreController::class, 'etat'])->name('etatChapitre');
 
 Route::get('/cursus', [App\Http\Controllers\FormationAdminController::class, 'index'])->name('cursus');
 Route::get('/addFormation', [App\Http\Controllers\FormationAdminController::class, 'create'])->name('addformation');
 Route::get('/createCours/{id}', [App\Http\Controllers\FormationAdminController::class, 'createCours'])->name('createCours');
 Route::post('/addCours/{id}', [App\Http\Controllers\FormationAdminController::class, 'addCours'])->name('addCours');
 Route::get('/newCours/{id}', [App\Http\Controllers\FormationAdminController::class, 'newCours'])->name('newCours');
+Route::get('/removeCoursFromFormation/{idCours}/{idFormation}', [App\Http\Controllers\FormationAdminController::class, 'removeCours'])->name('removeCours');
 Route::get('/etatFormation/{id}', [App\Http\Controllers\FormationAdminController::class, 'etat'])->name('etatFormation');
 
 Route::get('/section/{id}', [App\Http\Controllers\SectionController::class, 'index'])->name('section');

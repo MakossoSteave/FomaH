@@ -16,10 +16,16 @@
     
     @if (session('success'))
         <div class="notification is-success has-text-centered my-4">
+        <button class="delete"></button>
             {{ session('success') }}
         </div>
     @endif
-
+    @if (session('error'))
+        <div class="notification is-danger has-text-centered my-4">
+        <button class="delete"></button>
+            {{ session('error') }}
+        </div>
+    @endif
     @if($chapitres->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
             Aucun chapitre n'existe pour ce cours
@@ -38,19 +44,37 @@
                 </video> 
             </div>
             @endif
-            @if(! empty($chapitre->image))
+           
+            <div class="columns">
+  <div class="column is-narrow">
+    <div style="width: 600px;">
+   
+      <p class="title is-5">Chapitre n°{{$chapitre->numero_chapitre}}</p>
+      <p class="subtitle">{{$chapitre->designation}}</p>
+       
+    @if(! empty($chapitre->image))
             <div class="media-left">
-                <img class="image is-4by3" src="{{ URL::asset('/') }}img/chapitre/{{$chapitre->image}}" alt="Placeholder image">
+                <img class="image"  style="width: 60px;" src="{{ URL::asset('/') }}img/chapitre/{{$chapitre->image}}" alt="Placeholder image">
             </div>
             @endif
-            <div class="media-content">
-                <div class="flex">
-                    <p class="title is-4">Chapitre n°{{$chapitre->numero_chapitre}}</p>
-                </div>
-                <p class="subtitle is-6">{{$chapitre->designation}}</p>
-            </div>
-        </div>
+    </div>
+  </div>
+  <div class="column">
+    
+      
+      <p class="subtitle is-half" > 
+                <a class="{{ $chapitre->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8 " href="{{ route('etatChapitre', $chapitre->id_chapitre) }}">
+                        @if($chapitre->etat == 1) 
+                        Activé
+                        @else
+                        Désactivé
+                        @endif
+                        </a>
+                </p>
+    </div>
+  </div>
 
+</div>
             <div class="content">
                 <div class="flex">
                     <div>
@@ -60,14 +84,14 @@
                             @csrf
                             <button type="submit" class="button button-card is-primary">Voir les sections</button>
                         </form>
-                        <form action="{{ route('chapitre.edit', $chapitre->id_cours) }}" method="GET">
+                        <form action="{{ route('chapitre.edit', $chapitre->id_chapitre) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>
                             <p>
-                                <a class = "button is-danger button-card modal-button" data-target = "#{{$chapitre->id_cours}}">Supprimer</a>
+                                <a class = "button is-danger button-card modal-button" data-target = "#{{$chapitre->id_chapitre}}">Supprimer</a>
                             </p>
-                            <div id="{{$chapitre->id_cours}}" class="modal">
+                            <div id="{{$chapitre->id_chapitre}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
                                     <header class="modal-card-head">
@@ -77,7 +101,7 @@
                                     <section class="modal-card-body">
                                         Souhaitez-vous supprimer le chapitre {{$chapitre->designation}} ?
                                     </section>
-                                    <form action="{{ route('chapitre.destroy', $chapitre->id_cours) }}" method="POST">
+                                    <form action="{{ route('chapitre.destroy', $chapitre->id_chapitre) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <footer class="modal-card-foot">
