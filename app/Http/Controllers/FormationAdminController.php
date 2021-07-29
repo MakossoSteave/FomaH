@@ -151,6 +151,11 @@ class FormationAdminController extends Controller
             'numero_cours' => $numero_cours
         ]);
 
+        $this->Update_nombre_cours_total($id,1);
+        $Cours = Cours::find($request->get('id_cours'));
+        $CoursNombreChapitre = $Cours->nombre_chapitres;
+        $this->Update_nombre_chapitre_total($id,$CoursNombreChapitre);
+        
        return redirect('/cursus')->with('success','Le cours a été ajouté avec succès');
     }
 
