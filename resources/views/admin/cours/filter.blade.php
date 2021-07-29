@@ -8,7 +8,7 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-        <a href="{{ url('addCours')}}" class="has-icons-right" id="link-black">
+        <a href="{{ route('createCours', $FormationID) }}" class="has-icons-right" id="link-black">
             Ajouter un cours
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>

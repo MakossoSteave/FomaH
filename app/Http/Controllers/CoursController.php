@@ -42,7 +42,7 @@ class CoursController extends Controller
         ->orderBy('numero_cours','asc')
         ->paginate(5)->setPath('cours');
 
-        return view('admin.cours.filter', compact(['cours']));
+        return view('admin.cours.filter', compact(['cours']),["FormationID" => $id]);
     }
 
     public function store(Request $request)

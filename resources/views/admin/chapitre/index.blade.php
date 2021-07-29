@@ -16,10 +16,16 @@
     
     @if (session('success'))
         <div class="notification is-success has-text-centered my-4">
+        <button class="delete"></button>
             {{ session('success') }}
         </div>
     @endif
-
+    @if (session('error'))
+        <div class="notification is-danger has-text-centered my-4">
+        <button class="delete"></button>
+            {{ session('error') }}
+        </div>
+    @endif
     @if($chapitres->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
             Aucun chapitre n'existe pour ce cours

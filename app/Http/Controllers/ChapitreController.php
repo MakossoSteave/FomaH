@@ -145,7 +145,7 @@ class ChapitreController extends Controller
             'video' => $video,
             'etat' => $request->get('etat')
         ]);   
-        return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Modifié avec succes');
+        return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Modifié avec succes')->with('error','error test');
         
     }
     public function Update_numero_chapitre($id_chapitre,$operation)
