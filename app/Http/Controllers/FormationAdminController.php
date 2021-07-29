@@ -32,7 +32,7 @@ class FormationAdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-         'libelle' => ['required','max:191','unique|formations'],
+         'libelle' => ['required','max:191','unique:formations'],
          'description' => ['required','max:1000'],
          'volume_horaire' =>  ['required','numeric','min:0'],
          'prix' =>  ['required','numeric','min:0'],
