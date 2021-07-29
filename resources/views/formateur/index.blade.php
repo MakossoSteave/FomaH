@@ -41,25 +41,6 @@
                     <i class="fas fa-sliders-h "></i>
                     <button type="button"
                         class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        
-                        <a href="{{ route('competence1', [Auth::user()->id]) }}">
-                            <span>cptence_1</span>
-                        </a>
-                    </button>
-                </div>
-                <div class="relative">
-                    <i class="fas fa-sliders-h "></i>
-                    <button type="button"
-                        class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        <a href="{{ route('dropdown', [Auth::user()->id]) }}">
-                            <span>cptence_2</span>
-                        </a>
-                    </button>
-                </div>
-                <div class="relative">
-                    <i class="fas fa-sliders-h "></i>
-                    <button type="button"
-                        class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <a href="{{ route('dropdownn', [Auth::user()->id]) }}">
                             <span>cptence_2_final</span>
                         </a>

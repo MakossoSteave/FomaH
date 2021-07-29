@@ -59,35 +59,35 @@
     });
   }else{
     $("#matiere").empty();
-    $("#city").empty();
+    $("#sousmatiere").empty();
   }   
   });
-  /* <!--
-  $('#state').on('change',function(){
-  var stateID = $(this).val();  
-  if(stateID){
+  
+  $('#matiere').on('change',function(){
+  var matiereID = $(this).val();  
+  if(matiereID){
     $.ajax({
       type:"GET",
-      url:"{{url('getCity')}}?state_id="+stateID,
+      url:"{{url('getSousMatiere')}}?matiere_id="+matiereID,
       success:function(res){        
       if(res){
-        $("#city").empty();
- $("#city").append('<option>Select City</option>');
+        $("#sousmatiere").empty();
+ $("#sousmatiere").append('<option>Selectionner une sous matiere</option>');
         $.each(res,function(key,value){
-          $("#city").append('<option value="'+key+'">'+value+'</option>');
+          $("#sousmatiere").append('<option value="'+key+'">'+value+'</option>');
         });
       
       }else{
-        $("#city").empty();
+        $("#sousmatiere").empty();
       }
       }
     });
   }else{
-    $("#city").empty();
+    $("#sousmatiere").empty();
   }
     
   });
---> */
+
 </script>
 
 </body>
