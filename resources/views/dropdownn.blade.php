@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Laravel 8 Dynamic Dependent Dropdown using Jquery Ajax - XpertPhp</title>
+  <title>Déclaration de compétence</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -12,7 +12,7 @@
 <body>
  
 <div class="container">
-  <h2>Laravel 8 Dynamic Dependent Dropdown using Jquery Ajax</h2>
+  <h2>Déclaration de compétence</h2>
     <div class="form-group">
       <label for="categoriee">Categorie :</label>
     <!-- c'est le id="categorie" qui récupère l'information-->
@@ -54,6 +54,7 @@
       
       }else{
         $("#matiere").empty();
+        $("#sousmatiere").empty();
       }
       }
     });
@@ -72,7 +73,7 @@
       success:function(res){        
       if(res){
         $("#sousmatiere").empty();
- $("#sousmatiere").append('<option>Selectionner une sous matiere</option>');
+        $("#sousmatiere").append('<option>Selectionner une sous matiere</option>');
         $.each(res,function(key,value){
           $("#sousmatiere").append('<option value="'+key+'">'+value+'</option>');
         });
