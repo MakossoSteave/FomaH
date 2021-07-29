@@ -216,6 +216,6 @@ class CoursController extends Controller
         // Supprimer le cours
         Cours::where('id_cours',$id)->delete();
 
-        return redirect('/cours')->with('success','Cours supprimé avec succes');
+        return redirect()->back()->with('success','Cours supprimé avec succes');
     }
 }
