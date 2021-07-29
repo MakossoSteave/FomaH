@@ -155,7 +155,7 @@ class FormationAdminController extends Controller
         $Cours = Cours::find($request->get('id_cours'));
         $CoursNombreChapitre = $Cours->nombre_chapitres;
         $this->Update_nombre_chapitre_total($id,$CoursNombreChapitre);
-        
+
        return redirect('/cursus')->with('success','Le cours a été ajouté avec succès');
     }
 
@@ -195,5 +195,27 @@ class FormationAdminController extends Controller
         Formation::where('id',$id)->delete();
         return redirect()->back()->with('success','Supprimé avec succes');
     }
+    public function removeCours($idCours,$idFormation){
 
+        $formationContenirCours = FormationsContenirCours::
+            where('id_cours',$idCours)
+            ->where('id_formation',$idFormation)
+            ->first();
+
+        $this->Update_nombre_cours_total($idFormation,-1);
+
+   
+
+        $Cours = Cours::find($idCours);
+        $CoursNombreChapitre = $Cours->nombre_chapitres;
+        $this->Update_nombre_chapitre_total($idFormation,-$CoursNombreChapitre);
+
+        FormationsContenirCours::where('id_cours',$idCours)
+        ->where('id_formation',$idFormation)->delete();
+
+        FormationsContenirCours::where('id_formation',$idFormation)
+        ->where("numero_cours",">",$formationContenirCours->numero_cours)
+        ->decrement('numero_cours',1);
+        return redirect()->back()->with('success','Supprimé avec succes');
+    } 
 }
