@@ -139,6 +139,11 @@ class ChapitreController extends Controller
             $chapitre=Chapitre::find($id_chapitre);
             $video = $chapitre->video;
         }
+
+        if($request->get('etat')==0){
+            $this->checkEtat($idCours,$id_chapitre);
+        }
+        
         Chapitre::where('id_chapitre',$id_chapitre)->update([
             'designation' => $request->get('designation'),
             'image' => $image,
@@ -159,12 +164,21 @@ class ChapitreController extends Controller
     {
         $Chapitre = Chapitre::find($id_chapitre);
         $etat = !$Chapitre->etat;
+      
+        if($etat==0){
+            $coursId=  $Chapitre->id_cours;
+            $this->checkEtat($coursId,$id_chapitre);
+        }
         Chapitre::where('id_chapitre', $id_chapitre)->update(array('etat' => $etat));
         return redirect()->back()->with('success','Modifié avec succes');
     }
     public function destroy($id_chapitre)
     {
         $Chapitre= Chapitre::find($id_chapitre);
+        
+        $coursId=  $Chapitre->id_cours;
+        $this->checkEtat($coursId,$id_chapitre);
+       
         Chapitre::where('id_chapitre',$id_chapitre)->delete();
         $Cours = new CoursController;
         $Cours->Update_nombre_chapitres($Chapitre->id_cours,-1);//ajouter +1 au nombre total de chapitre cours
@@ -178,7 +192,16 @@ class ChapitreController extends Controller
             ->decrement('numero_chapitre',1);
         return redirect()->back()->with('success','Supprimé avec succes');
     }
-    public function checkEtat($id){
-        
+    public function checkEtat($id,$id_chapitre){
+        $ChapitreActifCours= Chapitre::where('id_cours',$id)->where('etat',1)->where('id_chapitre',"!=",$id_chapitre)->count();
+        if($ChapitreActifCours == 0){
+            Cours::where('id_cours',$id)->update([
+                
+                'etat' => 0
+               
+            ]);
+            $CoursController = new CoursController;
+            $CoursController->checkEtat($id);
+        }
     }
 }
