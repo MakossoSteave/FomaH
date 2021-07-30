@@ -103,8 +103,8 @@ class ChapitreController extends Controller
 
     public function update(Request $request, $id_chapitre)
     {
-        $Cours = Chapitre::find($id_chapitre);
-        $idCours = $Cours->id_cours;
+        $chapitre = Chapitre::find($id_chapitre);
+        $idCours = $chapitre->id_cours;
         $request->validate([
          'designation' => ['required','max:191', Rule::unique('chapitres')->where(function ($query) use($idCours,$id_chapitre){
              
@@ -142,8 +142,27 @@ class ChapitreController extends Controller
 
         if($request->get('etat')==0){
             $this->checkEtat($idCours,$id_chapitre);
-        }
+            $this->updateNumeroChapitre($chapitre,"etat");
+        } else {
+            $Numero= Chapitre::where('id_cours',$idCours)->where('etat',1)->max('numero_chapitre');
+            Chapitre::where('id_chapitre',$id_chapitre)->update([
+                    
+                'numero_chapitre' => $Numero+1
+               
+            ]);
+           
+            $Cours = new CoursController;
+                $Cours->Update_nombre_chapitres($idCours,1);//ajouter +1 au nombre total de chapitre cours
+                $Formation = new FormationAdminController;
+                $FindCours=FormationsContenirCours::where('id_cours',$idCours)->first();
+                if($FindCours!=null){
+                $Formation->Update_nombre_chapitre_total(FormationsContenirCours::where('id_cours',$idCours)->value('id_formation'),1);
+                }
+
         
+            }
+        
+
         Chapitre::where('id_chapitre',$id_chapitre)->update([
             'designation' => $request->get('designation'),
             'image' => $image,
@@ -164,11 +183,47 @@ class ChapitreController extends Controller
     {
         $Chapitre = Chapitre::find($id_chapitre);
         $etat = !$Chapitre->etat;
-      
+        $coursId=  $Chapitre->id_cours;
         if($etat==0){
-            $coursId=  $Chapitre->id_cours;
+           
             $this->checkEtat($coursId,$id_chapitre);
-        }
+            $this->updateNumeroChapitre($Chapitre,"etat");
+        }else {
+            $Numero= Chapitre::where('id_cours',$coursId)->where('etat',1)->max('numero_chapitre');
+            Chapitre::where('id_chapitre',$id_chapitre)->update([
+                    
+                'numero_chapitre' => $Numero+1
+               
+            ]);
+            /*$testChapitre = Chapitre::where('numero_chapitre',$Chapitre->numero_chapitre)->where('id_cours',$coursId)->where('id_chapitre','!=',$id_chapitre)->where('etat',1)->get();
+            if($testChapitre!=null){
+            $ChapitreMin =  Chapitre::where('numero_chapitre',$Chapitre->numero_chapitre)->where('id_cours',$coursId)->min('created_at');
+            $chap=  Chapitre::where('numero_chapitre',$Chapitre->numero_chapitre)->where('id_cours',$coursId)->where('created_at',$ChapitreMin)->value('id_chapitre');*/
+            $Cours = new CoursController;
+                $Cours->Update_nombre_chapitres($Chapitre->id_cours,1);//ajouter +1 au nombre total de chapitre cours
+                $Formation = new FormationAdminController;
+                $FindCours=FormationsContenirCours::where('id_cours',$coursId)->first();
+                if($FindCours!=null){
+                $Formation->Update_nombre_chapitre_total(FormationsContenirCours::where('id_cours',$coursId)->value('id_formation'),1);
+                }
+
+          /*  if($chap==$id_chapitre){
+                
+                Chapitre::where('id_cours',$coursId)
+                    ->where("numero_chapitre",'>=',$Chapitre->numero_chapitre)
+                    ->where('id_chapitre',"!=",$id_chapitre)
+                    ->where('etat',1)
+                    ->increment('numero_chapitre',1);
+            }
+            else {
+            
+                Chapitre::where('id_cours',$coursId)
+                ->where("numero_chapitre",">",$Chapitre->numero_chapitre)
+                ->where('etat',1)
+                ->increment('numero_chapitre',1);  
+            }
+            }*/
+            }
         Chapitre::where('id_chapitre', $id_chapitre)->update(array('etat' => $etat));
         return redirect()->back()->with('success','Modifié avec succes');
     }
@@ -180,16 +235,11 @@ class ChapitreController extends Controller
         $this->checkEtat($coursId,$id_chapitre);
        
         Chapitre::where('id_chapitre',$id_chapitre)->delete();
-        $Cours = new CoursController;
-        $Cours->Update_nombre_chapitres($Chapitre->id_cours,-1);//ajouter +1 au nombre total de chapitre cours
-        $Formation = new FormationAdminController;
-        $FindCours=FormationsContenirCours::where('id_cours',$Chapitre->id_cours)->first();
-        if($FindCours!=null){
-        $Formation->Update_nombre_chapitre_total(FormationsContenirCours::where('id_cours',$Chapitre->id_cours)->value('id_formation'),-1);
-        }
-        Chapitre::where('id_cours',$Chapitre->id_cours)
-            ->where("numero_chapitre",">",$Chapitre->numero_chapitre)
-            ->decrement('numero_chapitre',1);
+
+        //update numero chapitre
+        $this->updateNumeroChapitre($Chapitre,null);
+        //
+
         return redirect()->back()->with('success','Supprimé avec succes');
     }
     public function checkEtat($id,$id_chapitre){
@@ -203,5 +253,25 @@ class ChapitreController extends Controller
             $CoursController = new CoursController;
             $CoursController->checkEtat($id);
         }
+    }
+    private function updateNumeroChapitre($Chapitre,$etat){
+        $Cours = new CoursController;
+        $Cours->Update_nombre_chapitres($Chapitre->id_cours,-1);//ajouter +1 au nombre total de chapitre cours
+        $Formation = new FormationAdminController;
+        $FindCours=FormationsContenirCours::where('id_cours',$Chapitre->id_cours)->first();
+        if($FindCours!=null){
+        $Formation->Update_nombre_chapitre_total(FormationsContenirCours::where('id_cours',$Chapitre->id_cours)->value('id_formation'),-1);
+        }
+        if($etat!=null){
+            Chapitre::where('id_cours',$Chapitre->id_cours)
+            ->where("numero_chapitre",">",$Chapitre->numero_chapitre)
+            ->where("etat",1)
+            ->decrement('numero_chapitre',1);
+        }else {
+            Chapitre::where('id_cours',$Chapitre->id_cours)
+            ->where("numero_chapitre",">",$Chapitre->numero_chapitre)
+            ->decrement('numero_chapitre',1);
+        }
+       
     }
 }
