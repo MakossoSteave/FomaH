@@ -1,39 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Laravel 8 Dynamic Dependent Dropdown using Jquery Ajax - XpertPhp</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
-<body>
- 
-<div class="container">
-  <h2>Déclaration de compétence</h2>
-    <div class="form-group">
-      <label for="categoriee">Categorie :</label>
-    <!-- c'est le id="categorie" qui récupère l'information-->
-    <select id="categorie" name="categorie" class="form-control">
-        <option value="" selected disabled>Selectionner une Categorie</option>
-         @foreach($categories as $key => $categorie)
-         <option value="{{$key}}"> {{$categorie}}</option>
-         @endforeach
-         </select>
-    </div>
+@extends('layouts.app')
 
-    <div class="form-group">
-      <label for="matieree">Matiere :</label>
-      <!-- c'est le id="matiere" qui récupère l'information-->
-      <select id="matiere" name="matiere"  class="form-control"></select>
-    </div>
+@section('content')
+  
+  
+<div class="container">
+    <h3 class="title is-3">Déclaration de compétence</h3>
+    <!-- <div class="hauteur"> -->
+          <div class="form-group hauteur_dropdown">
+            <div>
+            <h5 class="title is-5">Catégorie :</h5>              
+            </div>         
+     
+    <!-- c'est le id="categorie" qui récupère l'information-->
+          <div class="control has-icons-left">
+            <div class="select">
+              <div class="select is-info">
+                
+                  <select id="categorie" name="categorie" class="form-control taille">
+                    <option selected >Sélectionner une catégorie</option>
+                    @foreach($categories as $key => $categorie)
+                    <option value="{{$key}}"> {{$categorie}}</option>
+                    @endforeach
+                  </select>
+                    
+              </div>
+            </div>
+
+            <div class="icon is-small is-left">
+            <i class="fa fa-certificate " aria-hidden="true" style=color:#0080FF></i>
+            </div>
+
+          </div>
+          </div>
+        <div class="form-group hauteur_dropdown">
+          <div>
+          <h5 class="title is-5">Matière :</h5> 
+          </div>
+          
+          <!-- c'est le id="matiere" qui récupère l'information-->
+          <div class="control has-icons-left">
+            <div class="select is-link">
+            <select id="matiere" name="matiere"  class="form-control taille"></select>
+            </div>
+            <div class="icon is-small is-left">
+          <i class="fa fa-certificate " aria-hidden="true" style=color:#0080FF></i>
+          </div>
+          </div>
+        </div>
     
-    <div class="form-group">
-        <label for="sousmatieree">Sous Matiere :</label>
-        <select id="sousmatiere" name="sousmatiere"  class="form-control"></select>
-    </div>
+        <div class="form-group hauteur_dropdown">
+        <div>
+        <h5 class="title is-5">Sous Matière :</h5>
+          </div>
+          <div class="control has-icons-left">
+            <div class="select is-link">
+            <select id="sousmatiere" name="sousmatiere"  class="form-control taille"></select>
+            </div>
+            <div class="icon is-small is-left">
+          <i class="fa fa-certificate " aria-hidden="true" style=color:#0080FF></i>
+          </div>
+        </div>
 </div>
 
 
@@ -92,3 +118,4 @@
 
 </body>
 </html>
+@endsection
