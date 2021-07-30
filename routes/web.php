@@ -37,20 +37,10 @@ Route::get('parametre/{id}', [
     'as' => 'parametre',
     'uses' => 'App\Http\Controllers\parametreController@show'
 ]);
-Route::get('competence1/{id}', [
-    'as' => 'competence1',
-    'uses' => 'App\Http\Controllers\competenceController@show1',
-]);
 
 
-Route::get('dropdown/{id}', [
-    'as' => 'dropdown',
-    'uses' => 'App\Http\Controllers\DropdownController@index',
-]);
-use App\Http\Controllers\DropdownController;
-//Route::get('dropdown/{id}',[DropdownController::class, 'index']);
-Route::get('getState',[DropdownController::class, 'getState'])->name('getState');
-Route::get('getCity',[DropdownController::class, 'getCity'])->name('getCity');
+
+
 
 
 Route::get('dropdownn/{id}', [

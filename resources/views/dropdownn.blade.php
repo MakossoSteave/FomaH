@@ -12,7 +12,7 @@
 <body>
  
 <div class="container">
-  <h2>Laravel 8 Dynamic Dependent Dropdown using Jquery Ajax</h2>
+  <h2>Déclaration de compétence</h2>
     <div class="form-group">
       <label for="categoriee">Categorie :</label>
     <!-- c'est le id="categorie" qui récupère l'information-->
