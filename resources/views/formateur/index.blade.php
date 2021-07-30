@@ -41,18 +41,8 @@
                     <i class="fas fa-sliders-h "></i>
                     <button type="button"
                         class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        
-                        <a href="{{ route('competence1', [Auth::user()->id]) }}">
-                            <span>Decla_cptence_1</span>
-                        </a>
-                    </button>
-                </div>
-                <div class="relative">
-                    <i class="fas fa-sliders-h "></i>
-                    <button type="button"
-                        class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        <a href="{{ route('competence2', [Auth::user()->id]) }}">
-                            <span>Decla_cptence_2</span>
+                        <a href="{{ route('dropdownn', [Auth::user()->id]) }}">
+                            <span>Declaration de compétence</span>
                         </a>
                     </button>
                 </div>

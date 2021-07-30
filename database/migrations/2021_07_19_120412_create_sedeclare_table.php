@@ -14,7 +14,7 @@ class CreateSedeclareTable extends Migration
     public function up()
     {
         Schema::create('sedeclares', function (Blueprint $table) {
-            $table->engine='MyiSAM';
+            $table->engine='InnoDB';
             $table->bigInteger('id_formateur')->unsigned();
             $table->bigInteger('id_competence')->unsigned();
             $table->foreign('id_formateur')->references('id')->on('formateurs');
