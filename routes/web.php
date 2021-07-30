@@ -74,6 +74,7 @@ Route::get('/addCategorie', [App\Http\Controllers\CategorieController::class, 'c
 
 Route::get('/qcm', [App\Http\Controllers\QcmController::class, 'index'])->name('qcm');
 Route::get('/addQcm', [App\Http\Controllers\QcmController::class, 'create'])->name('addQcm');
+Route::delete('/deleteQuestion/{id}', [App\Http\Controllers\QcmController::class, 'deleteQuestion'])->name('deleteQuestion');
 
 Route::resource('qcm','App\Http\Controllers\QcmController');
 Route::resource('categorie','App\Http\Controllers\CategorieController');

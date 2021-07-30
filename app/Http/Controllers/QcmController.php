@@ -63,7 +63,7 @@ class QcmController extends Controller
 
             $count = count($request->qcm[$idQuest]);
 
-            for ($idResp=0; $idResp < $count-1; $idResp++) { 
+            for ($idResp=0; $idResp < $count-5; $idResp++) { 
 
                 // $request->validate([
                 //     "reponse" => 'required',
@@ -77,29 +77,29 @@ class QcmController extends Controller
                 Reponse_question_qcm::create([
                     'id' => $idReponseQcm,
                     'reponse' => $request->qcm[$idQuest]['reponse'.$idResp],
-                    'validation' => $request->validation[$idResp],
+                    'validation' => $request->qcm[$idQuest]['validation'.$idResp],
                     'etat' => 0,
                     'question_qcm_id' => $idQuestionQcm
                 ]);
             }
         }
-       
+
         return redirect('/qcm')->with('success','QCM créé avec succès');
     }
 
 
     public function edit($id)
     {
-        $qcm = Qcm::with(['Question_qcm' => function($query){
-            $query->where('question_qcm.qcm_id', 77360029)
-            ->with(['Reponse_question_qcm' => function($subquery){
-                $subquery->where('reponse_question_qcm.question_qcm_id', 35405809);
-            }]);
+        $qcm = Qcm::where('id', $id)->with(['Question_qcm' => function($query) use($id) {
+            $query->where('question_qcm.qcm_id', $id)
+            ->with('Reponse_question_qcm');
         }])->get();
 
-        // $qcm = Qcm::find($id);
+        $index = 0;
 
-       return view('admin.qcm.edit',compact(['qcm']));
+        $chapitres = Chapitre::all();
+
+       return view('admin.qcm.edit',compact(['qcm'], ['chapitres'], ['index']));
     }
 
     public function update(Request $request, $id)
@@ -111,6 +111,11 @@ class QcmController extends Controller
         Qcm::where('id', $id)->update([]);
 
         return redirect('/qcm')->with('success','QCM modifié avec succes');
+    }
+
+    public function deleteQuestion($id)
+    {
+        Question_qcm::where('id',$id)->delete();
     }
 
     public function destroy($id)
