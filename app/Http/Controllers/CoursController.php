@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\FormationsContenirCours;
 use App\Models\Formation;
 use App\Models\Cours;
+use App\Models\Chapitre;
 use Illuminate\Validation\Rule;
 use App\Rules\FilenameImage;
 
@@ -153,17 +154,35 @@ class CoursController extends Controller
         } else {
             $image = $request->get('image-link');
         }
-
+        $etat = $request->get('etat');
+        $etatCanChange=true;
+        if($etat==1){
+            $chapitre =  Chapitre::where('id_cours',$id)
+            ->where('etat',1)
+            ->count();
+            if($chapitre ==0){
+                $etat=0;
+                $etatCanChange=false;
+            }
+        }else {
+            $this->checkEtat($id);
+        }
+      
         Cours::where('id_cours', $id)->update([
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
             'formateur' => $request->get('formateur'),
-            'etat' => $request->get('etat'),
+            'etat' => $etat,
             'nombre_chapitres' => 0
         ]);
-
-        return redirect('/cours')->with('success','Cours modifié avec succes');
+        if(!$etatCanChange){
+            return redirect('/cours')->with('success','Cours modifié avec succes')
+            ->with('error',"L'état ne peut pas être modifié car aucun chapitre n'est actif ! ");
+        }else {
+            return redirect('/cours')->with('success','Cours modifié avec succes');
+        }
+       
     }
 
     // public function Update_numero_cours($id_cours,$operation)
@@ -186,15 +205,32 @@ class CoursController extends Controller
     {
         $cours = Cours::find($id);
         $etat = !$cours->etat;
+        $etatCanChange=true;
+        if($etat==1){
+            $chapitre =  Chapitre::where('id_cours',$id)
+            ->where('etat',1)
+            ->count();
+            if($chapitre ==0){
+                $etat=0;
+                $etatCanChange=false;
+            }
+        }else {
+            $this->checkEtat($id);
+        }
+        if(!$etatCanChange){
+            return redirect()->back()->with('error',"L'état ne peut pas être modifié car aucun chapitre n'est actif ! "); 
+        }
+        else {
         Cours::where('id_cours', $id)->update(array('etat' => $etat));
         return redirect()->back()->with('success','Modifié avec succes');
+    }
     }
     public function destroy($id)
     {
         // nombre de chapitres du cours
         $nombreChapitresCours=Cours::where('id_cours',$id)->value('nombre_chapitres');
         // toutes les id formations qui contienent le cours
-     
+        $this->checkEtat($id);
         $formationContenirCours = FormationsContenirCours::
             where('id_cours',$id)->get();
         // Supprimer le cours des formations
@@ -218,9 +254,33 @@ class CoursController extends Controller
             ->where("numero_cours",">",$f->numero_cours)
             ->decrement('numero_cours',1);
         }
+        
         // Supprimer le cours
         Cours::where('id_cours',$id)->delete();
 
         return redirect()->back()->with('success','Cours supprimé avec succes');
+    }
+    private function checkEtat($id){
+        $cursus =  FormationsContenirCours::select('id_formation')
+        ->where('id_cours',$id)->get() ;
+     
+       foreach($cursus as $c) {
+            $coursDeLaFormation = FormationsContenirCours::select('id_cours')
+            ->where('id_formation',$c->id_formation)
+            ->get();
+            
+            $cours = Cours::where('etat',"=",1)
+            ->whereIn('id_cours',$coursDeLaFormation)
+            ->where('id_cours',"!=",$id)
+            ->count();
+        
+        if( $cours==0){
+
+ Formation::where('id',$c->id_formation)->update([
+                    
+                    'etat' => 0
+                   
+                ]);}
+        }
     }
 }

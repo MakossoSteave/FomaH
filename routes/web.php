@@ -77,6 +77,15 @@ Route::get('/section/{id}', [App\Http\Controllers\SectionController::class, 'ind
 Route::get('/addSection/{id}', [App\Http\Controllers\SectionController::class, 'create'])->name('addSection');
 Route::get('/etatFormation/{id}', [App\Http\Controllers\SectionController::class, 'etat'])->name('etatSection');
 
+Route::get('/categorie', [App\Http\Controllers\CategorieController::class, 'index'])->name('categorie');
+Route::get('/addCategorie', [App\Http\Controllers\CategorieController::class, 'create'])->name('addCategorie');
+
+Route::get('/qcm', [App\Http\Controllers\QcmController::class, 'index'])->name('qcm');
+Route::get('/addQcm', [App\Http\Controllers\QcmController::class, 'create'])->name('addQcm');
+Route::delete('/deleteQuestion/{id}', [App\Http\Controllers\QcmController::class, 'deleteQuestion'])->name('deleteQuestion');
+
+Route::resource('qcm','App\Http\Controllers\QcmController');
+Route::resource('categorie','App\Http\Controllers\CategorieController');
 Route::resource('section','App\Http\Controllers\SectionController');
 Route::resource('cursus','App\Http\Controllers\FormationAdminController');
 Route::resource('cours','App\Http\Controllers\CoursController');
