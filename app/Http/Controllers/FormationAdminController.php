@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
+use App\Models\FormationsContenirCours;
 use App\Models\Categorie;
 use App\Models\Formation;
-use Illuminate\Http\Request;
+use App\Models\Cours;
+use Illuminate\Validation\Rule;
+use App\Rules\FilenameImage;
 
 class FormationAdminController extends Controller
 
@@ -27,12 +32,13 @@ class FormationAdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-         'libelle' => 'required',
-         'description' => 'required',
-         'volume_horaire' => 'required',
-         'prix' => 'required',
+         'libelle' => ['required','max:191','unique|formations'],
+         'description' => ['required','max:1000'],
+         'volume_horaire' =>  ['required','numeric','min:0'],
+         'prix' =>  ['required','numeric','min:0'],
          'categorie_id' =>'required',
-         'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000'
+         'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+         new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
         ]);
 
         do {
@@ -83,13 +89,19 @@ class FormationAdminController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-         'libelle' => 'required',
-         'description' => 'required',
-         'volume_horaire' => 'required',
-         'prix' => 'required',
+         'libelle' =>['required','max:191', Rule::unique('formations')->where(function ($query) use($id) {
+             
+            return $query->where('id',"!=", $id);
+        })] ,
+         'description' => ['required','max:1000'],
+         'volume_horaire' =>  ['required','numeric','min:0'],
+         'prix' =>  ['required','numeric','min:0'],
          'categorie_id' =>'required',
-         'etat' => 'required',
-         'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000'
+         'etat' => [
+            'required',
+             Rule::in(['0', '1'])],
+             'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+             new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
         ]);
 
         if ($request->hasFile('image')) {
@@ -114,6 +126,52 @@ class FormationAdminController extends Controller
        // $this->etat($id);
         return redirect('/cursus')->with('success','Formation modifié avec succès');
         
+    }
+
+    public function createCours($id)
+    {
+        $coursDeLaFormation = Cours::select('cours.id_cours')
+       
+       ->leftJoin('formations_contenir_cours', 'formations_contenir_cours.id_cours', '=','cours.id_cours')
+        ->where('formations_contenir_cours.id_formation',"=",$id)
+       ->get();
+
+        $cours = Cours::select('cours.*')
+        ->whereNotIn('id_cours',$coursDeLaFormation)
+        ->get();
+
+       return view('admin.formation.cours.create',compact(['cours'], 'id'));
+    }
+
+    public function addCours(Request $request, $id)
+    {
+        $numero_cours = FormationsContenirCours::where("id_formation","=",$id)->max('numero_cours');
+
+        if ($numero_cours == null) {
+            $numero_cours = 1;
+        } else {
+            $numero_cours = $numero_cours+1;
+        }
+
+        FormationsContenirCours::create([
+            'id_cours' => $request->get('id_cours'),
+            'id_formation' => $id,
+            'numero_cours' => $numero_cours
+        ]);
+
+        $this->Update_nombre_cours_total($id,1);
+        $Cours = Cours::find($request->get('id_cours'));
+        $CoursNombreChapitre = $Cours->nombre_chapitres;
+        $this->Update_nombre_chapitre_total($id,$CoursNombreChapitre);
+
+       return redirect('/cours/'.intval($id))->with('success','Le cours a été ajouté avec succès');
+    }
+
+    public function newCours($id)
+    {
+        $formations = Formation::orderBy('libelle','asc')->get();
+
+       return view('admin.cours.create', compact(['formations'], 'id'));
     }
 
     public function Update_nombre_cours_total($id,$operation)
@@ -145,5 +203,27 @@ class FormationAdminController extends Controller
         Formation::where('id',$id)->delete();
         return redirect()->back()->with('success','Supprimé avec succes');
     }
+    public function removeCours($idCours,$idFormation){
 
+        $formationContenirCours = FormationsContenirCours::
+            where('id_cours',$idCours)
+            ->where('id_formation',$idFormation)
+            ->first();
+
+        $this->Update_nombre_cours_total($idFormation,-1);
+
+   
+
+        $Cours = Cours::find($idCours);
+        $CoursNombreChapitre = $Cours->nombre_chapitres;
+        $this->Update_nombre_chapitre_total($idFormation,-$CoursNombreChapitre);
+
+        FormationsContenirCours::where('id_cours',$idCours)
+        ->where('id_formation',$idFormation)->delete();
+
+        FormationsContenirCours::where('id_formation',$idFormation)
+        ->where("numero_cours",">",$formationContenirCours->numero_cours)
+        ->decrement('numero_cours',1);
+        return redirect()->back()->with('success','Supprimé avec succes');
+    } 
 }

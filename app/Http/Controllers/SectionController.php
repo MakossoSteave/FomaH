@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Section;
+use Illuminate\Validation\Rule;
+use App\Rules\FilenameImage;
 
 class SectionController extends Controller
 {
@@ -31,9 +33,12 @@ class SectionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-         'designation' => 'required',
-         'contenu' => 'required',
-         'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000'
+            'designation' => ['required','max:191', Rule::unique('sections')->where(function ($query) use($request) {
+             
+                return $query->where('id_chapitre', $request->get('id_chapitre'));})] ,
+         'contenu' => ['required','max:5000'],
+         'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+         new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
         ]);
 
         do {
@@ -79,10 +84,15 @@ class SectionController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'designation' => 'required',
-            'contenu' => 'required',
-            'etat' => 'required',
-            'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000'
+            'designation' => ['required','max:191', Rule::unique('sections')->where(function ($query) use($request,$id) {
+             return $query->where('id_chapitre', $request->get('id_chapitre'))
+                         ->where("id","!=",$id);})] ,
+            'contenu' => ['required','max:5000'],
+            'etat' => [
+                'required',
+                 Rule::in(['0', '1'])],
+                 'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+                 new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
         ]);
     
         if ($request->hasFile('image')) {

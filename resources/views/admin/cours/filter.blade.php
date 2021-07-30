@@ -8,7 +8,7 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-        <a href="{{ url('addCours')}}" class="has-icons-right" id="link-black">
+        <a href="{{ route('createCours', $FormationID) }}" class="has-icons-right" id="link-black">
             Ajouter un cours
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
@@ -48,6 +48,7 @@
                     <div>
                         <p class="title is-6">Nombre de chapitres: {{$cour->nombre_chapitres}}</p>
                         <p class="title is-6">Prix: {{$cour->prix}}€</p>
+                        <p class="title is-6">Formation : {{$cour->libelle}}</p>
                         <a class="{{ $cour->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatCours', $cour->id_cours) }}">
                         @if($cour->etat == 1) 
                         Activé
@@ -66,8 +67,12 @@
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>
                             <p>
+                                <a class = "button is-warning button-card modal-button" style="width:90%;" data-target = "#SupressionFormation{{$cour->id_cours}}">Supprimer de la formation</a>
+                            </p>
+                            <p>
                                 <a class = "button is-danger button-card modal-button" data-target = "#{{$cour->id_cours}}">Supprimer</a>
                             </p>
+                          
                             <div id="{{$cour->id_cours}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
@@ -79,6 +84,25 @@
                                         Souhaitez-vous supprimer le cours {{$cour->designation}} ?
                                     </section>
                                     <form action="{{ route('cours.destroy', $cour->id_cours) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <footer class="modal-card-foot">
+                                    <button class="button is-success">Confirmer</button>
+                                    </footer>
+                                    </form>
+                                </div>
+                            </div>
+                            <div id="SupressionFormation{{$cour->id_cours}}" class="modal">
+                                <div class="modal-background"></div>
+                                <div class="modal-card">
+                                    <header class="modal-card-head">
+                                    <p class="modal-card-title ">Confirmez-vous la suppression de {{$cour->designation}} de {{$cour->libelle}}</p>
+                                    <button class="delete" aria-label="close"></button>
+                                    </header>
+                                    <section class="modal-card-body">
+                                        Souhaitez-vous supprimer le cours {{$cour->designation}}  de la formation {{$cour->libelle}} ?
+                                    </section>
+                                    <form action="{{ route('removeCours', [$cour->id_cours,$FormationID]) }}" method="GET">
                                     @csrf
                                     @method('DELETE')
                                     <footer class="modal-card-foot">

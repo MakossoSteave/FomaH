@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\FormationsContenirCours;
 use App\Models\Formation;
 use App\Models\Cours;
+use Illuminate\Validation\Rule;
+use App\Rules\FilenameImage;
 
 class CoursController extends Controller
 {
@@ -23,17 +25,33 @@ class CoursController extends Controller
 
     public function create()
     {
+        $id = null;
+
         $formations = Formation::orderBy('libelle','asc')->get();
 
-        return view('admin.cours.create', compact(['formations']));
+        return view('admin.cours.create', compact(['formations'], 'id'));
+    }
+
+    public function filter($id)
+    {
+        $cours = Cours::select('cours.*', 'formations.libelle', 'formateurs.id as formateurID','formateurs.nom as formateurNom','formateurs.prenom as formateurPrenom')
+        ->join('formations_contenir_cours', 'cours.id_cours', '=', 'formations_contenir_cours.id_cours')
+        ->join('formations', 'formations.id',"=","formations_contenir_cours.id_formation")
+        ->join('formateurs', 'formateurs.id',"=","cours.formateur")
+        ->where('formations.id','=',$id)
+        ->orderBy('numero_cours','asc')
+        ->paginate(5)->setPath('cours');
+
+        return view('admin.cours.filter', compact(['cours']),["FormationID" => $id]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-         'designation' => 'required',
-         'prix' => 'required',
-         'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000'
+         'designation' => ['required','max:191', 'unique:cours'],
+         'prix' => ['required','numeric','min:0'],
+         'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+                 new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
         ]);
 
         do {
@@ -81,7 +99,12 @@ class CoursController extends Controller
            $Formation->Update_nombre_cours_total($request->get('formation_id'),1);
         }
        
-        return redirect('/cours')->with('success','Cours créé avec succès');
+      
+        if($request->get('formation_id')!="") {
+        return redirect('/cours/'.intval($request->get('formation_id')))->with('success','Le cours a été ajouté avec succès');
+        } else {
+            return redirect('/cours')->with('success','Cours créé avec succès');
+        }
     }
 
     public function show($id)
@@ -108,10 +131,16 @@ class CoursController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'designation' => 'required',
-            'prix' => 'required',
-            'etat' => 'required',
-            'image' => 'mimes:jpeg,png,bmp,tiff,jfif |max:10000'
+            'designation' => ['required','max:191', Rule::unique('cours')->where(function ($query) use($id) {
+             
+                return $query->where('id_cours',"!=", $id);
+            })] ,
+            'prix' => ['required','numeric','min:0'],
+            'etat' => [
+                'required',
+                 Rule::in(['0', '1'])],
+                 'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+                 new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
         ]);
 
     
@@ -192,6 +221,6 @@ class CoursController extends Controller
         // Supprimer le cours
         Cours::where('id_cours',$id)->delete();
 
-        return redirect('/cours')->with('success','Cours supprimé avec succes');
+        return redirect()->back()->with('success','Cours supprimé avec succes');
     }
 }

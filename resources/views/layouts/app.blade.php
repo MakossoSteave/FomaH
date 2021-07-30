@@ -36,7 +36,8 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
     <link rel="stylesheet" href="{{ URL::asset('/') }}css/app.css" />
-
+    <link rel="shortcut icon" href="{{ URL::asset('/') }}/favicon.ico">
+<link rel="icon" type="image/png" href="{{ URL::asset('/') }}/favicon.ico">
 </head>
 
 
@@ -134,9 +135,6 @@
                     </a>
 
                     <div class="navbar-dropdown">
-                    <a class="navbar-item" href="{{ url('chapitres')}}">
-                        Chapitres
-                    </a>
                     <a class="navbar-item">
                         Projets
                     </a>
@@ -146,7 +144,7 @@
                     <a class="navbar-item">
                         Documents
                     </a>
-                    <a class="navbar-item">
+                    <a class="navbar-item" href="{{ url('qcm')}}">
                         QCM
                     </a>
                     </div>
@@ -164,7 +162,7 @@
                     Titre
                 </a>
 
-                <a class="navbar-item">
+                <a class="navbar-item" href="{{ url('categorie')}}">
                     Catégorie
                 </a>
 
@@ -184,6 +182,8 @@
             @yield('content')
         </main>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="{{ URL::asset('/') }}js/addFieldForm.js"></script>
     <script src="https://unpkg.com/popper.js@1/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@4"></script>
     <script>

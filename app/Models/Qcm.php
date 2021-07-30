@@ -5,18 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Categorie extends Model
+class Qcm extends Model
 {
     use HasFactory;
 
     public $incrementing = false;
 
+    protected $table = "qcm";
+    
     protected $fillable=[
-        'id', 'designation'
+        'id', 'designation','etat','id_chapitre'
     ];
 
-    public function formation()
+    public function Question_qcm()
     {
-        return $this->belongsTo(Formation::class);
+        return $this->hasMany(Question_qcm::class,'qcm_id','id');       
     }
-}   
+}

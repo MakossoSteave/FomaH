@@ -8,8 +8,8 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-        <a href="{{ url('addFormation')}}" class="has-icons-right" id="link-black">
-            Ajouter une formation
+        <a href="{{ route('addCategorie') }}" class="has-icons-right" id="link-black">
+            Ajouter une categorie
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
     </div>
@@ -20,69 +20,46 @@
         </div>
     @endif
 
-    @if($formations->isEmpty())
+    @if($categories->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
-            Aucune formation n'existe
+            Aucune categorie n'existe
         </div>
     @else
 
-    @foreach ($formations as $formation)
+    @foreach ($categories as $categorie)
     <div class="card my-6">
         <div class="card-content">
             <div class="media">
-                @if(!empty($formation->image))
-            <div class="media-left">
-                <img class="image is-4by3" src="{{ URL::asset('/') }}img/formation/{{$formation->image}}" alt="Placeholder image">
-            </div>
-                @endif
             <div class="media-content">
-                <p class="title is-4">{{$formation->libelle}}</p>
-                <p class="subtitle is-6">{{$formation->description}}</p>
+                <div class="flex">
+                    <p class="title is-4">{{$categorie->designation}}</p>
+                </div>
             </div>
         </div>
 
             <div class="content">
                 <div class="flex">
                     <div>
-                        <p class="subtitle is-6">Volume horaire : {{$formation->volume_horaire}}h</p>
-                        <p class="subtitle is-6">Nombre de cours : {{$formation->nombre_cours_total}}</p>
-                        <p class="subtitle is-6">Nombre de chapitre : {{$formation->nombre_chapitre_total}}</p>
-                        <p class="subtitle is-6">Prix: {{$formation->prix}}€</p>
-                        <a class="{{ $formation->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatFormation', $formation->id) }}">
-                        @if($formation->etat == 1) 
-                        Activé
-                        @else
-                        Désactivé
-                        @endif
-                        </a>
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('coursFilter', $formation->id) }}" method="GET">
-                            @csrf
-                            <button type="submit" class="button button-card is-primary">Voir les cours</button>
-                        </form>
-                        <form action="{{ route('createCours', $formation->id) }}" method="GET">
-                            @csrf
-                            <button type="submit" class="button button-card is-link">Ajouter un cours</button>
-                        </form>
-                        <form action="{{ route('cursus.edit', $formation->id) }}" method="GET">
+                        <form action="{{ route('categorie.edit', $categorie->id) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>
                             <p>
-                                <a class = "button is-danger button-card modal-button" data-target = "#{{$formation->id}}">Supprimer</a>
+                                <a class = "button is-danger button-card modal-button" data-target = "#{{$categorie->id}}">Supprimer</a>
                             </p>
-                            <div id="{{$formation->id}}" class="modal">
+                            <div id="{{$categorie->id}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
                                     <header class="modal-card-head">
-                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$formation->libelle}}</p>
+                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$categorie->designation}}</p>
                                     <button class="delete" aria-label="close"></button>
                                     </header>
                                     <section class="modal-card-body">
-                                        Souhaitez-vous supprimer le formation {{$formation->libelle}} ?
+                                        Souhaitez-vous supprimer la catégorie {{$categorie->designation}} ?
                                     </section>
-                                    <form action="{{ route('cursus.destroy', $formation->id) }}" method="POST">
+                                    <form action="{{ route('categorie.destroy', $categorie->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <footer class="modal-card-foot">
@@ -111,9 +88,8 @@
     </div>
 
     @endforeach
-
+    
     @endif
-
 </div>
 
 @endsection
