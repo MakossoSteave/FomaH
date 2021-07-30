@@ -68,7 +68,7 @@
                             @csrf
                             <button type="submit" class="button button-card is-primary">Voir les chapitres</button>
                         </form>
-                        <form action="{{ route('cours.edit', $cour->id_cours) }}" method="GET">
+                        <form action="{{ route('editCours', [$cour->id_cours,$FormationID] ) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>

@@ -33,6 +33,8 @@
         </div>
     @else
 
+  
+
     @foreach ($cours as $cour)
     <div class="card my-6">
         <div class="card-content">

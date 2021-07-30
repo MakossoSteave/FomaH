@@ -118,7 +118,7 @@
     </div>
 
     @endforeach
-
+    {!! $formations->links() !!}
     @endif
 
 </div>

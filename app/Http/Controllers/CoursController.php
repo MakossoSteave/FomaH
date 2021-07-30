@@ -20,8 +20,10 @@ class CoursController extends Controller
         ->leftJoin('formateurs', 'formateurs.id',"=","cours.formateur")
         ->orderBy('created_at','desc')
         ->paginate(5);
+
+        //$test = FormationsContenirCours::with('formations')->with('cours')->get();
                    
-        return view('admin.cours.index',compact(['cours']));
+    return view('admin.cours.index',compact(['cours']/*,['test']*/));
     }
 
     public function create()
@@ -41,7 +43,7 @@ class CoursController extends Controller
         ->join('formateurs', 'formateurs.id',"=","cours.formateur")
         ->where('formations.id','=',$id)
         ->orderBy('numero_cours','asc')
-        ->paginate(5)->setPath('cours');
+        ->paginate(5)->setPath("$id");
 
         return view('admin.cours.filter', compact(['cours']),["FormationID" => $id]);
     }
@@ -122,11 +124,11 @@ class CoursController extends Controller
        return $cours;
     }
 */
-    public function edit($id)
+    public function edit($idCours, $idFormation)
     {
-       $cours = Cours::find($id);
+       $cours = Cours::find($idCours);
 
-       return view('admin.cours.edit',compact(['cours']));
+       return view('admin.cours.edit',compact(['cours'], ['idFormation']));
     }
 
     public function update(Request $request, $id)
@@ -176,11 +178,12 @@ class CoursController extends Controller
             'etat' => $etat,
             'nombre_chapitres' => 0
         ]);
+
         if(!$etatCanChange){
-            return redirect('/cours')->with('success','Cours modifié avec succes')
+            return redirect('/cours/'.$request->get('formation_id'))->with('success','Cours modifié avec succes')
             ->with('error',"L'état ne peut pas être modifié car aucun chapitre n'est actif ! ");
         }else {
-            return redirect('/cours')->with('success','Cours modifié avec succes');
+            return redirect('/cours/'.$request->get('formation_id'))->with('success','Cours modifié avec succes');
         }
        
     }
@@ -260,11 +263,12 @@ class CoursController extends Controller
 
         return redirect()->back()->with('success','Cours supprimé avec succes');
     }
-    private function checkEtat($id){
+    public function checkEtat($id){
         $cursus =  FormationsContenirCours::select('id_formation')
-        ->where('id_cours',$id)->get() ;
+        ->where('id_cours',$id)->get();
      
        foreach($cursus as $c) {
+
             $coursDeLaFormation = FormationsContenirCours::select('id_cours')
             ->where('id_formation',$c->id_formation)
             ->get();
@@ -274,6 +278,8 @@ class CoursController extends Controller
             ->where('id_cours',"!=",$id)
             ->count();
         
+            // $test = Cours::with('cours.formations')->get();
+
         if( $cours==0){
 
  Formation::where('id',$c->id_formation)->update([
@@ -282,5 +288,6 @@ class CoursController extends Controller
                    
                 ]);}
         }
+         
     }
 }

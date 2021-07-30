@@ -178,5 +178,7 @@ class ChapitreController extends Controller
             ->decrement('numero_chapitre',1);
         return redirect()->back()->with('success','Supprimé avec succes');
     }
-
+    public function checkEtat($id){
+        
+    }
 }

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+//use App\Http\Controllers\CoursController;
 use Illuminate\Http\Request;
 
 use App\Models\FormationsContenirCours;
@@ -17,7 +17,7 @@ class FormationAdminController extends Controller
 
     public function index()
     {
-        $formations = Formation::orderBy('id','desc')->paginate(3)->setPath('centre');
+        $formations = Formation::orderBy('id','desc')->paginate(3)->setPath('cursus');
                    
         return view('admin.formation.index',compact(['formations']));
     }
@@ -259,7 +259,9 @@ class FormationAdminController extends Controller
         $Cours = Cours::find($idCours);
         $CoursNombreChapitre = $Cours->nombre_chapitres;
         $this->Update_nombre_chapitre_total($idFormation,-$CoursNombreChapitre);
-
+        $CoursController = new CoursController;
+        $CoursController->checkEtat($idCours);
+/*
         $coursDeLaFormation = FormationsContenirCours::select('id_cours')
             ->where('id_formation',$idFormation)
             ->get();
@@ -277,7 +279,7 @@ class FormationAdminController extends Controller
                    
                 ]);}
 
-
+*/
         FormationsContenirCours::where('id_cours',$idCours)
         ->where('id_formation',$idFormation)->delete();
 

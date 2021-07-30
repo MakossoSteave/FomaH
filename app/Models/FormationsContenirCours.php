@@ -19,11 +19,11 @@ class FormationsContenirCours extends Model
 
     public function cours()
     {
-        return $this->belongsTo(Cours::class);
+        return $this->hasMany(Cours::class, 'id_cours', 'id_cours');
     }
 
     public function formations()
     {
-        return $this->belongsTo(Formations::class);
+        return $this->hasMany(Formation::class,'id', 'id_formation');
     }
 }  
