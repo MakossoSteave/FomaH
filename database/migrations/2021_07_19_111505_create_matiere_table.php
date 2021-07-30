@@ -30,8 +30,6 @@ class CreateMatiereTable extends Migration
         DB::table('matieres')->insert( ['designation_matiere'=>'Reseau','categorie_id'=> 1], );
         DB::table('matieres')->insert( ['designation_matiere'=>'Architecture_des_machines','categorie_id'=> 1], );
         DB::table('matieres')->insert( ['designation_matiere'=>'Bases_de_donnees','categorie_id'=> 1], );
-        DB::table('matieres')->insert( ['designation_matiere'=>'Anglais','categorie_id'=> 2], );
-        DB::table('matieres')->insert( ['designation_matiere'=>'Espagnol','categorie_id'=> 2], );
         
     }
 
