@@ -17,7 +17,7 @@ function addQuestion(){
     divQuestion.append(questionItem);
 
     for (var index = 0; index < 4; index++) {
-        var reponseItem = "<div class='field reponse'><label class='label'>Réponse</label><div class='control'><input name='qcm["+counter+"][reponse"+index+"]' class='input' type='text' placeholder='Réponse'></div></div><div class='field'><label class='label'>Choisir la validation de la réponse</label><div class='control'><div class='select'><select name='validation[]'><option value='1'>Bonne réponse</option><option value='0'>Mauvaise réponse</option></select></div></div></div>";
+        var reponseItem = "<div class='field reponse'><label class='label'>Réponse</label><div class='control'><input name='qcm["+counter+"][reponse"+index+"]' class='input' type='text' placeholder='Réponse'></div></div><div class='field'><label class='label'>Choisir la validation de la réponse</label><div class='control'><div class='select'><select name='qcm["+counter+"][validation"+index+"]'><option value='1'>Bonne réponse</option><option value='0'>Mauvaise réponse</option></select></div></div></div>";
     
         divQuestion.append(reponseItem);
     }
@@ -31,3 +31,28 @@ function addQuestion(){
         counter--;
     });
 }
+
+$(document).on('click', '.deleteUpdateQuestion', function(event){
+    var token = $("meta[name='csrf-token']").attr("content");
+    
+    $.ajax(
+    {
+        url: window.location.origin + "/deleteQuestion/" + event.target.id,
+        type: 'DELETE',
+        dataType: "Text",
+        data: {
+            "id": event.target.id,
+            "_token": token,
+        },
+        success: function (response)
+        {
+            console.log('success:' + response);
+            
+            $("#formUpdateQcm").load(window.location.href + " #questionUpdateQcm");
+        },
+        error: function(data) 
+        {
+            console.log(data);
+        }
+    });
+});
