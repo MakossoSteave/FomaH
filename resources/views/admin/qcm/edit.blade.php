@@ -15,11 +15,11 @@
     <div id="formUpdateQcm">
     <div id="questionUpdateQcm">
     <h2 class="title is-2 has-text-centered mt-6">Modifier un QCM</h2>
-    <form action="{{ route('qcm.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
+    @foreach($qcm as $qcms)
+    <form action="{{ route('qcm.update', $qcms->id) }}" method="POST" enctype="multipart/form-data" class="mt-6">
         @csrf
-
-        @foreach($qcm as $qcms)
-        <input type="hidden" name="id" value="$qcms->id">
+        @method('PUT')
+        <input type="hidden" name="id" value="{{$qcms->id}}">
 
         <div class="field">
             <label class="label">Titre du QCM</label>
@@ -29,6 +29,8 @@
         </div>
 
             @foreach($qcms->question_qcm as $questions)
+            <input type="hidden" name="updateQcm[{{$qcms->id}}][questionId]" value="{{$questions->id}}">
+
             <div class='flex'>
                 <div>
 
@@ -46,7 +48,7 @@
             <div class='field' id='questions'>
                 <label class='label'>Question</label>
                 <div class='control'>
-                    <input name="updateQcm[{{$questions->id}}][question]" class='input' type='text' placeholder='Question' value="{{$questions->question}}">
+                    <input name="updateQcm[{{$qcms->id}}][question]" class='input' type='text' placeholder='Question' value="{{$questions->question}}">
                 </div>
             </div>
             
@@ -57,6 +59,8 @@
                 </div>
             </div>
                 @foreach($questions->reponse_question_qcm as $reponses)
+                    <input type="hidden" name="updateQcm[{{$qcms->id}}][reponseId]" value="{{$reponses->id}}">
+
                     <div class='field reponse'>
                         <label class='label'>Réponse</label>
                         <div class='control'>
@@ -110,7 +114,7 @@
         </div>
 
             <div class="control mt-4 mb-4">
-                <button type="submit" class="button is-fullwidth is-link is-rounded">Créer</button>
+                <button type="submit" class="button is-fullwidth is-link is-rounded">Modifier</button>
             </div>
         </div>
     </form>

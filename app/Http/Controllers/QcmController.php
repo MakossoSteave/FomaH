@@ -108,7 +108,40 @@ class QcmController extends Controller
             'designation' => 'required'
         ]);
 
-        Qcm::where('id', $id)->update([]);
+        Qcm::where('id', $id)->update([
+            'designation' => $request->get('designation'),
+            'etat' => 0,
+            'id_chapitre' => $request->get('id_chapitre')
+        ]);
+
+        for ($idQuest=0; $idQuest < count($request->get('updateQcm')); $idQuest++) { 
+
+            // $request->validate([
+            //     "question" => 'required'
+            // ]);
+    
+            Question_qcm::where('id', $request->updateQcm[$request->get('id')]['questionId'])->update([
+                'question' => $request->updateQcm[$request->get('id')]['question'],
+                'explication' => $request->updateExplication[$idQuest],
+                'etat' => 0,
+                'qcm_id' => $request->get('id')
+            ]);
+
+            for ($idResp=0; $idResp < 4; $idResp++) { 
+
+                // $request->validate([
+                //     "reponse" => 'required',
+                //     "validation" => 'required'
+                // ]);
+        
+                Reponse_question_qcm::where('id', $request->updateQcm[$request->get('id')]['reponseId'])->update([
+                    'reponse' => $request->updateQcm[$request->get('id')]['reponse'.$idResp],
+                    'validation' => $request->updateQcm[$request->get('id')]['validation'.$idResp],
+                    'etat' => 0,
+                    'question_qcm_id' => $request->updateQcm[$request->get('id')]['questionId']
+                ]);
+            }
+        }
 
         return redirect('/qcm')->with('success','QCM modifié avec succes');
     }
