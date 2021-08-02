@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Chapitre;
+use App\Models\Section;
 use App\Models\Cours;
 use App\Http\Controllers\CoursController;
 use App\Models\FormationsContenirCours;
-//use Illuminate\Support\Facades\Validator;
+
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Rules\FilenameImage;
 use App\Rules\FilenameVideo;
@@ -27,11 +28,8 @@ class ChapitreController extends Controller
         return view('admin.chapitre.index',compact(['chapitres']),['idCours' => $request->session()->get('idCours')]);
     }
     
-    public function create(Request $request)
-    {
-        
-       // $this->idCours=$id;
-        
+    public function create()
+    {   
         return view('admin.chapitre.create');
     }
 
@@ -39,22 +37,25 @@ class ChapitreController extends Controller
     {
         $idCours = $request->session()->get('idCours');
         $this->CoursID = $idCours;
-        $request->validate([
-         'designation' => ['required','max:191', Rule::unique('chapitres')->where(function ($query) use($idCours) {
+
+        // $request->validate([
+        //  'designation' => ['required','max:191', Rule::unique('chapitres')->where(function ($query) use($idCours) {
              
-            return $query->where('id_cours', $idCours);
-        })] ,
-         'video' => ['required','mimes:mp4,mov,ogg,qt ','max:2097152',
+        //     return $query->where('id_cours', $idCours);
+        // })] ,
+        //  'video' => ['required','mimes:mp4,mov,ogg,qt ','max:2097152',
       
-         new FilenameVideo('/^[a-zA-Z0-9_.-^\s]{4,181}$/')],
-         'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
-         new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
-        ]);
-      do {
+        //  new FilenameVideo('/^[a-zA-Z0-9_.-^\s]{4,181}$/')],
+        //  'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+        //  new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+        // ]);
+
+        do {
             $id_chapitre = rand(10000000, 99999999);
         } while((Chapitre::find($id_chapitre))!=null);
        // Chapitre::where
-     $Cours = new CoursController;
+
+        $Cours = new CoursController;
         
         $numero_chapitre=
         Chapitre::where('id_cours',$idCours)->count();
@@ -84,6 +85,41 @@ class ChapitreController extends Controller
        
         Chapitre::create(['designation' => $request->get('designation')] + ['numero_chapitre' => $numero_chapitre+1] + ['id_chapitre' => $id_chapitre]+['video'=>$video]+['image'=>$image]+['etat'=>0]+['id_cours'=>$idCours]);
         // $this->etat($id_chapitre);
+
+        for ($idSect=0; $idSect < count($request->get('section')); $idSect++) { 
+
+            // $request->validate([
+            //     'designation' => ['required','max:191', Rule::unique('sections')->where(function ($query) use($request) {
+                
+            //         return $query->where('id_chapitre', $request->get('id_chapitre'));})] ,
+            // 'contenu' => ['required','max:5000'],
+            // 'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+            // new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+            // ]);
+
+            do {
+                $idSection = rand(10000000, 99999999);
+            } while(Section::find($idSection) != null);
+
+            if ($request->hasFile("section.$idSect.image")) {
+                $destinationPath = public_path('img/section/');
+                $file = $request->file("section.$idSect.image");
+                $filename = $file->getClientOriginalName();
+                $image = time().$filename;
+                $file->move($destinationPath, $image);
+            } else {
+                $image = null;
+            }    
+
+            Section::create([
+                'id' => $idSection,
+                'designation' => $request->section[$idSect]['designation'],
+                'contenu' => $request->section[$idSect]['contenu'],
+                'image' => $image,
+                'etat' => 0,
+                'id_chapitre' => $id_chapitre
+            ]);
+        }
         
         return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Chapitre créé avec succès');
     }
@@ -106,7 +142,9 @@ class ChapitreController extends Controller
     public function update(Request $request, $id_chapitre)
     {
         $chapitre = Chapitre::find($id_chapitre);
+
         $idCours = $chapitre->id_cours;
+
         $request->validate([
          'designation' => ['required','max:191', Rule::unique('chapitres')->where(function ($query) use($idCours,$id_chapitre){
              
@@ -121,6 +159,7 @@ class ChapitreController extends Controller
                  'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
                  new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
         ]);
+
         if ($request->hasFile('image')) {
             $destinationPath = public_path('img/chapitre/');
             $file = $request->file('image');
@@ -131,6 +170,7 @@ class ChapitreController extends Controller
             $chapitre=Chapitre::find($id_chapitre);
             $image = $chapitre->image;
         }
+
         if ($request->hasFile('video')) {
             $destinationPathVideo = public_path('video/chapitre/');
             $fileVideo = $request->file('video');
@@ -165,10 +205,7 @@ class ChapitreController extends Controller
                     }
                
                 }
-
-        
             }
-        
 
         Chapitre::where('id_chapitre',$id_chapitre)->update([
             'designation' => $request->get('designation'),
@@ -176,9 +213,10 @@ class ChapitreController extends Controller
             'video' => $video,
             'etat' => $request->get('etat')
         ]);   
-        return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Modifié avec succès');
-        
+
+        return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Modifié avec succes');
     }
+
     public function Update_numero_chapitre($id_chapitre,$operation)
     {
         $Chapitre = Chapitre::find($id_chapitre);
@@ -186,6 +224,7 @@ class ChapitreController extends Controller
         if($numero_chapitre<0) $numero_chapitre=0;
         Chapitre::where('id_chapitre', $id_chapitre)->update(array('numero_chapitre' => $numero_chapitre));
     }
+
     public function etat($id_chapitre)
     {
         $Chapitre = Chapitre::find($id_chapitre);
@@ -237,6 +276,7 @@ class ChapitreController extends Controller
         Chapitre::where('id_chapitre', $id_chapitre)->update(array('etat' => $etat));
         return redirect()->back()->with('success','Modifié avec succès');
     }
+
     public function destroy($id_chapitre)
     {
         $Chapitre= Chapitre::find($id_chapitre);
@@ -255,6 +295,7 @@ class ChapitreController extends Controller
 
         return redirect()->back()->with('success','Supprimé avec succès');
     }
+
     public function checkEtat($id,$id_chapitre){
         $ChapitreActifCours= Chapitre::where('id_cours',$id)->where('etat',1)->where('id_chapitre',"!=",$id_chapitre)->count();
         if($ChapitreActifCours == 0){
@@ -267,6 +308,7 @@ class ChapitreController extends Controller
             $CoursController->checkEtat($id);
         }
     }
+
     private function updateChapitre($Chapitre,$etat){
         $Cours = new CoursController;
         $Cours->Update_nombre_chapitres($Chapitre->id_cours,-1);//ajouter +1 au nombre total de chapitre cours
