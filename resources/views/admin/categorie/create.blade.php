@@ -21,7 +21,7 @@
                 <div class="control">
                     <input name="designation" class="input" type="text" placeholder="Nom de la catégorie">
                 </div>
-        </div>
+            </div>
 
             <div class="control mt-4 mb-4">
                 <button type="submit" class="button is-fullwidth is-link is-rounded">Créer</button>

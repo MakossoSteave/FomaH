@@ -92,6 +92,7 @@ Route::resource('cours','App\Http\Controllers\CoursController');
 Route::resource('chapitre','App\Http\Controllers\ChapitreController');
 Route::resource('centre','App\Http\Controllers\FormationController');
 Route::resource('stagiaire','App\Http\Controllers\StagiaireController');
+Route::resource('competence','App\Http\Controllers\CompetenceController');
 
 
 

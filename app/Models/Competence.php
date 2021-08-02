@@ -10,6 +10,6 @@ class Competence extends Model
     use HasFactory;
     
     protected $fillable=[
-        'id_matiere', 'id_sous_matiere','id_niveau_scolaire'
+        'id_categorie','id_matiere', 'id_sous_matiere','id_niveau_scolaire'
     ];
 }
