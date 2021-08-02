@@ -166,20 +166,25 @@ class FormationAdminController extends Controller
 
     public function addCours(Request $request, $id)
     {
+        $Cours = Cours::find($request->get('id_cours'));
         //$numero_cours = FormationsContenirCours::where("id_formation","=",$id)->max('numero_cours');
+        if($Cours->etat==1){
         $numero_cours = FormationsContenirCours::where("id_formation","=",$id)->count();
-        if ($numero_cours == null) {
-            $numero_cours = 1;
-        } else {
-            $numero_cours = $numero_cours+1;
+            if ($numero_cours == null) {
+                $numero_cours = 1;
+            } else {
+                $numero_cours = $numero_cours+1;
+            }
         }
-
+        else {
+            $numero_cours = 0;
+        }
         FormationsContenirCours::create([
             'id_cours' => $request->get('id_cours'),
             'id_formation' => $id,
             'numero_cours' => $numero_cours
         ]);
-        $Cours = Cours::find($request->get('id_cours'));
+       
         if($Cours->etat==1){
             $this->Update_nombre_cours_total($id,1);
        
@@ -238,7 +243,7 @@ class FormationAdminController extends Controller
             return redirect()->back()->with('error',"L'état ne peut pas être modifié car aucun cours n'est actif ! ");
         }else {
         Formation::where('id', $id)->update(array('etat' => $etat));
-        return redirect()->back()->with('success','Modifié avec succes');
+        return redirect()->back()->with('success','Modifié avec succès');
         }
        
     }
@@ -246,7 +251,7 @@ class FormationAdminController extends Controller
     public function destroy($id)
     {
         Formation::where('id',$id)->delete();
-        return redirect()->back()->with('success','Supprimé avec succes');
+        return redirect()->back()->with('success','Supprimé avec succès');
     }
     public function removeCours($idCours,$idFormation){
 
@@ -255,13 +260,34 @@ class FormationAdminController extends Controller
             ->where('id_formation',$idFormation)
             ->first();
             $Cours  = Cours::find($idCours);
-        if($Cours ->etat==1){
-            $this->Update_nombre_cours_total($idFormation,-1);
-           
-            $CoursNombreChapitre = $Cours->nombre_chapitres;
-            $this->Update_nombre_chapitre_total($idFormation,-$CoursNombreChapitre);
-          
-        }
+
+            $Formation= new FormationAdminController;
+
+            $cours = Cours::find($idCours);
+            $formationContenirCours = FormationsContenirCours::
+                where('id_cours',$idCours)->get();
+                $nombreChapitresCours=Cours::where('id_cours',$idCours)->value('nombre_chapitres');
+            foreach($formationContenirCours as $f)
+            {
+                
+                if($cours->etat==1){
+    
+                // Mettre à jour le nombre de cours total dans chaque formations
+                $Formation->Update_nombre_cours_total($f->id_formation,-1);
+                
+                // Mettre à jour le nombre de chapitre total dans chaque formations
+    
+                $Formation->Update_nombre_chapitre_total($f->id_formation,-$nombreChapitresCours);
+                
+                 }
+                 // Supprimer le cours des formations
+                 FormationsContenirCours::where('id_cours',$idCours)->delete();
+                 // Mettre à jour le numero de cours dans chaque formations
+                FormationsContenirCours::where('id_formation',$f->id_formation)
+                ->where("numero_cours",">",$f->numero_cours)
+                ->decrement('numero_cours',1);
+            }
+        
         
 
         $CoursController = new CoursController;
@@ -288,9 +314,7 @@ class FormationAdminController extends Controller
         FormationsContenirCours::where('id_cours',$idCours)
         ->where('id_formation',$idFormation)->delete();
 
-        FormationsContenirCours::where('id_formation',$idFormation)
-        ->where("numero_cours",">",$formationContenirCours->numero_cours)
-        ->decrement('numero_cours',1);
-        return redirect()->back()->with('success','Supprimé avec succes');
+      
+        return redirect()->back()->with('success','Supprimé avec succès');
     } 
 }
