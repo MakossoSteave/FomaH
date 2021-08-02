@@ -239,9 +239,9 @@ class ChapitreController extends Controller
         Chapitre::where('id_chapitre',$id_chapitre)->delete();
 
         //update numero chapitre
-        if($Chapitre->etat==1){
+       // if($Chapitre->etat==1){
             $this->updateNumeroChapitre($Chapitre,null);
-        }
+        //}
         
         //
 

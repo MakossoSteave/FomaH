@@ -86,7 +86,8 @@ class CoursController extends Controller
         ]);
 
         if($request->get('formation_id')!="") {
-            $numero_cours = FormationsContenirCours::where("id_formation","=",$request->get('formation_id'))->max('numero_cours');
+           // $numero_cours = FormationsContenirCours::where("id_formation","=",$request->get('formation_id'))->max('numero_cours');
+           $numero_cours = FormationsContenirCours::where("id_formation","=",$request->get('formation_id'))->count();
 
             if ($numero_cours == null) {
                 $numero_cours = 1;
@@ -99,7 +100,7 @@ class CoursController extends Controller
                 'numero_cours' => $numero_cours
             ]);
            $Formation= new FormationAdminController;
-           $Formation->Update_nombre_cours_total($request->get('formation_id'),1);
+         //  $Formation->Update_nombre_cours_total($request->get('formation_id'),1);
         }
        
       
