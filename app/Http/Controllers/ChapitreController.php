@@ -144,7 +144,7 @@ class ChapitreController extends Controller
 
         if($request->get('etat')==0){
             $this->checkEtat($idCours,$id_chapitre);
-            $this->updateNumeroChapitre($chapitre,"etat");
+            $this->updateChapitre($chapitre,"etat");
         } else {
             $Numero= Chapitre::where('id_cours',$idCours)->where('etat',1)->max('numero_chapitre');
             Chapitre::where('id_chapitre',$id_chapitre)->update([
@@ -190,7 +190,7 @@ class ChapitreController extends Controller
         if($etat==0){
            
             $this->checkEtat($coursId,$id_chapitre);
-            $this->updateNumeroChapitre($Chapitre,"etat");
+            $this->updateChapitre($Chapitre,"etat");
         }else {
             $Numero= Chapitre::where('id_cours',$coursId)->where('etat',1)->max('numero_chapitre');
             Chapitre::where('id_chapitre',$id_chapitre)->update([
@@ -241,7 +241,7 @@ class ChapitreController extends Controller
 
         //update numero chapitre
        // if($Chapitre->etat==1){
-            $this->updateNumeroChapitre($Chapitre,null);
+            $this->updateChapitre($Chapitre,null);
         //}
         
         //
@@ -260,7 +260,7 @@ class ChapitreController extends Controller
             $CoursController->checkEtat($id);
         }
     }
-    private function updateNumeroChapitre($Chapitre,$etat){
+    private function updateChapitre($Chapitre,$etat){
         $Cours = new CoursController;
         $Cours->Update_nombre_chapitres($Chapitre->id_cours,-1);//ajouter +1 au nombre total de chapitre cours
         $Formation = new FormationAdminController;
