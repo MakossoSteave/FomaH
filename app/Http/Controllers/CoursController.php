@@ -177,6 +177,14 @@ class CoursController extends Controller
                             'numero_cours' => $Numero+1
                         
                         ]);
+                        $nombreChapitresCours=Cours::where('id_cours',$id)->value('nombre_chapitres');
+                        $Formation= new FormationAdminController;
+                        // Mettre à jour le nombre de cours total dans chaque formations
+                        $Formation->Update_nombre_cours_total($f->id_formation,1);
+                                    
+                        // Mettre à jour le nombre de chapitre total dans chaque formations
+        
+                        $Formation->Update_nombre_chapitre_total($f->id_formation,$nombreChapitresCours);
                     }
 
             }
@@ -188,14 +196,19 @@ class CoursController extends Controller
             $this->Update_cours($id);
             $this->checkEtat($id);
         }
-      
+      if($etat==1){
+          $nbChap= $nombreChapitresCours+1;
+      }
+      else {
+        $nbChap =$nombreChapitresCours; 
+      }
         Cours::where('id_cours', $id)->update([
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
             'formateur' => $request->get('formateur'),
             'etat' => $etat,
-            'nombre_chapitres' => 0
+            'nombre_chapitres' =>  $nbChap
         ]);
 
         if(!$etatCanChange){
