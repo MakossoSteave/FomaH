@@ -28,8 +28,8 @@
                 </div>
         </div>
 
-            @foreach($qcms->question_qcm as $questions)
-            <input type="hidden" name="updateQcm[{{$qcms->id}}][questionId]" value="{{$questions->id}}">
+            @foreach($qcms->question_qcm as $keyQuest => $questions)
+            <input type="hidden" name="updateQcm[{{$keyQuest}}][questionId]" value="{{$questions->id}}">
 
             <div class='flex'>
                 <div>
@@ -48,7 +48,7 @@
             <div class='field' id='questions'>
                 <label class='label'>Question</label>
                 <div class='control'>
-                    <input name="updateQcm[{{$qcms->id}}][question]" class='input' type='text' placeholder='Question' value="{{$questions->question}}">
+                    <input name="updateQcm[{{$keyQuest}}][question]" class='input' type='text' placeholder='Question' value="{{$questions->question}}">
                 </div>
             </div>
             
@@ -58,20 +58,20 @@
                     <textarea name='updateExplication[]' class='textarea' type='text' placeholder='Explication'>{{$questions->explication}}</textarea>
                 </div>
             </div>
-                @foreach($questions->reponse_question_qcm as $reponses)
-                    <input type="hidden" name="updateQcm[{{$qcms->id}}][reponseId]" value="{{$reponses->id}}">
+                @foreach($questions->reponse_question_qcm as $key => $reponses)
+                    <input type="hidden" name="updateQcm[{{$keyQuest}}][{{$key}}][reponseId]" value="{{$reponses->id}}">
 
                     <div class='field reponse'>
                         <label class='label'>Réponse</label>
                         <div class='control'>
-                            <input name="updateQcm[{{$qcms->id}}][reponse{{$index}}]" class='input' type='text' placeholder='Réponse' value="{{$reponses->reponse}}">
+                            <input name="updateQcm[{{$keyQuest}}][reponse{{$index}}]" class='input' type='text' placeholder='Réponse' value="{{$reponses->reponse}}">
                         </div>
                     </div>
                     <div class='field'>
                         <label class='label'>Choisir la validation de la réponse</label>
                         <div class='control'>
                             <div class='select'>
-                                <select name="updateQcm[{{$qcms->id}}][validation{{$index}}]">
+                                <select name="updateQcm[{{$keyQuest}}][validation{{$index}}]">
                                     <option value='1' {{ ($reponses->validation == true) ?  'selected' : ''}}>Bonne réponse</option>
                                     <option value='0' {{ ($reponses->validation == false) ?  'selected' : ''}}>Mauvaise réponse</option>
                                 </select>

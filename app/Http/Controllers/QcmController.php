@@ -120,8 +120,8 @@ class QcmController extends Controller
             //     "question" => 'required'
             // ]);
     
-            Question_qcm::where('id', $request->updateQcm[$request->get('id')]['questionId'])->update([
-                'question' => $request->updateQcm[$request->get('id')]['question'],
+            Question_qcm::where('id', $request->updateQcm[$idQuest]['questionId'])->update([
+                'question' => $request->updateQcm[$idQuest]['question'],
                 'explication' => $request->updateExplication[$idQuest],
                 'etat' => 0,
                 'qcm_id' => $request->get('id')
@@ -134,12 +134,60 @@ class QcmController extends Controller
                 //     "validation" => 'required'
                 // ]);
         
-                Reponse_question_qcm::where('id', $request->updateQcm[$request->get('id')]['reponseId'])->update([
-                    'reponse' => $request->updateQcm[$request->get('id')]['reponse'.$idResp],
-                    'validation' => $request->updateQcm[$request->get('id')]['validation'.$idResp],
+                Reponse_question_qcm::where('id', $request->updateQcm[$idQuest][$idResp]['reponseId'])->update([
+                    'reponse' => $request->updateQcm[$idQuest]['reponse'.$idResp],
+                    'validation' => $request->updateQcm[$idQuest]['validation'.$idResp],
                     'etat' => 0,
-                    'question_qcm_id' => $request->updateQcm[$request->get('id')]['questionId']
+                    'question_qcm_id' => $request->updateQcm[$idQuest]['questionId']
                 ]);
+            }
+        }
+
+        if($request->has('qcm')) {
+            $request->validate([
+                'designation' => 'required',
+                'id_chapitre' => 'required'
+            ]);
+    
+            for ($idQuest=0; $idQuest < count($request->get('qcm')); $idQuest++) { 
+    
+                // $request->validate([
+                //     "question" => 'required'
+                // ]);
+    
+                do {
+                    $idQuestionQcm = rand(10000000, 99999999);
+                } while(Question_qcm::find($idQuestionQcm) != null);
+        
+                Question_qcm::create([
+                    'id' => $idQuestionQcm,
+                    'question' => $request->qcm[$idQuest]['question'],
+                    'explication' => $request->explication[$idQuest],
+                    'etat' => 0,
+                    'qcm_id' => $request->get('id')
+                ]);
+    
+                $count = count($request->qcm[$idQuest]);
+    
+                for ($idResp=0; $idResp < $count-5; $idResp++) { 
+    
+                    // $request->validate([
+                    //     "reponse" => 'required',
+                    //     "validation" => 'required'
+                    // ]);
+        
+                    do {
+                        $idReponseQcm = rand(10000000, 99999999);
+                    } while(Reponse_question_qcm::find($idReponseQcm) != null);
+            
+                    Reponse_question_qcm::create([
+                        'id' => $idReponseQcm,
+                        'reponse' => $request->qcm[$idQuest]['reponse'.$idResp],
+                        'validation' => $request->qcm[$idQuest]['validation'.$idResp],
+                        'etat' => 0,
+                        'question_qcm_id' => $idQuestionQcm
+                    ]);
+                }
             }
         }
 
