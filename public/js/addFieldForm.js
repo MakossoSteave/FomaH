@@ -4,7 +4,7 @@ function addQuestion(){
 
     var addQuestion = $("#addQuestion");
 
-    addQuestion.append("<div class='field' id='questionReponse"+counter+"'></div>");
+    addQuestion.append("<div class='field idUpdate' id='questionReponse"+counter+"'></div>");
 
     var divQuestion = $("#questionReponse"+counter);
 
@@ -17,7 +17,7 @@ function addQuestion(){
     divQuestion.append(questionItem);
 
     for (var index = 0; index < 4; index++) {
-        var reponseItem = "<div class='field reponse'><label class='label'>Réponse</label><div class='control'><input name='qcm["+counter+"][reponse"+index+"]' class='input' type='text' placeholder='Réponse'></div></div><div class='field'><label class='label'>Choisir la validation de la réponse</label><div class='control'><div class='select'><select name='qcm["+counter+"][validation"+index+"]'><option value='1'>Bonne réponse</option><option value='0'>Mauvaise réponse</option></select></div></div></div>";
+        var reponseItem = "<div class='field' id='reponses"+counter+"'><label class='label'>Réponse</label><div class='control'><input name='qcm["+counter+"][reponse"+index+"]' class='input' type='text' placeholder='Réponse'></div></div><div class='field'><label class='label'>Choisir la validation de la réponse</label><div class='control'><div class='select'><select name='qcm["+counter+"][validation"+index+"]'><option value='1'>Bonne réponse</option><option value='0'>Mauvaise réponse</option></select></div></div></div>";
     
         divQuestion.append(reponseItem);
     }
@@ -26,7 +26,19 @@ function addQuestion(){
 
     $('.deleteQuestion').click(function(event) {
  
-        document.getElementById("questionReponse"+event.target.id).remove();
+        $("#questionReponse"+event.target.id).remove();
+
+        $("#reponses"+event.target.id).remove();
+    
+        $(".idUpdate").each(function(index) {
+            var prefix = "qcm[" + index + "]";
+            $(this).find("input").each(function() {
+               this.name = this.name.replace(/qcm\[\d+\]/, prefix);   
+            });
+            $(this).find("select").each(function() {
+                this.name = this.name.replace(/qcm\[\d+\]/, prefix);   
+             });
+        });
     
         counter--;
     });
