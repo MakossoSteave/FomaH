@@ -54,15 +54,17 @@ class ChapitreController extends Controller
             $id_chapitre = rand(10000000, 99999999);
         } while((Chapitre::find($id_chapitre))!=null);
        // Chapitre::where
-        $Cours = new CoursController;
+     $Cours = new CoursController;
         
-        $numero_chapitre=((Cours::where('id_cours',$idCours)->value('nombre_chapitres')));//numero chapitre = nombre chapitre total cours+1
-        $Cours->Update_nombre_chapitres($idCours,1);//ajouter +1 au nombre total de chapitre cours
+        $numero_chapitre=
+        Chapitre::where('id_cours',$idCours)->count();
+       // ((Cours::where('id_cours',$idCours)->value('nombre_chapitres')));//numero chapitre = nombre chapitre total cours+1
+       /*    $Cours->Update_nombre_chapitres($idCours,1);//ajouter +1 au nombre total de chapitre cours
         $Formation = new FormationAdminController;
         $FindCours=FormationsContenirCours::where('id_cours',$idCours)->first();
         if($FindCours!=null){
         $Formation->Update_nombre_chapitre_total(FormationsContenirCours::where('id_cours',$idCours)->value('id_formation'),1);
-        }
+        }*/
 
         if ($request->hasFile('image')) {
             $destinationPath = public_path('img/chapitre/');
