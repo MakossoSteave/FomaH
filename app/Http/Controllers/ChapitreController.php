@@ -239,7 +239,10 @@ class ChapitreController extends Controller
         Chapitre::where('id_chapitre',$id_chapitre)->delete();
 
         //update numero chapitre
-        $this->updateNumeroChapitre($Chapitre,null);
+        if($Chapitre->etat==1){
+            $this->updateNumeroChapitre($Chapitre,null);
+        }
+        
         //
 
         return redirect()->back()->with('success','Supprimé avec succes');
