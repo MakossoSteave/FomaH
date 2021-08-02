@@ -83,7 +83,17 @@
                 </script>
         </div>
 
+        <div id="addSection"></div>
 
+        <div class="flex">
+            <div></div>
+            <div class="mt-2 mb-2">
+                <a id="buttonAddSection" class="has-icons-right has-text-black" onclick="addSection()">
+                    Ajouter une section
+                    <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
+                </a>
+            </div>
+        </div>
 
             <div class="control mt-4 mb-4">
                 <button type="submit" class="button is-fullwidth is-link is-rounded">Créer</button>
