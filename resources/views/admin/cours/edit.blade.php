@@ -16,6 +16,7 @@
     <form action="{{ route('cours.update', $cours->id_cours) }}" method="POST" enctype="multipart/form-data" class="mt-6">
         @csrf
         @method('PUT')
+        <input type="hidden" name="formation_id" value="{{$idFormation}}">
         <input name="id_cours" type="hidden" value="{{$cours->id_cours}}">
         <input name="numero_cours" type="hidden" value="{{$cours->numero_cours}}">
 

@@ -33,6 +33,8 @@
         </div>
     @else
 
+  
+
     @foreach ($cours as $cour)
     <div class="card my-6">
         <div class="card-content">
@@ -53,7 +55,7 @@
             <div class="content">
                 <div class="flex">
                     <div>
-                        <p class="title is-6">Nombre de chapitres: {{$cour->nombre_chapitres}}</p>
+                        <p class="title is-6">Nombre de chapitres actifs: {{$cour->nombre_chapitres}}</p>
                         <p class="title is-6">Prix: {{$cour->prix}}€</p>
                         <a class="{{ $cour->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatCours', $cour->id_cours) }}">
                         @if($cour->etat == 1) 

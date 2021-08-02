@@ -52,7 +52,7 @@
             <div class="content">
                 <div class="flex">
                     <div>
-                        <p class="title is-6">Nombre de chapitres: {{$cour->nombre_chapitres}}</p>
+                        <p class="title is-6">Nombre de chapitres actifs: {{$cour->nombre_chapitres}}</p>
                         <p class="title is-6">Prix: {{$cour->prix}}€</p>
                         <p class="title is-6">Formation : {{$cour->libelle}}</p>
                         <a class="{{ $cour->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatCours', $cour->id_cours) }}">
@@ -68,7 +68,7 @@
                             @csrf
                             <button type="submit" class="button button-card is-primary">Voir les chapitres</button>
                         </form>
-                        <form action="{{ route('cours.edit', $cour->id_cours) }}" method="GET">
+                        <form action="{{ route('editCours', [$cour->id_cours,$FormationID] ) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>
