@@ -47,7 +47,10 @@ class ChapitreController extends Controller
       
           new FilenameVideo('/^[a-zA-Z0-9_.-^\s]{4,181}$/')],
           'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
-          new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+          new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')],
+          'etat' => [
+              'required',
+               Rule::in(['0', '1'])]
         ]);
 
         do {
@@ -56,9 +59,15 @@ class ChapitreController extends Controller
        // Chapitre::where
 
         $Cours = new CoursController;
-        
-        $numero_chapitre=
-        Chapitre::where('id_cours',$idCours)->count();
+        if($request->get('etat')==1){
+            $numero_chapitre=
+            Chapitre::where('id_cours',$idCours)->where('etat',1)->count();
+        }
+        else {
+            $numero_chapitre=
+            Chapitre::where('id_cours',$idCours)->count();
+        }
+
        // ((Cours::where('id_cours',$idCours)->value('nombre_chapitres')));//numero chapitre = nombre chapitre total cours+1
        /*    $Cours->Update_nombre_chapitres($idCours,1);//ajouter +1 au nombre total de chapitre cours
         $Formation = new FormationAdminController;
@@ -83,7 +92,7 @@ class ChapitreController extends Controller
             $video = time().$filenameVideo;
             $fileVideo->move($destinationPathVideo, $video);
        
-        Chapitre::create(['designation' => $request->get('designation')] + ['numero_chapitre' => $numero_chapitre+1] + ['id_chapitre' => $id_chapitre]+['video'=>$video]+['image'=>$image]+['etat'=>0]+['id_cours'=>$idCours]);
+        Chapitre::create(['designation' => $request->get('designation')] + ['numero_chapitre' => $numero_chapitre+1] + ['id_chapitre' => $id_chapitre]+['video'=>$video]+['image'=>$image]+['etat'=> $request->get('etat')]+['id_cours'=>$idCours]);
         // $this->etat($id_chapitre);
 
             if ($request->has('section')) {
