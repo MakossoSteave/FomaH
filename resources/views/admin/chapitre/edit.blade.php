@@ -174,7 +174,7 @@
 
                 <div class="field">
                 <label class="label">Etat</label>                      
-                    <select class="form-select block w-full mt-1"  name="updateSection[][etat]">   
+                    <select class="form-select block w-full mt-1"  name="updateSection[{{$keySection}}][etat]">   
                         <option 
                         @if($sections->etat == 1) value="1"
                         @else value="0"

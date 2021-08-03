@@ -210,7 +210,80 @@ class ChapitreController extends Controller
             'image' => $image,
             'video' => $video,
             'etat' => $request->get('etat')
-        ]);   
+        ]); 
+        
+        for ($indexSection=0; $indexSection < count($request->get('updateSection')); $indexSection++) {
+
+            $sectionId = $request->updateSection[$indexSection]['sectionID'];
+
+            // $request->validate([
+            //     'designation' => ['required','max:191', Rule::unique('sections')->where(function ($query) use($request, $sectionId) {
+            //      return $query->where('id_chapitre', $request->get('id_chapitre'))
+            //                  ->where("id","!=",$sectionId);})] ,
+            //     'contenu' => ['required','max:5000'],
+            //     'etat' => [
+            //         'required',
+            //          Rule::in(['0', '1'])],
+            //          'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+            //          new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+            // ]);
+        
+            if ($request->hasFile("updateSection.$indexSection.image")) {
+                $destinationPath = public_path('img/section/');
+                $file = $request->file("updateSection.$indexSection.image");
+                $filename = $file->getClientOriginalName();
+                $image = time().$filename;
+                $file->move($destinationPath, $image);
+            } else {
+                $section=Section::find($sectionId);
+                $image = $section->image;
+            }
+    
+            Section::where('id', $sectionId)->update([
+                'designation' => $request->updateSection[$indexSection]['designation'],
+                'contenu' => $request->updateSection[$indexSection]['contenu'],
+                'image' => $image,
+                'etat' => $request->updateSection[$indexSection]['etat']
+            ]);
+
+        }
+
+        if ($request->has('section')) {
+            for ($idSect=0; $idSect < count($request->get('section')); $idSect++) { 
+
+                // $request->validate([
+                //     'designation' => ['required','max:191', Rule::unique('sections')->where(function ($query) use($request) {
+                    
+                //         return $query->where('id_chapitre', $request->get('id_chapitre'));})] ,
+                // 'contenu' => ['required','max:5000'],
+                // 'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+                // new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+                // ]);
+
+                do {
+                    $idSection = rand(10000000, 99999999);
+                } while(Section::find($idSection) != null);
+
+                if ($request->hasFile("section.$idSect.image")) {
+                    $destinationPath = public_path('img/section/');
+                    $file = $request->file("section.$idSect.image");
+                    $filename = $file->getClientOriginalName();
+                    $image = time().$filename;
+                    $file->move($destinationPath, $image);
+                } else {
+                    $image = null;
+                }    
+
+                Section::create([
+                    'id' => $idSection,
+                    'designation' => $request->section[$idSect]['designation'],
+                    'contenu' => $request->section[$idSect]['contenu'],
+                    'image' => $image,
+                    'etat' => 1,
+                    'id_chapitre' => $id_chapitre
+                ]);
+            }
+        }
 
         return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Modifié avec succes');
     }
