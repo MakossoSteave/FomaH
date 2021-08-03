@@ -85,42 +85,44 @@ class ChapitreController extends Controller
        
         Chapitre::create(['designation' => $request->get('designation')] + ['numero_chapitre' => $numero_chapitre+1] + ['id_chapitre' => $id_chapitre]+['video'=>$video]+['image'=>$image]+['etat'=>0]+['id_cours'=>$idCours]);
         // $this->etat($id_chapitre);
-        if ($request->get('section')) {
-        for ($idSect=0; $idSect < count($request->get('section')); $idSect++) { 
 
-            // $request->validate([
-            //     'designation' => ['required','max:191', Rule::unique('sections')->where(function ($query) use($request) {
-                
-            //         return $query->where('id_chapitre', $request->get('id_chapitre'));})] ,
-            // 'contenu' => ['required','max:5000'],
-            // 'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
-            // new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
-            // ]);
+            if ($request->has('section')) {
+                for ($idSect=0; $idSect < count($request->get('section')); $idSect++) { 
 
-            do {
-                $idSection = rand(10000000, 99999999);
-            } while(Section::find($idSection) != null);
+                    // $request->validate([
+                    //     'designation' => ['required','max:191', Rule::unique('sections')->where(function ($query) use($request) {
+                        
+                    //         return $query->where('id_chapitre', $request->get('id_chapitre'));})] ,
+                    // 'contenu' => ['required','max:5000'],
+                    // 'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+                    // new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+                    // ]);
 
-            if ($request->hasFile("section.$idSect.image")) {
-                $destinationPath = public_path('img/section/');
-                $file = $request->file("section.$idSect.image");
-                $filename = $file->getClientOriginalName();
-                $image = time().$filename;
-                $file->move($destinationPath, $image);
-            } else {
-                $image = null;
-            }    
+                    do {
+                        $idSection = rand(10000000, 99999999);
+                    } while(Section::find($idSection) != null);
 
-            Section::create([
-                'id' => $idSection,
-                'designation' => $request->section[$idSect]['designation'],
-                'contenu' => $request->section[$idSect]['contenu'],
-                'image' => $image,
-                'etat' => 1,
-                'id_chapitre' => $id_chapitre
-            ]);
-        }
-    }
+                    if ($request->hasFile("section.$idSect.image")) {
+                        $destinationPath = public_path('img/section/');
+                        $file = $request->file("section.$idSect.image");
+                        $filename = $file->getClientOriginalName();
+                        $image = time().$filename;
+                        $file->move($destinationPath, $image);
+                    } else {
+                        $image = null;
+                    }    
+
+                    Section::create([
+                        'id' => $idSection,
+                        'designation' => $request->section[$idSect]['designation'],
+                        'contenu' => $request->section[$idSect]['contenu'],
+                        'image' => $image,
+                        'etat' => 1,
+                        'id_chapitre' => $id_chapitre
+                    ]);
+                }
+            }
+            
         return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Chapitre créé avec succès');
     }
 
