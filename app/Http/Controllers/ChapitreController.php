@@ -216,7 +216,7 @@ class ChapitreController extends Controller
             'video' => $video,
             'etat' => $request->get('etat')
         ]); 
-        
+        if ($request->has('updateSection')) {
         for ($indexSection=0; $indexSection < count($request->get('updateSection')); $indexSection++) {
 
             $sectionId = $request->updateSection[$indexSection]['sectionID'];
@@ -250,7 +250,7 @@ class ChapitreController extends Controller
                 'image' => $image,
                 'etat' => $request->updateSection[$indexSection]['etat']
             ]);
-
+        }
         }
 
         if ($request->has('section')) {
