@@ -24,7 +24,7 @@ function addQuestion(){
 
     counter++;
 
-    $('.deleteQuestion').click(function(event) {
+    $(document).on('click', '.deleteQuestion', function (event) {
  
         $("#questionReponse"+event.target.id).remove();
 
@@ -40,7 +40,9 @@ function addQuestion(){
              });
         });
     
-        counter--;
+        if (counter > 0) {
+            counter--;   
+        }
     });
 }
 
@@ -96,7 +98,7 @@ function addSection(){
 
     counter++;
 
-    $('.deleteSection').click(function(event) {
+    $(document).on('click', '.deleteSection', function (event) {
  
         $("#section"+event.target.id).remove();
     
@@ -110,6 +112,8 @@ function addSection(){
              });
         });
     
-        counter--;
+        if (counter > 0) {
+            counter--;   
+        }
     });
 }

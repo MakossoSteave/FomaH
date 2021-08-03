@@ -21,4 +21,9 @@ class Cours extends Model
     // {
     //     return $this->belongsTo(FormationsContenirCours::class);
     // }
+
+    public function Chapitre()
+    {
+        return $this->hasMany(Chapitre::class,'id_cours','id_cours');       
+    }
 }
