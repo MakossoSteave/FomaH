@@ -191,7 +191,7 @@ class QcmController extends Controller
             }
         }
 
-        return redirect('/qcm')->with('success','QCM modifié avec succes');
+        return redirect('/qcm')->with('success','QCM modifié avec succès');
     }
 
     public function deleteQuestion($id)
@@ -203,6 +203,6 @@ class QcmController extends Controller
     {
         QCM::where('id',$id)->delete();
 
-        return redirect('/qcm')->with('success','QCM supprimé avec succes');
+        return redirect('/qcm')->with('success','QCM supprimé avec succès');
     }
 }

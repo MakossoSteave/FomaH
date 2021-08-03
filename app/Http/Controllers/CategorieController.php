@@ -55,13 +55,13 @@ class CategorieController extends Controller
 
         Categorie::where('id', $id)->update(['designation' => $request->get('designation')]);
 
-        return redirect('/categorie')->with('success','Categorie modifié avec succes');
+        return redirect('/categorie')->with('success','Categorie modifié avec succès');
     }
 
     public function destroy($id)
     {
         Categorie::where('id',$id)->delete();
 
-        return redirect('/categorie')->with('success','Categorie supprimé avec succes');
+        return redirect('/categorie')->with('success','Categorie supprimé avec succès');
     }
 }

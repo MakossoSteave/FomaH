@@ -73,14 +73,14 @@ class FormationController extends Controller
 
         Formation::where('id',$id)->update($request->all());   
         // $this->Update_nombre_chapitre_total($id,-1);
-        return redirect()->back()->with('success','Modifié avec succes');
+        return redirect()->back()->with('success','Modifié avec succès');
         
     }
 
     public function destroy($id)
     {
         Formation::where('id',$id)->delete();
-        return redirect()->back()->with('success','Supprimé avec succes');
+        return redirect()->back()->with('success','Supprimé avec succès');
     }
 
 }
