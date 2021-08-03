@@ -106,7 +106,10 @@ class ChapitreController extends Controller
                     // 'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
                     // new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
                     // ]);
-
+                    $request->validate([
+                           "section[$idSect][designation]" => 'required',
+                           "section[$idSect][contenu]" => 'required'
+                        ]);
                     do {
                         $idSection = rand(10000000, 99999999);
                     } while(Section::find($idSection) != null);
@@ -226,8 +229,12 @@ class ChapitreController extends Controller
             'etat' => $request->get('etat')
         ]); 
         if ($request->has('updateSection')) {
-        for ($indexSection=0; $indexSection < count($request->get('updateSection')); $indexSection++) {
 
+        for ($indexSection=0; $indexSection < count($request->get('updateSection')); $indexSection++) {
+            $request->validate([
+                "updateSection[$indexSection][designation]" => 'required',
+                "updateSection[$indexSection][contenu]" => 'required'
+             ]);
             $sectionId = $request->updateSection[$indexSection]['sectionID'];
 
             // $request->validate([
@@ -263,6 +270,7 @@ class ChapitreController extends Controller
         }
 
         if ($request->has('section')) {
+            
             for ($idSect=0; $idSect < count($request->get('section')); $idSect++) { 
 
                 // $request->validate([
@@ -273,7 +281,10 @@ class ChapitreController extends Controller
                 // 'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
                 // new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
                 // ]);
-
+                $request->validate([
+                    "section[$idSect][designation]" => 'required',
+                    "section[$idSect][contenu]" => 'required'
+                 ]);
                 do {
                     $idSection = rand(10000000, 99999999);
                 } while(Section::find($idSection) != null);
