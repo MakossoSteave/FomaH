@@ -116,7 +116,7 @@ class ChapitreController extends Controller
                 'designation' => $request->section[$idSect]['designation'],
                 'contenu' => $request->section[$idSect]['contenu'],
                 'image' => $image,
-                'etat' => 0,
+                'etat' => 1,
                 'id_chapitre' => $id_chapitre
             ]);
         }
@@ -133,8 +133,9 @@ class ChapitreController extends Controller
 
     public function edit($id_chapitre)
     {
-       $chapitre = Chapitre::find($id_chapitre);
-      
+       $chapitre = Chapitre::where('id_chapitre', $id_chapitre)->with(['Section' => function($query) use($id_chapitre) {
+        $query->where('sections.id_chapitre', $id_chapitre);
+    }])->get();
 
        return view('admin.chapitre.edit',compact(['chapitre']));
     }
@@ -212,6 +213,11 @@ class ChapitreController extends Controller
         ]);   
 
         return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Modifié avec succes');
+    }
+
+    public function deleteSection($id)
+    {
+        Section::where('id',$id)->delete();
     }
 
     public function Update_numero_chapitre($id_chapitre,$operation)

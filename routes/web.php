@@ -69,6 +69,7 @@ Route::get('/etatFormation/{id}', [App\Http\Controllers\FormationAdminController
 Route::get('/section/{id}', [App\Http\Controllers\SectionController::class, 'index'])->name('section');
 Route::get('/addSection/{id}', [App\Http\Controllers\SectionController::class, 'create'])->name('addSection');
 Route::get('/etatSection/{id}', [App\Http\Controllers\SectionController::class, 'etat'])->name('etatSection');
+Route::delete('/deleteSection/{id}', [App\Http\Controllers\ChapitreController::class, 'deleteSection'])->name('deleteSection');
 
 Route::get('/categorie', [App\Http\Controllers\CategorieController::class, 'index'])->name('categorie');
 Route::get('/addCategorie', [App\Http\Controllers\CategorieController::class, 'create'])->name('addCategorie');

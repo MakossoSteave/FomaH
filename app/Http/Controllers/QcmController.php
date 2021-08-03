@@ -57,7 +57,7 @@ class QcmController extends Controller
                 'id' => $idQuestionQcm,
                 'question' => $request->qcm[$idQuest]['question'],
                 'explication' => $request->explication[$idQuest],
-                'etat' => 0,
+                'etat' => 1,
                 'qcm_id' => $idQcm
             ]);
 
@@ -78,7 +78,7 @@ class QcmController extends Controller
                     'id' => $idReponseQcm,
                     'reponse' => $request->qcm[$idQuest]['reponse'.$idResp],
                     'validation' => $request->qcm[$idQuest]['validation'.$idResp],
-                    'etat' => 0,
+                    'etat' => 1,
                     'question_qcm_id' => $idQuestionQcm
                 ]);
             }
@@ -123,7 +123,7 @@ class QcmController extends Controller
             Question_qcm::where('id', $request->updateQcm[$idQuest]['questionId'])->update([
                 'question' => $request->updateQcm[$idQuest]['question'],
                 'explication' => $request->updateExplication[$idQuest],
-                'etat' => 0,
+                'etat' => 1,
                 'qcm_id' => $request->get('id')
             ]);
 
@@ -137,7 +137,7 @@ class QcmController extends Controller
                 Reponse_question_qcm::where('id', $request->updateQcm[$idQuest][$idResp]['reponseId'])->update([
                     'reponse' => $request->updateQcm[$idQuest]['reponse'.$idResp],
                     'validation' => $request->updateQcm[$idQuest]['validation'.$idResp],
-                    'etat' => 0,
+                    'etat' => 1,
                     'question_qcm_id' => $request->updateQcm[$idQuest]['questionId']
                 ]);
             }
@@ -163,7 +163,7 @@ class QcmController extends Controller
                     'id' => $idQuestionQcm,
                     'question' => $request->qcm[$idQuest]['question'],
                     'explication' => $request->explication[$idQuest],
-                    'etat' => 0,
+                    'etat' => 1,
                     'qcm_id' => $request->get('id')
                 ]);
     
@@ -184,7 +184,7 @@ class QcmController extends Controller
                         'id' => $idReponseQcm,
                         'reponse' => $request->qcm[$idQuest]['reponse'.$idResp],
                         'validation' => $request->qcm[$idQuest]['validation'.$idResp],
-                        'etat' => 0,
+                        'etat' => 1,
                         'question_qcm_id' => $idQuestionQcm
                     ]);
                 }

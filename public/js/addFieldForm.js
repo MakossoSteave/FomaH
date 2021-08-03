@@ -117,3 +117,28 @@ function addSection(){
         }
     });
 }
+
+$(document).on('click', '.deleteUpdateSection', function(event){
+    var token = $("meta[name='csrf-token']").attr("content");
+    
+    $.ajax(
+    {
+        url: window.location.origin + "/deleteSection/" + event.target.id,
+        type: 'DELETE',
+        dataType: "Text",
+        data: {
+            "id": event.target.id,
+            "_token": token,
+        },
+        success: function (response)
+        {
+            console.log('success:' + response);
+            
+            $("#formUpdateSection").load(window.location.href + " #questionUpdateSection");
+        },
+        error: function(data) 
+        {
+            console.log(data);
+        }
+    });
+});
