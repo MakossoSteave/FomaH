@@ -8,10 +8,10 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-        <a href="{{ route('addSection', $idChapitre) }}" class="has-icons-right" id="link-black">
+        <!-- <a href="{{-- route('addSection', $idChapitre) --}}" class="has-icons-right" id="link-black">
             Ajouter une section
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
-        </a>
+        </a> -->
     </div>
     
     @if (session('success'))
@@ -53,10 +53,10 @@
                         </a>
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('section.edit', $section->id) }}" method="GET">
+                        <!-- <form action="{{-- route('section.edit', $section->id) --}}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>
-                        </form>
+                        </form> -->
                             <p>
                                 <a class = "button is-danger button-card modal-button" data-target = "#{{$section->id}}">Supprimer</a>
                             </p>
