@@ -88,7 +88,7 @@
         </div>
 
         <div class="field">
-            <label class="label">Etat</label>
+            <label class="label">Etat chapitre</label>
                                     
                                     <select class="form-select block w-full mt-1"  name="etat">
                                           
