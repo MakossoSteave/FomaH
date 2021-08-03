@@ -310,12 +310,18 @@ class ChapitreController extends Controller
     }
 
     private function updateChapitre($Chapitre,$etat){
-        $Cours = new CoursController;
-        $Cours->Update_nombre_chapitres($Chapitre->id_cours,-1);//ajouter +1 au nombre total de chapitre cours
+        $CoursController = new CoursController;
+        $CoursController->Update_nombre_chapitres($Chapitre->id_cours,-1);//ajouter +1 au nombre total de chapitre cours
+        $cours = Cours::find($Chapitre->id_cours);
         $Formation = new FormationAdminController;
         $FindFormation=FormationsContenirCours::where('id_cours',$Chapitre->id_cours)->get();
         foreach($FindFormation as $f){
         $Formation->Update_nombre_chapitre_total($f->id_formation,-1);
+         // Mettre à jour le nombre de cours total dans chaque formations
+         if($cours->etat==0){
+            $Formation->Update_nombre_cours_total($f->id_formation,-1);
+         }
+         
         }
         if($etat!=null){
             Chapitre::where('id_cours',$Chapitre->id_cours)
