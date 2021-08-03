@@ -38,17 +38,17 @@ class ChapitreController extends Controller
         $idCours = $request->session()->get('idCours');
         $this->CoursID = $idCours;
 
-        // $request->validate([
-        //  'designation' => ['required','max:191', Rule::unique('chapitres')->where(function ($query) use($idCours) {
+        $request->validate([
+          'designation' => ['required','max:191', Rule::unique('chapitres')->where(function ($query) use($idCours) {
              
-        //     return $query->where('id_cours', $idCours);
-        // })] ,
-        //  'video' => ['required','mimes:mp4,mov,ogg,qt ','max:2097152',
+             return $query->where('id_cours', $idCours);
+         })] ,
+          'video' => ['required','mimes:mp4,mov,ogg,qt ','max:2097152',
       
-        //  new FilenameVideo('/^[a-zA-Z0-9_.-^\s]{4,181}$/')],
-        //  'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
-        //  new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
-        // ]);
+          new FilenameVideo('/^[a-zA-Z0-9_.-^\s]{4,181}$/')],
+          'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+          new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+        ]);
 
         do {
             $id_chapitre = rand(10000000, 99999999);
@@ -85,7 +85,7 @@ class ChapitreController extends Controller
        
         Chapitre::create(['designation' => $request->get('designation')] + ['numero_chapitre' => $numero_chapitre+1] + ['id_chapitre' => $id_chapitre]+['video'=>$video]+['image'=>$image]+['etat'=>0]+['id_cours'=>$idCours]);
         // $this->etat($id_chapitre);
-
+        if ($request->get('section')) {
         for ($idSect=0; $idSect < count($request->get('section')); $idSect++) { 
 
             // $request->validate([
@@ -120,7 +120,7 @@ class ChapitreController extends Controller
                 'id_chapitre' => $id_chapitre
             ]);
         }
-        
+    }
         return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Chapitre créé avec succès');
     }
 

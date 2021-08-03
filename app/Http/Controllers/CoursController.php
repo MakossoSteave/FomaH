@@ -196,19 +196,19 @@ class CoursController extends Controller
             $this->Update_cours($id);
             $this->checkEtat($id);
         }
-      if($etat==1){
+      /*if($etat==1){
           $nbChap= $nombreChapitresCours+1;
       }
       else {
         $nbChap =$nombreChapitresCours; 
-      }
+      }*/
         Cours::where('id_cours', $id)->update([
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
             'formateur' => $request->get('formateur'),
-            'etat' => $etat,
-            'nombre_chapitres' =>  $nbChap
+            'etat' => $etat/*,
+            'nombre_chapitres' =>  $nbChap*/
         ]);
 
         if(!$etatCanChange){
