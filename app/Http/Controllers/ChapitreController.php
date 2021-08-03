@@ -183,7 +183,7 @@ class ChapitreController extends Controller
         }
 
         if($request->get('etat')==0){
-            $this->checkEtat($idCours,$id_chapitre);
+            
             $this->updateChapitre($chapitre,"etat");
         } else {
             $Numero= Chapitre::where('id_cours',$idCours)->where('etat',1)->max('numero_chapitre');
@@ -231,8 +231,6 @@ class ChapitreController extends Controller
         $etat = !$Chapitre->etat;
         $coursId=  $Chapitre->id_cours;
         if($etat==0){
-           
-            $this->checkEtat($coursId,$id_chapitre);
             $this->updateChapitre($Chapitre,"etat");
         }else {
             $Numero= Chapitre::where('id_cours',$coursId)->where('etat',1)->max('numero_chapitre');
@@ -282,7 +280,7 @@ class ChapitreController extends Controller
         $Chapitre= Chapitre::find($id_chapitre);
         
         $coursId=  $Chapitre->id_cours;
-        $this->checkEtat($coursId,$id_chapitre);
+       // $this->checkEtat($coursId,$id_chapitre);
        
         Chapitre::where('id_chapitre',$id_chapitre)->delete();
 
@@ -313,14 +311,23 @@ class ChapitreController extends Controller
         $CoursController = new CoursController;
         $CoursController->Update_nombre_chapitres($Chapitre->id_cours,-1);//ajouter +1 au nombre total de chapitre cours
         $cours = Cours::find($Chapitre->id_cours);
+        if($cours->etat==1){
         $Formation = new FormationAdminController;
+        
         $FindFormation=FormationsContenirCours::where('id_cours',$Chapitre->id_cours)->get();
         foreach($FindFormation as $f){
+            
         $Formation->Update_nombre_chapitre_total($f->id_formation,-1);
+        }
          // Mettre à jour le nombre de cours total dans chaque formations
-         if($cours->etat==0){
+         $this->checkEtat($Chapitre->id_cours,$Chapitre->id_chapitre); 
+         $coursCheckChange = Cours::find($Chapitre->id_cours);
+         if($coursCheckChange->etat==0 && $coursCheckChange->etat!=$cours->etat){
+            foreach($FindFormation as $f){
             $Formation->Update_nombre_cours_total($f->id_formation,-1);
          }
+        }
+        
          
         }
         if($etat!=null){
