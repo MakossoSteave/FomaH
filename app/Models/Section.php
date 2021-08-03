@@ -14,4 +14,14 @@ class Section extends Model
     protected $fillable=[
         'id', 'designation','contenu','image','etat','id_chapitre'
     ];
+
+    public function Section()
+    {
+        return $this->hasOne(Chapitre::class,'id_chapitre','id_chapitre');
+    }
+
+    public function Chapitre()
+    {
+        return $this->belongsTo(Chapitre::class);
+    }
 }
