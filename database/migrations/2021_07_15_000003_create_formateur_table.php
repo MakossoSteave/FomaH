@@ -17,8 +17,8 @@ class CreateFormateurTable extends Migration
             $table->engine='InnoDB';
             $table->id();
             $table->string('nom');
-            $table->string('prenom');
-            $table->integer('telephone');
+            $table->string('prenom')->nullable();
+            $table->integer('telephone')->nullable();
             $table->string('parcours')->nullable();
             $table->string('cv')->nullable();
             $table->bigInteger('user_id')->unsigned()->index();

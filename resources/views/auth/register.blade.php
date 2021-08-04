@@ -47,17 +47,7 @@
                         </span>
                         @enderror
                     </div>
-                    <div class="mt-5">
-                        <div class="text-sm font-bold text-gray-700 tracking-wide">Prénom</div>
-                        <input name="surname"
-                            class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500 @error('surname') is-invalid @enderror"
-                            type="" placeholder="Perfect">
-                        @error('surname')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
+
                     <div class="mt-5">
                         <div class="text-sm font-bold text-gray-700 tracking-wide">Mail</div>
                         <input name="email"
@@ -69,17 +59,7 @@
                         </span>
                         @enderror
                     </div>
-                    <div class="mt-5">
-                        <div class="text-sm font-bold text-gray-700 tracking-wide">Téléphone</div>
-                        <input name="phone"
-                            class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500 @error('phone') is-invalid @enderror"
-                            type="" placeholder="Entrez votre numéro de téléphone">
-                        @error('phone')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
+
                     <div class="mt-5">
                         <div class="flex justify-between items-center">
                             <div class="text-sm font-bold text-gray-700 tracking-wide">
