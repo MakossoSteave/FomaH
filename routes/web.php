@@ -78,6 +78,11 @@ Route::get('/qcm', [App\Http\Controllers\QcmController::class, 'index'])->name('
 Route::get('/addQcm', [App\Http\Controllers\QcmController::class, 'create'])->name('addQcm');
 Route::delete('/deleteQuestion/{id}', [App\Http\Controllers\QcmController::class, 'deleteQuestion'])->name('deleteQuestion');
 
+Route::get('/session', [App\Http\Controllers\SessionController::class, 'index'])->name('session');
+Route::get('/addSession', [App\Http\Controllers\SessionController::class, 'create'])->name('addSession');
+Route::get('/etatSession/{id}', [App\Http\Controllers\SessionController::class, 'etat'])->name('etatSession');
+
+Route::resource('session','App\Http\Controllers\SessionController');
 Route::resource('qcm','App\Http\Controllers\QcmController');
 Route::resource('categorie','App\Http\Controllers\CategorieController');
 Route::resource('section','App\Http\Controllers\SectionController');

@@ -19,7 +19,7 @@ class CreateSessionTable extends Migration
             $table->date('date_debut');
             $table->date('date_fin');
             $table->boolean('etat');
-            $table->bigInteger('formateur_id')->unsigned()->index();
+            $table->bigInteger('formateur_id')->unsigned()->index()->nullable();
             $table->foreign('formateur_id')->references('id')->on('formateurs')->onDelete('cascade');
             $table->bigInteger('formations_id')->unsigned()->index();
             $table->foreign('formations_id')->references('id')->on('formations')->onDelete('cascade');
