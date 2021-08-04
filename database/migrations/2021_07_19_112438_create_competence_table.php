@@ -16,6 +16,11 @@ class CreateCompetenceTable extends Migration
         Schema::create('competences', function (Blueprint $table) {
             $table->engine='InnoDB';
             $table->id();
+
+            $table->bigInteger('id_formateur')->unsigned()->index()->nullable();
+            $table->foreign('id_formateur')->references('id')->on('users');
+
+
             $table->bigInteger('id_categorie')->unsigned()->index()->nullable();
             $table->foreign('id_categorie')->references('id')->on('categories');
 

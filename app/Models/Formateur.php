@@ -11,7 +11,7 @@ class Formateur extends Model
     public $incrementing = false;
     protected $fillable = [
         //'etat',
-        'id','nom','prenom','telephone','user_id'
+        'id','prenom','telephone','parcours','cv','user_id'
     ];
 
     public function user()

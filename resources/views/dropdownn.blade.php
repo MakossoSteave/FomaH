@@ -9,7 +9,8 @@
       <!-- <div class="hauteur"> -->
       <form action="{{ route('competence.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
         @csrf
-
+        <span>  {{Auth::user()->id}} </span>
+        <input type="hidden" id="userId" name="userId" value="{{Auth::user()->id}}">
 
       <!-- X X X X X Catégorie -->
       <div class="form-group hauteur_dropdown">

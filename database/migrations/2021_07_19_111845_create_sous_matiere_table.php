@@ -31,10 +31,12 @@ class CreateSousMatiereTable extends Migration
         DB::table('sous_matieres')->insert( ['designation_sous_matiere'=>'Web developpement cote serveur (Back-End) PHP, Java et SQL','matiere_id'=> 2], );
         DB::table('sous_matieres')->insert( ['designation_sous_matiere'=>'Principes des réseaux informatiques','matiere_id'=> 3], );
         DB::table('sous_matieres')->insert( ['designation_sous_matiere'=>'Technologies pour les applications en reseau','matiere_id'=> 3], );
+        /*
         DB::table('sous_matieres')->insert( ['designation_sous_matiere'=>'Anglais littéraire','matiere_id'=> 6], );
         DB::table('sous_matieres')->insert( ['designation_sous_matiere'=>'Anglais professionnel','matiere_id'=> 6], );
         DB::table('sous_matieres')->insert( ['designation_sous_matiere'=>'Espagnol littéraire','matiere_id'=> 7], );
         DB::table('sous_matieres')->insert( ['designation_sous_matiere'=>'Espagnol professionnel','matiere_id'=> 7], );
+        */
     }
 
     /**

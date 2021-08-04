@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+        //DB::table('matieres')->insert( ['designation_matiere'=>'Conception','categorie_id'=> 1], );
     }
 
     /**

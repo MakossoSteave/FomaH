@@ -18,7 +18,7 @@ class CreateStagiaireTable extends Migration
             $table->id();
             $table->string('nom');
             $table->string('prenom')->nullable();
-            $table->integer('telephone')->nullable();
+            $table->integer('telephone')->nullable();  
             $table->bigInteger('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->bigInteger('formateur_id')->unsigned()->index()->nullable();
