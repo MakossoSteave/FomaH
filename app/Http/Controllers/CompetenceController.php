@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+
+
+
+
 use App\Models\Competence;
 USE App\Models\Categorie;
-use Brick\Math\BigInteger;
-use Illuminate\Http\Request;
+
+
 
 class CompetenceController extends Controller
 {
@@ -30,7 +36,9 @@ class CompetenceController extends Controller
      */
     public function create()
     {
-        $resultat = "ceci sont des données du formulaire : la matiere ".request('matiere')." puis : la sous matiere ".request('sousmatiere')." et enfin la categorie ".request('categorie');
+        $resultat = "ceci sont des données du formulaire : la matiere ".request('matiere').
+        " puis : la sous matiere ".request('sousmatiere')." et enfin la categorie ".
+        request('categorie');
 
         return $resultat;
 
@@ -45,27 +53,31 @@ class CompetenceController extends Controller
      */
     public function store(Request $request)
     {
+        do {
+            $id = rand(10000000, 99999999);
+        } while(Competence::find($id) != null);
         
-        //Competence::create($request->all());
-        //dd($request);
-        //var_dump($request->get('userId'));
-        //var_dump($request->get('categorie'));
         var_dump($request->get('userId'));
-        $integer = intval($request->get('userId'));
-        //$str = $request->get('userId');
-        var_dump($integer);
-        
-        
+               
+        $utilisateurID = Auth::user()->id;
+        $formateur= new FormateurController;
+        $formateurID= $formateur->findFormateurID($utilisateurID);  
+        var_dump($utilisateurID);
+        var_dump($formateurID);
+        var_dump($id);
+
+    
 
         //var_dump($request->get('matiere'));
         //var_dump($request->get('sousmatiere'));
         
 
         Competence::create([
-            'id_formateur' => $request->get($integer),
+            'id' => $id,
+            'id_formateur' => $formateurID,
             'id_categorie' => $request->get('categorie'),
-            'id_matiere' => $request->get('categorie'),
-            'id_sous_matiere' => $request->get('categorie'),      
+            'id_matiere' => $request->get('matiere'),
+            'id_sous_matiere' => $request->get('sousmatiere'),      
         ]);
         
 

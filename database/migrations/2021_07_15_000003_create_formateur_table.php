@@ -15,8 +15,8 @@ class CreateFormateurTable extends Migration
     {
         Schema::create('formateurs', function (Blueprint $table) {
             $table->engine='InnoDB';
-            $table->id('id');
-            $table->string('nom')->nullable();
+            $table->id('id')->unsigned();
+            //$table->string('nom')->nullable();
             $table->string('prenom')->nullable();
             $table->integer('telephone')->nullable();
             $table->string('parcours')->nullable();
