@@ -24,7 +24,7 @@ function addQuestion(){
 
     counter++;
 
-    $('.deleteQuestion').click(function(event) {
+    $(document).on('click', '.deleteQuestion', function (event) {
  
         $("#questionReponse"+event.target.id).remove();
 
@@ -40,7 +40,9 @@ function addQuestion(){
              });
         });
     
-        counter--;
+        if (counter > 0) {
+            counter--;   
+        }
     });
 }
 
@@ -61,6 +63,78 @@ $(document).on('click', '.deleteUpdateQuestion', function(event){
             console.log('success:' + response);
             
             $("#formUpdateQcm").load(window.location.href + " #questionUpdateQcm");
+        },
+        error: function(data) 
+        {
+            console.log(data);
+        }
+    });
+});
+
+function addSection(){
+
+    var addQuestion = $("#addSection");
+
+    addQuestion.append("<div class='field idUpdate' id='section"+counter+"'></div>");
+
+    var divQuestion = $("#section"+counter);
+
+    var buttonDeleteSection = "<div class='flex'><div></div><div class='mt-2 mb-2'><a id='"+counter+"' class='has-icons-right has-text-danger deleteSection'>Supprimer la section<span class='icon is-small is-right'><i class='fas fa-trash-alt'></i></span></a></div></div>";
+
+    divQuestion.append(buttonDeleteSection);
+
+        var sectionItem = "<div class='field'><label class='label'>Titre de la section</label><div class='control'><input name='section["+counter+"][designation]' class='input' type='text' placeholder='Titre de la section'></div></div><div class='field'><label class='label'>Contenu</label><div class='control'><textarea name='section["+counter+"][contenu]' class='textarea' type='text' placeholder='Contenu'></textarea></div></div><div class='field'><label class='label'>Ajouter une image</label><div id='file-js-image-cours-"+counter+"' class='file has-name'><label class='file-label'><input class='file-input' type='file' name='section["+counter+"][image]'><span class='file-cta'><span class='file-icon'><i class='fas fa-upload'></i></span><span class='file-label'>Choisir un image</span></span><span class='file-name'>Aucune image</span></label></div></div>";
+
+    divQuestion.append(sectionItem);
+
+    var fileInput = $("#file-js-image-cours-"+counter+" input[type=file]");
+
+    fileInput.change = () => {
+        if (fileInput.files.length > 0) {
+        var fileName = $("#file-js-image-cours-"+counter+" .file-name");
+        fileName.text(fileInput.files[0].name);
+        }
+    }
+
+    counter++;
+
+    $(document).on('click', '.deleteSection', function (event) {
+ 
+        $("#section"+event.target.id).remove();
+    
+        $(".idUpdate").each(function(index) {
+            var prefix = "section[" + index + "]";
+            $(this).find("input").each(function() {
+               this.name = this.name.replace(/section\[\d+\]/, prefix);   
+            });
+            $(this).find("textarea").each(function() {
+                this.name = this.name.replace(/section\[\d+\]/, prefix);   
+             });
+        });
+    
+        if (counter > 0) {
+            counter--;   
+        }
+    });
+}
+
+$(document).on('click', '.deleteUpdateSection', function(event){
+    var token = $("meta[name='csrf-token']").attr("content");
+    
+    $.ajax(
+    {
+        url: window.location.origin + "/deleteSection/" + event.target.id,
+        type: 'DELETE',
+        dataType: "Text",
+        data: {
+            "id": event.target.id,
+            "_token": token,
+        },
+        success: function (response)
+        {
+            console.log('success:' + response);
+            
+            $("#formUpdateSection").load(window.location.href + " #questionUpdateSection");
         },
         error: function(data) 
         {

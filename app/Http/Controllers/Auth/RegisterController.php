@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Formateur;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Models\role;
-
+use App\Models\Stagiaire;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -57,8 +58,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'name' => ['required', 'string', 'max:191'],
+           // 'surname' => ['required', 'string', 'max:191'],
+           // 'phone' => ['required', 'regex:/[0-9]{10}/'],
+            'email' => ['required', 'string', 'email', 'max:191', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role'=>['required','string']
         ]);
@@ -73,12 +76,42 @@ class RegisterController extends Controller
     protected function create(array $data)
     
     {
-       
-        return User::create([
+        do {
+            $idUser = rand(10000000, 99999999);
+        } while(User::find($idUser) != null);
+
+       $user = User::create([
+            'id' => $idUser,
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role_id'=>$data['role'],
+            'role_id'=>$data['role']
         ]);
+
+        if($data['role']==3){
+
+            do {
+                $idStagiaire = rand(10000000, 99999999);
+            } while(Stagiaire::find($idStagiaire) != null);
+
+            Stagiaire::create([
+                'id' =>  $idStagiaire,
+                'nom' => $data['name'],
+                'user_id' => $user->id
+            ]);
+
+        }
+        else if($data['role']==4){
+            do {
+                $idFormateur = rand(10000000, 99999999);
+            } while(Formateur::find($idFormateur) != null);
+
+            Formateur::create([
+                'id' =>  $idFormateur,
+                'nom' => $data['name'],
+                'user_id' => $user->id
+            ]);
+        }
+        return $user;
     }
 }

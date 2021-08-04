@@ -15,10 +15,10 @@ class CreateStagiaireTable extends Migration
     {
         Schema::create('stagiaires', function (Blueprint $table) {
             $table->engine='InnoDB';
-            $table->id();;
+            $table->id();
             $table->string('nom');
-            $table->string('prenom');
-            $table->integer('telephone');
+            $table->string('prenom')->nullable();
+            $table->integer('telephone')->nullable();
             $table->bigInteger('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->bigInteger('formateur_id')->unsigned()->index()->nullable();

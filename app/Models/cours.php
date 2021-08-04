@@ -16,4 +16,14 @@ class Cours extends Model
     protected $fillable=[
         'id_cours', 'numero_cours','designation','image','nombre_chapitres','prix','etat', 'formateur'
     ];
+
+    // public function FormationContenirCours()
+    // {
+    //     return $this->belongsTo(FormationsContenirCours::class);
+    // }
+
+    public function Chapitre()
+    {
+        return $this->hasMany(Chapitre::class,'id_cours','id_cours');       
+    }
 }

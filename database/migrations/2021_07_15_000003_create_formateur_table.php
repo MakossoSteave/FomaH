@@ -18,9 +18,10 @@ class CreateFormateurTable extends Migration
             $table->id();
             $table->integer('telephone');
             $table->string('nom');
-            $table->string('prenom');
-            $table->string('parcours');
-            $table->string('cv');
+            $table->string('prenom')->nullable();
+            $table->integer('telephone')->nullable();
+            $table->string('parcours')->nullable();
+            $table->string('cv')->nullable();
             $table->bigInteger('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

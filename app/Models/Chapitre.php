@@ -16,8 +16,13 @@ class Chapitre extends Model
     protected $fillable=[
         'id_chapitre', 'numero_chapitre','designation','image','video','etat','id_cours'
     ];
+
+    public function Section()
+    {
+        return $this->hasMany(Section::class,'id_chapitre','id_chapitre');       
+    }
     
-    public function cours()
+    public function Cours()
     {
         return $this->belongsTo(Cours::class);
     }

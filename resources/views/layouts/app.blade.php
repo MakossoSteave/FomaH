@@ -113,7 +113,7 @@
             </div>
 
             <div id="navbarBasicExample" class="navbar-menu">
-                <a class="navbar-item">
+                <a class="navbar-item" href="{{ url('session')}}">
                     Session
                 </a>
 

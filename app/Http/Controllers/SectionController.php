@@ -112,7 +112,7 @@ class SectionController extends Controller
             'etat' => $request->get('etat')
         ]);
 
-        return redirect('/section/'.intval($request->get('id_chapitre')))->with('success','Section modifié avec succes');
+        return redirect('/section/'.intval($request->get('id_chapitre')))->with('success','Section modifié avec succès');
     }
 
     public function etat($id)
@@ -120,13 +120,13 @@ class SectionController extends Controller
         $section = Section::find($id);
         $etat = !$section->etat;
         Section::where('id', $id)->update(array('etat' => $etat));
-        return redirect()->back()->with('success','Etat modifié avec succes');
+        return redirect()->back()->with('success','Etat modifié avec succès');
     }
 
     public function destroy($id)
     {
         Section::where('id',$id)->delete();
 
-        return redirect()->back()->with('success','Section supprimé avec succes');
+        return redirect()->back()->with('success','Section supprimé avec succès');
     }
 }

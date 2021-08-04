@@ -47,6 +47,7 @@
                         </span>
                         @enderror
                     </div>
+
                     <div class="mt-5">
                         <div class="text-sm font-bold text-gray-700 tracking-wide">Mail</div>
                         <input name="email"
@@ -58,6 +59,7 @@
                         </span>
                         @enderror
                     </div>
+
                     <div class="mt-5">
                         <div class="flex justify-between items-center">
                             <div class="text-sm font-bold text-gray-700 tracking-wide">
