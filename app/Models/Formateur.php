@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Formateur extends Model
 {
     use HasFactory;
+    public $incrementing = false;
     protected $fillable = [
-        'etat','id','nom','prenom'
+        //'etat',
+        'id','nom','prenom','telephone','user_id'
     ];
 
     public function user()
