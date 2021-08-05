@@ -82,6 +82,10 @@ Route::get('/session', [App\Http\Controllers\SessionController::class, 'index'])
 Route::get('/addSession', [App\Http\Controllers\SessionController::class, 'create'])->name('addSession');
 Route::get('/etatSession/{id}', [App\Http\Controllers\SessionController::class, 'etat'])->name('etatSession');
 
+Route::get('/document/{id}', [App\Http\Controllers\DocumentController::class, 'index'])->name('document');
+Route::get('/addDocument/{id}', [App\Http\Controllers\DocumentController::class, 'create'])->name('addDocument');
+
+Route::resource('document','App\Http\Controllers\DocumentController');
 Route::resource('session','App\Http\Controllers\SessionController');
 Route::resource('qcm','App\Http\Controllers\QcmController');
 Route::resource('categorie','App\Http\Controllers\CategorieController');

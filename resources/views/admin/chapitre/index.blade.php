@@ -92,7 +92,7 @@
             Exercices
             </a>
 
-            <a href="#" class="dropdown-item">
+            <a href="{{ route('document', $chapitre->id_chapitre) }}" class="dropdown-item">
             Documents
             </a>
             </div>
