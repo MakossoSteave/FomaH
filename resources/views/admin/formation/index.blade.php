@@ -36,15 +36,23 @@
     @foreach ($formations as $formation)
     <div class="card my-6">
         <div class="card-content">
-            <div class="media">
-                @if(!empty($formation->image))
+        <div class="media">
+            @if(!empty($formation->image))
             <div class="media-left">
                 <img class="image is-4by3" src="{{ URL::asset('/') }}img/formation/{{$formation->image}}" alt="Placeholder image">
             </div>
                 @endif
             <div class="media-content">
-                <p class="title is-4">{{$formation->libelle}}</p>
-                <p class="subtitle is-6">{{$formation->description}}</p>
+            <div class="flex">
+                <div>
+                        <p class="title is-4">{{$formation->libelle}}</p>
+                        <p class="subtitle is-6">{{$formation->description}}</p>
+                </div>
+                <a href="{{ route('createCours', $formation->id) }}" class="has-icons-right" id="link-black">
+                    Ajouter un cours
+                    <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
+                </a>
+            </div>
             </div>
         </div>
 
@@ -64,14 +72,6 @@
                         </a>
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('coursFilter', $formation->id) }}" method="GET">
-                            @csrf
-                            <button type="submit" class="button button-card is-primary">Voir les cours</button>
-                        </form>
-                        <form action="{{ route('createCours', $formation->id) }}" method="GET">
-                            @csrf
-                            <button type="submit" class="button button-card is-link">Ajouter un cours</button>
-                        </form>
                         <form action="{{ route('cursus.edit', $formation->id) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>
@@ -111,6 +111,10 @@
                                 $(target).removeClass("is-active");
                             });
                         </script>
+                        <form action="{{ route('coursFilter', $formation->id) }}" method="GET">
+                            @csrf
+                            <button type="submit" class="button button-card is-primary">Voir les cours</button>
+                        </form>
                     </div>
                 </div>
             </div>

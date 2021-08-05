@@ -82,19 +82,19 @@
                 @csrf
                 <button type="submit" class="dropdown-item">Sections</button>
             </form>
-            
+
             <form action="{{ route('qcm', $chapitre->id_chapitre) }}" method="GET">
                 @csrf
                 <button type="submit" class="dropdown-item">QCM</button>
             </form>
   
-              <a href="#" class="dropdown-item">
-                Exercices
-              </a>
-  
-              <a href="#" class="dropdown-item">
-                Documents
-              </a>
+            <a href="#" class="dropdown-item">
+            Exercices
+            </a>
+
+            <a href="#" class="dropdown-item">
+            Documents
+            </a>
             </div>
           </div>
         </div>
