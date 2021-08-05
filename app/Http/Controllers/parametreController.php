@@ -26,4 +26,5 @@ class parametreController extends Controller
         return View('stagiaire.parametre', compact(['id'],['User']),['role' => $role]);
 
     }
+    public function store(){}
 }
