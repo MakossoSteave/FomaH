@@ -86,32 +86,31 @@
                     ?>
                 @endforeach
             @endforeach
-        @endforeach
+            <div id="addQuestion"></div>
         
-        <div id="addQuestion"></div>
-        
-        <div class="flex">
-            <div></div>
-            <div class="mt-2 mb-2">
-                <a id="buttonAddQuestion" class="has-icons-right has-text-black" onclick="addQuestion()">
-                    Ajouter une question
-                    <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
-                </a>
-            </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Choisir le chapitre du QCM</label>
-                <div class="control">
-                    <div class="select">
-                    <select name="id_chapitre">
-                        @foreach ($chapitres as $chapitre)
-                            <option value="{{$chapitre->id_chapitre}}">{{$chapitre->designation}}</option>
-                        @endforeach
-                    </select>
-                    </div>
+            <div class="flex">
+                <div></div>
+                <div class="mt-2 mb-2">
+                    <a id="buttonAddQuestion" class="has-icons-right has-text-black" onclick="addQuestion()">
+                        Ajouter une question
+                        <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
+                    </a>
                 </div>
-        </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Choisir le chapitre du QCM</label>
+                    <div class="control">
+                        <div class="select">
+                        <select name="id_chapitre">
+                            @foreach ($chapitres as $chapitre)
+                                <option value="{{$chapitre->id_chapitre}}" {{ ($chapitre->id_chapitre == $qcms->id_chapitre) ? 'selected' : '' }}>{{$chapitre->designation}}</option>
+                            @endforeach
+                        </select>
+                        </div>
+                    </div>
+            </div>
+        @endforeach
 
             <div class="control mt-4 mb-4">
                 <button type="submit" class="button is-fullwidth is-link is-rounded">Modifier</button>

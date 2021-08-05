@@ -74,8 +74,8 @@ Route::delete('/deleteSection/{id}', [App\Http\Controllers\ChapitreController::c
 Route::get('/categorie', [App\Http\Controllers\CategorieController::class, 'index'])->name('categorie');
 Route::get('/addCategorie', [App\Http\Controllers\CategorieController::class, 'create'])->name('addCategorie');
 
-Route::get('/qcm', [App\Http\Controllers\QcmController::class, 'index'])->name('qcm');
-Route::get('/addQcm', [App\Http\Controllers\QcmController::class, 'create'])->name('addQcm');
+Route::get('/qcm/{id}', [App\Http\Controllers\QcmController::class, 'index'])->name('qcm');
+Route::get('/addQcm/{id}', [App\Http\Controllers\QcmController::class, 'create'])->name('addQcm');
 Route::delete('/deleteQuestion/{id}', [App\Http\Controllers\QcmController::class, 'deleteQuestion'])->name('deleteQuestion');
 
 Route::get('/session', [App\Http\Controllers\SessionController::class, 'index'])->name('session');

@@ -11,18 +11,16 @@ use App\Models\Reponse_question_qcm;
 
 class QcmController extends Controller
 {
-    public function index()
+    public function index($id)
     {       
-        $qcms = Qcm::with('Question_qcm.Reponse_question_qcm')->get();
+        $qcms = Qcm::where('id_chapitre', $id)->with('Question_qcm.Reponse_question_qcm')->get();
 
         return view('admin.qcm.index', compact(['qcms']));
     }
 
-    public function create()
+    public function create($id)
     {
-        $chapitres = Chapitre::all();
-
-        return view('admin.qcm.create', compact(['chapitres']));
+        return view('admin.qcm.create');
     }
 
     public function store(Request $request)
@@ -84,7 +82,7 @@ class QcmController extends Controller
             }
         }
 
-        return redirect('/qcm')->with('success','QCM créé avec succès');
+        return redirect('/qcm/'.$request->get('id_chapitre'))->with('success','QCM créé avec succès');
     }
 
 
@@ -191,7 +189,7 @@ class QcmController extends Controller
             }
         }
 
-        return redirect('/qcm')->with('success','QCM modifié avec succès');
+        return redirect('/qcm/'.$request->get('id_chapitre'))->with('success','QCM modifié avec succès');
     }
 
     public function deleteQuestion($id)
@@ -203,6 +201,6 @@ class QcmController extends Controller
     {
         QCM::where('id',$id)->delete();
 
-        return redirect('/qcm')->with('success','QCM supprimé avec succès');
+        return redirect()->back()->with('success','QCM supprimé avec succès');
     }
 }

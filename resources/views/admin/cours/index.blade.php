@@ -44,10 +44,38 @@
                 <img class="image is-4by3" src="{{ URL::asset('/') }}img/cours/{{$cour->image}}" alt="Placeholder image">
             </div>
             @endif
+            <p class="title is-4">{{$cour->designation}}</p>
             <div class="media-content">
                 <div class="flex">
-                <p class="title is-4">{{$cour->designation}}</p>
-                <p class="subtitle is-4 forma-marg"><span class="subtitle is-6">Créé par</span> {{$cour->formateurPrenom}} {{$cour->formateurNom}}</p>
+            <div>
+
+            </div>
+                <div class="dropdown is-right is-hoverable">
+                    <div class="dropdown-trigger">
+                        <button class="button borderNone is-right"
+                                aria-haspopup="true"
+                                aria-controls="dropdown-menu">
+                        <span class="icon is-small is-right"><i class="fas fa-bars"></i></span>
+                        <span class="icon is-small">
+                        </span>
+                        </button>
+                    </div>
+            
+                    <div class="dropdown-menu" 
+                        id="dropdown-menu" 
+                        role="menu">
+                        <div class="dropdown-content">
+                        <form action="{{ route('chapitre', $cour->id_cours) }}" method="GET">
+                            @csrf
+                            <button type="submit" class="dropdown-item">Chapitres</button>
+                        </form>
+
+                        <a href="#" class="dropdown-item">
+                            Projets
+                        </a>
+                        </div>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -55,7 +83,8 @@
             <div class="content">
                 <div class="flex">
                     <div>
-                        <p class="title is-6">Nombre de chapitres actifs: {{$cour->nombre_chapitres}}</p>
+                    <p class="subtitle is-4"><span class="subtitle is-6">Créé par</span> {{$cour->formateurPrenom}} {{$cour->formateurNom}}</p>
+                        <p class="title is-6 mt-4">Nombre de chapitres actifs: {{$cour->nombre_chapitres}}</p>
                         <p class="title is-6">Prix: {{$cour->prix}}€</p>
                         <a class="{{ $cour->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatCours', $cour->id_cours) }}">
                         @if($cour->etat == 1) 
@@ -66,10 +95,6 @@
                         </a>
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('chapitre', $cour->id_cours) }}" method="GET">
-                            @csrf
-                            <button type="submit" class="button button-card is-primary">Voir les chapitres</button>
-                        </form>
                         <form action="{{ route('cours.edit', $cour->id_cours) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>
