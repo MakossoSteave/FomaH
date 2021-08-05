@@ -83,7 +83,7 @@
 <div class="bg-white shadow overflow-hidden sm:rounded-lg">
     <div class="px-4 py-5 sm:px-6">
         <h3 class="text-lg leading-6 font-medium text-gray-900 text-center">
-            Parametre
+        Paramètre
         </h3>
 
     </div>
@@ -121,29 +121,34 @@
 
                 </dd>
             </div>
+            @if($User->prenom==null)
             <form method="POST" action="{{route('parametre.update', $id->id)}}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-
+            @endif
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                     Prénom
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                 @if($User->prenom!=null)
+                @if($User->prenom!=null)
                 {{$User->prenom}}
                  @endif
+                @if($User->prenom==null)
                 <input type="text" class="focus:outline-blue focus:ring focus:border-blue-300 p-2"
                     
                     placeholder="Prénom" name="prenom">
                   
 
- <input type="submit"  class="p-16 font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
+ <input type="submit"  class="font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
                         value="modifier"
                     />
+                    @endif
                 </dd>
             </div>
+            @if($User->prenom!=null)
             </form>
+            @endif
             <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                     Status
@@ -157,7 +162,7 @@
             @method('PUT')
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
-                    Adresse de messagerie
+                    Email
 
                 </dt>
                 
@@ -168,14 +173,14 @@
                     
                     <input type="text" class="focus:outline-blue focus:ring focus:border-blue-300 p-2"
                         placeholder="Email" name="email" >
-                    <input type="submit"  class="p-16 font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
+                    <input type="submit"  class="font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
                         value="modifier"
                     />
                    
                 </dd>
             </div>
             </form>
-            <form method="POST" action="{{route('parametre.update', $id->id)}}" enctype="multipart/form-data">
+            <form method="POST"  action="{{route('parametre.update', $id->id)}}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -190,7 +195,7 @@
                     <input type="text" class="focus:outline-blue focus:ring focus:border-blue-300 p-2"
                    
                     placeholder="Numéro de téléphone" name="telephone">
-                    <input type="submit"  class="p-16 font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
+                    <input type="submit"  class="font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
                         value="modifier"
                     />
 
@@ -222,22 +227,23 @@
             @method('PUT')
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
-                    mots de passe actuel
+                    Mot de passe actuel
                 </dt>
                 <input class="focus:outline-blue focus:ring focus:border-blue-300" type="password"
                     placeholder="Mot de passe actuel" name="motdepasse">
             </div>
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
-                    Nouveau mots de passe
+                    Nouveau mot de passe
                 </dt>
                 <input class="focus:outline-blue focus:ring focus:border-blue-300" type="password"
-                    placeholder="Nouveau mot de passe" name="Nouveau_motdepasse" >
-                    <input type="submit"  class="p-16 font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
+                    placeholder="Nouveau mot de passe" name="Nouveau_motdepasse"/>
+                    <input type="submit"  class="font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
                         value="modifier"
                     />
-            </div>
             </form>
+            </div>
+            
         </dl>
     </div>
 </div>
