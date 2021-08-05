@@ -20,6 +20,7 @@ class CreateCategorieTable extends Migration
             $table->timestamps();
         });
         DB::table('categories')->insert(['designation'=>'Informatique'],);
+        DB::table('categories')->insert(['designation'=>'Langues'],);
         DB::table('categories')->insert(['designation'=>'Chimie'],);
         DB::table('categories')->insert(['designation'=>'Mathematiques'],);
     }

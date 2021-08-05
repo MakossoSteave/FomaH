@@ -219,6 +219,18 @@
                         </a>
                     </button>
                 </div>
+                <div class="relative">
+                    <i class="fas fa-sliders-h "></i>
+                    <button type="button"
+                        class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <!-- <a href="{{ url('competence') }}"> -->  <a href="{{ url('competence') }}">
+                        <!--   < a class="navbar-item" href="{{ url('categorie')}}">  Catégorie  </a>  -->
+                   
+                   
+                            <span>Liste C</span>
+                        </a>
+                    </button>
+                </div>
 
                 <div class="relative">
                     <button type="button"

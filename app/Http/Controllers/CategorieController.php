@@ -6,13 +6,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 use App\Models\Categorie;
+use App\Models\Competence;
 use Illuminate\Validation\Rule;
 class CategorieController extends Controller
 {
     public function index()
     {
         $categories = Categorie::all();
-                   
+         //dd($categories);          
         return view('admin.categorie.index',compact(['categories']));
     }
 

@@ -33,6 +33,8 @@ Route::get('/formateur', [App\Http\Controllers\FormateurController::class, 'inde
 Route::get('/centre', [App\Http\Controllers\CentreController::class, 'index'])->name('centre');
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register');
 Route::get('/intranet', [App\Http\Controllers\IntranetController::class, 'index'])->name('intranet');
+
+Route::get('/competence', [App\Http\Controllers\CompetenceController::class, 'index'])->name('listeCompetence');
 Route::get('parametre/{id}', [
     'as' => 'parametre',
     'uses' => 'App\Http\Controllers\parametreController@show'

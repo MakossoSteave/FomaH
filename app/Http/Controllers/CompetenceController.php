@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\Categorie;
 
 
 
 use App\Models\Competence;
-USE App\Models\Categorie;
-use Illuminate\Validation\Rules\Exists;
+
 
 class CompetenceController extends Controller
 {
@@ -22,9 +23,30 @@ class CompetenceController extends Controller
      */
     public function index()
     {
+        $utilisateurID = Auth::user()->id;
+        $formateur= new FormateurController;
+        $formateurID= $formateur->findFormateurID($utilisateurID); 
+
+        //$categories = Categorie::all();
+        //$competences = DB::table('competences')->where('id_matiere', '=', 2)->get();
+
         $categories = Categorie::all();
+        foreach ($categories as $categorie) {
+            echo $categorie->designation;
+            
+        }
+        //->orderBy('numero_cours','asc')
+
+        $competences = DB::table('competences')->where('id_formateur', '=', $formateurID)->orderBy('id_matiere')->get();  
+        foreach ($competences as $competence) {
+            echo $competence->id_matiere , "\n";
+            
+        }
+
+
+        dd($competences);
                    
-        return view('admin.categorie.index',compact(['categories']));
+        //return view('formateur.competence',compact('$competences'));
     }
 
     /**
