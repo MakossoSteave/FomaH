@@ -10,8 +10,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Competence;
 USE App\Models\Categorie;
-
-
+use Illuminate\Validation\Rules\Exists;
 
 class CompetenceController extends Controller
 {
@@ -53,33 +52,75 @@ class CompetenceController extends Controller
      */
     public function store(Request $request)
     {
+        $utilisateurID = Auth::user()->id;
+        $formateur= new FormateurController;
+        $formateurID= $formateur->findFormateurID($utilisateurID); 
+        
+        $sousmatiere = $request->get('sousmatiere');
+
+        if( Competence::select('id_sous_matiere')
+        ->where('id_formateur','=',$formateurID)
+        ->where('id_sous_matiere','=',$sousmatiere)
+        ->exists()){
+            return redirect('dropdownn/'.intval([Auth::user()->id]))->with('warning','Cette compétence est déjà déclarée');
+        }
+        if($request->get('categorie')=="Sélectionner une catégorie"){
+            return redirect('dropdownn/'.intval([Auth::user()->id]))->with('danger',"Vous n'avez pas sélectionné de catégorie" );
+        }
+        if($request->get('matiere')=="Sélectionner une matière"){
+            return redirect('dropdownn/'.intval([Auth::user()->id]))->with('danger',"Vous n'avez pas sélectionner de matière" );
+        }
+        if($request->get('sousmatiere')=="Sélectionner une sous matière"){
+            return redirect('dropdownn/'.intval([Auth::user()->id]))->with('danger',"Vous n'avez pas sélectionner de sous matière" );
+        }
+        /*
+        echo "ici  :";
+        dd($deja);
+        echo " // ";
+        */
+
         do {
             $id = rand(10000000, 99999999);
         } while(Competence::find($id) != null);
         
-        var_dump($request->get('userId'));
+        //var_dump($request->get('userId'));
                
-        $utilisateurID = Auth::user()->id;
-        $formateur= new FormateurController;
-        $formateurID= $formateur->findFormateurID($utilisateurID);  
-        var_dump($utilisateurID);
-        var_dump($formateurID);
-        var_dump($id);
+         
+        //var_dump($utilisateurID);
+        //var_dump($formateurID);
+        //var_dump($id);
 
-    
+        //dd($request->get('categorie'));
+        //dd($request->get('matiere'));
+        //dd($request->get('sousmatiere'));
 
-        //var_dump($request->get('matiere'));
-        //var_dump($request->get('sousmatiere'));
+
         
 
-        Competence::create([
+        $succes = Competence::create([
             'id' => $id,
             'id_formateur' => $formateurID,
             'id_categorie' => $request->get('categorie'),
             'id_matiere' => $request->get('matiere'),
             'id_sous_matiere' => $request->get('sousmatiere'),      
         ]);
+
+        //dd($succes);
         
+        
+        if(isset($succes)) {
+            return redirect('dropdownn/'.intval([Auth::user()->id]))->with('success','La compétence a été ajouté avec succès');
+            } 
+                        //<a href="{{ route('dropdownn', [Auth::user()->id]) }}">
+           
+            /*
+            if(isset($succes)) {
+                return redirect('/cours/'.intval($request->get('formation_id')))->with('success','Le cours a été ajouté avec succès');
+                } else {
+                    return redirect('/cours')->with('success','Cours créé avec succès');
+
+                }   
+        */
 
        
 

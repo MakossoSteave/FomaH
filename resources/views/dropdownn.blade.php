@@ -4,6 +4,28 @@
 
 
 <div class="container">
+    @if (session('success'))
+        <div class="notification is-success has-text-centered my-4 is-light">
+        <button class="delete"></button>
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('warning'))
+        <div class="notification is-warning has-text-centered my-4 is-light">
+        <button class="delete"></button> 
+          {{ session('warning') }} 
+        </div>     
+    @endif
+
+    @if (session('danger'))
+        <div class="notification is-danger has-text-centered my-4 is-light">
+        <button class="delete"></button>
+          {{ session('danger') }}
+      </div>
+    @endif
+
+    
   <div class="notification is-primary">
     <h3 class="title is-3">Déclaration de compétence</h3>
       <!-- <div class="hauteur"> -->
@@ -81,7 +103,7 @@
               success: function(res) {
                 if (res) {
                   $("#matiere").empty();
-                  $("#matiere").append('<option>Selectionner une matiere</option>');
+                  $("#matiere").append('<option>Sélectionner une matière</option>');
                   $.each(res, function(key, value) {
                     $("#matiere").append('<option value="' + key + '">' + value + '</option>');
                   });
@@ -106,7 +128,7 @@
               success: function(res) {
                 if (res) {
                   $("#sousmatiere").empty();
-                  $("#sousmatiere").append('<option>Selectionner une sous matiere</option>');
+                  $("#sousmatiere").append('<option>Sélectionner une sous matière</option>');
                   $.each(res, function(key, value) {
                     $("#sousmatiere").append('<option value="' + key + '">' + value + '</option>');
                   });
@@ -121,9 +143,16 @@
           }
 
         });
-      </script>
+        document.addEventListener('DOMContentLoaded', () => {
+            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {const $notification = $delete.parentNode;
+              $delete.addEventListener('click', () => {$notification.parentNode.removeChild($notification);
+              });
+            });
+        });
+        
+  </script>
 
-  </body>
+</body>
 
-  </html>
-  @endsection
+</html>
+@endsection

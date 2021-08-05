@@ -42,6 +42,12 @@ Route::get('dropdownn/{id}', [
     'as' => 'dropdownn',
     'uses' => 'App\Http\Controllers\DropdownnController@index',
 ]);
+/*
+Route::get('dropdownn/{id}{autre}', [
+    'as' => 'dropdownn',
+    'uses' => 'App\Http\Controllers\DropdownnController@index',
+]);
+*/
 use App\Http\Controllers\DropdownnController;
 //Route::get('dropdown/{id}',[DropdownController::class, 'index']);
 Route::get('getMatiere',[DropdownnController::class, 'getMatiere'])->name('getMatiere');
