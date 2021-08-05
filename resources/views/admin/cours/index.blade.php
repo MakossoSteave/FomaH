@@ -44,11 +44,11 @@
                 <img class="image is-4by3" src="{{ URL::asset('/') }}img/cours/{{$cour->image}}" alt="Placeholder image">
             </div>
             @endif
-            <p class="title is-4">{{$cour->designation}}</p>
+            
             <div class="media-content">
                 <div class="flex">
             <div>
-
+                <p class="title is-4">{{$cour->designation}}</p>
             </div>
                 <div class="dropdown is-right is-hoverable">
                     <div class="dropdown-trigger">
@@ -83,7 +83,7 @@
             <div class="content">
                 <div class="flex">
                     <div>
-                    <p class="subtitle is-4"><span class="subtitle is-6">Créé par</span> {{$cour->formateurPrenom}} {{$cour->formateurNom}}</p>
+                        <p class="subtitle is-4"><span class="subtitle is-6">Créé par</span> {{$cour->formateurPrenom}} {{$cour->formateurNom}}</p>
                         <p class="title is-6 mt-4">Nombre de chapitres actifs: {{$cour->nombre_chapitres}}</p>
                         <p class="title is-6">Prix: {{$cour->prix}}€</p>
                         <a class="{{ $cour->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatCours', $cour->id_cours) }}">
