@@ -29,6 +29,20 @@
     justify-content: space-between;
 }
 
+.borderNone {
+    border: none;
+    margin-left: 5.8em;
+}
+
+.borderNone:hover {
+    border: none;
+}
+
+.button.is-focused:not(:active), .button:focus:not(:active) {
+    outline: 0;
+    box-shadow: none;
+}
+
 .flex-bottom {
     align-self: flex-end;
     display: inherit;
@@ -37,10 +51,6 @@
 .button-card {
     width: 10em;
     margin-right: 1em;
-}
-
-.forma-marg {
-    margin-right: .7em;
 }
 
 #link-black {

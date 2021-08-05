@@ -8,7 +8,7 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-        <a href="{{ url('addQcm')}}" class="has-icons-right" id="link-black">
+        <a href="{{ url('addQcm', request()->route('id'))}}" class="has-icons-right" id="link-black">
             Ajouter un QCM
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>

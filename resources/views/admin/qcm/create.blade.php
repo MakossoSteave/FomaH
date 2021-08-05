@@ -16,6 +16,8 @@
     <form action="{{ route('qcm.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
         @csrf
 
+        <input type="hidden" name="id_chapitre" value="{{request()->route('id')}}">
+
         <div class="field">
             <label class="label">Titre du QCM</label>
                 <div class="control">
@@ -33,19 +35,6 @@
                     <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
                 </a>
             </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Choisir le chapitre du QCM</label>
-                <div class="control">
-                    <div class="select">
-                    <select name="id_chapitre">
-                        @foreach ($chapitres as $chapitre)
-                            <option value="{{$chapitre->id_chapitre}}">{{$chapitre->designation}}</option>
-                        @endforeach
-                    </select>
-                    </div>
-                </div>
         </div>
 
             <div class="control mt-4 mb-4">

@@ -129,26 +129,9 @@
                     </div>
                 </div>
 
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link" href="{{ url('cours')}}">
+                <a class="navbar-item" href="{{ url('cours')}}">
                     Cours
-                    </a>
-
-                    <div class="navbar-dropdown">
-                    <a class="navbar-item">
-                        Projets
-                    </a>
-                    <a class="navbar-item">
-                        Exercices
-                    </a>
-                    <a class="navbar-item">
-                        Documents
-                    </a>
-                    <a class="navbar-item" href="{{ url('qcm')}}">
-                        QCM
-                    </a>
-                    </div>
-                </div>
+                </a>
 
                 <a class="navbar-item">
                     Formateur
