@@ -71,3 +71,8 @@
 .width-forma-button {
     width: 20em;
 }
+
+.parametreButton{
+    background:none;
+    cursor:pointer;
+}

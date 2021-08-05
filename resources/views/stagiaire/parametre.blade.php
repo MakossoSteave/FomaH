@@ -97,8 +97,9 @@
                     Prénom
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                 
+                 @if($User->prenom!=null)
                 {{$User->prenom}}
+                 @endif
                 <input type="text" class="focus:outline-blue focus:ring focus:border-blue-300 p-2"
                     
                     placeholder="Prénom">
@@ -115,29 +116,38 @@
                 {{$role}}
                 </dd>
             </div>
-            <form method="POST" action="{{route('parametre.store')}}">
+            <form method="POST" action="{{route('parametre.update', $id->id)}}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                     Adresse de messagerie
 
                 </dt>
+                
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     {{$id->email}}
+                 
+                    
+                    
                     <input type="text" class="focus:outline-blue focus:ring focus:border-blue-300 p-2"
-                        placeholder="Email">
-                    <a href="#" class="p-16 font-medium text-indigo-600 hover:text-indigo-500">
-                        modifier
-                    </a>
-
+                        placeholder="Email" name="email" >
+                    <input type="submit"  class="p-16 font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
+                        value="modifier"
+                    />
+                   
                 </dd>
             </div>
+            </form>
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                    Téléphone
 
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    {{$User->telephone}}
+                @if($User->telephone!=null)   
+                {{$User->telephone}}
+                @endif
                     <input type="text" class="focus:outline-blue focus:ring focus:border-blue-300 p-2"
                    
                     placeholder="Numéro de téléphone">
