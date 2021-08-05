@@ -6,24 +6,27 @@
 <div class="relative bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
-
+        @if(Auth::user())
             <div class="flex justify-start lg:w-0 lg:flex-1">
                 <ul>
                     <li><i class="fas fa-user"> </i>
                         <a href="#">
                             <span
                                 class="group bg-white rounded-md text-blue-500 inline-flex items-center text-base font-medium hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                {{Auth::user()->name}} </span>
+                              
+                                {{Auth::user()->name}} 
+                         </span>
                         </a>
                     </li>
                     <li> <i class="fas fa-envelope text-blue-900 font-medium"></i>
-                        <a href="{{route('message',[Auth::user()->id]) }}">
+                     
+                    <a href="{{route('message',[Auth::user()->id]) }}">
 
                             <span
                                 class="group bg-white rounded-md text-base font-medium hover:text-blue-900 text-blue-500">Messages
                             </span>
                         </a>
-
+                      
                     </li>
                 </ul>
 
@@ -53,6 +56,7 @@
 
                 </div>
             </nav>
+        @endif
             <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
 
                 <a href="{{ route('logout')}}"
@@ -72,7 +76,7 @@
 
 
 </div>
-
+@if(Auth::user() && $User)
 <!-- This example requires Tailwind CSS v2.0+ -->
 <div class="bg-white shadow overflow-hidden sm:rounded-lg">
     <div class="px-4 py-5 sm:px-6">
@@ -82,6 +86,29 @@
 
     </div>
     <div class="sm:w-3/1 px-20">
+    @if (session('success'))
+        <div class="notification is-success has-text-centered my-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="notification is-danger has-text-centered my-4">
+        <button class="delete"></button>
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+    <div class="notification is-danger">
+        <button class="delete"></button>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+    </div>
+    @endif
         <dl>
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
@@ -92,6 +119,10 @@
 
                 </dd>
             </div>
+            <form method="POST" action="{{route('parametre.update', $id->id)}}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                     Prénom
@@ -102,12 +133,15 @@
                  @endif
                 <input type="text" class="focus:outline-blue focus:ring focus:border-blue-300 p-2"
                     
-                    placeholder="Prénom">
-                    <a href="#" class="p-16 font-medium text-indigo-600 hover:text-indigo-500">
-                        modifier
-                    </a>
+                    placeholder="Prénom" name="prenom">
+                  
+
+ <input type="submit"  class="p-16 font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
+                        value="modifier"
+                    />
                 </dd>
             </div>
+            </form>
             <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                     Status
@@ -139,6 +173,9 @@
                 </dd>
             </div>
             </form>
+            <form method="POST" action="{{route('parametre.update', $id->id)}}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                    Téléphone
@@ -150,13 +187,14 @@
                 @endif
                     <input type="text" class="focus:outline-blue focus:ring focus:border-blue-300 p-2"
                    
-                    placeholder="Numéro de téléphone">
-                    <a href="#" class="p-16 font-medium text-indigo-600 hover:text-indigo-500">
-                        modifier
-                    </a>
+                    placeholder="Numéro de téléphone" name="telephone">
+                    <input type="submit"  class="p-16 font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
+                        value="modifier"
+                    />
 
                 </dd>
             </div>
+            </form>
             <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                     Date de création du compte
@@ -231,5 +269,11 @@
         </div>
     </div>
 </footer>
+@else
+<div class="notification is-danger has-text-centered my-4">
+Votre session a expiré !
+</div>
+@endif
+
 
 @endsection

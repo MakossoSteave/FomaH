@@ -310,7 +310,7 @@ class ChapitreController extends Controller
             }
         }
 
-        return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Modifié avec succes');
+        return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Modifié avec succés');
     }
 
     public function deleteSection($id)

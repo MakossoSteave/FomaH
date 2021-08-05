@@ -21,7 +21,7 @@ class parametreController extends Controller
             $User= Stagiaire::where('user_id',$id->id)->first();
         }
 
-        else if($id->role_id==4){
+        else if($id->role_id==4 || $id->role_id==1){
             $User= Formateur::where('user_id',$id->id)->first();
         }
 
@@ -30,19 +30,42 @@ class parametreController extends Controller
     }
     public function update(Request $request,$idUser){
        
-
-        if ($request->has('email')) {
+        if ($request->has('prenom')) {
             $request->validate([
-                'email' => ['string', 'email', 'max:191', 'unique:users']
+                'prenom' => ['string',  'max:191']
+            ]);
+            if(Auth::user()->role_id==3){
+                Stagiaire::where('user_id',$idUser)->update(["prenom"=>$request->get('prenom')]);
+            }else if(Auth::user()->role_id==4 || Auth::user()->role_id==1 )
+            {
+                Formateur::where('user_id',$idUser)->update(["prenom"=>$request->get('prenom')]);  
+            }
+        }
+        else if ($request->has('email')) {
+            $request->validate([
+                'email' => ['string', 'email', 'max:191', Rule::unique('users')->where(function ($query) use($idUser) {
+                    
+                           return $query->where('id',"!=", $idUser);})]
             ]);
              User::where('id',$idUser)->update(["email"=>$request->get('email')]);
+        }
+        else if ($request->has('telephone')) {
+            $request->validate([
+                'telephone' => ['required', 'regex:/[0-9]{10}/']
+            ]);
+            if(Auth::user()->role_id==3){
+                Stagiaire::where('user_id',$idUser)->update(["telephone"=>$request->get('telephone')]);
+            }else if(Auth::user()->role_id==4 || Auth::user()->role_id==1 )
+            {
+                Formateur::where('user_id',$idUser)->update(["telephone"=>$request->get('telephone')]);  
+            }
         }
 
 
 
 
 
-
+/*
         if(Auth::user()->role_id==3){
             $User= Stagiaire::where('user_id',$idUser)->first();
         }
@@ -52,7 +75,8 @@ class parametreController extends Controller
         }
 
         $role = (role::find(Auth::user()->role_id))->type;
-        $id = User::find($idUser);
-        return View('stagiaire.parametre', compact(['id'],['User']),['role' => $role]);
+        $id = User::find($idUser);*/
+        return //View('stagiaire.parametre', compact(['id'],['User']),['role' => $role])->with('success','Modifié avec succés');
+        redirect('/parametre/'.intval($idUser))->with('success','Modifié avec succés');
     }
 }
