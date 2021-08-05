@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <style>
 .slide-in-bottom {
     -webkit-animation: slide-in-bottom .5s cubic-bezier(.25, .46, .45, .94) both;

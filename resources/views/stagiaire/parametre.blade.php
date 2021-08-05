@@ -1,32 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
+@if(Auth::user())
 
 
 <div class="relative bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
-        @if(Auth::user())
+        
             <div class="flex justify-start lg:w-0 lg:flex-1">
                 <ul>
                     <li><i class="fas fa-user"> </i>
                         <a href="#">
                             <span
                                 class="group bg-white rounded-md text-blue-500 inline-flex items-center text-base font-medium hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                              
+                              @if(Auth::user())
                                 {{Auth::user()->name}} 
+                                @endif
                          </span>
                         </a>
                     </li>
                     <li> <i class="fas fa-envelope text-blue-900 font-medium"></i>
-                     
+                   @if(Auth::user()) 
                     <a href="{{route('message',[Auth::user()->id]) }}">
 
                             <span
                                 class="group bg-white rounded-md text-base font-medium hover:text-blue-900 text-blue-500">Messages
                             </span>
                         </a>
-                      
+                      @endif
                     </li>
                 </ul>
 
@@ -56,7 +58,7 @@
 
                 </div>
             </nav>
-        @endif
+       
             <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
 
                 <a href="{{ route('logout')}}"
@@ -76,7 +78,7 @@
 
 
 </div>
-@if(Auth::user() && $User)
+
 <!-- This example requires Tailwind CSS v2.0+ -->
 <div class="bg-white shadow overflow-hidden sm:rounded-lg">
     <div class="px-4 py-5 sm:px-6">
@@ -269,11 +271,19 @@
         </div>
     </div>
 </footer>
+
+
+
 @else
 <div class="notification is-danger has-text-centered my-4">
 Votre session a expiré !
 </div>
+<button type="button" class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <a href="/">
+                        <i class="fas fa-home"></i>
+                            <span>Acceuil</span>
+                        </a>
+
+</button>
 @endif
-
-
 @endsection
