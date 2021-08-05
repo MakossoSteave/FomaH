@@ -17,10 +17,6 @@ class DocumentController extends Controller
         ->where('contenir_documents_chapitres.id_chapitre', $id)
         ->orderBy('created_at','desc')
         ->paginate(5);
-        
-        // $documents = Document::where('id', $id)
-        // ->orderBy('created_at','asc')
-        // ->get();
 
         return view('admin.document.index', compact(['documents']));
     }
