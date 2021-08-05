@@ -92,12 +92,27 @@
 
                 </dd>
             </div>
+            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">
+                    Prénom
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                 
+                {{$User->prenom}}
+                <input type="text" class="focus:outline-blue focus:ring focus:border-blue-300 p-2"
+                    
+                    placeholder="Prénom">
+                    <a href="#" class="p-16 font-medium text-indigo-600 hover:text-indigo-500">
+                        modifier
+                    </a>
+                </dd>
+            </div>
             <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                     Status
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    Stagiaire
+                {{$role}}
                 </dd>
             </div>
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -108,7 +123,23 @@
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                     {{$id->email}}
                     <input type="text" class="focus:outline-blue focus:ring focus:border-blue-300 p-2"
-                        placeholder="email">
+                        placeholder="Email">
+                    <a href="#" class="p-16 font-medium text-indigo-600 hover:text-indigo-500">
+                        modifier
+                    </a>
+
+                </dd>
+            </div>
+            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">
+                   Téléphone
+
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {{$User->telephone}}
+                    <input type="text" class="focus:outline-blue focus:ring focus:border-blue-300 p-2"
+                   
+                    placeholder="Numéro de téléphone">
                     <a href="#" class="p-16 font-medium text-indigo-600 hover:text-indigo-500">
                         modifier
                     </a>
