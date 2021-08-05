@@ -15,12 +15,10 @@ class CreateContenirDocumentChapitreTable extends Migration
     {
         Schema::create('contenir_documents_chapitres', function (Blueprint $table) {
             $table->engine='InnoDB';
-            $table->bigInteger('id_proj')->unsigned();
             $table->bigInteger('id_doc')->unsigned();
             $table->bigInteger('id_chapitre')->unsigned();
-            $table->primary(['id_proj', 'id_doc', 'id_chapitre']);
+            $table->primary(['id_doc', 'id_chapitre']);
             $table->foreign('id_doc')->references('id')->on('documents');    
-            $table->foreign('id_proj')->references('id')->on('projets');
             $table->foreign('id_chapitre')->references('id_chapitre')->on('chapitres');
             $table->timestamps();
         });
