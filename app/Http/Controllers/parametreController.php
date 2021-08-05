@@ -9,6 +9,7 @@ use App\Models\User;
 use  Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 
 class parametreController extends Controller
 {
@@ -49,9 +50,23 @@ class parametreController extends Controller
             ]);
              User::where('id',$idUser)->update(["email"=>$request->get('email')]);
         }
+        else if ($request->has('Nouveau_motdepasse')) {
+            $request->validate([
+                'motdepasse' => ['required', 'string', 'min:8'],
+                'Nouveau_motdepasse' => ['string', 'min:8'/*, 'confirmed'*/]
+            ]);
+            $newMdp=Hash::make($request->get('Nouveau_motdepasse'));
+            $oldMdp=$request->get('motdepasse');
+            $oldMdpBD=(User::find($idUser))->password;
+            if(Hash::check($oldMdp,$oldMdpBD)){
+             User::where('id',$idUser)->update(["password"=>$newMdp]);
+            }else {
+                return redirect('/parametre/'.intval($idUser))->with('error','Mot de passe incorrecte !');
+            }
+            }
         else if ($request->has('telephone')) {
             $request->validate([
-                'telephone' => ['required', 'regex:/[0-9]{10}/']
+                'telephone' => ['regex:/[0-9]{10}/']
             ]);
             if(Auth::user()->role_id==3){
                 Stagiaire::where('user_id',$idUser)->update(["telephone"=>$request->get('telephone')]);
@@ -60,11 +75,6 @@ class parametreController extends Controller
                 Formateur::where('user_id',$idUser)->update(["telephone"=>$request->get('telephone')]);  
             }
         }
-
-
-
-
-
 /*
         if(Auth::user()->role_id==3){
             $User= Stagiaire::where('user_id',$idUser)->first();
@@ -78,5 +88,6 @@ class parametreController extends Controller
         $id = User::find($idUser);*/
         return //View('stagiaire.parametre', compact(['id'],['User']),['role' => $role])->with('success','Modifié avec succés');
         redirect('/parametre/'.intval($idUser))->with('success','Modifié avec succés');
-    }
+    
+}
 }

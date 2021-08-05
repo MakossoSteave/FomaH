@@ -217,24 +217,27 @@
                     </div>
                 </dd>
             </div>
+            <form method="POST" action="{{route('parametre.update', $id->id)}}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                     mots de passe actuel
                 </dt>
                 <input class="focus:outline-blue focus:ring focus:border-blue-300" type="password"
-                    placeholder="Mots de passe actuel">
+                    placeholder="Mot de passe actuel" name="motdepasse">
             </div>
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                     Nouveau mots de passe
                 </dt>
                 <input class="focus:outline-blue focus:ring focus:border-blue-300" type="password"
-                    placeholder="Nouveau mots de passe">
-                <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
-                    modifier
-                </a>
+                    placeholder="Nouveau mot de passe" name="Nouveau_motdepasse" >
+                    <input type="submit"  class="p-16 font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
+                        value="modifier"
+                    />
             </div>
-
+            </form>
         </dl>
     </div>
 </div>
