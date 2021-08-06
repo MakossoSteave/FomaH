@@ -97,7 +97,8 @@ class RegisterController extends Controller
             Stagiaire::create([
                 'id' =>  $idStagiaire,
                 'nom' => $data['name'],
-                'user_id' => $user->id
+                'user_id' => $user->id,
+                'type_inscription_id'=>1
             ]);
 
         }
