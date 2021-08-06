@@ -48,7 +48,7 @@ class parametreController extends Controller
                 'nom' => ['string',  'max:191']
             ]);
              User::where('id',$idUser)->update(["name"=>$request->get('nom')]); 
-             if(Formateur::where('user_id',$idUser)->get()) 
+            // if(Formateur::where('user_id',$idUser)->get()) 
              Formateur::where('user_id',$idUser)->update(["nom"=>$request->get('nom')]);  
             
         }
