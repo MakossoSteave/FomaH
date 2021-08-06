@@ -59,8 +59,9 @@
             <div class="user">
                 <div>
                 <span class="icon is-medium">
-                    <i class="fas fa-user-circle"></i>
-                    {{ Auth::user()->name }}
+                    <a class="is-inline" href="{{ url('parametre',Auth::user()->id)}}" ><i class="fas fa-user-circle"></i>
+                    </a>{{ Auth::user()->name }}
+                    
                 </span>
                 </div>
 

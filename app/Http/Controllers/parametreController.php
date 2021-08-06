@@ -43,6 +43,15 @@ class parametreController extends Controller
                 Formateur::where('user_id',$idUser)->update(["prenom"=>$request->get('prenom')]);  
             }
         }
+       else if ($request->has('nom')) {
+            $request->validate([
+                'nom' => ['string',  'max:191']
+            ]);
+             User::where('id',$idUser)->update(["name"=>$request->get('nom')]); 
+             if(Formateur::where('user_id',$idUser)->get()) 
+             Formateur::where('user_id',$idUser)->update(["nom"=>$request->get('nom')]);  
+            
+        }
         else if ($request->has('email')) {
             $request->validate([
                 'email' => ['string', 'email', 'max:191', Rule::unique('users')->where(function ($query) use($idUser) {
