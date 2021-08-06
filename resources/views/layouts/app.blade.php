@@ -141,7 +141,7 @@
                     </a>
 
                     <div class="navbar-dropdown">
-                    <a class="navbar-item">
+                    <a class="navbar-item" href="{{ url('stagiaires')}}">
                     Stagiaire
                     </a>
                     <a class="navbar-item">
@@ -152,6 +152,9 @@
                     </a>
                     <a class="navbar-item">
                     Organisation
+                    </a>
+                    <a class="navbar-item">
+                    Admin
                     </a>
                     </div>
                 </div>
