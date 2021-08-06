@@ -10,6 +10,7 @@ use  Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use App\Rules\FilenameImage;
 
 class parametreController extends Controller
 {
@@ -53,7 +54,8 @@ class parametreController extends Controller
         else if ($request->has('Nouveau_motdepasse')) {
             $request->validate([
                 'motdepasse' => ['required', 'string', 'min:8'],
-                'Nouveau_motdepasse' => ['string', 'min:8'/*, 'confirmed'*/]
+                'Nouveau_motdepasse' => ['string', 'min:8', 'confirmed'],
+                'Nouveau_motdepasse_confirmation' => ['required','string', 'min:8'] 
             ]);
             $newMdp=Hash::make($request->get('Nouveau_motdepasse'));
             $oldMdp=$request->get('motdepasse');
@@ -74,6 +76,18 @@ class parametreController extends Controller
             {
                 Formateur::where('user_id',$idUser)->update(["telephone"=>$request->get('telephone')]);  
             }
+        }
+        else if ($request->hasFile('image')) {
+            $request->validate([
+                'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+                new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+            ]);
+            $destinationPath = public_path('img/user/');
+            $file = $request->file('image');
+            $filename = $file->getClientOriginalName();
+            $image = time().$filename;
+            $file->move($destinationPath, $image);
+            User::where('id',$idUser)->update(["image"=>$image]);
         }
 /*
         if(Auth::user()->role_id==3){
