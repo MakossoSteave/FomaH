@@ -134,14 +134,27 @@
                     Cours
                 </a>
 
-                <a class="navbar-item">
-                    Formateur
-                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link" href="{{ url('cursus')}}">
+                    Utilisateur
+                    </a>
 
-                <a class="navbar-item">
+                    <div class="navbar-dropdown">
+                    <a class="navbar-item">
                     Stagiaire
-                </a>
-
+                    </a>
+                    <a class="navbar-item">
+                    Formateur
+                    </a>
+                    <a class="navbar-item">
+                    Centre
+                    </a>
+                    <a class="navbar-item">
+                    Organisation
+                    </a>
+                    </div>
+                </div>
+               
                 <a class="navbar-item">
                     Titre
                 </a>
