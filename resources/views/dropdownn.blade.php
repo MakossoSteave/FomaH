@@ -92,6 +92,10 @@
             </div>
       </form>
     </div>
+
+    
+
+
 </div>
       <script type=text/javascript>
         $('#categorie').change(function() {

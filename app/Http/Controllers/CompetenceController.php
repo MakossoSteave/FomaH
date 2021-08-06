@@ -27,27 +27,27 @@ class CompetenceController extends Controller
         $formateur= new FormateurController;
         $formateurID= $formateur->findFormateurID($utilisateurID); 
 
-        //$categories = Categorie::all();
-        //$competences = DB::table('competences')->where('id_matiere', '=', 2)->get();
+ 
 
-        $categories = Categorie::all();
-        foreach ($categories as $categorie) {
-            echo $categorie->designation;
-            
-        }
-        //->orderBy('numero_cours','asc')
+                   $competences =  DB::table('competences')  
+                                    ->join('categories','id_categorie', '=','categories.id')
+                                    ->join('matieres','id_matiere', '=','matieres.id')
+                                    ->join('sous_matieres','id_sous_matiere', '=','sous_matieres.id')
+                                    ->where('id_formateur', '=', $formateurID)
+                                    ->select('competences.id as competence_id','categories.designation as designation_ca','designation_matiere as designation_ma',
+                                            'designation_sous_matiere as designation_s_ma')
+                                    ->orderBy('id_categorie')
+                                    ->orderBy('id_matiere')
+                                    ->get();
+        //var_dump($competences);
+        //dd($competences);                        
 
-        $competences = DB::table('competences')->where('id_formateur', '=', $formateurID)->orderBy('id_matiere')->get();  
-        foreach ($competences as $competence) {
-            echo $competence->id_matiere , "\n";
-            
-        }
-
-
-        dd($competences);
-                   
-        //return view('formateur.competence',compact('$competences'));
+                               
+        return view('formateur.competence',compact('competences'));
+        //return view('admin.cours.filter', compact(['cours']),["FormationID" => $id]);
     }
+    
+
 
     /**
      * Show the form for creating a new resource.
@@ -97,27 +97,15 @@ class CompetenceController extends Controller
         }
         /*
         echo "ici  :";
-        dd($deja);
-        echo " // ";
+        //var_dump($utilisateurID);
+        //dd($request->get('categorie'));
+        
         */
 
         do {
             $id = rand(10000000, 99999999);
         } while(Competence::find($id) != null);
-        
-        //var_dump($request->get('userId'));
-               
-         
-        //var_dump($utilisateurID);
-        //var_dump($formateurID);
-        //var_dump($id);
-
-        //dd($request->get('categorie'));
-        //dd($request->get('matiere'));
-        //dd($request->get('sousmatiere'));
-
-
-        
+          
 
         $succes = Competence::create([
             'id' => $id,
@@ -135,14 +123,7 @@ class CompetenceController extends Controller
             } 
                         //<a href="{{ route('dropdownn', [Auth::user()->id]) }}">
            
-            /*
-            if(isset($succes)) {
-                return redirect('/cours/'.intval($request->get('formation_id')))->with('success','Le cours a été ajouté avec succès');
-                } else {
-                    return redirect('/cours')->with('success','Cours créé avec succès');
-
-                }   
-        */
+            
 
        
 
@@ -192,8 +173,21 @@ class CompetenceController extends Controller
      * @param  \App\Models\Competence  $competence
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Competence $competence)
+
+    
+    public function destroy($id)
     {
-        //
+        Competence::where('id',$id)->delete();
+        return redirect('/competence')->with('success','Compétence supprimée avec succès');
     }
+    
+
+    /*
+    public function destroy($id)
+    {
+        Categorie::where('id',$id)->delete();
+
+        return redirect('/categorie')->with('success','Categorie supprimé avec succès');
+    }
+    */
 }

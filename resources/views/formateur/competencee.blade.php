@@ -3,56 +3,50 @@
 @section('content')
 
 <div class="container">
+    <div class="flex mt-4">
+        
+    </div>
+    
+    
 
-<!--  'competence_id','designation_ca','designation_ma','designation_s_ma' -->
-    
-    
-    <!--     -->
     
 
-    @if (session('success'))
-        <div class="notification is-success has-text-centered my-4 is-light">
-        <button class="delete"></button>
-            {{ session('success') }}
-        </div>
-    @endif
-    
-    @foreach ($competences as $competence)
-    <div class="card my-2">
-        <div class="card-content ">
+    @foreach ($categories as $categorie)
+    <div class="card my-6">
+        <div class="card-content">
             <div class="media">
-                <div class="media-content">
-                    <div class="flex">
-                        <p class="title is-6">{{$competence->designation_ca}} - {{$competence->designation_ma}} / {{$competence->designation_s_ma}}</p>
-                        
-                        
-                    </div>
+            <div class="media-content">
+                <div class="flex">
+                    <p class="title is-4">{{$categorie->designation}}</p>
                 </div>
             </div>
+        </div>
+
             <div class="content">
                 <div class="flex">
                     <div>
                     </div>
                     <div class="flex-bottom">
-
                         
+                        <form action="{{ route('categorie.edit', $categorie->id) }}" method="GET">
+                            @csrf
+                            <button type="submit" class="button button-card is-info">Modifier</button>
+                        </form>
                         
                             <p>
-                                <a class = "button is-danger button-card modal-button " data-target = "#{{$competence->competence_id}}">Supprimer</a>
+                                <a class = "button is-danger button-card modal-button" data-target = "#{{$categorie->id}}">Supprimer</a>
                             </p>
-
-                            <div id="{{$competence->competence_id}}" class="modal">
+                            <div id="{{$categorie->id}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
                                     <header class="modal-card-head">
-                                    <p class="modal-card-title"></p>
+                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$categorie->designation}}</p>
                                     <button class="delete" aria-label="close"></button>
                                     </header>
                                     <section class="modal-card-body">
-                                        Souhaitez-vous supprimer la catégorie {{$competence->designation_ca}} ?
+                                        Souhaitez-vous supprimer la catégorie {{$categorie->designation}} ?
                                     </section>
-                                    <form action="{{ route('competence.destroy', $competence->competence_id) }}" method="POST">
-                        <!--                -->
+                                    <form action="{{ route('categorie.destroy', $categorie->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <footer class="modal-card-foot">
@@ -76,24 +70,13 @@
                         </script>
                     </div>
                 </div>
-            </div>    
-
-            
+            </div>
         </div>
     </div>
 
     @endforeach
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {const $notification = $delete.parentNode;
-              $delete.addEventListener('click', () => {$notification.parentNode.removeChild($notification);
-              });
-            });
-        });
-
-
-</script>   
     
+    @endif
 </div>
 
 @endsection
