@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@if(Auth::user() && Auth::user()->role_id==1)
 
 <div class="container">
     <div class="flex mt-4">
@@ -8,7 +9,7 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-        <a href="{{ url('addQcm')}}" class="has-icons-right" id="link-black">
+        <a href="{{ url('addQcm', request()->route('id'))}}" class="has-icons-right" id="link-black">
             Ajouter un QCM
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
@@ -96,4 +97,30 @@
     @endif
 </div>
 
+@else
+<div class="notification is-danger has-text-centered my-4">
+@if(Auth::user() && Auth::user()->role_id!=1)
+Vous n'êtes pas autorisé !
+@else
+Votre session a expiré !
+@endif
+</div>
+<button type="button" class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                         @if(Auth::user() && Auth::user()->role_id==2)
+                        <a href="/centre">
+                        @elseif(Auth::user() && Auth::user()->role_id==3)
+                        <a href="/stagiaire">
+                        @elseif(Auth::user() && Auth::user()->role_id==4)
+                        <a href="/formateur">
+                        @elseif(Auth::user() && Auth::user()->role_id==5)
+                        <a href="/organisme">
+                        @else
+                        <a href="/">
+                        @endif
+                        <i class="fas fa-home"></i>
+                            <span>Acceuil</span>
+                        </a>
+
+</button>
+@endif
 @endsection

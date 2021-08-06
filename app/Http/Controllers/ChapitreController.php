@@ -106,10 +106,11 @@ class ChapitreController extends Controller
                     // 'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
                     // new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
                     // ]);
-                    $request->validate([
-                           "section[$idSect][designation]" => 'required',
-                           "section[$idSect][contenu]" => 'required'
-                        ]);
+                    // $request->validate([
+                    //        "section[$idSect][designation]" => 'required',
+                    //        "section[$idSect][contenu]" => 'required'
+                    // ]);
+
                     do {
                         $idSection = rand(10000000, 99999999);
                     } while(Section::find($idSection) != null);
@@ -281,10 +282,11 @@ class ChapitreController extends Controller
                 // 'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
                 // new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
                 // ]);
-                $request->validate([
-                    "section[$idSect][designation]" => 'required',
-                    "section[$idSect][contenu]" => 'required'
-                 ]);
+                // $request->validate([
+                //     "section[$idSect][designation]" => 'required',
+                //     "section[$idSect][contenu]" => 'required'
+                //  ]);
+
                 do {
                     $idSection = rand(10000000, 99999999);
                 } while(Section::find($idSection) != null);
@@ -310,7 +312,7 @@ class ChapitreController extends Controller
             }
         }
 
-        return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Modifié avec succes');
+        return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Modifié avec succés');
     }
 
     public function deleteSection($id)

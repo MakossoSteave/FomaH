@@ -1,5 +1,9 @@
 @extends('layouts.app')
 @section('content')
+@if(Auth::user())
+<div class="relative bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
 
     <div class="max-w-5xl flex items-center h-auto lg:h-1.5 flex-wrap mx-auto my-32 lg:my-0 p-4">
         <div style="border-left:1px solid #000;height:370px"></div>
@@ -586,4 +590,16 @@
         </div>
     </footer>
 
-    @endsection
+    @else
+<div class="notification is-danger has-text-centered my-4">
+Votre session a expiré !
+</div>
+<button type="button" class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <a href="/">
+                        <i class="fas fa-home"></i>
+                            <span>Acceuil</span>
+                        </a>
+
+</button>
+@endif
+@endsection

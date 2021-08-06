@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\DB;
 class CreateTypeInscriptionTable extends Migration
 {
     /**
@@ -15,12 +15,27 @@ class CreateTypeInscriptionTable extends Migration
     {
         Schema::create('types_inscriptions', function (Blueprint $table) {
             $table->engine='InnoDB';
-            $table->id();;
+            $table->id();
             $table->string('type');
             $table->timestamps();
         });
-    }
 
+        DB::table('types_inscriptions')->insert(
+               
+            [
+                'type'=>'Indépendant'
+            ]
+    
+        );
+        DB::table('types_inscriptions')->insert(
+               
+            [
+                'type'=>'Organisation'
+            ]
+    
+        );
+    }
+    
     /**
      * Reverse the migrations.
      *

@@ -43,6 +43,7 @@
 
 <body class="">
     <div id="app">
+     
         @guest
         @if (Route::has('login'))
 
@@ -58,8 +59,9 @@
             <div class="user">
                 <div>
                 <span class="icon is-medium">
-                    <i class="fas fa-user-circle"></i>
-                    {{ Auth::user()->name }}
+                    <a class="is-inline" href="{{ url('parametre',Auth::user()->id)}}" ><i class="fas fa-user-circle"></i>
+                    </a>{{ Auth::user()->name }}
+                    
                 </span>
                 </div>
 
@@ -129,35 +131,34 @@
                     </div>
                 </div>
 
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link" href="{{ url('cours')}}">
+                <a class="navbar-item" href="{{ url('cours')}}">
                     Cours
+                </a>
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link" href="{{ url('cursus')}}">
+                    Utilisateur
                     </a>
 
                     <div class="navbar-dropdown">
-                    <a class="navbar-item">
-                        Projets
+                    <a class="navbar-item" href="{{ url('stagiaires')}}">
+                    Stagiaire
                     </a>
                     <a class="navbar-item">
-                        Exercices
+                    Formateur
                     </a>
                     <a class="navbar-item">
-                        Documents
+                    Centre
                     </a>
-                    <a class="navbar-item" href="{{ url('qcm')}}">
-                        QCM
+                    <a class="navbar-item">
+                    Organisation
+                    </a>
+                    <a class="navbar-item">
+                    Admin
                     </a>
                     </div>
                 </div>
-
-                <a class="navbar-item">
-                    Formateur
-                </a>
-
-                <a class="navbar-item">
-                    Stagiaire
-                </a>
-
+               
                 <a class="navbar-item">
                     Titre
                 </a>
@@ -265,10 +266,14 @@
 
         @endguest
 
+        
         <main class="">
-
+       
             @yield('content')
+
         </main>
+       
+
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="{{ URL::asset('/') }}js/addFieldForm.js"></script>

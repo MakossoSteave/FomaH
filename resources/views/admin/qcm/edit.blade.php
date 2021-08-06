@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@if(Auth::user() && Auth::user()->role_id==1)
 <div class="container is-max-desktop">
     @if ($errors->any())
     <div class="notification is-danger">
@@ -86,32 +87,31 @@
                     ?>
                 @endforeach
             @endforeach
-        @endforeach
+            <div id="addQuestion"></div>
         
-        <div id="addQuestion"></div>
-        
-        <div class="flex">
-            <div></div>
-            <div class="mt-2 mb-2">
-                <a id="buttonAddQuestion" class="has-icons-right has-text-black" onclick="addQuestion()">
-                    Ajouter une question
-                    <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
-                </a>
-            </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Choisir le chapitre du QCM</label>
-                <div class="control">
-                    <div class="select">
-                    <select name="id_chapitre">
-                        @foreach ($chapitres as $chapitre)
-                            <option value="{{$chapitre->id_chapitre}}">{{$chapitre->designation}}</option>
-                        @endforeach
-                    </select>
-                    </div>
+            <div class="flex">
+                <div></div>
+                <div class="mt-2 mb-2">
+                    <a id="buttonAddQuestion" class="has-icons-right has-text-black" onclick="addQuestion()">
+                        Ajouter une question
+                        <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
+                    </a>
                 </div>
-        </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Choisir le chapitre du QCM</label>
+                    <div class="control">
+                        <div class="select">
+                        <select name="id_chapitre">
+                            @foreach ($chapitres as $chapitre)
+                                <option value="{{$chapitre->id_chapitre}}" {{ ($chapitre->id_chapitre == $qcms->id_chapitre) ? 'selected' : '' }}>{{$chapitre->designation}}</option>
+                            @endforeach
+                        </select>
+                        </div>
+                    </div>
+            </div>
+        @endforeach
 
             <div class="control mt-4 mb-4">
                 <button type="submit" class="button is-fullwidth is-link is-rounded">Modifier</button>
@@ -121,4 +121,30 @@
     </div>
     </div>  
 </div>
+@else
+<div class="notification is-danger has-text-centered my-4">
+@if(Auth::user() && Auth::user()->role_id!=1)
+Vous n'êtes pas autorisé !
+@else
+Votre session a expiré !
+@endif
+</div>
+<button type="button" class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                         @if(Auth::user() && Auth::user()->role_id==2)
+                        <a href="/centre">
+                        @elseif(Auth::user() && Auth::user()->role_id==3)
+                        <a href="/stagiaire">
+                        @elseif(Auth::user() && Auth::user()->role_id==4)
+                        <a href="/formateur">
+                        @elseif(Auth::user() && Auth::user()->role_id==5)
+                        <a href="/organisme">
+                        @else
+                        <a href="/">
+                        @endif
+                        <i class="fas fa-home"></i>
+                            <span>Acceuil</span>
+                        </a>
+
+</button>
+@endif
 @endsection

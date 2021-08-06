@@ -22,7 +22,10 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
+Route::get('/admin', /*[App\Http\Controllers\AdminController::class, 'index']*/
+  function () {
+    return redirect('/session');
+})->name('admin');
 Route::get('/stagiaire/{id}{ref} ', [App\Http\Controllers\StagiaireController::class, 'index'])->name('stagiaire');
 Route::get('/organisme', [App\Http\Controllers\OrganismeController::class, 'index'])->name('organisme');
 Route::get('/inscriptionformation', [App\Http\Controllers\InscriptionFormationcontroller::class, 'index'])->name('inscription');
@@ -94,14 +97,25 @@ Route::delete('/deleteSection/{id}', [App\Http\Controllers\ChapitreController::c
 Route::get('/categorie', [App\Http\Controllers\CategorieController::class, 'index'])->name('categorie');
 Route::get('/addCategorie', [App\Http\Controllers\CategorieController::class, 'create'])->name('addCategorie');
 
-Route::get('/qcm', [App\Http\Controllers\QcmController::class, 'index'])->name('qcm');
-Route::get('/addQcm', [App\Http\Controllers\QcmController::class, 'create'])->name('addQcm');
+Route::get('/qcm/{id}', [App\Http\Controllers\QcmController::class, 'index'])->name('qcm');
+Route::get('/addQcm/{id}', [App\Http\Controllers\QcmController::class, 'create'])->name('addQcm');
 Route::delete('/deleteQuestion/{id}', [App\Http\Controllers\QcmController::class, 'deleteQuestion'])->name('deleteQuestion');
 
 Route::get('/session', [App\Http\Controllers\SessionController::class, 'index'])->name('session');
 Route::get('/addSession', [App\Http\Controllers\SessionController::class, 'create'])->name('addSession');
 Route::get('/etatSession/{id}', [App\Http\Controllers\SessionController::class, 'etat'])->name('etatSession');
 
+Route::get('/document/{id}', [App\Http\Controllers\DocumentController::class, 'index'])->name('document');
+Route::get('/addDocument/{id}', [App\Http\Controllers\DocumentController::class, 'create'])->name('addDocument');
+
+Route::get('/projet/{id}', [App\Http\Controllers\ProjetController::class, 'index'])->name('projet');
+Route::get('/addProjet/{id}', [App\Http\Controllers\ProjetController::class, 'create'])->name('addProjet');
+Route::get('/etatProjet/{id}', [App\Http\Controllers\ProjetController::class, 'etat'])->name('etatProjet');
+
+Route::get('/stagiaires', [App\Http\Controllers\StagiaireController::class, 'stagiaire'])->name('stagiaires');
+
+Route::resource('projet','App\Http\Controllers\ProjetController');
+Route::resource('document','App\Http\Controllers\DocumentController');
 Route::resource('session','App\Http\Controllers\SessionController');
 Route::resource('qcm','App\Http\Controllers\QcmController');
 Route::resource('categorie','App\Http\Controllers\CategorieController');
@@ -116,3 +130,4 @@ Route::resource('competence','App\Http\Controllers\CompetenceController');
 //<form action="{{ route('categorie.destroy', $categorie->id) }}" method="POST">
 
 
+Route::resource('parametre','App\Http\Controllers\parametreController');
