@@ -31,7 +31,7 @@
 
     @if ($a != $competence->designation_ca && $a != "x")
     <?php $a = $competence->designation_ca ?>
-    <div class="hauteur50"></div>
+    <div class="hauteur60"></div>
     <p class="title is-4 "><u>{{$competence->designation_ca}}</u></p>
     @endif
 
