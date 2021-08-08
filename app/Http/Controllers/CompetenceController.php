@@ -27,9 +27,12 @@ class CompetenceController extends Controller
         $formateur= new FormateurController;
         $formateurID= $formateur->findFormateurID($utilisateurID); 
 
+                    $categories = DB::table('categories')->get();
+                    //dd($categories);
+
  
 
-                   $competences =  DB::table('competences')  
+                    $competences = DB::table('competences')  
                                     ->join('categories','id_categorie', '=','categories.id')
                                     ->join('matieres','id_matiere', '=','matieres.id')
                                     ->join('sous_matieres','id_sous_matiere', '=','sous_matieres.id')
@@ -38,12 +41,13 @@ class CompetenceController extends Controller
                                             'designation_sous_matiere as designation_s_ma')
                                     ->orderBy('id_categorie')
                                     ->orderBy('id_matiere')
+                                    ->orderBy('id_sous_matiere')
                                     ->get();
         //var_dump($competences);
         //dd($competences);                        
 
                                
-        return view('formateur.competence',compact('competences'));
+        return view('formateur.competence',compact('competences','categories'));
         //return view('admin.cours.filter', compact(['cours']),["FormationID" => $id]);
     }
     

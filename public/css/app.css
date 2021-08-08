@@ -77,6 +77,27 @@
     cursor:pointer;
 }
 
+.taille{
+    width: 50em;
+}
+.hauteur50{
+    height: 50px;
+}
+.hauteur25{
+    height: 25px;
+}
+.hauteur10{
+    height: 10px;
+}
+.position{
+    margin-top: -19px;
+}
+.souligne{
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+
+}
+
 .containerProfil { position: relative; }
 .containerProfil  img { display: block; height:90px;width:auto; }
 .containerProfil .fa-pencil-alt { position: absolute; bottom:0; right:0; }

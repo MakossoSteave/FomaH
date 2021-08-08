@@ -16,31 +16,47 @@
             {{ session('success') }}
         </div>
     @endif
+    <?php $a = "x"?>
+    <?php $b = "x"?>
     
+        
+    
+    <p class="title is-6"></p>
     @foreach ($competences as $competence)
-    <div class="card my-2">
+
+    @if ($a != $competence->designation_ca && $a == "x")
+    <?php $a = $competence->designation_ca ?>
+    <p class="title is-4 "><u>{{$competence->designation_ca}}</u></p></h4>
+    @endif
+
+    @if ($a != $competence->designation_ca && $a != "x")
+    <?php $a = $competence->designation_ca ?>
+    <div class="hauteur50"></div>
+    <p class="title is-4 "><u>{{$competence->designation_ca}}</u></p>
+    @endif
+
+    @if ($b != $competence->designation_ca." / ".$competence->designation_ma  )   
+    <?php $b = $competence->designation_ca." / ".$competence->designation_ma ?>
+    <div class="hauteur10"></div>
+        
+    @endif
+    <div class="card my-2 hauteur50">
         <div class="card-content ">
             <div class="media">
                 <div class="media-content">
                     <div class="flex">
                         <p class="title is-6">{{$competence->designation_ca}} - {{$competence->designation_ma}} / {{$competence->designation_s_ma}}</p>
-                        
+                        <a class = "button is-danger button-card modal-button position" data-target = "#{{$competence->competence_id}}">Supprimer</a>
                         
                     </div>
                 </div>
             </div>
-            <div class="content">
+            <div class="content ">
                 <div class="flex">
                     <div>
                     </div>
-                    <div class="flex-bottom">
-
-                        
-                        
-                            <p>
-                                <a class = "button is-danger button-card modal-button " data-target = "#{{$competence->competence_id}}">Supprimer</a>
-                            </p>
-
+                    <div class="flex-bottom " >
+                           
                             <div id="{{$competence->competence_id}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
