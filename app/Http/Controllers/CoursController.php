@@ -216,8 +216,8 @@ class CoursController extends Controller
         
             
         }else {
-            $this->Update_cours($id);
-            $this->checkEtat($id);
+            //$this->Update_cours($id);
+            $this->checkEtat($id,false);
         }
       /*if($etat==1){
           $nbChap= $nombreChapitresCours+1;
@@ -336,8 +336,8 @@ class CoursController extends Controller
         }   
         // etat == 0
         else {
-            $this->Update_cours($id);
-            $this->checkEtat($id);
+            //$this->Update_cours($id);
+            $this->checkEtat($id,false);
         }
         //
 
@@ -354,7 +354,7 @@ class CoursController extends Controller
     {
        
         // toutes les id formations qui contienent le cours
-        $this->checkEtat($id);
+        $this->checkEtat($id,true);
        
         
         /*************************** */
@@ -382,9 +382,10 @@ class CoursController extends Controller
              // Supprimer le cours des formations
              FormationsContenirCours::where('id_cours',$id)->delete();
              // Mettre à jour le numero de cours dans chaque formations
-            FormationsContenirCours::where('id_formation',$f->id_formation)
-            ->where("numero_cours",">",$f->numero_cours)
-            ->decrement('numero_cours',1);
+             if($cours->etat==1){ FormationsContenirCours::where('id_formation',$f->id_formation)
+                ->where("numero_cours",">",$f->numero_cours)
+                ->decrement('numero_cours',1);}
+           
         }
 
          /*************************** */
@@ -394,7 +395,7 @@ class CoursController extends Controller
 
         return redirect()->back()->with('success','Cours supprimé avec succès');
     }
-    public function checkEtat($id){
+    public function checkEtat($id,$destroy){
         $cursus =  FormationsContenirCours::select('id_formation')
         ->where('id_cours',$id)->get();
      
@@ -419,6 +420,7 @@ class CoursController extends Controller
                    
                 ]);}
         }
-         
+        if(!$destroy){ $this->Update_cours($id); }
+       
     }
 }

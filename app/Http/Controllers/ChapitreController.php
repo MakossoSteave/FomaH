@@ -406,7 +406,7 @@ class ChapitreController extends Controller
                
             ]);
             $CoursController = new CoursController;
-            $CoursController->checkEtat($id);
+            $CoursController->checkEtat($id,false);
         }
     }
 
