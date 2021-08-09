@@ -21,13 +21,15 @@ class parametreController extends Controller
         
         if($id->role_id==3){
             $User= Stagiaire::where('user_id',$id->id)->first();
+            return View('stagiaire.parametre', compact(['id'],['User']),['role' => $role]);
         }
 
         else if($id->role_id==4 || $id->role_id==1){
             $User= Formateur::where('user_id',$id->id)->first();
+            return View('formateur.parametre', compact(['id'],['User']),['role' => $role]);
         }
 
-        return View('stagiaire.parametre', compact(['id'],['User']),['role' => $role]);
+        //return View('stagiaire.parametre', compact(['id'],['User']),['role' => $role]);
 
     }
     public function update(Request $request,$idUser){
