@@ -21,34 +21,7 @@
         <div class="field">
             <label class="label">Descritpion du projet</label>
                 <div class="control">
-                    <input name="description" class="input" type="text" placeholder="Descritpion du projet" value="{{$projet->description}}">
-                </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Date de début (facultatif)</label>
-                <div class="control">
-                    <input name="date_debut" class="input" type="date" placeholder="Date de début (facultatif)" value="{{$projet->date_debut}}">
-                </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Date de fin (facultatif)</label>
-                <div class="control">
-                    <input name="date_fin" class="input" type="date" placeholder="Date de fin (facultatif)" value="{{$projet->date_fin}}">
-                </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Choisir le statut</label>
-                <div class="control">
-                    <div class="select">
-                    <select name="statut_id">
-                        @foreach ($statuts as $statut)
-                            <option value="{{$statut->id}}" {{ ($statut->id == $projet->statut_id) ? 'selected' : '' }}>{{$statut->statut}}</option>
-                        @endforeach
-                    </select>
-                    </div>
+                    <textarea name="description" class="textarea" type="text" placeholder="Descritpion du projet" value="{{$projet->description}}"></textarea>
                 </div>
         </div>
 

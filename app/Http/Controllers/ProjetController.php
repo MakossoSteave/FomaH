@@ -26,16 +26,13 @@ class ProjetController extends Controller
 
     public function create($id)
     {
-        $statuts = Statut::all();
-
-        return view('admin.projet.create', compact(['statuts']));
+        return view('admin.projet.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'description' => 'required',
-            'statut_id' => 'required'
+            'description' => 'required'
         ]);
 
         do {
@@ -49,13 +46,86 @@ class ProjetController extends Controller
         Projet::create([
             'id' => $idProjet,
             'description' => $request->get('description'),
-            'date_debut' => $request->get('date_debut'),
-            'date_fin' => $request->get('date_fin'),
             'etat' => 0,
             'formateur_id' => $formateurID,
-            'id_cours' => $request->get('id_cours'),
-            'statut_id' => $request->get('statut_id')
+            'id_cours' => $request->get('id_cours')
         ]);
+
+        if ($request->has('documents')) {
+                for ($indexDoc=0; $indexDoc < count($request->get('documents')); $indexDoc++) { 
+
+                do {
+                    $idDoc = rand(10000000, 99999999);
+                } while(Projet::find($idDoc) != null);
+        
+                if ($request->hasFile("documents.$indexDoc.lien")) {
+                    $destinationPath = public_path('doc/projet/');
+                    $file = $request->file("documents.$indexDoc.lien");
+                    $filename = $file->getClientOriginalName();
+                    $lien = time().$filename;
+                    $file->move($destinationPath, $lien);
+                } else {
+                    $lien = null;
+                }
+        
+                Document::create([
+                    'id' => $idDoc,
+                    'designation' => $request->documents[$indexDoc]['designation'],
+                    'lien' => $lien
+                ]);
+        
+                ContenirDocumentsProjet::create([
+                    'id_projet' => $idProjet,
+                    'id_document' => $idDoc
+                ]);
+            }
+        }
+       
+        return redirect('/projet/'.intval($request->get('id_cours')))->with('success','Projet ajouté avec succès');
+    }
+
+    public function show($id)
+    {
+       $projet = Projet::find($id);
+
+       return view('admin.projet.show',compact(['projet']));
+    }
+
+    public function edit($id)
+    {
+       $projet = Projet::find($id);
+
+       return view('admin.projet.edit',compact(['projet']));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'description' => 'required'
+        ]);
+
+        Projet::where('id', $id)->update([
+            'description' => $request->get('description'),
+            'etat' => $request->get('etat')
+        ]);
+
+        if ($request->has('documentsUpdate')) {
+            if ($request->hasFile('lien')) {
+                $destinationPath = public_path('doc/projet/');
+                $file = $request->file('lien');
+                $filename = $file->getClientOriginalName();
+                $lien = time().$filename;
+                $file->move($destinationPath, $lien);
+            } else {
+                $document = Document::find($id);
+                $lien = $document->lien;
+            }
+
+            Document::where('id', $request->get('idDocument'))->update([
+                'designation' => $request->get('designation'),
+                'lien' => $lien
+            ]);
+        }
 
         if ($request->has('documents')) {
             do {
@@ -79,59 +149,8 @@ class ProjetController extends Controller
             ]);
     
             ContenirDocumentsProjet::create([
-                'id_projet' => $idProjet,
+                'id_projet' => $id,
                 'id_document' => $idDoc
-            ]);
-        }
-       
-        return redirect('/projet/'.intval($request->get('id_cours')))->with('success','Projet ajouté avec succès');
-    }
-
-    public function show($id)
-    {
-       $projet = Projet::find($id);
-
-       return view('admin.projet.show',compact(['projet']));
-    }
-
-    public function edit($id)
-    {
-       $projet = Projet::find($id);
-       $statuts = Statut::all();
-
-       return view('admin.projet.edit',compact(['projet'], ['statuts']));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'description' => 'required',
-            'statut_id' => 'required'
-        ]);
-
-        Projet::where('id', $id)->update([
-            'description' => $request->get('description'),
-            'date_debut' => $request->get('date_debut'),
-            'date_fin' => $request->get('date_fin'),
-            'etat' => $request->get('etat'),
-            'statut_id' => $request->get('statut_id')
-        ]);
-
-        if ($request->has('documents')) {
-            if ($request->hasFile('lien')) {
-                $destinationPath = public_path('doc/projet/');
-                $file = $request->file('lien');
-                $filename = $file->getClientOriginalName();
-                $lien = time().$filename;
-                $file->move($destinationPath, $lien);
-            } else {
-                $document = Document::find($id);
-                $lien = $document->lien;
-            }
-
-            Document::where('id', $id)->update([
-                'designation' => $request->get('designation'),
-                'lien' => $lien
             ]);
         }
 

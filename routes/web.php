@@ -63,7 +63,7 @@ Route::get('/etatChapitre/{id}', [App\Http\Controllers\ChapitreController::class
 Route::get('/cursus', [App\Http\Controllers\FormationAdminController::class, 'index'])->name('cursus');
 Route::get('/addFormation', [App\Http\Controllers\FormationAdminController::class, 'create'])->name('addformation');
 Route::get('/createCours/{id}', [App\Http\Controllers\FormationAdminController::class, 'createCours'])->name('createCours');
-Route::get('/editCours/{idCours}/{idFormation}', [App\Http\Controllers\CoursController::class, 'edit'])->name('editCours');
+Route::get('/editCours/{idCours}/{idFormation}', [App\Http\Controllers\CoursController::class, 'editFilter'])->name('editCours');
 Route::post('/addCours/{id}', [App\Http\Controllers\FormationAdminController::class, 'addCours'])->name('addCours');
 Route::get('/newCours/{id}', [App\Http\Controllers\FormationAdminController::class, 'newCours'])->name('newCours');
 Route::get('/removeCoursFromFormation/{idCours}/{idFormation}', [App\Http\Controllers\FormationAdminController::class, 'removeCours'])->name('removeCours');
