@@ -91,6 +91,7 @@ Route::get('/addDocument/{id}', [App\Http\Controllers\DocumentController::class,
 Route::get('/projet/{id}', [App\Http\Controllers\ProjetController::class, 'index'])->name('projet');
 Route::get('/addProjet/{id}', [App\Http\Controllers\ProjetController::class, 'create'])->name('addProjet');
 Route::get('/etatProjet/{id}', [App\Http\Controllers\ProjetController::class, 'etat'])->name('etatProjet');
+Route::delete('/deleteDocument/{id}', [App\Http\Controllers\ProjetController::class, 'deleteDocument'])->name('deleteDocument');
 
 Route::get('/stagiaires', [App\Http\Controllers\StagiaireController::class, 'stagiaire'])->name('stagiaires');
 

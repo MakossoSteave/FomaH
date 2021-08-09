@@ -27,23 +27,36 @@
     @else
 
     @foreach ($projets as $projet)
+
     <div class="card my-6">
         <div class="card-content">
             <div class="media-content">
                 <div class="flex">
                     <div>
-                        <p class="title is-4">{{$projet->description}}</p>
-                        <a class="{{ $projet->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatProjet', $projet->id) }}">
+                        <div class="media">
+                        @foreach($projet->document as $document)
+                        @if(!empty($document->lien))
+                        <div class="media-left">
+                            <embed class="image is-4by3" src="{{ URL::asset('/') }}doc/projet/{{ $document->lien }}" />
+                        </div>
+                        @endif
+                        @endforeach
+                        <div class="media-content">
+                            <div class="flex">
+                                <p class="title is-4">{{$projet->description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="{{ $projet->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatProjet', $projet->id) }}">
                             @if($projet->etat == 1) 
                             Activé
                             @else
                             Désactivé
                             @endif
-                        </a>
-                    </div>
-                    <div>
-                    <p class="subtitle is-4"><span class="subtitle is-6">Créé par</span> {{$projet->formateurPrenom}} {{$projet->formateurNom}}</p>
-                    </div>
+                    </a>
+                    <!-- <div>
+                    <p class="subtitle is-4"><span class="subtitle is-6">Créé par</span> {{-- $formateur->prenom --}} {{-- $formateur->nom --}}</p>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -55,6 +68,7 @@
                     <div class="flex-bottom">
                         <form action="{{ route('projet.edit', $projet->id) }}" method="GET">
                             @csrf
+                            <input type="hidden" name="id_cours" value="{{request()->route('id')}}">
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>
                             <p>
@@ -95,11 +109,10 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
-
-    @endforeach
     
+    @endforeach
+
     @endif
 </div>
 @else
