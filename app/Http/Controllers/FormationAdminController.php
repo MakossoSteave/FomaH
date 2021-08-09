@@ -37,8 +37,8 @@ class FormationAdminController extends Controller
          'volume_horaire' =>  ['required','numeric','min:0'],
          'prix' =>  ['required','numeric','min:0'],
          'categorie_id' =>'required',
-        //  'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
-        //  new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+         'image' => ['mimes:jpeg,png,bmp,tif,gif,GIF ','max:10000',
+         new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 
         do {
@@ -100,8 +100,8 @@ class FormationAdminController extends Controller
          'etat' => [
             'required',
              Rule::in(['0', '1'])],
-             'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
-             new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+             'image' => ['mimes:jpeg,png,bmp,tif,gif,GIF ','max:10000',
+             new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 
         if ($request->hasFile('image')) {
@@ -169,7 +169,8 @@ class FormationAdminController extends Controller
         $Cours = Cours::find($request->get('id_cours'));
         //$numero_cours = FormationsContenirCours::where("id_formation","=",$id)->max('numero_cours');
         if($Cours->etat==1){
-        $numero_cours = FormationsContenirCours::where("id_formation","=",$id)->count();
+        $numero_cours = FormationsContenirCours::where("id_formation","=",$id)->max('numero_cours');
+    
             if ($numero_cours == null) {
                 $numero_cours = 1;
             } else {
@@ -278,20 +279,20 @@ class FormationAdminController extends Controller
                 // Mettre à jour le nombre de chapitre total dans chaque formations
     
                 $Formation->Update_nombre_chapitre_total($f->id_formation,-$nombreChapitresCours);
-                
+                FormationsContenirCours::where('id_formation',$f->id_formation)
+                ->where("numero_cours",">",$f->numero_cours)
+                ->decrement('numero_cours',1);
                  }
                  // Supprimer le cours des formations
                  FormationsContenirCours::where('id_cours',$idCours)->delete();
                  // Mettre à jour le numero de cours dans chaque formations
-                FormationsContenirCours::where('id_formation',$f->id_formation)
-                ->where("numero_cours",">",$f->numero_cours)
-                ->decrement('numero_cours',1);
+               
             }
         
         
 
         $CoursController = new CoursController;
-        $CoursController->checkEtat($idCours);
+        $CoursController->checkEtat($idCours,false);
 /*
         $coursDeLaFormation = FormationsContenirCours::select('id_cours')
             ->where('id_formation',$idFormation)

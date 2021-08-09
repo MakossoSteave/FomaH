@@ -125,9 +125,13 @@
                     </a>
 
                     <div class="navbar-dropdown">
+                    <a class="navbar-item" href="{{ url('categorie')}}">
+                     Catégorie
+                    </a>
                     <a class="navbar-item">
                         Mots-clés
                     </a>
+
                     </div>
                 </div>
 
@@ -146,6 +150,7 @@
                     </a>
                     <a class="navbar-item">
                     Formateur
+                   
                     </a>
                     <a class="navbar-item">
                     Centre
@@ -162,11 +167,11 @@
                 <a class="navbar-item">
                     Titre
                 </a>
-
+<!--
                 <a class="navbar-item" href="{{ url('categorie')}}">
                     Catégorie
                 </a>
-
+                            -->
             </div>
             </nav>
         </div>

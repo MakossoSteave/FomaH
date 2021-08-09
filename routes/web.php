@@ -99,6 +99,7 @@ Route::get('/etatExercice/{id}', [App\Http\Controllers\ExerciceController::class
 Route::delete('/deleteQuestionExercice/{id}', [App\Http\Controllers\ExerciceController::class, 'deleteQuestionExercice'])->name('deleteQuestionExercice');
 
 Route::get('/stagiaires', [App\Http\Controllers\StagiaireController::class, 'stagiaire'])->name('stagiaires');
+Route::get('/addStagiaire', [App\Http\Controllers\StagiaireController::class, 'create'])->name('addStagiaire');
 
 Route::resource('exercice','App\Http\Controllers\ExerciceController');
 Route::resource('projet','App\Http\Controllers\ProjetController');

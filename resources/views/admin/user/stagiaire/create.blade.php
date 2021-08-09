@@ -14,19 +14,36 @@
             </ul>
     </div>
     @endif
-    <h2 class="title is-2 has-text-centered mt-6">Ajouter un cours</h2>
+    <h2 class="title is-2 has-text-centered mt-6">Ajouter un stagiaire</h2>
     <form action="{{ route('cours.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
         @csrf
 
         <div class="field">
-            <label class="label">Titre du cours</label>
+            <label class="label">Nom</label>
                 <div class="control">
-                    <input name="designation" class="input" type="text" placeholder="Titre du cours">
+                    <input name="nom" class="input" type="text" placeholder="Nom du stagiaire">
                 </div>
         </div>
-
         <div class="field">
-            <label class="label">Ajouter une image</label>
+            <label class="label">Prénom</label>
+                <div class="control">
+                    <input name="prenom" class="input" type="text" placeholder="Prénom du stagiaire">
+                </div>
+        </div>
+        <div class="field">
+            <label class="label">Email</label>
+                <div class="control">
+                    <input name="email" class="input" type="text" placeholder="Email du stagiaire">
+                </div>
+        </div>
+        <div class="field">
+            <label class="label">Téléphone</label>
+                <div class="control">
+                    <input name="telephone" class="input" type="text" placeholder="Téléphone du stagiaire">
+                </div>
+        </div>
+        <div class="field">
+            <label class="label">Image de profil</label>
             <div id="file-js-image-cours" class="file has-name">
                     <label class="file-label">
                         <input class="file-input" type="file" name="image">
@@ -54,29 +71,21 @@
                 }
                 </script>
         </div>
-
         <div class="field">
-            <label class="label">Prix</label>
-                <div class="control">
-                    <input name="prix" class="input" type="number" placeholder="Prix">
-                </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Choisir la formation</label>
+            <label class="label">Type d'inscr</label>
                 <div class="control">
                     <div class="select">
-                    <select name="formation_id">
-                    <option value="" {{ ($id == null) ?  'selected' : ''}}>Aucune</option>
-                        @foreach ($formations as $formation)
-                            <option value="{{$formation->id}}" {{ ($id == $formation->id) ? 'selected' : '' }}>{{$formation->libelle}}</option>
+                    <select name="formateur_id">
+                    <option value=""  selected>Aucun</option>
+                        @foreach ($formateurs as $formateur)
+                            <option value="{{$formateur->id}}">{{$formateur->prenom}} {{$formateur->nom}}</option>
                         @endforeach
                     </select>
                     </div>
                 </div>
         </div>
         <div class="field">
-            <label class="label">Choisir le formateur</label>
+            <label class="label">Coach</label>
                 <div class="control">
                     <div class="select">
                     <select name="formateur_id">

@@ -9,6 +9,7 @@ use App\Models\FormationsContenirCours;
 use App\Models\Formation;
 use App\Models\Cours;
 use App\Models\Chapitre;
+use App\Models\Formateur;
 use Illuminate\Validation\Rule;
 use App\Rules\FilenameImage;
 
@@ -32,7 +33,9 @@ class CoursController extends Controller
 
         $formations = Formation::orderBy('libelle','asc')->get();
 
-        return view('admin.cours.create', compact(['formations'], 'id'));
+        $formateurs = Formateur::orderBy('nom','asc')->get();
+
+        return view('admin.cours.create', compact(['formations','formateurs'], 'id'));
     }
 
     public function filter($id)
@@ -53,8 +56,9 @@ class CoursController extends Controller
         $request->validate([
          'designation' => ['required','max:191', 'unique:cours'],
          'prix' => ['required','numeric','min:0'],
-        //  'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
-        //           new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+         'formateur_id' => ['nullable','numeric'],
+          'image' => ['mimes:jpeg,png,bmp,tif,gif,GIF','max:10000',
+                 new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 
         do {
@@ -73,7 +77,12 @@ class CoursController extends Controller
       
         $utilisateurID = Auth::user()->id;
         $formateur= new FormateurController;
-        $formateurID= $formateur->findFormateurID($utilisateurID);      
+        if (!empty($request->get('formateur_id'))) {
+            $formateurID = $request->get('formateur_id');  
+        }else{
+            $formateurID= $formateur->findFormateurID($utilisateurID);
+        }
+              
 
         Cours::create([
             'id_cours' => $id,
@@ -127,16 +136,22 @@ class CoursController extends Controller
 */
     public function edit($idCours)
     {
-    $cours = Cours::find($idCours);
-
-    return view('admin.cours.edit',compact(['cours']));
+    $cours = Cours::select('cours.*','formateurs.nom as NomFormateur','formateurs.prenom as PrenomFormateur')
+    ->join('formateurs','cours.formateur','=','formateurs.id')
+    ->where("id_cours",$idCours)
+    ->first();
+    $formateurs = Formateur::orderBy('nom','asc')->get();
+    return view('admin.cours.edit',compact(['cours','formateurs']));
     }
 
     public function editFilter($idCours, $idFormation)
     {
-       $cours = Cours::find($idCours);
-
-       return view('admin.cours.edit',compact(['cours'], ['idFormation']));
+        $cours = Cours::select('cours.*','formateurs.nom as NomFormateur','formateurs.prenom as PrenomFormateur')
+        ->join('formateurs','cours.formateur','=','formateurs.id')
+        ->where("id_cours",$idCours)
+        ->first();
+       $formateurs = Formateur::orderBy('nom','asc')->get();
+       return view('admin.cours.edit',compact(['cours','formateurs'], ['idFormation']));
     }
 
     public function update(Request $request, $id)
@@ -146,12 +161,13 @@ class CoursController extends Controller
              
                 return $query->where('id_cours',"!=", $id);
             })] ,
+            'formateur' => ['nullable','numeric'],
             'prix' => ['required','numeric','min:0'],
             'etat' => [
                 'required',
                  Rule::in(['0', '1'])],
-                 'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
-                 new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+                 'image' => ['mimes:jpeg,png,bmp,tif,gif,GIF ','max:10000',
+                 new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 
     
@@ -200,8 +216,8 @@ class CoursController extends Controller
         
             
         }else {
-            $this->Update_cours($id);
-            $this->checkEtat($id);
+            //$this->Update_cours($id);
+            $this->checkEtat($id,false);
         }
       /*if($etat==1){
           $nbChap= $nombreChapitresCours+1;
@@ -209,11 +225,16 @@ class CoursController extends Controller
       else {
         $nbChap =$nombreChapitresCours; 
       }*/
+     if(!empty($request->get('formateur'))){
+        $formateur = $request->get('formateur');
+     } else {
+        $formateur = null;
+     }
         Cours::where('id_cours', $id)->update([
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
-            'formateur' => $request->get('formateur'),
+            'formateur' => $formateur,
             'etat' => $etat/*,
             'nombre_chapitres' =>  $nbChap*/
         ]);
@@ -271,7 +292,11 @@ class CoursController extends Controller
                 FormationsContenirCours::where('id_formation',$f->id_formation)
             ->where("numero_cours",">",$f->numero_cours)
             ->decrement('numero_cours',1);  
-             
+            FormationsContenirCours::where('id_cours',$id_cours)->update([
+                            
+                'numero_cours' => 0
+            
+            ]);
         }
     }
 
@@ -316,8 +341,8 @@ class CoursController extends Controller
         }   
         // etat == 0
         else {
-            $this->Update_cours($id);
-            $this->checkEtat($id);
+            //$this->Update_cours($id);
+            $this->checkEtat($id,false);
         }
         //
 
@@ -334,7 +359,7 @@ class CoursController extends Controller
     {
        
         // toutes les id formations qui contienent le cours
-        $this->checkEtat($id);
+        $this->checkEtat($id,true);
        
         
         /*************************** */
@@ -362,9 +387,10 @@ class CoursController extends Controller
              // Supprimer le cours des formations
              FormationsContenirCours::where('id_cours',$id)->delete();
              // Mettre à jour le numero de cours dans chaque formations
-            FormationsContenirCours::where('id_formation',$f->id_formation)
-            ->where("numero_cours",">",$f->numero_cours)
-            ->decrement('numero_cours',1);
+             if($cours->etat==1){ FormationsContenirCours::where('id_formation',$f->id_formation)
+                ->where("numero_cours",">",$f->numero_cours)
+                ->decrement('numero_cours',1);}
+           
         }
 
          /*************************** */
@@ -374,7 +400,7 @@ class CoursController extends Controller
 
         return redirect()->back()->with('success','Cours supprimé avec succès');
     }
-    public function checkEtat($id){
+    public function checkEtat($id,$destroy){
         $cursus =  FormationsContenirCours::select('id_formation')
         ->where('id_cours',$id)->get();
      
@@ -399,6 +425,7 @@ class CoursController extends Controller
                    
                 ]);}
         }
-         
+        if(!$destroy){ $this->Update_cours($id); }
+       
     }
 }

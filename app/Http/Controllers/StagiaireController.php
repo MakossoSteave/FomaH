@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Formation;
 use App\Models\Stagiaire;
 use App\Models\User;
-
+use App\Models\Organisation;
+use App\Models\Formateur;
+use App\Models\types_inscription;
 use Illuminate\Http\Request;
 
 class StagiaireController extends Controller
@@ -15,6 +17,18 @@ class StagiaireController extends Controller
 
         return view('stagiaire/index',compact(['data']));
     }
+
+    public function create()
+    {
+        $typeInscriptions = types_inscription::all();
+
+        $organisations = Organisation::orderBy('designation','asc')->get();
+
+        $formateurs = Formateur::orderBy('nom','asc')->get();
+
+        return view('admin.user.stagiaire.create', compact(['typeInscriptions','organisations','formateurs']));
+    }
+
     public function show($id)
     {
        // $formation  = Formation::find($ids);
@@ -32,7 +46,7 @@ class StagiaireController extends Controller
 
     public function stagiaire(){
         $stagiaires = Stagiaire::select('stagiaires.*','users.image','users.email','formateurs.nom as coachNom','formateurs.prenom as coachPrenom','organisations.designation as organisation','types_inscriptions.type as typeInscription')
-        ->leftJoin('types_inscriptions','stagiaires.type_inscription_id','=','types_inscriptions.id')
+        ->join('types_inscriptions','stagiaires.type_inscription_id','=','types_inscriptions.id')
         ->leftJoin('organisations','stagiaires.organisation_id','=','organisations.id')
         ->leftJoin('formateurs','stagiaires.formateur_id','=','formateurs.id')
         ->join('users','stagiaires.user_id','=','users.id')
@@ -40,7 +54,17 @@ class StagiaireController extends Controller
         ->paginate(5)->setPath('stagiaires');
         return view('admin.user.stagiaire.index',compact('stagiaires'));
     }
-    public function edit(){
+
+    public function edit($id){
+      
+    $stagiaire =Stagiaire::select('stagiaires.*','users.image','users.email','formateurs.nom as coachNom','formateurs.prenom as coachPrenom','organisations.designation as organisation','types_inscriptions.type as typeInscription')
+      ->join('types_inscriptions','stagiaires.type_inscription_id','=','types_inscriptions.id')
+      ->leftJoin('organisations','stagiaires.organisation_id','=','organisations.id')
+      ->leftJoin('formateurs','stagiaires.formateur_id','=','formateurs.id')
+      ->join('users','stagiaires.user_id','=','users.id')
+      ->where("stagiaires.id",$id)
+      ->first();
+    return view('admin.user.stagiaire.edit',compact(['stagiaire']));
     }
     public function destroy($id)
     {
