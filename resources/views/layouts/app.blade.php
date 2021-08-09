@@ -225,7 +225,7 @@
                     <button type="button"
                         class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <a href="{{ route('parametre', [Auth::user()->id]) }}">
-                            <span>Parametre(formateur.index)</span>
+                            <span>Paramètres</span>
                         </a>
 
                     </button>
@@ -247,7 +247,7 @@
                         <!--   < a class="navbar-item" href="{{ url('categorie')}}">  Catégorie  </a>  -->
                    
                    
-                            <span>Liste de vos compétences</span>
+                            <span>Vos compétences</span>
                         </a>
                     </button>
                 </div>

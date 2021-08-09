@@ -28,15 +28,6 @@ class StagiaireController extends Controller
 
        return view('stagiaire.formation.Show',compact(['Formation','al', 'referenceee']));
     }
-        ->orderBy('stagiaires.created_at','desc')
-    }
-        ->paginate(5)->setPath('stagiaires');
-        return view('admin.user.stagiaire.index',compact('stagiaires'));
-        ->join('users','stagiaires.user_id','=','users.id')
-        return redirect()->back()->with('success','Stagiaire supprimé avec succès');
-    public function edit(){
-    public function destroy($id)
-        $stagiaires = Stagiaire::select('stagiaires.*','users.image','users.email','formateurs.nom as coachNom','formateurs.prenom as coachPrenom','organisations.designation as organisation','types_inscriptions.type as typeInscription')
     
 
     public function stagiaire(){

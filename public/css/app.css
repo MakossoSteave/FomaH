@@ -105,6 +105,10 @@
     text-decoration-line: underline;
     text-decoration-style: solid;
 }
+.centrer{
+    text-align: center;
+}
+
 
 .containerProfil { position: relative; }
 .containerProfil  img { display: block; height:90px;width:auto; }
