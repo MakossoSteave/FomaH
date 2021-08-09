@@ -56,7 +56,7 @@ class CoursController extends Controller
         $request->validate([
          'designation' => ['required','max:191', 'unique:cours'],
          'prix' => ['required','numeric','min:0'],
-         'formateur_id' => ['required','numeric'],
+         'formateur_id' => ['nullable','numeric'],
           'image' => ['mimes:jpeg,png,bmp,tif,gif,GIF','max:10000',
                  new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
@@ -161,7 +161,7 @@ class CoursController extends Controller
              
                 return $query->where('id_cours',"!=", $id);
             })] ,
-            'formateur' => ['required','numeric'],
+            'formateur' => ['nullable','numeric'],
             'prix' => ['required','numeric','min:0'],
             'etat' => [
                 'required',
@@ -225,11 +225,16 @@ class CoursController extends Controller
       else {
         $nbChap =$nombreChapitresCours; 
       }*/
+     if(!empty($request->get('formateur'))){
+        $formateur = $request->get('formateur');
+     } else {
+        $formateur = null;
+     }
         Cours::where('id_cours', $id)->update([
             'designation' => $request->get('designation'),
             'image' => $image,
             'prix' => $request->get('prix'),
-            'formateur' => $request->get('formateur'),
+            'formateur' => $formateur,
             'etat' => $etat/*,
             'nombre_chapitres' =>  $nbChap*/
         ]);
