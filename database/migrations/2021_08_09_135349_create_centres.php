@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrganisationTable extends Migration
+class CreateCentres extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateOrganisationTable extends Migration
      */
     public function up()
     {
-        Schema::create('organisations', function (Blueprint $table) {
+        Schema::create('centres', function (Blueprint $table) {
             $table->engine='InnoDB';
             $table->id();
             $table->string('designation');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -28,6 +27,6 @@ class CreateOrganisationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('organisations');
+        Schema::dropIfExists('centres');
     }
 }
