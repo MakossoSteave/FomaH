@@ -204,9 +204,18 @@
                     <i class="fas fa-home"></i>
                     <button type="button"
                         class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        
+                        @if(Auth::user()->role_id == 4)
+                            <a href="{{ url('/formateur') }}" ><span>Acceuil</span></a>
+                        @endif
+                        
+                    
+
+                            <!--
                         <a href="/stagiaire">
                             <span>Acceuil</span>
                         </a>
+                            -->
 
                     </button>
                 </div>

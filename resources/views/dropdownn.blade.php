@@ -31,12 +31,12 @@
       <!-- <div class="hauteur"> -->
       <form action="{{ route('competence.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
         @csrf
-        <span>  {{Auth::user()->id}} </span>
+        <!-- <span>  {{Auth::user()->id}} </span> -->
         <input type="hidden" id="userId" name="userId" value="{{Auth::user()->id}}">
 
       <!-- X X X X X Catégorie -->
-      <div class="form-group hauteur_dropdown">
-        <div>
+      <div class="form-group hauteur100">
+        <div class="form-group hauteur40">
           <h5 class="title is-5">Catégorie :</h5>
         </div>
         <!-- c'est le id="categorie" qui récupère l'information-->
@@ -44,7 +44,7 @@
               <div class="select">
                 <div class="select is-info">
 
-                  <select id="categorie" name="categorie" class="form-control taille">
+                  <select id="categorie" name="categorie" class="form-control taille ">
                     <option selected>Sélectionner une catégorie</option>
                     @foreach($categories as $key => $categorie)
                     <option value="{{$key}}"> {{$categorie}}</option>
@@ -59,8 +59,8 @@
             </div>
       </div>
       <!-- XX XX XX XX XX Matière -->
-      <div class="form-group hauteur_dropdown">
-        <div>
+      <div class="form-group hauteur100">
+        <div class="form-group hauteur40">
           <h5 class="title is-5">Matière :</h5>
         </div>
         <!-- c'est le id="matiere" qui récupère l'information-->
@@ -74,8 +74,8 @@
         </div>
       </div>
         <!-- XXX XXX XXX XXX XXX Sous_Matière -->
-        <div class="form-group hauteur_dropdown">
-          <div>
+        <div class="form-group hauteur100">
+          <div class="form-group hauteur40">
             <h5 class="title is-5">Sous Matière :</h5>
           </div>
           <div class="control has-icons-left">

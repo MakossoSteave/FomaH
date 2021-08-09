@@ -80,11 +80,17 @@
 .taille{
     width: 50em;
 }
+.hauteur100{
+    height: 100px;
+}
 .hauteur60{
     height: 60px;
 }
 .hauteur50{
     height: 50px;
+}
+.hauteur40{
+    height: 40px;
 }
 .hauteur25{
     height: 25px;
@@ -98,7 +104,6 @@
 .souligne{
     text-decoration-line: underline;
     text-decoration-style: solid;
-
 }
 
 .containerProfil { position: relative; }
