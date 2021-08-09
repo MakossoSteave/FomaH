@@ -9,6 +9,7 @@ use App\Models\FormationsContenirCours;
 use App\Models\Formation;
 use App\Models\Cours;
 use App\Models\Chapitre;
+use App\Models\Formateur;
 use Illuminate\Validation\Rule;
 use App\Rules\FilenameImage;
 
@@ -32,7 +33,9 @@ class CoursController extends Controller
 
         $formations = Formation::orderBy('libelle','asc')->get();
 
-        return view('admin.cours.create', compact(['formations'], 'id'));
+        $formateurs = Formateur::orderBy('nom','asc')->get();
+
+        return view('admin.cours.create', compact(['formations','formateurs'], 'id'));
     }
 
     public function filter($id)
@@ -53,8 +56,9 @@ class CoursController extends Controller
         $request->validate([
          'designation' => ['required','max:191', 'unique:cours'],
          'prix' => ['required','numeric','min:0'],
-        //  'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
-        //          new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+         'formateur_id' => ['required','numeric'],
+          'image' => ['mimes:jpeg,png,bmp,tif,gif,GIF','max:10000',
+                 new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 
         do {
@@ -73,7 +77,12 @@ class CoursController extends Controller
       
         $utilisateurID = Auth::user()->id;
         $formateur= new FormateurController;
-        $formateurID= $formateur->findFormateurID($utilisateurID);      
+        if (!empty($request->get('formateur_id'))) {
+            $formateurID = $request->get('formateur_id');  
+        }else{
+            $formateurID= $formateur->findFormateurID($utilisateurID);
+        }
+              
 
         Cours::create([
             'id_cours' => $id,
@@ -127,16 +136,22 @@ class CoursController extends Controller
 */
     public function edit($idCours)
     {
-    $cours = Cours::find($idCours);
-
-    return view('admin.cours.edit',compact(['cours']));
+    $cours = Cours::select('cours.*','formateurs.nom as NomFormateur','formateurs.prenom as PrenomFormateur')
+    ->join('formateurs','cours.formateur','=','formateurs.id')
+    ->where("id_cours",$idCours)
+    ->first();
+    $formateurs = Formateur::orderBy('nom','asc')->get();
+    return view('admin.cours.edit',compact(['cours','formateurs']));
     }
 
     public function editFilter($idCours, $idFormation)
     {
-       $cours = Cours::find($idCours);
-
-       return view('admin.cours.edit',compact(['cours'], ['idFormation']));
+        $cours = Cours::select('cours.*','formateurs.nom as NomFormateur','formateurs.prenom as PrenomFormateur')
+        ->join('formateurs','cours.formateur','=','formateurs.id')
+        ->where("id_cours",$idCours)
+        ->first();
+       $formateurs = Formateur::orderBy('nom','asc')->get();
+       return view('admin.cours.edit',compact(['cours','formateurs'], ['idFormation']));
     }
 
     public function update(Request $request, $id)
@@ -146,12 +161,13 @@ class CoursController extends Controller
              
                 return $query->where('id_cours',"!=", $id);
             })] ,
+            'formateur' => ['required','numeric'],
             'prix' => ['required','numeric','min:0'],
             'etat' => [
                 'required',
                  Rule::in(['0', '1'])],
-                 'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
-                 new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+                 'image' => ['mimes:jpeg,png,bmp,tif,gif,GIF ','max:10000',
+                 new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 
     
