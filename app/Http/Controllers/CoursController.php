@@ -271,7 +271,11 @@ class CoursController extends Controller
                 FormationsContenirCours::where('id_formation',$f->id_formation)
             ->where("numero_cours",">",$f->numero_cours)
             ->decrement('numero_cours',1);  
-             
+            FormationsContenirCours::where('id_cours',$id_cours)->update([
+                            
+                'numero_cours' => 0
+            
+            ]);
         }
     }
 
