@@ -439,9 +439,18 @@ class ChapitreController extends Controller
             ->where("etat",1)
             ->decrement('numero_chapitre',1);
         }else {
-            Chapitre::where('id_cours',$Chapitre->id_cours)
-            ->where("numero_chapitre",">",$Chapitre->numero_chapitre)
-            ->decrement('numero_chapitre',1);
+            if($Chapitre->etat==1){
+                Chapitre::where('id_cours',$Chapitre->id_cours)
+                ->where("numero_chapitre",">",$Chapitre->numero_chapitre)
+                ->where("etat",1)
+                ->decrement('numero_chapitre',1);
+            } else {
+                Chapitre::where('id_cours',$Chapitre->id_cours)
+                ->where("numero_chapitre",">",$Chapitre->numero_chapitre)
+                ->where("etat",0)
+                ->decrement('numero_chapitre',1);
+            }
+          
         }
        
     }

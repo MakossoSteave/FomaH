@@ -33,12 +33,6 @@
                 <div class="flex">
                     <div>
                         <p class="title is-4">{{$projet->description}}</p>
-                    @if(! empty($projet->date_debut))
-                        <p class="title is-4">{{$projet->date_debut}}</p>
-                    @endif
-                    @if(! empty($projet->date_fin))
-                        <p class="title is-4">{{$projet->date_fin}}</p>
-                    @endif
                         <a class="{{ $projet->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatProjet', $projet->id) }}">
                             @if($projet->etat == 1) 
                             Activé

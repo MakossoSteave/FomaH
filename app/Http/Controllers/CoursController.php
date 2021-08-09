@@ -53,8 +53,8 @@ class CoursController extends Controller
         $request->validate([
          'designation' => ['required','max:191', 'unique:cours'],
          'prix' => ['required','numeric','min:0'],
-         'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
-                 new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+        //  'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+        //          new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
         ]);
 
         do {
@@ -125,7 +125,14 @@ class CoursController extends Controller
        return $cours;
     }
 */
-    public function edit($idCours, $idFormation)
+    public function edit($idCours)
+    {
+    $cours = Cours::find($idCours);
+
+    return view('admin.cours.edit',compact(['cours']));
+    }
+
+    public function editFilter($idCours, $idFormation)
     {
        $cours = Cours::find($idCours);
 
@@ -264,7 +271,11 @@ class CoursController extends Controller
                 FormationsContenirCours::where('id_formation',$f->id_formation)
             ->where("numero_cours",">",$f->numero_cours)
             ->decrement('numero_cours',1);  
-             
+            FormationsContenirCours::where('id_cours',$id_cours)->update([
+                            
+                'numero_cours' => 0
+            
+            ]);
         }
     }
 

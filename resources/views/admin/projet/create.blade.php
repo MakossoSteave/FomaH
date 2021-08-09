@@ -22,35 +22,20 @@
         <div class="field">
             <label class="label">Descritpion du projet</label>
                 <div class="control">
-                    <input name="description" class="input" type="text" placeholder="Descritpion du projet">
+                    <textarea name="description" class="textarea" type="text" placeholder="Descritpion du projet"></textarea>
                 </div>
         </div>
 
-        <div class="field">
-            <label class="label">Date de début (facultatif)</label>
-                <div class="control">
-                    <input name="date_debut" class="input" type="date" placeholder="Date de début (facultatif)">
-                </div>
-        </div>
+        <div id="addDocument"></div>
 
-        <div class="field">
-            <label class="label">Date de fin (facultatif)</label>
-                <div class="control">
-                    <input name="date_fin" class="input" type="date" placeholder="Date de fin (facultatif)">
-                </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Choisir le statut</label>
-                <div class="control">
-                    <div class="select">
-                    <select name="statut_id">
-                        @foreach ($statuts as $statut)
-                            <option value="{{$statut->id}}">{{$statut->statut}}</option>
-                        @endforeach
-                    </select>
-                    </div>
-                </div>
+        <div class="flex">
+            <div></div>
+            <div class="mt-2 mb-2">
+                <a id="buttonAddDocument" class="has-icons-right has-text-black" onclick="addDocument()">
+                    Ajouter un document
+                    <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
+                </a>
+            </div>
         </div>
 
             <div class="control mt-4 mb-4">
