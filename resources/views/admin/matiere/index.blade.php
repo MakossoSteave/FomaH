@@ -21,19 +21,19 @@
         </div>
     @endif
 
-    @if($categories->isEmpty())
+    @if($matieres->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
             Aucune categorie n'existe
         </div>
     @else
 
-    @foreach ($categories as $categorie)
-    <div class="card my-6">
+    @foreach ($matieres as $matiere)
+    <div class="card my-6 hauteur50">
         <div class="card-content">
             <div class="media">
             <div class="media-content">
                 <div class="flex">
-                    <p class="title is-4">{{$categorie->designation}}</p>
+                    <p class="title is-4">{{$matiere->designation_matiere}}</p>
                 </div>
             </div>
         </div>
@@ -43,24 +43,24 @@
                     <div>
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('categorie.edit', $categorie->id) }}" method="GET">
+                        <form action="{{ route('categorie.edit', $matiere->id) }}" method="GET">
                             @csrf
-                            <button type="submit" class="button button-card is-info">Modifier</button>
+                            <button type="submit" class="button button-card is-info position70">Modifier</button>
                         </form>
                             <p>
-                                <a class = "button is-danger button-card modal-button" data-target = "#{{$categorie->id}}">Supprimer</a>
+                                <a class = "button is-danger button-card modal-button position70" data-target = "#{{$matiere->id}}">Supprimer</a>
                             </p>
-                            <div id="{{$categorie->id}}" class="modal">
+                            <div id="{{$matiere->id}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
                                     <header class="modal-card-head">
-                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$categorie->designation}}</p>
+                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$matiere->designation_matiere}}</p>
                                     <button class="delete" aria-label="close"></button>
                                     </header>
                                     <section class="modal-card-body">
-                                        Souhaitez-vous supprimer la catégorie {{$categorie->designation}} ?
+                                        Souhaitez-vous supprimer la matière {{$matiere->designation_matiere}} ?
                                     </section>
-                                    <form action="{{ route('categorie.destroy', $categorie->id) }}" method="POST">
+                                    <form action="{{ route('matiere.destroy', $matiere->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <footer class="modal-card-foot">

@@ -10,7 +10,7 @@ class Matiere extends Model
     use HasFactory;
     
     protected $fillable=[
-        'designation_matiere' 
+        'designation_matiere' , 'categorie_id'
     ];
     public function formation()
     {

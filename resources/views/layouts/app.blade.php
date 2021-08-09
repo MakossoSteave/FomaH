@@ -167,6 +167,24 @@
                 <a class="navbar-item">
                     Titre
                 </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link" >
+                    Compétences
+                    </a>
+
+                    <div class="navbar-dropdown">
+                    <a class="navbar-item" href="{{ url('categorie')}}">
+                        Catégorie
+                    </a>
+                    <a class="navbar-item" href="{{ url('matiere')}}">
+                        Matière           
+                    </a>
+                    <a class="navbar-item">
+                        Sous-Matière           
+                    </a>
+
+                    </div>
+                </div>
 <!--
                 <a class="navbar-item" href="{{ url('categorie')}}">
                     Catégorie
