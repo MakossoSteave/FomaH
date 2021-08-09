@@ -43,11 +43,11 @@ class ChapitreController extends Controller
              
              return $query->where('id_cours', $idCours);
          })] ,
-          'video' => ['required','mimes:mp4,mov,ogg,qt ','max:2097152',
+        //   'video' => ['required','mimes:mp4,mov,ogg,qt ','max:2097152',
       
-          new FilenameVideo('/^[a-zA-Z0-9_.-^\s]{4,181}$/')],
-          'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
-          new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')],
+        //   new FilenameVideo('/^[a-zA-Z0-9_.-^\s]{4,181}$/')],
+        //   'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+        //   new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')],
           'etat' => [
               'required',
                Rule::in(['0', '1'])]
@@ -170,10 +170,10 @@ class ChapitreController extends Controller
             'etat' => [
                 'required',
                  Rule::in(['0', '1'])],
-                 'video' => ['mimes:mp4,mov,ogg,qt ','max:2097152',
-                 new FilenameVideo('/^[a-zA-Z0-9_.-^\s]{4,181}$/')],
-                 'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
-                 new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+                //  'video' => ['mimes:mp4,mov,ogg,qt ','max:2097152',
+                //  new FilenameVideo('/^[a-zA-Z0-9_.-^\s]{4,181}$/')],
+                //  'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+                //  new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
         ]);
 
         if ($request->hasFile('image')) {

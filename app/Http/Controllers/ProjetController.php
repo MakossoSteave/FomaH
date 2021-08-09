@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Document;
 use App\Models\Projet;
-use App\Models\Statut;
 use App\Models\ContenirDocumentsProjet;
 
 
@@ -15,11 +14,7 @@ class ProjetController extends Controller
 {
     public function index($id)
     {
-        $projets = Projet::select('projets.*', 'formateurs.id as formateurID','formateurs.nom as formateurNom','formateurs.prenom as formateurPrenom')
-        ->leftJoin('formateurs', 'formateurs.id',"=","projets.formateur_id")
-        ->where('projets.id_cours',$id)
-        ->orderBy('created_at','desc')
-        ->paginate(5);
+        $projets = Projet::where('id_cours', $id)->with('Document')->get();
 
         return view('admin.projet.index', compact(['projets']));
     }
@@ -93,9 +88,9 @@ class ProjetController extends Controller
 
     public function edit($id)
     {
-       $projet = Projet::find($id);
+       $projets = Projet::where('id', $id)->with('Document')->get();
 
-       return view('admin.projet.edit',compact(['projet']));
+       return view('admin.projet.edit',compact(['projets']));
     }
 
     public function update(Request $request, $id)
@@ -110,31 +105,35 @@ class ProjetController extends Controller
         ]);
 
         if ($request->has('documentsUpdate')) {
-            if ($request->hasFile('lien')) {
-                $destinationPath = public_path('doc/projet/');
-                $file = $request->file('lien');
-                $filename = $file->getClientOriginalName();
-                $lien = time().$filename;
-                $file->move($destinationPath, $lien);
-            } else {
-                $document = Document::find($id);
-                $lien = $document->lien;
-            }
+            for ($indexDoc=0; $indexDoc < count($request->get('documentsUpdate')); $indexDoc++) {
+                if ($request->hasFile("documentsUpdate.$indexDoc.lien")) {
+                    $destinationPath = public_path('doc/projet/');
+                    $file = $request->file("documentsUpdate.$indexDoc.lien");
+                    $filename = $file->getClientOriginalName();
+                    $lien = time().$filename;
+                    $file->move($destinationPath, $lien);
+                } else {
+                    $document = Document::find($request->documentsUpdate[$indexDoc]['documentID']);
+                    $lien = $document->lien;
+                }
 
-            Document::where('id', $request->get('idDocument'))->update([
-                'designation' => $request->get('designation'),
-                'lien' => $lien
-            ]);
+                Document::where('id', $request->documentsUpdate[$indexDoc]['documentID'])->update([
+                    'designation' => $request->documentsUpdate[$indexDoc]['designation'],
+                    'lien' => $lien
+                ]);
+            }
         }
 
         if ($request->has('documents')) {
+            for ($indexDoc=0; $indexDoc < count($request->get('documents')); $indexDoc++) { 
+
             do {
                 $idDoc = rand(10000000, 99999999);
             } while(Projet::find($idDoc) != null);
     
-            if ($request->hasFile('lien')) {
+            if ($request->hasFile("documents.$indexDoc.lien")) {
                 $destinationPath = public_path('doc/projet/');
-                $file = $request->file('lien');
+                $file = $request->file("documents.$indexDoc.lien");
                 $filename = $file->getClientOriginalName();
                 $lien = time().$filename;
                 $file->move($destinationPath, $lien);
@@ -144,7 +143,7 @@ class ProjetController extends Controller
     
             Document::create([
                 'id' => $idDoc,
-                'designation' => $request->get('designation'),
+                'designation' => $request->documents[$indexDoc]['designation'],
                 'lien' => $lien
             ]);
     
@@ -153,10 +152,18 @@ class ProjetController extends Controller
                 'id_document' => $idDoc
             ]);
         }
+    }
 
         $idProjet = Projet::where('id',$id)->get();
 
         return redirect('/projet/'.$idProjet[0]->id_cours)->with('success','Projet modifié avec succès');
+    }
+
+    public function deleteDocument($id)
+    {
+        ContenirDocumentsProjet::where('id_document', $id)->delete();
+
+        Document::where('id',$id)->delete();
     }
 
     public function destroy($id)

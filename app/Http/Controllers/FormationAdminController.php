@@ -37,8 +37,8 @@ class FormationAdminController extends Controller
          'volume_horaire' =>  ['required','numeric','min:0'],
          'prix' =>  ['required','numeric','min:0'],
          'categorie_id' =>'required',
-         'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
-         new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
+        //  'image' => ['mimes:jpeg,png,bmp,tiff,jfif,gif,GIF ','max:10000',
+        //  new FilenameImage('/^[a-zA-Z0-9_.-^\s]{4,181}$/')]
         ]);
 
         do {
