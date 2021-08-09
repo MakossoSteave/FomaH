@@ -9,8 +9,8 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-        <a href="{{ route('addChapitre', $idCours ) }}" class="has-icons-right" id="link-black">
-            Ajouter un chapitre
+        <a href="{{ route('addExercice', $id ) }}" class="has-icons-right" id="link-black">
+            Ajouter un exercice
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
     </div>
@@ -22,110 +22,71 @@
         </div>
     @endif
    
-    @if($chapitres->isEmpty())
+    @if($exercices->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
-            Aucun chapitre n'existe pour ce cours
+            Aucun exercice n'existe pour ce chapitre
         </div>
     @else
 
-    @foreach ($chapitres as $chapitre)
+    @foreach ($exercices as $exercice)
     <div class="card my-6">
         <div class="card-content">
-            <div class="media">
-            @if(! empty($chapitre->video))
+        <div class="media">
+            @if(!empty($exercice->image))
             <div class="media-left">
-                <video class="video is-4by3" width="320" height="240" controls>
-                <source src="{{ URL::asset('/') }}video/chapitre/{{$chapitre->video}}">
-                Your browser does not support the video tag.
-                </video> 
+                <img class="image is-4by3" src="{{ URL::asset('/') }}img/exercice/{{$exercice->image}}" alt="Placeholder image">
             </div>
             @endif
-           
-            <div class="columns">
-  <div class="column is-narrow">
-    <div style="width: 600px;">
-   
-      <p class="title is-5">Chapitre n°{{$chapitre->numero_chapitre}}</p>
-      <p class="subtitle">{{$chapitre->designation}}</p>
-        @if(! empty($chapitre->image))
-        <div class="media-left">
-            <img class="image"  style="width: 60px;" src="{{ URL::asset('/') }}img/chapitre/{{$chapitre->image}}" alt="Placeholder image">
-        </div>
-        @endif
-        <p class="subtitle is-half mt-4" > 
-            <a class="{{ $chapitre->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8 " href="{{ route('etatChapitre', $chapitre->id_chapitre) }}">
-                @if($chapitre->etat == 1) 
-                Activé
-                @else
-                Désactivé
-                @endif
-            </a>
-        </p>
-    </div>
-  </div>
-    <div class="column">
-        <div class="dropdown is-right is-hoverable">
-          <div class="dropdown-trigger">
-            <button class="button borderNone is-right"
-                    aria-haspopup="true"
-                    aria-controls="dropdown-menu">
-              <span class="icon is-small is-right"><i class="fas fa-bars"></i></span>
-              <span class="icon is-small">
-              </span>
-            </button>
-          </div>
-  
-          <div class="dropdown-menu" 
-               id="dropdown-menu" 
-               role="menu">
-            <div class="dropdown-content">
-            <form action="{{ route('section', $chapitre->id_chapitre) }}" method="GET">
-                @csrf
-                <button type="submit" class="dropdown-item">Sections</button>
-            </form>
-
-            <form action="{{ route('qcm', $chapitre->id_chapitre) }}" method="GET">
-                @csrf
-                <button type="submit" class="dropdown-item">QCM</button>
-            </form>
-  
-            <a href="{{ route('exercice', $chapitre->id_chapitre) }}" class="dropdown-item">
-            Exercices
-            </a>
-
-            <a href="{{ route('document', $chapitre->id_chapitre) }}" class="dropdown-item">
-            Documents
-            </a>
+            <div class="media-content">
+            <div class="flex">
+                <div>
+                        <p class="title is-4">{{$exercice->enonce}}</p>
+                </div>
             </div>
-          </div>
+            </div>
         </div>
-    </div>
-  </div>
 
-</div>
             <div class="content">
                 <div class="flex">
                     <div>
+                    @foreach ($exercice->Questions_exercice as $question)
+                        <p class="subtitle is-4">Question : {{$question->question}}</p>
+                            @foreach ($question->Questions_correction as $correction)
+                            <p class="subtitle is-6">Correction : {{$correction->reponse}}</p>
+                            @if(!empty($correction->image))
+                            <div class="media-left">
+                                <img class="image is-4by3" src="{{ URL::asset('/') }}img/exercice/{{$correction->image}}" alt="Placeholder image">
+                            </div>
+                            @endif
+                            @endforeach
+                        @endforeach
+                        <a class="{{ $exercice->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatExercice', $exercice->id) }}">
+                        @if($exercice->etat == 1) 
+                        Activé
+                        @else
+                        Désactivé
+                        @endif
+                        </a>
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('chapitre.edit', $chapitre->id_chapitre) }}" method="GET">
+                        <form action="{{ route('exercice.edit', $exercice->id) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>
                             <p>
-                                <a class = "button is-danger button-card modal-button" data-target = "#{{$chapitre->id_chapitre}}">Supprimer</a>
+                                <a class = "button is-danger button-card modal-button" data-target = "#{{$exercice->id}}">Supprimer</a>
                             </p>
-                            <div id="{{$chapitre->id_chapitre}}" class="modal">
+                            <div id="{{$exercice->id}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
                                     <header class="modal-card-head">
-                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$chapitre->designation}}</p>
+                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$exercice->enonce}}</p>
                                     <button class="delete" aria-label="close"></button>
                                     </header>
                                     <section class="modal-card-body">
-                                        Souhaitez-vous supprimer le chapitre {{$chapitre->designation}} ?
+                                        Souhaitez-vous supprimer le exercice {{$exercice->enonce}} ?
                                     </section>
-                                    <form action="{{ route('chapitre.destroy', $chapitre->id_chapitre) }}" method="POST">
+                                    <form action="{{ route('exercice.destroy', $exercice->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <footer class="modal-card-foot">
@@ -152,9 +113,7 @@
             </div>
         </div>
     </div>
-
     @endforeach
-    {!! $chapitres->links() !!}
     @endif
 </div>
 
