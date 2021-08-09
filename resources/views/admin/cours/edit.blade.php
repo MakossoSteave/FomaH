@@ -90,6 +90,21 @@
                                             </option>
                                         </select>
         </div>
+        <div class="field">
+            <label class="label">Choisir le formateur</label>
+                <div class="control">
+                    <div class="select">
+                    <select name="formateur">
+                        @if($cours->formateur==null)
+                    <option value="" selected>Aucun</option>
+                        @endif
+                        @foreach ($formateurs as $formateur)
+                            <option value="{{$formateur->id}}" @if($formateur->id == $cours->formateur) selected @endif>{{$formateur->prenom}} {{$formateur->nom}}</option>
+                        @endforeach
+                    </select>
+                    </div>
+                </div>
+        </div>
         <input name="formateur" type="hidden" value="{{$cours->formateur}}">
 
             <div class="control mt-4 mb-4">

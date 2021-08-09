@@ -106,7 +106,7 @@
             <label class="label">Choisir la categorie</label> 
                 <select class="form-select block w-full mt-1" name="categorie_id">
                     @foreach ($categories as $categorie)
-                        <option value="{{$categorie->id}}">{{$categorie->designation}}</option>
+                        <option value="{{$categorie->id}}" @if($categorie->id==$formation->categorie_id) selected @endif>{{$categorie->designation}}</option>
                     @endforeach
                 </select>
         </div>

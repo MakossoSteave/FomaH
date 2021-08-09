@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Formateur;
+use App\Models\Cours;
 
 class FormateurController extends Controller
 {
@@ -15,4 +16,14 @@ class FormateurController extends Controller
 
        return $formateur;
     }
+    public function destroy($id)
+    {
+     
+      Cours::where('formateur',$id)->update([
+         'formateur' => null
+      ]);
+      
+      Formateur::where('id',$id)->delete();
+    }
+
 }

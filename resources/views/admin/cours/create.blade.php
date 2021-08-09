@@ -75,7 +75,19 @@
                     </div>
                 </div>
         </div>
-
+        <div class="field">
+            <label class="label">Choisir le formateur</label>
+                <div class="control">
+                    <div class="select">
+                    <select name="formateur_id">
+                    <option value=""  selected>Aucun</option>
+                        @foreach ($formateurs as $formateur)
+                            <option value="{{$formateur->id}}">{{$formateur->prenom}} {{$formateur->nom}}</option>
+                        @endforeach
+                    </select>
+                    </div>
+                </div>
+        </div>
             <div class="control mt-4 mb-4">
                 <button type="submit" class="button is-fullwidth is-link is-rounded">Créer</button>
             </div>
