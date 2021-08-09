@@ -39,7 +39,6 @@ Votre session a expiré !
 @endif
 </div>
 <button type="button" class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        
                          @if(Auth::user() && Auth::user()->role_id==2)
                         <a href="/centre">
                         @elseif(Auth::user() && Auth::user()->role_id==3)

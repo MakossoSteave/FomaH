@@ -16,4 +16,14 @@ class ContenirDocumentsProjet extends Model
     protected $fillable=[
         'id_projet', 'id_document'
     ];
+
+    public function Document()
+    {
+        return $this->hasMany(Document::class, 'id', 'id_document');
+    }
+
+    public function Projet()
+    {
+        return $this->hasMany(Projet::class, 'id', 'id_projet');
+    }
 }  

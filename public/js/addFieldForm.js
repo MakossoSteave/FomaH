@@ -159,12 +159,12 @@ function addDocument(){
 
     divDocument.append(documentItem);
 
-    var fileInput = $("#file-js-image-doc-"+counter+" input[type=file]");
+    var fileInputs = $("#file-js-image-doc-"+counter+" input[type=file]");
 
-    fileInput.change = () => {
-        if (fileInput.files.length > 0) {
+    fileInputs.change = () => {
+        if (fileInputs.files.length > 0) {
         var fileName = $("#file-js-image-doc-"+counter+" .file-name");
-        fileName.text(fileInput.files[0].name);
+        fileName.text(fileInputs.files[0].name);
         }
     }
 
@@ -187,7 +187,7 @@ function addDocument(){
     });
 }
 
-$(document).on('click', '.deleteUpdateDocuments', function(event){
+$(document).on('click', '.deleteUpdateDocument', function(event){
     var token = $("meta[name='csrf-token']").attr("content");
     
     $.ajax(
@@ -203,7 +203,7 @@ $(document).on('click', '.deleteUpdateDocuments', function(event){
         {
             console.log('success:' + response);
             
-            $("#formUpdateDocuments").load(window.location.href + " #questionUpdateDocuments");
+            $("#formUpdateDocuments").load(window.location.href + " #DocumentUpdate");
         },
         error: function(data) 
         {

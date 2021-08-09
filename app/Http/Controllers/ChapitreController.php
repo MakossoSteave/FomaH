@@ -45,7 +45,7 @@ class ChapitreController extends Controller
          })] ,
           'video' => ['required','mimes:mp4,mov,ogg,qt ','max:2097152',
       
-          new FilenameVideo('/^[a-zA-Z0-9_.-^\s]{4,181}$/')],
+          new FilenameVideo('/[\w\W]{4,181}$/')],
           'image' => ['mimes:jpeg,png,bmp,tif,gif,GIF','max:10000',
           new FilenameImage('/[\w\W]{4,181}$/')],
           'etat' => [
@@ -171,7 +171,7 @@ class ChapitreController extends Controller
                 'required',
                  Rule::in(['0', '1'])],
                  'video' => ['mimes:mp4,mov,ogg,qt ','max:2097152',
-                 new FilenameVideo('/^[a-zA-Z0-9_.-^\s]{4,181}$/')],
+                 new FilenameVideo('/[\w\W]{4,181}$/')],
                  'image' => ['mimes:jpeg,png,bmp,tif,gif,GIF ','max:10000',
                  new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
@@ -406,7 +406,7 @@ class ChapitreController extends Controller
                
             ]);
             $CoursController = new CoursController;
-            $CoursController->checkEtat($id);
+            $CoursController->checkEtat($id,false);
         }
     }
 

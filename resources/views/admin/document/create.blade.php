@@ -17,6 +17,8 @@
     <form action="{{ route('document.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
         @csrf
 
+        <input type="hidden" name="id_chapitre" value="{{request()->route('id')}}">
+
         <div class="field">
             <label class="label">Nom du document</label>
                 <div class="control">

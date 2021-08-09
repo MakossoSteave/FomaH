@@ -12,6 +12,11 @@ class Projet extends Model
     public $incrementing = false;
 
     protected $fillable=[
-        'id', 'description','date_debut','date_fin','etat','formateur_id','id_cours','statut_id'
-    ];
+        'id', 'description','etat','formateur_id','id_cours'
+    ]; 
+    
+    public function Document() 
+    {
+        return $this->belongsToMany(Document::class, ContenirDocumentsProjet::class, 'id_projet', 'id_document');
+    }
 }   
