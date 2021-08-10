@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Centre;
 use App\Models\Formation;
 use App\Models\Stagiaire;
 use App\Models\User;
@@ -9,7 +10,9 @@ use App\Models\Organisation;
 use App\Models\Formateur;
 use App\Models\types_inscription;
 use Illuminate\Http\Request;
-
+use Illuminate\Validation\Rule;
+use App\Rules\FilenameImage;
+use Illuminate\Support\Facades\Hash;
 class StagiaireController extends Controller
 {
     public function index(){
@@ -26,7 +29,8 @@ class StagiaireController extends Controller
 
         $formateurs = Formateur::orderBy('nom','asc')->get();
 
-        return view('admin.user.stagiaire.create', compact(['typeInscriptions','organisations','formateurs']));
+        $centres = Centre::orderBy('designation','asc')->get();
+        return view('admin.user.stagiaire.create', compact(['typeInscriptions','organisations','centres','formateurs']));
     }
 
     public function show($id)
@@ -66,6 +70,75 @@ class StagiaireController extends Controller
       ->first();
     return view('admin.user.stagiaire.edit',compact(['stagiaire']));
     }
+    public function store(Request $request){
+        $request->validate([
+            'email' => ['required','email','max:191', 'unique:users'],
+            'nom' => ['required','string','max:191'],
+            'prenom' => ['nullable','string','max:191'],
+            'telephone' => ['nullable','regex:/[0-9]{10}/'],
+            'formateur_id' => ['nullable','numeric'],
+            'centre_id' => ['nullable','numeric'],
+            'typeInscription'=> ['required','numeric'],
+            'organisation_id' => ['nullable','numeric'],
+            'motdepasse' => ['string', 'min:8', 'confirmed'],
+            'motdepasse_confirmation' => ['required','string', 'min:8'], 
+            'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF','max:10000',
+                    new FilenameImage('/[\w\W]{4,181}$/')]
+           ]);
+   
+           do {
+               $id = rand(10000000, 99999999);
+           } while(User::find($id) != null);
+   
+           if ($request->hasFile('image')) {
+               $destinationPath = public_path('img/user/');
+               $file = $request->file('image');
+               $filename = $file->getClientOriginalName();
+               $image = time().$filename;
+               $file->move($destinationPath, $image);
+           } else {
+               $image = null;
+           }
+           if (!empty($request->get('prenom'))) {
+               $prenom = $request->get('prenom');
+           } else {
+               $prenom = null;
+           }
+
+           if (!empty($request->get('formation_id'))) {
+            $coach = $request->get('formation_id');
+            } else {
+                $coach = null;
+            }
+            if (!empty($request->get('telephone'))) {
+                $telephone = $request->get('telephone');
+                } else {
+                    $telephone = null;
+                }
+           User::create([
+            'id' => $id,
+            'name' => $request->get('nom'),
+            'email' =>$request->get('email'),
+            'password' => Hash::make($request->get('motdepasse')),
+            'image' => $image,
+            'role_id'=>3
+        ]);
+            do {
+                $idStagiaire = rand(10000000, 99999999);
+            } while(Stagiaire::find($idStagiaire) != null);
+            Stagiaire::create([
+                'id' =>  $idStagiaire,
+                'nom' =>  $request->get('nom'),
+                'prenom' => $prenom,
+                'telephone' => $telephone,
+                'formateur_id' =>  $coach,
+                'user_id' =>$id,
+                'type_inscription_id'=>$request->get('typeInscription')
+            ]);
+
+           return redirect('/stagiaires/')->with('success','Le stagiaire a été ajouté avec succès');
+          
+       }
     public function destroy($id)
     {
         $stagiaire = Stagiaire::where('id',$id)->first();

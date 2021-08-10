@@ -57,7 +57,7 @@ class CoursController extends Controller
          'designation' => ['required','max:191', 'unique:cours'],
          'prix' => ['required','numeric','min:0'],
          'formateur_id' => ['nullable','numeric'],
-          'image' => ['mimes:jpeg,png,bmp,tif,gif,GIF','max:10000',
+          'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF','max:10000',
                  new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 
@@ -164,7 +164,7 @@ class CoursController extends Controller
             'etat' => [
                 'required',
                  Rule::in(['0', '1'])],
-                 'image' => ['mimes:jpeg,png,bmp,tif,gif,GIF ','max:10000',
+                 'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF ','max:10000',
                  new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 

@@ -216,11 +216,20 @@ var selectElem = document.getElementById('select');
 if(selectElem){
 selectElem.addEventListener('change', function() {
     if(selectElem.getAttribute("name")=="inscription_id"){
-        var fieldTypeInscription = $("#fieldTypeInscription");
+       // var fieldTypeInscription = $("#fieldTypeInscription");
+        if(selectElem.value==1){
+            $("#selectOrganisation").hide();
+            $("#selectCentre").hide();
+        }
       if(selectElem.value==2){
        /* fieldTypeInscription.append("<div class='field'><label class='label'>Organisation</label><div class='control'> <div class='select'><select name='formateur_id'>@foreach ($organisations as $organisation)<option value='{{$organisation->id}}'>{{$organisation->designation}}</option>@endforeach </select></div></div </div>");*/
        $("#selectOrganisation").show();
+       $("#selectCentre").hide();
       }
+      if(selectElem.value==3){
+        $("#selectCentre").show();
+        $("#selectOrganisation").hide();
+       }
     }
 
   })

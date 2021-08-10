@@ -95,6 +95,18 @@
                     </div>
                 </div>
         </div>
+        <div class="field" id="selectCentre">
+            <label class="label">Centre</label>
+                <div class="control">
+                    <div class="select">
+                    <select name="inscription_id">
+                        @foreach ($centres as $centre)
+                            <option value="{{$centre->id}}">{{$centre->designation}}</option>
+                        @endforeach
+                    </select>
+                    </div>
+                </div>
+        </div>
         <div class="field">
             <label class="label">Coach</label>
                 <div class="control">
