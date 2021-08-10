@@ -17,7 +17,7 @@ function addQuestion(){
     divQuestion.append(questionItem);
 
     for (var index = 0; index < 4; index++) {
-        var reponseItem = "<div class='field' id='reponses"+counter+"'><label class='label'>Réponse</label><div class='control'><input name='qcm["+counter+"][reponse"+index+"]' class='input' type='text' placeholder='Réponse'></div></div><div class='field'><label class='label'>Choisir la validation de la réponse</label><div class='control'><div class='select'><select name='qcm["+counter+"][validation"+index+"]'><option value='1'>Bonne réponse</option><option value='0'>Mauvaise réponse</option></select></div></div></div>";
+        var reponseItem = "<div class='field' id='reponses"+counter+"'><label class='label'>Réponse</label><div class='control'><input name='qcm["+counter+"][reponse"+index+"]' class='input' type='text' placeholder='Réponse'></div></div><div class='field'><label class='label'>Choisir la validation de la réponse</label><div class='control'><div class='select'><select name='qcm["+counter+"][validation"+index+"]'><option value='0' selected>Mauvaise réponse</option><option value='1'>Bonne réponse</option></select></div></div></div>";
     
         divQuestion.append(reponseItem);
     }
@@ -225,3 +225,73 @@ selectElem.addEventListener('change', function() {
 
   })
 }
+function addExercice(){
+
+    var addExercice = $("#addExercice");
+
+    addExercice.append("<div class='field idUpdate' id='exerciceEnonce"+counter+"'></div>");
+
+    var divExercice = $("#exerciceEnonce"+counter);
+
+    var buttonDeleteExercice = "<div class='flex'><div></div><div class='mt-2 mb-2'><a id='"+counter+"' class='has-icons-right has-text-danger deleteExercice'>Supprimer l'exercice<span class='icon is-small is-right'><i class='fas fa-trash-alt'></i></span></a></div></div>";
+
+    divExercice.append(buttonDeleteExercice);
+
+        var exerciceItem = "<div class='field'><label class='label'>Question</label><div class='control'><input name=exercice["+counter+"][question] class='input' type='text' placeholder='Question'></div></div><div class='field'><label class='label'>Reponse</label><div class='control'><textarea name=exercice["+counter+"][reponse] class='textarea' type='text' placeholder='Reponse'></textarea></div></div><div class='field'><label class='label'>Ajouter une image</label><div id='file-js-image-exercice' class='file has-name'><label class='file-label'><input class='file-input' type='file' name=exercice["+counter+"][image]><span class='file-cta'><span class='file-icon'><i class='fas fa-upload'></i></span><span class='file-label'>Choisir une image</span></span><span class='file-name'>Aucune image</span></label></div>";
+
+        divExercice.append(exerciceItem);
+
+        var fileInputExo = document.querySelector('#file-js-image-exercice input[type=file]');
+        fileInputExo.onchange = () => {
+            if (fileInputExo.files.length > 0) {
+            var fileNameExo = document.querySelector('#file-js-image-exercice .file-name');
+            fileNameExo.textContent = fileInputExo.files[0].name;
+            }
+        }
+
+    counter++;
+
+    $(document).on('click', '.deleteExercice', function (event) {
+ 
+        $("#exerciceEnonce"+event.target.id).remove();
+    
+        $(".idUpdate").each(function(index) {
+            var prefix = "exercice[" + index + "]";
+            $(this).find("input").each(function() {
+               this.name = this.name.replace(/exercice\[\d+\]/, prefix);   
+            });
+            $(this).find("select").each(function() {
+                this.name = this.name.replace(/exercice\[\d+\]/, prefix);   
+             });
+        });
+    
+        if (counter > 0) {
+            counter--;   
+        }
+    });
+}
+
+$(document).on('click', '.deleteUpdateExercice', function(event){
+    var token = $("meta[name='csrf-token']").attr("content");
+    
+    $.ajax(
+    {
+        url: window.location.origin + "/deleteQuestionExercice/" + event.target.id,
+        type: 'DELETE',
+        dataType: "Text",
+        data: {
+            "id": event.target.id,
+            "_token": token,
+        },
+        success: function (response)
+        {
+            console.log('success:' + response);
+            
+            $("#formUpdateExercice").load(window.location.href + " #updateExercice");
+        },
+        error: function(data) 
+        {
+            console.log(data);
+        }
+    });
+});

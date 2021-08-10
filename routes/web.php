@@ -93,9 +93,15 @@ Route::get('/addProjet/{id}', [App\Http\Controllers\ProjetController::class, 'cr
 Route::get('/etatProjet/{id}', [App\Http\Controllers\ProjetController::class, 'etat'])->name('etatProjet');
 Route::delete('/deleteDocument/{id}', [App\Http\Controllers\ProjetController::class, 'deleteDocument'])->name('deleteDocument');
 
+Route::get('/exercice/{id}', [App\Http\Controllers\ExerciceController::class, 'index'])->name('exercice');
+Route::get('/addExercice/{id}', [App\Http\Controllers\ExerciceController::class, 'create'])->name('addExercice');
+Route::get('/etatExercice/{id}', [App\Http\Controllers\ExerciceController::class, 'etat'])->name('etatExercice');
+Route::delete('/deleteQuestionExercice/{id}', [App\Http\Controllers\ExerciceController::class, 'deleteQuestionExercice'])->name('deleteQuestionExercice');
+
 Route::get('/stagiaires', [App\Http\Controllers\StagiaireController::class, 'stagiaire'])->name('stagiaires');
 Route::get('/addStagiaire', [App\Http\Controllers\StagiaireController::class, 'create'])->name('addStagiaire');
 
+Route::resource('exercice','App\Http\Controllers\ExerciceController');
 Route::resource('projet','App\Http\Controllers\ProjetController');
 Route::resource('document','App\Http\Controllers\DocumentController');
 Route::resource('session','App\Http\Controllers\SessionController');
