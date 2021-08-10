@@ -176,7 +176,7 @@
                     <a class="navbar-item" href="{{ url('categorie')}}">
                         Catégorie
                     </a>
-                    <a class="navbar-item" href="{{ url('matiere')}}">
+                    <a class="navbar-item" href="{{ url('categoriematiere')}}">
                         Matière           
                     </a>
                     <a class="navbar-item">

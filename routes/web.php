@@ -95,7 +95,7 @@ Route::get('/section/{id}', [App\Http\Controllers\SectionController::class, 'ind
 Route::get('/etatSection/{id}', [App\Http\Controllers\SectionController::class, 'etat'])->name('etatSection');
 Route::delete('/deleteSection/{id}', [App\Http\Controllers\ChapitreController::class, 'deleteSection'])->name('deleteSection');
 
-//Route::get('/categorie', [App\Http\Controllers\CategorieController::class, 'index'])->name('categorie');
+Route::get('/categorie', [App\Http\Controllers\CategorieController::class, 'index'])->name('categorie');
 Route::get('/addCategorie', [App\Http\Controllers\CategorieController::class, 'create'])->name('addCategorie');
 
 Route::get('/qcm/{id}', [App\Http\Controllers\QcmController::class, 'index'])->name('qcm');
@@ -117,6 +117,9 @@ Route::delete('/deleteDocument/{id}', [App\Http\Controllers\ProjetController::cl
 Route::get('/stagiaires', [App\Http\Controllers\StagiaireController::class, 'stagiaire'])->name('stagiaires');
 Route::get('/addStagiaire', [App\Http\Controllers\StagiaireController::class, 'create'])->name('addStagiaire');
 
+
+
+
 Route::resource('projet','App\Http\Controllers\ProjetController');
 Route::resource('document','App\Http\Controllers\DocumentController');
 Route::resource('session','App\Http\Controllers\SessionController');
@@ -137,3 +140,8 @@ Route::resource('competence','App\Http\Controllers\CompetenceController');
 
 
 Route::resource('parametre','App\Http\Controllers\parametreController');
+
+//Route::get('/addCategorie', [App\Http\Controllers\CategorieController::class, 'create'])->name('addCategorie'); Olivier
+Route::get('/addMatiere', [App\Http\Controllers\MatiereController::class, 'create'])->name('addMatiere');
+Route::get('/categoriematiere', [App\Http\Controllers\MatiereController::class, 'indexcategorie'])->name('indexcategorie');
+Route::post('/listematiere', [App\Http\Controllers\MatiereController::class, 'listematiere'])->name('listematiere');

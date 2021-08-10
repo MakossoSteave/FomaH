@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Matiere;
+use App\Models\Categorie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 class MatiereController extends Controller
@@ -13,13 +15,32 @@ class MatiereController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(Request $request)
+    {   
+        $categories = DB::table("categories")->get();
+        //$categories = Categorie::all();
+        //$categories = DB::table("categories")->pluck("designation","id");
+        //return view('dropdownn',compact('categories'));
         $matieres = Matiere::all();
          //dd($categories);          
-        return view('admin.matiere.index',compact(['matieres'])); 
+        return view('admin.matiere.index',compact(['matieres','categories'])); 
     }
-
+    public function indexcategorie(Request $request)
+    {
+        $matieres = Matiere::all();
+        $categories = DB::table("categories")->get();
+        //$categories = DB::table("categories")->pluck("designation","id");
+         //dd($categories);          
+        return view('admin.matiere.indexcategorie',compact(['categories'])); 
+    }
+    public function listematiere(Request $request)
+    {
+        $matieres = Matiere::all();
+        $categories = DB::table("categories")->get();
+        //$categories = DB::table("categories")->pluck("designation","id");
+         //dd($categories);          
+        return view('admin.matiere.exemple',compact(['categories'])); 
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -27,7 +48,8 @@ class MatiereController extends Controller
      */
     public function create()
     {
-        //
+        $categories = DB::table("categories")->pluck("designation","id");
+        return view('admin.matiere.create',compact(['categories']));
     }
 
     /**
@@ -38,9 +60,21 @@ class MatiereController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        //dd($request);
+        $request->validate([
+         'designation_matiere' => ['required','unique:matieres','max:191']
+        ]);
 
+        do {
+            $id = rand(10000000, 99999999);
+        } while(Matiere::find($id) != null); 
+
+        Matiere::create($request->all()+['id' => $id]);
+       
+        return redirect('/matiere');
+    }
+    
+     
     /**
      * Display the specified resource.
      *
