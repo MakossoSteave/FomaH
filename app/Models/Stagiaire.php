@@ -15,7 +15,7 @@ class Stagiaire extends Model
      * @var array
      */
     protected $fillable = [
-        'id','nom','prenom','telephone','user_id','formateur_id','type_inscription_id','organisation_id'
+        'id','nom','prenom','telephone','user_id','formateur_id','type_inscription_id','organisation_id','centre_id'
     ];
 
     public function user()

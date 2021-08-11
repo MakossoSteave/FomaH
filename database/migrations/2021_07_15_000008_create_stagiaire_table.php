@@ -23,7 +23,7 @@ class CreateStagiaireTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->bigInteger('formateur_id')->unsigned()->index()->nullable();
             $table->foreign('formateur_id')->references('id')->on('formateurs')->onDelete('cascade');
-            $table->bigInteger('type_inscription_id')->unsigned()->index()->nullable();
+            $table->bigInteger('type_inscription_id')->unsigned()->index();
             $table->foreign('type_inscription_id')->references('id')->on('types_inscriptions')->onDelete('cascade');
             $table->bigInteger('organisation_id')->unsigned()->index()->nullable();
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade');

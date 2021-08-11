@@ -14,8 +14,14 @@
             </ul>
     </div>
     @endif
+    @if (session('error'))
+        <div class="notification is-danger has-text-centered my-4">
+        <button class="delete"></button>
+            {{ session('error') }}
+        </div>
+    @endif
     <h2 class="title is-2 has-text-centered mt-6">Ajouter un stagiaire</h2>
-    <form action="{{ route('cours.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
+    <form action="{{ route('stagiaire.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
         @csrf
 
         <div class="field">
@@ -75,7 +81,7 @@
             <label class="label">Type d'inscriptions</label>
                 <div class="control">
                     <div class="select">
-                    <select id="select" name="inscription_id">
+                    <select id="selectTypeInscription" name="typeInscription">
                         @foreach ($typeInscriptions as $typeInscription)
                             <option value="{{$typeInscription->id}}">{{$typeInscription->type}}</option>
                         @endforeach
@@ -87,7 +93,8 @@
             <label class="label">Organisations</label>
                 <div class="control">
                     <div class="select">
-                    <select name="inscription_id">
+                    <select  name="organisation_id">
+                    <option value=""  selected>Aucune</option>
                         @foreach ($organisations as $organisation)
                             <option value="{{$organisation->id}}">{{$organisation->designation}}</option>
                         @endforeach
@@ -95,11 +102,13 @@
                     </div>
                 </div>
         </div>
+        
         <div class="field" id="selectCentre">
             <label class="label">Centre</label>
                 <div class="control">
                     <div class="select">
-                    <select name="inscription_id">
+                    <select name="centre_id">
+                    <option value=""  selected>Aucun</option>
                         @foreach ($centres as $centre)
                             <option value="{{$centre->id}}">{{$centre->designation}}</option>
                         @endforeach
@@ -118,6 +127,18 @@
                         @endforeach
                     </select>
                     </div>
+                </div>
+        </div>
+        <div class="field">
+            <label class="label">Mot de passe</label>
+                <div class="control">
+                    <input name="motdepasse" class="input" type="password" placeholder="Mot de passe du stagiaire">
+                </div>
+        </div>
+        <div class="field">
+            <label class="label">Confirmation du mot de passe</label>
+                <div class="control">
+                    <input name="motdepasse_confirmation" class="input" type="password" placeholder="Confirmation du mot de passe du stagiaire">
                 </div>
         </div>
             <div class="control mt-4 mb-4">

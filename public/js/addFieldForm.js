@@ -212,10 +212,10 @@ $(document).on('click', '.deleteUpdateDocument', function(event){
     });
 });
 
-var selectElem = document.getElementById('select');
+var selectElem = document.getElementById('selectTypeInscription');
 if(selectElem){
 selectElem.addEventListener('change', function() {
-    if(selectElem.getAttribute("name")=="inscription_id"){
+    
        // var fieldTypeInscription = $("#fieldTypeInscription");
         if(selectElem.value==1){
             $("#selectOrganisation").hide();
@@ -230,7 +230,7 @@ selectElem.addEventListener('change', function() {
         $("#selectCentre").show();
         $("#selectOrganisation").hide();
        }
-    }
+    
 
   })
 }
