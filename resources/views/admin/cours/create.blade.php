@@ -80,9 +80,9 @@
                 <div class="control">
                     <div class="select">
                     <select name="formateur_id">
-                    <option value=""  selected>Aucun</option>
+                    <option value="">Aucun</option>
                         @foreach ($formateurs as $formateur)
-                            <option value="{{$formateur->id}}">{{$formateur->prenom}} {{$formateur->nom}}</option>
+                            <option value="{{$formateur->id}}" @if($formateur->user_id==Auth::user()->id) selected @endif>{{$formateur->prenom}} {{$formateur->nom}}</option>
                         @endforeach
                     </select>
                     </div>

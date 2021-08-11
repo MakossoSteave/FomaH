@@ -72,13 +72,36 @@
                 </script>
         </div>
         <div class="field">
-            <label class="label">Type d'inscr</label>
+            <label class="label">Type d'inscriptions</label>
                 <div class="control">
                     <div class="select">
-                    <select name="formateur_id">
-                    <option value=""  selected>Aucun</option>
-                        @foreach ($formateurs as $formateur)
-                            <option value="{{$formateur->id}}">{{$formateur->prenom}} {{$formateur->nom}}</option>
+                    <select id="select" name="inscription_id">
+                        @foreach ($typeInscriptions as $typeInscription)
+                            <option value="{{$typeInscription->id}}">{{$typeInscription->type}}</option>
+                        @endforeach
+                    </select>
+                    </div>
+                </div>
+        </div>
+        <div class="field" id="selectOrganisation">
+            <label class="label">Organisations</label>
+                <div class="control">
+                    <div class="select">
+                    <select name="inscription_id">
+                        @foreach ($organisations as $organisation)
+                            <option value="{{$organisation->id}}">{{$organisation->designation}}</option>
+                        @endforeach
+                    </select>
+                    </div>
+                </div>
+        </div>
+        <div class="field" id="selectCentre">
+            <label class="label">Centre</label>
+                <div class="control">
+                    <div class="select">
+                    <select name="inscription_id">
+                        @foreach ($centres as $centre)
+                            <option value="{{$centre->id}}">{{$centre->designation}}</option>
                         @endforeach
                     </select>
                     </div>

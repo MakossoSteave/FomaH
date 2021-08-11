@@ -43,7 +43,7 @@ class CoursController extends Controller
         $cours = Cours::select('cours.*', 'formations.libelle', 'formateurs.id as formateurID','formateurs.nom as formateurNom','formateurs.prenom as formateurPrenom')
         ->join('formations_contenir_cours', 'cours.id_cours', '=', 'formations_contenir_cours.id_cours')
         ->join('formations', 'formations.id',"=","formations_contenir_cours.id_formation")
-        ->join('formateurs', 'formateurs.id',"=","cours.formateur")
+        ->leftJoin('formateurs', 'formateurs.id',"=","cours.formateur")
         ->where('formations.id','=',$id)
         ->orderBy('numero_cours','asc')
         ->paginate(5)->setPath("$id");
@@ -57,7 +57,7 @@ class CoursController extends Controller
          'designation' => ['required','max:191', 'unique:cours'],
          'prix' => ['required','numeric','min:0'],
          'formateur_id' => ['nullable','numeric'],
-          'image' => ['mimes:jpeg,png,bmp,tif,gif,GIF','max:10000',
+          'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF','max:10000',
                  new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 
@@ -75,12 +75,10 @@ class CoursController extends Controller
             $image = null;
         }
       
-        $utilisateurID = Auth::user()->id;
-        $formateur= new FormateurController;
         if (!empty($request->get('formateur_id'))) {
             $formateurID = $request->get('formateur_id');  
         }else{
-            $formateurID= $formateur->findFormateurID($utilisateurID);
+            $formateurID = null;
         }
               
 
@@ -137,7 +135,7 @@ class CoursController extends Controller
     public function edit($idCours)
     {
     $cours = Cours::select('cours.*','formateurs.nom as NomFormateur','formateurs.prenom as PrenomFormateur')
-    ->join('formateurs','cours.formateur','=','formateurs.id')
+    ->leftJoin('formateurs','cours.formateur','=','formateurs.id')
     ->where("id_cours",$idCours)
     ->first();
     $formateurs = Formateur::orderBy('nom','asc')->get();
@@ -147,7 +145,7 @@ class CoursController extends Controller
     public function editFilter($idCours, $idFormation)
     {
         $cours = Cours::select('cours.*','formateurs.nom as NomFormateur','formateurs.prenom as PrenomFormateur')
-        ->join('formateurs','cours.formateur','=','formateurs.id')
+        ->leftJoin('formateurs','cours.formateur','=','formateurs.id')
         ->where("id_cours",$idCours)
         ->first();
        $formateurs = Formateur::orderBy('nom','asc')->get();
@@ -166,7 +164,7 @@ class CoursController extends Controller
             'etat' => [
                 'required',
                  Rule::in(['0', '1'])],
-                 'image' => ['mimes:jpeg,png,bmp,tif,gif,GIF ','max:10000',
+                 'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF ','max:10000',
                  new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 
