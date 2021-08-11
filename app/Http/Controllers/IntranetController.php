@@ -22,9 +22,11 @@ class IntranetController extends Controller
         if ($countFormation == 1) {
             $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
 
+            $formationName = Formation::where('id', $formation->id_formations)->first();
+
             $sommaire = FormationsContenirCours::where('id_formation', $formation->id_formations)->with('Cours.Chapitre.Section')->orderby('numero_cours', 'ASC')->get();
         }
 
-        return view('stagiaire.intranet.index', compact(['sommaire']));
+        return view('stagiaire.intranet.index', compact(['sommaire'], ['formationName']));
     }
 }

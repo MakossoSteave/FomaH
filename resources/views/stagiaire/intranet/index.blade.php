@@ -72,8 +72,8 @@
             </button>
         </div>
 
-        <div class="grid gap-4 row-gap-5 sm:grid-cols-2 lg:grid-cols-4 p-5 ">
-            <div class="flex flex-col justify-between p-5 border rounded shadow-sm  rounded-lgs ">
+        <div class="columns">
+            <div class="column is-one-fifth ml-4 mt-4">
                 <aside class="menu">
                     <p class="menu-label">
                         General
@@ -102,19 +102,23 @@
                 </aside>
 
             </div>
-            <div class="content">
-                <ol class="is-upper-roman">
-                    @foreach($sommaire as $sommaires)
-                    @foreach($sommaires->cours as $cours)
-                    <li>{{$cours->designation}}</li>
-                    <ol>
-                        @foreach($cours->chapitre as $chapitre)
-                        <li>{{$chapitre->designation}}</li>
-                        @endforeach
-                    </ol>
-                    @endforeach
-                    @endforeach
-                </ol>
+            <div class="column">
+                <h1 class="has-text-centered mb-4 is-size-3">{{$formationName->libelle}}</h1>
+                <p class="mb-4">{{$formationName->description}}</p>
+                    <div class="content" id="sommaire">
+                        <ol class="is-upper-roman">
+                            @foreach($sommaire as $sommaires)
+                            @foreach($sommaires->cours as $cours)
+                            <li>{{$cours->designation}}</li>
+                            <ol>
+                                @foreach($cours->chapitre as $chapitre)
+                                <li>{{$chapitre->designation}}</li>
+                                @endforeach
+                            </ol>
+                            @endforeach
+                            @endforeach
+                        </ol>
+                    </div>
             </div>
         </div>
 
