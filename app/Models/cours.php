@@ -19,6 +19,6 @@ class Cours extends Model
 
     public function Chapitre()
     {
-        return $this->hasMany(Chapitre::class,'id_cours','id_cours');       
+        return $this->hasMany(Chapitre::class,'id_cours','id_cours')->orderby('numero_chapitre', 'ASC');       
     }
 }
