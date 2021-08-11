@@ -95,7 +95,7 @@ Route::get('/section/{id}', [App\Http\Controllers\SectionController::class, 'ind
 Route::get('/etatSection/{id}', [App\Http\Controllers\SectionController::class, 'etat'])->name('etatSection');
 Route::delete('/deleteSection/{id}', [App\Http\Controllers\ChapitreController::class, 'deleteSection'])->name('deleteSection');
 
-//Route::get('/categorie', [App\Http\Controllers\CategorieController::class, 'index'])->name('categorie');
+Route::get('/categorie', [App\Http\Controllers\CategorieController::class, 'index'])->name('categorie');
 Route::get('/addCategorie', [App\Http\Controllers\CategorieController::class, 'create'])->name('addCategorie');
 
 Route::get('/qcm/{id}', [App\Http\Controllers\QcmController::class, 'index'])->name('qcm');
@@ -143,3 +143,8 @@ Route::resource('competence','App\Http\Controllers\CompetenceController');
 
 
 Route::resource('parametre','App\Http\Controllers\parametreController');
+
+//Route::get('/addCategorie', [App\Http\Controllers\CategorieController::class, 'create'])->name('addCategorie'); Olivier
+Route::get('/addMatiere', [App\Http\Controllers\MatiereController::class, 'create'])->name('addMatiere');
+Route::get('/categoriematiere', [App\Http\Controllers\MatiereController::class, 'indexcategorie'])->name('indexcategorie');
+Route::post('/listematiere', [App\Http\Controllers\MatiereController::class, 'listematiere'])->name('listematiere');

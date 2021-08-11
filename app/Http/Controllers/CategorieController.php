@@ -10,7 +10,7 @@ use App\Models\Competence;
 use Illuminate\Validation\Rule;
 class CategorieController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $categories = Categorie::all();
          //dd($categories);          

@@ -2,27 +2,51 @@
 
 @section('content')
 @if(Auth::user() && Auth::user()->role_id==1)
+
+
+
+
 <div class="container is-max-desktop">
-    @if ($errors->any())
-    <div class="notification is-danger">
-        <button class="delete"></button>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+    <div class="flex mt-4">
+        <p class="control has-icons-right">
+            <input class="input" type="search" placeholder="Rechercher..."/>
+            <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
+        </p>
+        <a href="{{ route('addMatiere') }}" class="has-icons-right" id="link-black">
+            Ajouter une matière Ajouter une matière
+            <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
+        </a>
     </div>
+    
+    @if (session('success'))
+        <div class="notification is-success has-text-centered my-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if($categories->isEmpty())
+        <div class="notification is-warning has-text-centered my-4">
+            Aucune categorie n'existe
+        </div>
+    @else
+
+    
+    
     @endif
 
 
 
-    <h2 class="title is-2 has-text-centered mt-6">Ajouter une matière </h2>
-    <form action="{{ route('matiere.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
+<h2 class="title is-2 has-text-centered mt-6">Modifier ou supprimer une matière</h2>
+
+
+
+<form action="{{ route('listematiere') }}" method="POST" enctype="multipart/form-data" class="mt-6">
+
         @csrf
 
         <div class="form-group hauteur100">
             
-            <label class="label">Une matière doit appartenir à une catégorie</label>
+            <label class="label">Sélectionner une liste de matière suivant leur catégorie</label>
             
                 <!-- c'est le id="categorie" qui récupère l'information-->
                 <div class="control has-icons-left">
@@ -31,9 +55,11 @@
 
                             <select id="categorie_id" name="categorie_id" class="form-control ">
                             <option selected>Sélectionner une catégorie</option>
-                            @foreach($categories as $key => $categorie)
-                            <option value="{{$key}}"> {{$categorie}}</option>
+
+                            @foreach($categories as  $categorie)
+                            <option value="{{$categorie->id}}"> {{$categorie->designation}}</option>
                             @endforeach
+
                             </select>
 
                         </div>
@@ -44,23 +70,34 @@
                 </div> 
         </div>
 
-        <div class="field">
-            <label class="label">Nom de la matière</label>
-                <div class="control">
-                    <input name="designation_matiere" class="input" type="text" placeholder="Nom de la matière">
-                </div>
-            </div>
+        <div class="field"></div>
+            
 
             <div class="control mt-4 mb-4">
-                <button type="submit" class="button is-fullwidth is-link is-rounded">Créer</button>
+                <button type="submit" class="button is-fullwidth is-link is-rounded">Sélectionner</button>
             </div>
         </div>
     </form>
 
 
 
-    
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
 @else
 <div class="notification is-danger has-text-centered my-4">
 @if(Auth::user() && Auth::user()->role_id!=1)
@@ -82,7 +119,7 @@ Votre session a expiré !
                         <a href="/">
                         @endif
                         <i class="fas fa-home"></i>
-                            <span>Acceuil Acceuil</span>
+                            <span>Acceuil</span>
                         </a>
 
 </button>
