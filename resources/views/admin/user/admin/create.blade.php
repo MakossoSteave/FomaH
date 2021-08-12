@@ -20,21 +20,21 @@
             {{ session('error') }}
         </div>
     @endif
-    <h2 class="title is-2 has-text-centered mt-6">Modifier un utilisateur</h2>
-    <form action="{{ route('utilisateur.update',$user->id) }}" method="POST" enctype="multipart/form-data" class="mt-6">
+    <h2 class="title is-2 has-text-centered mt-6">Ajouter un administrateur</h2>
+    <form action="{{ route('admin.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
         @csrf
-        @method('PUT')
+
 
         <div class="field">
             <label class="label">Nom</label>
                 <div class="control">
-                    <input name="nom" class="input" type="text" placeholder="Nom de l'utilisateur" value="{{$user->name}}">
+                    <input name="nom" class="input" type="text" placeholder="Nom de l'administrateur">
                 </div>
         </div>
         <div class="field">
             <label class="label">Email</label>
                 <div class="control">
-                    <input name="email" class="input" type="text" placeholder="Email de l'utilisateur" value="{{$user->email}}">
+                    <input name="email" class="input" type="text" placeholder="Email de l'administrateur">
                 </div>
         </div>
         <div class="field">
@@ -66,36 +66,21 @@
                 }
                 </script>
         </div>
-        @if($user->role_id==1 || $user->role_id==4 )
-        <div class="field">
-            <label class="label">Role</label>
-                <div class="control">
-                    <div class="select">
-                    <select name="role">
-                    
-                        @foreach ($roles as $role)
-                            <option value="{{$role->id}}"  
-                                @if($role->id==$user->role_id)selected @endif>{{$role->type}}</option>
-                        @endforeach
-                    </select>
-                    </div>
-                </div>
-        </div>
-        @endif
+ 
         <div class="field">
             <label class="label">Mot de passe</label>
                 <div class="control">
-                    <input name="motdepasse" class="input" type="password" placeholder="Mot de passe de l'utilisateur">
+                    <input name="motdepasse" class="input" type="password" placeholder="Mot de passe de l'administrateur">
                 </div>
         </div>
         <div class="field">
             <label class="label">Confirmation du mot de passe</label>
                 <div class="control">
-                    <input name="motdepasse_confirmation" class="input" type="password" placeholder="Confirmation du mot de passe de l'utilisateur">
+                    <input name="motdepasse_confirmation" class="input" type="password" placeholder="Confirmation du mot de passe de l'administrateur">
                 </div>
         </div>
             <div class="control mt-4 mb-4">
-                <button type="submit" class="button is-fullwidth is-link is-rounded">Modifier</button>
+                <button type="submit" class="button is-fullwidth is-link is-rounded">Ajouter</button>
             </div>
         </div>
     </form>

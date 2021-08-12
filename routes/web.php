@@ -103,6 +103,8 @@ Route::get('/addStagiaire', [App\Http\Controllers\StagiaireController::class, 'c
 
 Route::get('/utilisateurs', [App\Http\Controllers\UtilisateurController::class, 'index'])->name('utilisateurs');
 
+Route::get('/admins', [App\Http\Controllers\AdminController::class, 'index'])->name('admins');
+
 Route::get('/intranet/cours', [App\Http\Controllers\IntranetController::class, 'cours'])->name('courss');
 
 Route::resource('intranet','App\Http\Controllers\IntranetController');
@@ -119,4 +121,5 @@ Route::resource('chapitre','App\Http\Controllers\ChapitreController');
 Route::resource('centre','App\Http\Controllers\FormationController');
 Route::resource('stagiaire','App\Http\Controllers\StagiaireController');
 Route::resource('utilisateur','App\Http\Controllers\UtilisateurController');
+Route::resource('admin','App\Http\Controllers\AdminController');
 Route::resource('parametre','App\Http\Controllers\parametreController');

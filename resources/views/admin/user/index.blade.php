@@ -4,7 +4,13 @@
 @if(Auth::user() && Auth::user()->role_id==1)
 
 <div class="container">
-   
+<div class="flex mt-4">
+        <p class="control has-icons-right">
+            <input class="input" type="search" placeholder="Rechercher..."/>
+            <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
+        </p>
+       
+    </div>
     @if (session('success'))
         <div class="notification is-success has-text-centered my-4">
             {{ session('success') }}

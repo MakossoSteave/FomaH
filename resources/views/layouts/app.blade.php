@@ -158,7 +158,7 @@
                     <a class="navbar-item">
                     Organisation
                     </a>
-                    <a class="navbar-item">
+                    <a class="navbar-item" href="{{ url('admins')}}">
                     Admin
                     </a>
                     </div>
