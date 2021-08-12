@@ -85,7 +85,13 @@
         <div class="field">
             <label class="label">Mot de passe</label>
                 <div class="control">
-                    <input name="motdepasse" class="input" type="password" placeholder="Mot de passe de l'administrateur">
+                    <input name="Oldmotdepasse" class="input" type="password" placeholder="Mot de passe de l'administrateur">
+                </div>
+        </div>
+        <div class="field">
+            <label class="label">Nouveau mot de passe</label>
+                <div class="control">
+                    <input name="motdepasse" class="input" type="password" placeholder="Nouveau mot de passe de l'administrateur">
                 </div>
         </div>
         <div class="field">

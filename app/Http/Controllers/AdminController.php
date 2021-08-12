@@ -108,8 +108,14 @@ class AdminController extends Controller
                 if(!empty($request->get('motdepasse'))){
                     $request->validate([
                     'motdepasse' => ['string', 'min:8', 'confirmed'],
-                    'motdepasse_confirmation' => ['required','string', 'min:8']]);  
-                }
+                    'Oldmotdepasse'  =>['required','string', 'min:8'],
+                    'motdepasse_confirmation' => ['required','string', 'min:8']]);
+                    $oldMdp=$request->get('Oldmotdepasse');
+                    $oldMdpBD=(User::find($id))->password;
+                    if(! Hash::check($oldMdp,$oldMdpBD)){ 
+                        return redirect()->back()->with('error','Mot de passe incorrecte !'); 
+                        }
+                    }
                 $request->validate([
                     'email' => ['required','email','max:191',Rule::unique('users')->where(function ($query) use($id) {
              
