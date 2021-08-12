@@ -107,6 +107,9 @@ Route::get('/admins', [App\Http\Controllers\AdminController::class, 'index'])->n
 
 Route::get('/intranet/cours', [App\Http\Controllers\IntranetController::class, 'cours'])->name('courss');
 
+Route::get('/intranet/qcm', [App\Http\Controllers\IntranetController::class, 'qcm'])->name('qcm');
+Route::post('/intranet/score', [App\Http\Controllers\IntranetController::class, 'score'])->name('score');
+
 Route::resource('intranet','App\Http\Controllers\IntranetController');
 Route::resource('exercice','App\Http\Controllers\ExerciceController');
 Route::resource('projet','App\Http\Controllers\ProjetController');
