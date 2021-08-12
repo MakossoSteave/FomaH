@@ -50,22 +50,7 @@
         <div class="column is-3">
             <aside class="is-medium menu">
                 <p class="menu-label">
-                    General
-                </p>
-                <ul class="menu-list">
-                    <li><a>Tableau de bord
-                        </a></li>
-                </ul>
-                <p class="menu-label">
-                    Administration
-                </p>
-                <ul class="menu-list">
-                    <li><a>Parametre</a></li>
-
-
-                </ul>
-                <p class="menu-label">
-                    Categories
+                    Navigation
                 </p>
                 <ul class="menu-list">
                     <li><a href="{{ url('intranet/cours') }}">Cours</a></li>
@@ -96,7 +81,7 @@
                         @if(! empty($section->image))
                             <img class="imageSection" src="{{ URL::asset('/') }}img/section/{{$section->image}}" alt="Placeholder image">
                         @endif
-                    </div>
+                </div>
             @endforeach
         @endforeach
     </div>

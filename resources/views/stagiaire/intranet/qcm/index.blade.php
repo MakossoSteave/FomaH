@@ -50,22 +50,7 @@
         <div class="column is-3">
             <aside class="is-medium menu">
                 <p class="menu-label">
-                    General
-                </p>
-                <ul class="menu-list">
-                    <li><a>Tableau de bord
-                        </a></li>
-                </ul>
-                <p class="menu-label">
-                    Administration
-                </p>
-                <ul class="menu-list">
-                    <li><a>Parametre</a></li>
-
-
-                </ul>
-                <p class="menu-label">
-                    Categories
+                    Navigation
                 </p>
                 <ul class="menu-list">
                     <li><a href="{{ url('intranet/cours') }}">Cours</a></li>
@@ -77,18 +62,20 @@
         </div>
         <div class="column is-9">
         <div class="content is-medium">
+        @foreach($qcms as $qcm)
+        <h1 class="has-text-centered">QCM - {{$qcm->designation}}</h1>
+        @endforeach
         @if($score != null)
-        <h2 class="has-text-centered">Votre résultat</h2>
+        <h3 class="has-text-centered">Votre résultat</h2>
         <span class="percentage mb-4">{{$score->resultat}}% de réussite</span>
         <progress class="progress is-success" value="{{$score->resultat}}" max="100"></progress>
-        <form action="{{ url('intranet/cours') }}" method="POST">
+        <form action="{{ url('intranet/next') }}" method="POST">
         @csrf
 
         <input type="hidden" name="id_chapitre" value="{{$formation->id_chapitre}}">
         <input type="hidden" name="id_cours" value="{{$formation->id_cours}}">
         @foreach($qcms as $qcm)
         <input type="hidden" name="qcm_id" value="{{$qcm->id}}">
-        <h3 class="title is-3">{{$qcm->designation}}</h3>
             @foreach($qcm->question_qcm as $key => $question)
                 <div class="box mt-4">
                     <h4 id="const" class="title is-3 has-text-centered">{{$question->question}}</h4>
@@ -115,7 +102,7 @@
         @endforeach
     </div>
     <div class="buttons paginate">
-        <button class="button is-success">Continuer</button>
+        <button class="button is-success qcmButton">Continuer</button>
     </div>
     </form>
         @else
@@ -139,7 +126,7 @@
         @endforeach
     </div>
     <div class="buttons paginate">
-        <button class="button is-success">Confirmer</button>
+        <button class="button is-success qcmButton">Confirmer</button>
     </div>
     </form>
     @endif

@@ -9,6 +9,7 @@ use App\Models\Formation;
 use App\Models\Cours;
 use App\Models\Qcm;
 use App\Models\Score_qcm;
+use App\Models\Exercice;
 use App\Models\Chapitre;
 
 use Illuminate\Http\Request;
@@ -43,6 +44,7 @@ class IntranetController extends Controller
             $cours = Cours::where('id_cours', $formation->id_cours)->first();
             $chapitre = Suivre_formation::where('id_chapitre', $formation->id_chapitre)->with('Chapitre.Section')->first();
         }
+
         return view('stagiaire.intranet.cours.index', compact(['chapitre'], ['cours']));
     }
 
@@ -60,7 +62,7 @@ class IntranetController extends Controller
         $scoreCount = Score_qcm::where('qcm_id', $qcm->id)->count();
 
         $score = null;
-        
+
         if ($scoreCount == 1) {
             $score = Score_qcm::where('qcm_id', $qcm->id)->first();
         }
@@ -92,12 +94,32 @@ class IntranetController extends Controller
             'qcm_id' => $request->get('qcm_id')
         ]);
 
-        $score = Score_qcm::where('id', $idScore)->first();
-
         return redirect('/intranet/qcm');
     }
 
-    public function next() {
+    public function exercice() {
 
+        $stagiaire = Stagiaire::where('user_id', Auth::user()->id)->first();
+
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+        $cours = Cours::where('id_cours', $formation->id_cours)->first();
+
+        $chapitre = Chapitre::where('id_chapitre', $formation->id_chapitre)->first();
+
+        $exercices = Exercice::where('id_chapitre', $formation->id_chapitre)->with('Questions_exercice.Questions_correction')->get();
+
+        return view('stagiaire.intranet.exercices.index', compact(['chapitre'], ['cours'], ['exercices']));
+    }
+
+    public function next(Request $request) {
+
+        $exerciceCount = Exercice::where('id_chapitre', $request->get('id_chapitre'))->count();
+
+        if($exerciceCount >= 1) {
+            return redirect('/intranet/exercice');
+        }
+
+        return redirect('/intranet/cours');
     }
 }
