@@ -136,12 +136,13 @@ Route::resource('centre','App\Http\Controllers\FormationController');
 Route::resource('stagiaire','App\Http\Controllers\StagiaireController');
 Route::resource('competence','App\Http\Controllers\CompetenceController');
 
-//<form action="{{ route('categorie.destroy', $categorie->id) }}" method="POST">
+
 
 
 Route::resource('parametre','App\Http\Controllers\parametreController');
 
-//Route::get('/addCategorie', [App\Http\Controllers\CategorieController::class, 'create'])->name('addCategorie'); Olivier
+
 Route::get('/addMatiere', [App\Http\Controllers\MatiereController::class, 'create'])->name('addMatiere');
-Route::get('/categoriematiere', [App\Http\Controllers\MatiereController::class, 'indexcategorie'])->name('indexcategorie');
-Route::post('/listematiere', [App\Http\Controllers\MatiereController::class, 'listematiere'])->name('listematiere');
+Route::get('/categoriematiere', [App\Http\Controllers\MatiereController::class, 'categoriematiere'])->name('categoriematiere');
+Route::get('/listematiere', [App\Http\Controllers\MatiereController::class, 'index'])->name('listematiere');
+//Route::get('/matiere/{id}', [App\Http\Controllers\MatiereController::class, 'index'])->name('suitemodification');

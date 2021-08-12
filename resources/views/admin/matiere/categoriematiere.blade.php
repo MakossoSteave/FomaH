@@ -13,8 +13,8 @@
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
         <a href="{{ route('addMatiere') }}" class="has-icons-right" id="link-black">
-            Ajouter une matière Ajouter une matière
-            <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
+            
+            <span class="icon is-small is-right"><i class="fas fa-plus">Ajouter_une_matière</i></span>
         </a>
     </div>
     
@@ -40,7 +40,7 @@
 
 
 
-<form action="{{ route('listematiere') }}" method="POST" enctype="multipart/form-data" class="mt-6">
+<form action="{{ route('matiere.index') }}" method="GET" enctype="multipart/form-data" class="mt-6">
 
         @csrf
 

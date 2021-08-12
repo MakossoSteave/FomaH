@@ -19,8 +19,9 @@ class CreateMatiereTable extends Migration
             $table->id();
             $table->string('designation_matiere');
             $table->bigInteger('categorie_id')->unsigned()->index();
-            $table->foreign('categorie_id')->references('id')->on('categories');
+            $table->foreign('categorie_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
+
         });
         /*
         DB::table('matieres')->insert( ['type'=>'Admin'], );

@@ -13,7 +13,11 @@
             </ul>
     </div>
     @endif
-
+    @if (session('success'))
+        <div class="notification is-success has-text-centered my-4">
+            {{ session('success') }}
+        </div>
+    @endif
 
 
     <h2 class="title is-2 has-text-centered mt-6">Ajouter une matière </h2>

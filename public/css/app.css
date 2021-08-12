@@ -101,6 +101,16 @@
 .position{
     margin-top: -19px;
 }
+.position13{
+    margin-top: -13px;
+}
+.position57{
+    margin-top: -57px;
+}
+.tb {
+    display: table-cell;
+    vertical-align: middle;
+}
 .position70{
     margin-top: -70px;
 }

@@ -10,7 +10,7 @@
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
         <a href="{{ route('addCategorie') }}" class="has-icons-right" id="link-black">
-            Ajouter une categorie
+            Ajouter une categorie ici_categorie.index.blade
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
     </div>

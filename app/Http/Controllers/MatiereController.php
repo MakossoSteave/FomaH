@@ -6,6 +6,7 @@ use App\Models\Matiere;
 use App\Models\Categorie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 
 class MatiereController extends Controller
@@ -17,29 +18,18 @@ class MatiereController extends Controller
      */
     public function index(Request $request)
     {   
-        $categories = DB::table("categories")->get();
-        //$categories = Categorie::all();
-        //$categories = DB::table("categories")->pluck("designation","id");
-        //return view('dropdownn',compact('categories'));
-        $matieres = Matiere::all();
-         //dd($categories);          
-        return view('admin.matiere.index',compact(['matieres','categories'])); 
+        $matieres = DB::table("matieres")->where('categorie_id',$request->categorie_id)->get();        
+        return view('admin.matiere.index',compact(['matieres'])); 
     }
-    public function indexcategorie(Request $request)
+    public function categoriematiere(Request $request)
     {
-        $matieres = Matiere::all();
-        $categories = DB::table("categories")->get();
-        //$categories = DB::table("categories")->pluck("designation","id");
-         //dd($categories);          
-        return view('admin.matiere.indexcategorie',compact(['categories'])); 
+        $categories = DB::table("categories")->get();             
+        return view('admin.matiere.categoriematiere',compact(['categories'])); 
     }
     public function listematiere(Request $request)
     {
-        $matieres = Matiere::all();
-        $categories = DB::table("categories")->get();
-        //$categories = DB::table("categories")->pluck("designation","id");
-         //dd($categories);          
-        return view('admin.matiere.exemple',compact(['categories'])); 
+        $matieres = DB::table("matieres")->where('categorie_id',$request->categorie_id)->get();    
+        return view('admin.matiere.index',compact(['matieres'])); 
     }
     /**
      * Show the form for creating a new resource.
@@ -61,17 +51,15 @@ class MatiereController extends Controller
     public function store(Request $request)
     {
         //dd($request);
-        $request->validate([
-         'designation_matiere' => ['required','unique:matieres','max:191']
-        ]);
+        $request->validate(['designation_matiere' => ['required','unique:matieres','max:191']]);
 
         do {
             $id = rand(10000000, 99999999);
         } while(Matiere::find($id) != null); 
 
         Matiere::create($request->all()+['id' => $id]);
-       
-        return redirect('/matiere');
+          
+        return redirect()->back()->with('success','Matiere créée avec succès');
     }
     
      
@@ -94,7 +82,8 @@ class MatiereController extends Controller
      */
     public function edit($id)
     {
-        //
+        $matiere = Matiere::find($id);
+        return view('admin.matiere.edit',compact(['matiere']));
     }
 
     /**
@@ -106,7 +95,14 @@ class MatiereController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //dd($request);
+        $request->validate([
+            'designation_matiere' => ['required','max:191', Rule::unique('matieres')->where(function ($query) use($id) {         
+                return $query->where('id',"!=", $id);
+            })]
+        ]);
+        Matiere::where('id', $id)->update(['designation_matiere' => $request->get('designation_matiere')]);
+        return redirect('/categoriematiere')->with('success','Matière modifiée avec succès');
     }
 
     /**
@@ -115,8 +111,13 @@ class MatiereController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request , $id)
     {
-        //
+
+        Matiere::where('id',$id)->delete();
+        return redirect()->back()->with('success','Matiere supprimée avec succès');
     }
 }
+
+
+        
