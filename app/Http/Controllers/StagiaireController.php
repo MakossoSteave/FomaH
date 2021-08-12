@@ -74,7 +74,7 @@ class StagiaireController extends Controller
       ->first();
       if($stagiaire){
         $typeInscriptions = types_inscription::all();
-    
+        $request->session()->put('typeInscriptions', $typeInscriptions);
         $organisations = Organisation::orderBy('designation','asc')->get();
         $request->session()->put('organisations', $organisations);
     
@@ -97,14 +97,14 @@ class StagiaireController extends Controller
                 'email' => ['required','email','max:191', 'unique:users'],
                 'nom' => ['required','string','max:191'],
                 'prenom' => ['nullable','string','max:191'],
-                'telephone' => ['nullable','regex:/[0-9]{10}/'],
+                'telephone' => ['nullable','regex:/[0-9]{9}/','max:10'],
                 'formateur_id' => ['nullable','numeric'
                 ,'in:'.$request->session()->get('formateurs')->implode('id', ', ')
                 ],
                 'centre_id' => ['nullable','numeric'
                 ,'in:'.$request->session()->get('centres')->implode('id', ', ')],
                 'typeInscription' => ['required','numeric',
-                Rule::in(['1', '2' , '3'])],
+                'in:'.$request->session()->get('typeInscriptions')->implode('id', ', ')],
                 'organisation_id' => ['nullable','numeric'
                 ,'in:'.$request->session()->get('organisations')->implode('id', ', ')],
                 'motdepasse' => ['required','string', 'min:8', 'confirmed'],
@@ -210,14 +210,14 @@ class StagiaireController extends Controller
                     })],
                     'nom' => ['required','string','max:191'],
                     'prenom' => ['nullable','string','max:191'],
-                    'telephone' => ['nullable','regex:/[0-9]{10}/'],
+                    'telephone' => ['nullable','regex:/[0-9]{9}/','max:10'],
                     'formateur_id' => ['nullable','numeric'
                     ,'in:'.$request->session()->get('formateurs')->implode('id', ', ')
                     ],
                     'centre_id' => ['nullable','numeric'
                     ,'in:'.$request->session()->get('centres')->implode('id', ', ')],
                     'typeInscription' => ['required','numeric',
-                    Rule::in(['1', '2' , '3'])],
+                    'in:'.$request->session()->get('typeInscriptions')->implode('id', ', ')],
                     'organisation_id' => ['nullable','numeric'
                     ,'in:'.$request->session()->get('organisations')->implode('id', ', ')],
                     'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF','max:10000',
@@ -251,8 +251,8 @@ class StagiaireController extends Controller
                     $prenom = null;
                 }
 
-                if (!empty($request->get('formation_id'))) {
-                    $coach = $request->get('formation_id');
+                if (!empty($request->get('formateur_id'))) {
+                    $coach = $request->get('formateur_id');
                     } else {
                         $coach = null;
                     }
@@ -321,8 +321,13 @@ class StagiaireController extends Controller
     public function destroy($id)
     {
         $stagiaire = Stagiaire::where('id',$id)->first();
+        if($stagiaire){
         $stagiaire->delete();
         User::where('id',$stagiaire->user_id)->delete();
         return redirect()->back()->with('success','Stagiaire supprimé avec succès');
+    }
+    else {
+      return redirect('/stagiaires/')->with('error',"Le stagiaire n'existe pas ");
+     }
     }
 }

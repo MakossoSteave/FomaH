@@ -77,7 +77,7 @@ class parametreController extends Controller
             }
         else if ($request->has('telephone')) {
             $request->validate([
-                'telephone' => ['regex:/[0-9]{10}/']
+                'telephone' => ['regex:/[0-9]{9}/','max:10']
             ]);
             if(Auth::user()->role_id==3){
                 Stagiaire::where('user_id',$idUser)->update(["telephone"=>$request->get('telephone')]);

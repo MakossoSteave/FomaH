@@ -101,6 +101,8 @@ Route::delete('/deleteQuestionExercice/{id}', [App\Http\Controllers\ExerciceCont
 Route::get('/stagiaires', [App\Http\Controllers\StagiaireController::class, 'stagiaire'])->name('stagiaires');
 Route::get('/addStagiaire', [App\Http\Controllers\StagiaireController::class, 'create'])->name('addStagiaire');
 
+Route::get('/utilisateurs', [App\Http\Controllers\UtilisateurController::class, 'index'])->name('utilisateurs');
+
 Route::get('/intranet/cours', [App\Http\Controllers\IntranetController::class, 'cours'])->name('courss');
 
 Route::resource('intranet','App\Http\Controllers\IntranetController');
@@ -116,4 +118,5 @@ Route::resource('cours','App\Http\Controllers\CoursController');
 Route::resource('chapitre','App\Http\Controllers\ChapitreController');
 Route::resource('centre','App\Http\Controllers\FormationController');
 Route::resource('stagiaire','App\Http\Controllers\StagiaireController');
+Route::resource('utilisateur','App\Http\Controllers\UtilisateurController');
 Route::resource('parametre','App\Http\Controllers\parametreController');

@@ -140,7 +140,7 @@
                 </a>
 
                 <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link" href="{{ url('cursus')}}">
+                    <a class="navbar-link" href="{{ url('utilisateurs')}}">
                     Utilisateur
                     </a>
 

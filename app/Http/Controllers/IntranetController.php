@@ -15,7 +15,10 @@ use Illuminate\Support\Facades\Auth;
 class IntranetController extends Controller
 {
     public function index(){
-        $stagiaire = Stagiaire::where('user_id', Auth::user()->id)->first();
+        $idUserAuth=null;
+        if(Auth::user())
+        $idUserAuth=Auth::user()->id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
         
         $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
 
@@ -31,7 +34,10 @@ class IntranetController extends Controller
     }
 
     public function cours() {
-        $stagiaire = Stagiaire::where('user_id', Auth::user()->id)->first();
+        $idUserAuth=null;
+        if(Auth::user())
+        $idUserAuth=Auth::user()->id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
         
         $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
 
