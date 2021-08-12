@@ -29,4 +29,18 @@ class IntranetController extends Controller
 
         return view('stagiaire.intranet.index', compact(['sommaire'], ['formationName']));
     }
+
+    public function cours() {
+        $stagiaire = Stagiaire::where('user_id', Auth::user()->id)->first();
+        
+        $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
+
+        if ($countFormation == 1) {
+            $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+            $cours = Cours::where('id_cours', $formation->id_cours)->first();
+            $chapitre = Suivre_formation::where('id_chapitre', $formation->id_chapitre)->with('Chapitre.Section')->first();
+        }
+        return view('stagiaire.intranet.cours.index', compact(['chapitre'], ['cours']));
+    }
 }
