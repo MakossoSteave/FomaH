@@ -15,10 +15,11 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-  /*  public function index(){
-       return view('admin.index');
-    }*/
-    public function index(){
+   public function index(){
+     //  return view('admin.index');
+     return redirect('/session');
+    }
+    public function admin(){
         $idUserAuth=null;
         if(Auth::user())
         $idUserAuth=Auth::user()->id;

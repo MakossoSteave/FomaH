@@ -103,7 +103,7 @@ Route::get('/addStagiaire', [App\Http\Controllers\StagiaireController::class, 'c
 
 Route::get('/utilisateurs', [App\Http\Controllers\UtilisateurController::class, 'index'])->name('utilisateurs');
 
-Route::get('/admins', [App\Http\Controllers\AdminController::class, 'index'])->name('admins');
+Route::get('/admins', [App\Http\Controllers\AdminController::class, 'admin'])->name('admins');
 
 Route::get('/intranet/cours', [App\Http\Controllers\IntranetController::class, 'cours'])->name('courss');
 
