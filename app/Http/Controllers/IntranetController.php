@@ -7,6 +7,8 @@ use App\Models\FormationsContenirCours;
 use App\Models\Stagiaire;
 use App\Models\Formation;
 use App\Models\Cours;
+use App\Models\Qcm;
+use App\Models\Score_qcm;
 use App\Models\Chapitre;
 
 use Illuminate\Http\Request;
@@ -42,5 +44,60 @@ class IntranetController extends Controller
             $chapitre = Suivre_formation::where('id_chapitre', $formation->id_chapitre)->with('Chapitre.Section')->first();
         }
         return view('stagiaire.intranet.cours.index', compact(['chapitre'], ['cours']));
+    }
+
+    public function qcm() {
+        $stagiaire = Stagiaire::where('user_id', Auth::user()->id)->first();
+        
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+        $cours = Cours::where('id_cours', $formation->id_cours)->first();
+
+        $qcms = Qcm::where('id_chapitre', $formation->id_chapitre)->with('Question_qcm.Reponse_question_qcm')->get();
+
+        $qcm = Qcm::where('id_chapitre', $formation->id_chapitre)->first();
+
+        $scoreCount = Score_qcm::where('qcm_id', $qcm->id)->count();
+
+        $score = null;
+        
+        if ($scoreCount == 1) {
+            $score = Score_qcm::where('qcm_id', $qcm->id)->first();
+        }
+
+        return view('stagiaire.intranet.qcm.index', compact(['qcms'],['cours'],['formation'],['score']));
+    }
+
+    public function score(Request $request) {
+
+        $resultat = 0;
+
+        for ($idRadio=0; $idRadio < count($request->get('reponseNameRadio')); $idRadio++) { 
+
+            if($request->reponseNameRadio[$idRadio] == 1) {
+                $resultat = $resultat+1;
+            }
+        }
+
+        do {
+            $idScore = rand(10000000, 99999999);
+        } while(Score_qcm::find($idScore) != null);
+
+        $stagiaire = Stagiaire::where('user_id', Auth::user()->id)->first();
+
+        Score_qcm::create([
+            'id' => $idScore,
+            'resultat' => ($resultat/count($request->get('reponseNameRadio')))*100,
+            'stagiaire_id' => $stagiaire->id,
+            'qcm_id' => $request->get('qcm_id')
+        ]);
+
+        $score = Score_qcm::where('id', $idScore)->first();
+
+        return redirect('/intranet/qcm');
+    }
+
+    public function next() {
+
     }
 }

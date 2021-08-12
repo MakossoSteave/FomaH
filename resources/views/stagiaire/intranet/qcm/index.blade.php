@@ -77,33 +77,72 @@
         </div>
         <div class="column is-9">
         <div class="content is-medium">
-            @foreach($chapitre->chapitre as $chap)
-        <h3 class="title is-3">{{$chap->numero_chapitre}}. {{$chap->designation}}</h3>
-        <video class="video" width="100%" controls>
-            <source src="{{ URL::asset('/') }}video/chapitre/{{$chap->video}}" >
-            Votre lecteur ne supporte pas ce type de video
-        </video>
-            @foreach($chap->section as $section)
+        @if($score != null)
+        <h2 class="has-text-centered">Votre résultat</h2>
+        <span class="percentage mb-4">{{$score->resultat}}% de réussite</span>
+        <progress class="progress is-success" value="{{$score->resultat}}" max="100"></progress>
+        <form action="{{ url('intranet/cours') }}" method="POST">
+        @csrf
+
+        <input type="hidden" name="id_chapitre" value="{{$formation->id_chapitre}}">
+        <input type="hidden" name="id_cours" value="{{$formation->id_cours}}">
+        @foreach($qcms as $qcm)
+        <input type="hidden" name="qcm_id" value="{{$qcm->id}}">
+        <h3 class="title is-3">{{$qcm->designation}}</h3>
+            @foreach($qcm->question_qcm as $key => $question)
                 <div class="box mt-4">
-                    <h4 id="const" class="title is-3 has-text-centered">{{$section->designation}}</h4>
+                    <h4 id="const" class="title is-3 has-text-centered">{{$question->question}}</h4>
+                        @if(!empty($question->explication))
                         <article class="message is-primary">
                             <span class="icon has-text-primary">
                             </span>
                             <div class="message-body">
-                            {{$section->contenu}}
+                            {{$question->explication}}
                             </div>
                         </article>
-                        @if(! empty($section->image))
-                            <img class="imageSection" src="{{ URL::asset('/') }}img/section/{{$section->image}}" alt="Placeholder image">
                         @endif
                     </div>
+                    @foreach($question->reponse_question_qcm as $reponse)
+                    <div class="ml-6 mr-6">
+                        <table class="table">
+                            <tr>
+                                <td class="{{ $reponse->validation == 1 ? 'is-selected' : '' }} reponseCss">{{$reponse->reponse}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    @endforeach
             @endforeach
         @endforeach
     </div>
-    <footer class="paginate" class="mb-4">
-        <a class="page pagination-previous">Précédent</a>
-        <a href="{{ url('intranet/qcm') }}" class="page pagination-next">Suivant</a>
-    </footer>
+    <div class="buttons paginate">
+        <button class="button is-success">Continuer</button>
+    </div>
+    </form>
+        @else
+        <form action="{{ url('intranet/score') }}" method="POST">
+        @csrf
+
+        @foreach($qcms as $qcm)
+        <input type="hidden" name="qcm_id" value="{{$qcm->id}}">
+        <h3 class="title is-3">{{$qcm->designation}}</h3>
+            @foreach($qcm->question_qcm as $key => $question)
+                <div class="box mt-4">
+                    <h4 id="const" class="title is-3 has-text-centered">{{$question->question}}</h4>
+                    </div>
+                    @foreach($question->reponse_question_qcm as $reponse)
+                    <div class="ml-6">
+                        {{ Form::radio('reponseNameRadio['.$key.']', $reponse->validation) }}
+                        <label for="{{$reponse->reponse}}">{{$reponse->reponse}}</label>
+                    </div>
+                    @endforeach
+            @endforeach
+        @endforeach
+    </div>
+    <div class="buttons paginate">
+        <button class="button is-success">Confirmer</button>
+    </div>
+    </form>
+    @endif
     </div>
 </div>
 </div>

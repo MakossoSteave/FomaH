@@ -38,6 +38,19 @@
     border: none;
 }
 
+.progress {
+    height: 2.5em;
+}
+
+.percentage {
+    display: flex;
+    justify-content: center;
+}
+
+.reponseCss {
+    border-radius: 290486px;
+}
+
 .button.is-focused:not(:active), .button:focus:not(:active) {
     outline: 0;
     box-shadow: none;

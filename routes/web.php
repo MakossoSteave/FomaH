@@ -101,7 +101,9 @@ Route::delete('/deleteQuestionExercice/{id}', [App\Http\Controllers\ExerciceCont
 Route::get('/stagiaires', [App\Http\Controllers\StagiaireController::class, 'stagiaire'])->name('stagiaires');
 Route::get('/addStagiaire', [App\Http\Controllers\StagiaireController::class, 'create'])->name('addStagiaire');
 
-Route::get('/intranet/cours', [App\Http\Controllers\IntranetController::class, 'cours'])->name('courss');
+Route::get('/intranet/cours', [App\Http\Controllers\IntranetController::class, 'cours'])->name('cours');
+Route::get('/intranet/qcm', [App\Http\Controllers\IntranetController::class, 'qcm'])->name('qcm');
+Route::post('/intranet/score', [App\Http\Controllers\IntranetController::class, 'score'])->name('score');
 
 Route::resource('intranet','App\Http\Controllers\IntranetController');
 Route::resource('exercice','App\Http\Controllers\ExerciceController');
