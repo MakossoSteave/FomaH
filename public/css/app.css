@@ -56,6 +56,10 @@
     height: 50em;
 }
 
+.marginChapitre {
+    margin-left: 11em;
+}
+
 .sizeButton {
     width: 15em;
 }

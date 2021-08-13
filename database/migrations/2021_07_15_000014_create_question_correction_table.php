@@ -16,7 +16,7 @@ class CreateQuestionCorrectionTable extends Migration
         Schema::create('questions_corrections', function (Blueprint $table) {
             $table->engine='InnoDB';
             $table->id();;
-            $table->string('reponse');
+            $table->string('reponse', 5000);
             $table->string('image')->nullable();
             $table->boolean('etat');
             $table->bigInteger('question_exercice_id')->unsigned()->index();

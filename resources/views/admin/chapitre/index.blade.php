@@ -41,7 +41,7 @@
             </div>
             @endif
            
-            <div class="columns">
+<div class="columns">
   <div class="column is-narrow">
     <div style="width: 600px;">
    
@@ -63,7 +63,7 @@
         </p>
     </div>
   </div>
-    <div class="column">
+    <div class="column marginChapitre">
         <div class="dropdown is-right is-hoverable">
           <div class="dropdown-trigger">
             <button class="button borderNone is-right"

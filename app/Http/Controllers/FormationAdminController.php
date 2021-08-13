@@ -37,7 +37,7 @@ class FormationAdminController extends Controller
          'volume_horaire' =>  ['required','numeric','min:0'],
          'prix' =>  ['required','numeric','min:0'],
          'categorie_id' =>'required',
-         'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF ','max:10000',
+         'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,jpg,GIF ','max:10000',
          new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 
@@ -100,7 +100,7 @@ class FormationAdminController extends Controller
          'etat' => [
             'required',
              Rule::in(['0', '1'])],
-             'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF ','max:10000',
+             'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,jpg,GIF ','max:10000',
              new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 

@@ -88,7 +88,7 @@ class parametreController extends Controller
         }
         else if ($request->hasFile('image')) {
             $request->validate([
-                'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF','max:10000',
+                'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF','max:10000',
                 new FilenameImage('/[\w\W]{4,181}$/')]
             ]);
             $destinationPath = public_path('img/user/');
