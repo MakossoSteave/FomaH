@@ -8,7 +8,9 @@
             <div class="column is-9">
                 <div class="container content">
                     <a id="home" class="icon is-medium" href="{{ url('intranet') }}"><i class="fas fa-home mr-2"></i>Accueil</a>
+                    @if($cours)
                     <h1 class="title">Cours de <em>{{$cours->designation}}</em></h1>
+                    @endif
                 </div>
             </div>
             <nav class="column is-3">
@@ -61,6 +63,7 @@
             </aside>
         </div>
         <div class="column is-9">
+        @if($cours)
         <div class="content is-medium">
             @foreach($chapitre->chapitre as $chap)
         <h3 class="title is-3">{{$chap->numero_chapitre}}. {{$chap->designation}}</h3>
@@ -85,9 +88,16 @@
             @endforeach
         @endforeach
     </div>
+    @else 
+            <div class="notification is-warning has-text-centered my-4">
+            Vous ne suivez aucune formation
+        </div>
+             @endif
+             @if($qcmCount!=0)
     <footer class="buttons paginate" class="mb-4">
         <a href="{{ url('intranet/qcm') }}" class="button is-success sizeButton">Faire le QCM</a>
     </footer>
+    @endif
     </div>
 </div>
 </div>

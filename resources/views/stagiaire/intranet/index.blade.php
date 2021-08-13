@@ -87,6 +87,7 @@
                 </aside>
 
             </div>
+            @if($formationName)
             <div class="column">
                 <h1 class="has-text-centered mb-4 is-size-3">{{$formationName->libelle}}</h1>
                 <p class="mb-4">{{$formationName->description}}</p>
@@ -105,6 +106,13 @@
                         </ol>
                     </div>
             </div>
+            @else 
+            <div class="column is-9">
+            <div class="notification is-warning has-text-centered my-4">
+            Vous ne suivez aucune formation
+        </div>
+            </div>
+             @endif
         </div>
 
         <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">

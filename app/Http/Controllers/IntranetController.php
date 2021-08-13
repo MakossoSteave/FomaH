@@ -25,7 +25,9 @@ class IntranetController extends Controller
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
         
         $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
-
+       
+        $formationName = null;
+        $sommaire = null;
         if ($countFormation == 1) {
             $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
 
@@ -44,15 +46,17 @@ class IntranetController extends Controller
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
         
         $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
-
+        $qcmCount=0;
+        $cours=null;
+        $chapitre=null;
         if ($countFormation == 1) {
             $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
-
+            $qcmCount = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->count();
             $cours = Cours::where('id_cours', $formation->id_cours)->first();
             $chapitre = Suivre_formation::where('id_chapitre', $formation->id_chapitre)->with('Chapitre.Section')->first();
         }
 
-        return view('stagiaire.intranet.cours.index', compact(['chapitre'], ['cours']));
+        return view('stagiaire.intranet.cours.index', compact(['chapitre'], ['cours'],'qcmCount'));
     }
 
     public function qcm() {
@@ -65,12 +69,12 @@ class IntranetController extends Controller
 
         $cours = Cours::where('id_cours', $formation->id_cours)->first();
 
-        $qcms = Qcm::where('id_chapitre', $formation->id_chapitre)->with('Question_qcm.Reponse_question_qcm')->get();
+        $qcms = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->with('Question_qcm.Reponse_question_qcm')->get();
 
-        $qcm = Qcm::where('id_chapitre', $formation->id_chapitre)->first();
-
+        $qcm = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->first();
+    
         $scoreCount = Score_qcm::where('qcm_id', $qcm->id)->count();
-
+       
         $score = null;
 
         if ($scoreCount == 1) {
