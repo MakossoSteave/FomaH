@@ -60,76 +60,29 @@
                 </ul>
             </aside>
         </div>
-        <div class="column is-9">
+    <div class="column is-9">
         <div class="content is-medium">
-        @foreach($qcms as $qcm)
-        <h1 class="has-text-centered">QCM - {{$qcm->designation}}</h1>
-        @endforeach
-        @if($score != null)
-        <h3 class="has-text-centered">Votre résultat</h2>
-        <span class="percentage mb-4">{{$score->resultat}}% de réussite</span>
-        <progress class="progress is-success" value="{{$score->resultat}}" max="100"></progress>
-        <form action="{{ url('intranet/next') }}" method="POST">
-        @csrf
-
-        <input type="hidden" name="id_chapitre" value="{{$formation->id_chapitre}}">
-        <input type="hidden" name="id_cours" value="{{$formation->id_cours}}">
-        @foreach($qcms as $qcm)
-        <input type="hidden" name="qcm_id" value="{{$qcm->id}}">
-            @foreach($qcm->question_qcm as $key => $question)
-                <div class="box mt-4">
-                    <h4 id="const" class="title is-3 has-text-centered">{{$question->question}}</h4>
-                        @if(!empty($question->explication))
-                        <article class="message is-primary">
-                            <span class="icon has-text-primary">
-                            </span>
-                            <div class="message-body">
-                            {{$question->explication}}
-                            </div>
-                        </article>
-                        @endif
-                    </div>
-                    @foreach($question->reponse_question_qcm as $reponse)
-                    <div class="ml-6 mr-6">
-                        <table class="table">
-                            <tr>
-                                <td class="{{ $reponse->validation == 1 ? 'is-selected' : '' }} reponseCss">{{$reponse->reponse}}</td>
-                            </tr>
-                        </table>
-                    </div>
+            <h1 class="has-text-centered">Projet</h1>
+            @foreach($projets as $projet)
+            <div class="box mt-4">
+                    <article class="message is-primary">
+                        <span class="icon has-text-primary">
+                        </span>
+                        <div class="message-body">
+                        {{$projet->description}}
+                        </div>
+                    </article>
+                    @if(!empty($projet->document))
+                    @foreach($projet->document as $document)
+                        <embed class="docSize mt-4" src="{{ URL::asset('/') }}doc/projet/{{$document->lien}}" alt="Placeholder image">
                     @endforeach
+                    @endif
+            </div>
             @endforeach
-        @endforeach
-    </div>
-    <div class="buttons paginate">
-        <button class="button is-success sizeButton">Continuer</button>
-    </div>
-    </form>
-        @else
-        <form action="{{ url('intranet/score') }}" method="POST">
-        @csrf
-
-        @foreach($qcms as $qcm)
-        <input type="hidden" name="qcm_id" value="{{$qcm->id}}">
-        <h3 class="title is-3">{{$qcm->designation}}</h3>
-            @foreach($qcm->question_qcm as $key => $question)
-                <div class="box mt-4">
-                    <h4 id="const" class="title is-3 has-text-centered">{{$question->question}}</h4>
-                    </div>
-                    @foreach($question->reponse_question_qcm as $reponse)
-                    <div class="ml-6">
-                        {{ Form::radio('reponseNameRadio['.$key.']', $reponse->validation) }}
-                        <label for="{{$reponse->reponse}}">{{$reponse->reponse}}</label>
-                    </div>
-                    @endforeach
-            @endforeach
-        @endforeach
-    </div>
-    <div class="buttons paginate">
-        <button class="button is-success sizeButton">Confirmer</button>
-    </div>
-    </form>
-    @endif
+        </div>
+        <footer class="buttons paginate" class="mb-4">
+            <a href="{{ url('intranet/cours') }}" class="button is-success sizeButton">Passer au cours suivant</a>
+        </footer>
     </div>
 </div>
 </div>

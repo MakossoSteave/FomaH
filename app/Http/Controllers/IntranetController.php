@@ -11,6 +11,7 @@ use App\Models\Qcm;
 use App\Models\Score_qcm;
 use App\Models\Exercice;
 use App\Models\Chapitre;
+use App\Models\Projet;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -109,17 +110,81 @@ class IntranetController extends Controller
 
         $exercices = Exercice::where('id_chapitre', $formation->id_chapitre)->with('Questions_exercice.Questions_correction')->get();
 
-        return view('stagiaire.intranet.exercices.index', compact(['chapitre'], ['cours'], ['exercices']));
+        $qcm = Qcm::where('id_chapitre', $formation->id_chapitre)->first();
+
+        $scoreCount = Score_qcm::where('qcm_id', $qcm->id)->count();
+
+        $chapitreMax = Chapitre::where('id_cours', $formation->id_cours)->max('numero_chapitre');
+
+        if ($scoreCount == 1) {
+            $numeroChapitre = $chapitre->numero_chapitre+1;
+
+            $nextChapitre = Chapitre::where([
+                'id_cours' => $formation->id_cours,
+                'numero_chapitre' => $numeroChapitre
+            ])->first();
+    
+            Suivre_formation::where('id_stagiaire', $stagiaire->id)->update([
+                'id_chapitre' => $nextChapitre->id_chapitre
+            ]);
+    
+            return view('stagiaire.intranet.exercices.index', compact(['chapitre'], ['cours'], ['exercices']));
+        }  else if($chapitreMax == $chapitre->numero_chapitre) {
+            return redirect('intranet/projet');
+        } else {
+
+            return redirect('/intranet/cours');
+        }
     }
 
     public function next(Request $request) {
-
         $exerciceCount = Exercice::where('id_chapitre', $request->get('id_chapitre'))->count();
+
+        $stagiaire = Stagiaire::where('user_id', Auth::user()->id)->first();
+
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+        $chapitre = Chapitre::where('id_chapitre', $formation->id_chapitre)->first();
+
+        $chapitreMax = Chapitre::where('id_cours', $formation->id_cours)->max('numero_chapitre');
 
         if($exerciceCount >= 1) {
             return redirect('/intranet/exercice');
-        }
+        } else if($chapitreMax == $chapitre->numero_chapitre) {
+            return redirect('/intranet/projet');
+        } else {
 
-        return redirect('/intranet/cours');
+            $numeroChapitre = $chapitre->numero_chapitre+1;
+
+            $nextChapitre = Chapitre::where([
+                'id_cours' => $formation->id_cours,
+                'numero_chapitre' => $numeroChapitre
+            ])->first();
+
+            Suivre_formation::where('id_stagiaire', $stagiaire->id)->update([
+                'id_chapitre' => $nextChapitre->id_chapitre
+            ]);
+    
+            return redirect('/intranet/cours');
+        }
+    }
+
+    public function projet(Request $request) {
+
+        $stagiaire = Stagiaire::where('user_id', Auth::user()->id)->first();
+
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+        $cours = Cours::where('id_cours', $formation->id_cours)->first();
+
+        $projetCount = Projet::where('id_cours', $formation->id_cours)->count();
+
+        if ($projetCount == 1) {
+            $projets = Projet::where('id_cours', $formation->id_cours)->with('Document')->get();
+
+            return view('stagiaire.intranet.projet.index', compact(['projets'],['cours'],['formation']));
+        } else {
+            return redirect('/intranet/cours');
+        }
     }
 }

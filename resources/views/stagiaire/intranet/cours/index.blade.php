@@ -85,9 +85,8 @@
             @endforeach
         @endforeach
     </div>
-    <footer class="paginate" class="mb-4">
-        <a class="page pagination-previous">Précédent</a>
-        <a href="{{ url('intranet/qcm') }}" class="page pagination-next">Suivant</a>
+    <footer class="buttons paginate" class="mb-4">
+        <a href="{{ url('intranet/qcm') }}" class="button is-success sizeButton">Faire le QCM</a>
     </footer>
     </div>
 </div>

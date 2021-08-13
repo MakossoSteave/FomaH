@@ -2,7 +2,6 @@
 
 @section('content')
 @if(Auth::user())
-{{--dd($exercices)--}}
 <section class="hero is-info">
     <div class="hero-body">
         <div class="columns">
@@ -91,6 +90,9 @@
                 @endforeach
             @endforeach
         </div>
+        <footer class="buttons paginate" class="mb-4">
+            <a href="{{ url('intranet/cours') }}" class="button is-success sizeButton">Passer au cours suivant</a>
+        </footer>
     </div>
 </div>
 </div>
