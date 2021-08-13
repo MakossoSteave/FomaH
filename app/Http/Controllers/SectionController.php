@@ -37,7 +37,7 @@ class SectionController extends Controller
              
                 return $query->where('id_chapitre', $request->get('id_chapitre'));})] ,
          'contenu' => ['required','max:5000'],
-         'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF,jpg ','max:10000',
+         'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF ','max:10000',
          new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 
@@ -91,7 +91,7 @@ class SectionController extends Controller
             'etat' => [
                 'required',
                  Rule::in(['0', '1'])],
-                 'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF,jpg ','max:10000',
+                 'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF ','max:10000',
                  new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
     

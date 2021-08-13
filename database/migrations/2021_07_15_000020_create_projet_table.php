@@ -16,7 +16,7 @@ class CreateProjetTable extends Migration
         Schema::create('projets', function (Blueprint $table) {
             $table->engine='InnoDB';
             $table->id();
-            $table->string('description');
+            $table->string('description', 5000);
             $table->boolean('etat');
             $table->bigInteger('formateur_id')->unsigned()->index();
             $table->foreign('formateur_id')->references('id')->on('formateurs')->onDelete('cascade');

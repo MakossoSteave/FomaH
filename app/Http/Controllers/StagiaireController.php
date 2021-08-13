@@ -109,7 +109,7 @@ class StagiaireController extends Controller
                 ,'in:'.$request->session()->get('organisations')->implode('id', ', ')],
                 'motdepasse' => ['required','string', 'min:8', 'confirmed'],
                 'motdepasse_confirmation' => ['required','string', 'min:8'], 
-                'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF,jpg','max:10000',
+                'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF','max:10000',
                         new FilenameImage('/[\w\W]{4,181}$/')]
             ]);
             if( (($request->get('typeInscription')==2) && (!empty($request->get('centre_id')))) || (($request->get('typeInscription')==3) && (!empty($request->get('organisation_id')))) ){
@@ -226,7 +226,7 @@ class StagiaireController extends Controller
                     'in:'.$request->session()->get('typeInscriptions')->implode('id', ', ')],
                     'organisation_id' => ['nullable','numeric'
                     ,'in:'.$request->session()->get('organisations')->implode('id', ', ')],
-                    'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF,jpg','max:10000',
+                    'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF','max:10000',
                             new FilenameImage('/[\w\W]{4,181}$/')]
                 ]);
                 if( (($request->get('typeInscription')==2) && (!empty($request->get('centre_id')))) || (($request->get('typeInscription')==3) && (!empty($request->get('organisation_id')))) ){

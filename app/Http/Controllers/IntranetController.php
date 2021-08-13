@@ -133,7 +133,7 @@ class IntranetController extends Controller
 
         $chapitreMax = Chapitre::where('id_cours', $formation->id_cours)->max('numero_chapitre');
 
-        if ($scoreCount == 1) {
+        if ($scoreCount == 1 && $chapitreMax != $chapitre->numero_chapitre) {
             $numeroChapitre = $chapitre->numero_chapitre+1;
 
             $nextChapitre = Chapitre::where([

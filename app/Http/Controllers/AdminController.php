@@ -60,7 +60,7 @@ class AdminController extends Controller
                     'nom' => ['required','string','max:191'],
                     'motdepasse' => ['string', 'min:8', 'confirmed'],
                     'motdepasse_confirmation' => ['required','string', 'min:8'],
-                    'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF,jpg','max:10000',
+                    'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF','max:10000',
                             new FilenameImage('/[\w\W]{4,181}$/')]
                 ]);
               
@@ -125,7 +125,7 @@ class AdminController extends Controller
                     'nom' => ['required','string','max:191'],
                     'role' => ['required','numeric',
                     'in:'.$request->session()->get('roles')->implode('id', ', ')],
-                    'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF,jpg','max:10000',
+                    'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF','max:10000',
                             new FilenameImage('/[\w\W]{4,181}$/')]
                 ]);
               

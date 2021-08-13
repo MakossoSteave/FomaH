@@ -46,7 +46,7 @@ class ChapitreController extends Controller
           'video' => ['required','mimes:mp4,mov,ogg,qt ','max:2097152',
       
           new FilenameVideo('/[\w\W]{4,181}$/')],
-          'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF,jpg','max:10000',
+          'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF','max:10000',
           new FilenameImage('/[\w\W]{4,181}$/')],
           'etat' => [
               'required',
@@ -103,7 +103,7 @@ class ChapitreController extends Controller
                         
                     //         return $query->where('id_chapitre', $request->get('id_chapitre'));})] ,
                     // 'contenu' => ['required','max:5000'],
-                    // 'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF,jpg ','max:10000',
+                    // 'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF ','max:10000',
                     // new FilenameImage('/[\w\W]{4,181}$/')]
                     // ]);
                     // $request->validate([
@@ -172,7 +172,7 @@ class ChapitreController extends Controller
                  Rule::in(['0', '1'])],
                  'video' => ['mimes:mp4,mov,ogg,qt ','max:2097152',
                  new FilenameVideo('/[\w\W]{4,181}$/')],
-                 'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF,jpg ','max:10000',
+                 'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF ','max:10000',
                  new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 
@@ -246,7 +246,7 @@ class ChapitreController extends Controller
             //     'etat' => [
             //         'required',
             //          Rule::in(['0', '1'])],
-            //          'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF,jpg ','max:10000',
+            //          'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF ','max:10000',
             //          new FilenameImage('/[\w\W]{4,181}$/')]
             // ]);
         
@@ -279,7 +279,7 @@ class ChapitreController extends Controller
                     
                 //         return $query->where('id_chapitre', $request->get('id_chapitre'));})] ,
                 // 'contenu' => ['required','max:5000'],
-                // 'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,GIF,jpg ','max:10000',
+                // 'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF ','max:10000',
                 // new FilenameImage('/[\w\W]{4,181}$/')]
                 // ]);
                 // $request->validate([
