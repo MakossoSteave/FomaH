@@ -12,6 +12,7 @@ use App\Models\Score_qcm;
 use App\Models\Exercice;
 use App\Models\Chapitre;
 use App\Models\Projet;
+use App\Models\Session;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,9 +20,14 @@ use Illuminate\Support\Facades\Auth;
 class IntranetController extends Controller
 {
     public function index(){
+        // var_dump(date('Y-m-d'));
+        
         $idUserAuth=null;
+
         if(Auth::user())
+
         $idUserAuth=Auth::user()->id;
+
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
         
         $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
@@ -39,8 +45,11 @@ class IntranetController extends Controller
 
     public function chapitre() {
         $idUserAuth=null;
+
         if(Auth::user())
+
         $idUserAuth=Auth::user()->id;
+
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
         
         $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
@@ -57,8 +66,11 @@ class IntranetController extends Controller
 
     public function qcm() {
         $idUserAuth=null;
+
         if(Auth::user())
+
         $idUserAuth=Auth::user()->id;
+
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
         
         $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
@@ -82,8 +94,11 @@ class IntranetController extends Controller
 
     public function score(Request $request) {
         $idUserAuth=null;
+
         if(Auth::user())
+
         $idUserAuth=Auth::user()->id;
+
         $resultat = 0;
 
         for ($idRadio=0; $idRadio < count($request->get('reponseNameRadio')); $idRadio++) { 
@@ -111,8 +126,11 @@ class IntranetController extends Controller
 
     public function exercice() {
         $idUserAuth=null;
+
         if(Auth::user())
+
         $idUserAuth=Auth::user()->id;
+
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
         $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
@@ -127,9 +145,31 @@ class IntranetController extends Controller
 
         $scoreCount = Score_qcm::where('qcm_id', $qcm->id)->count();
 
+        if ($scoreCount == 1) {
+    
+            return view('stagiaire.intranet.exercices.index', compact(['chapitre'], ['cours'], ['exercices']));
+        } else {
+
+            return redirect('/intranet/chapitre');
+        }
+    }
+
+    public function nextIfExercice(Request $request) {
+        $idUserAuth=null;
+
+        if(Auth::user())
+
+        $idUserAuth=Auth::user()->id;
+
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+        $chapitre = Chapitre::where('id_chapitre', $formation->id_chapitre)->first();
+
         $chapitreMax = Chapitre::where('id_cours', $formation->id_cours)->max('numero_chapitre');
 
-        if ($scoreCount == 1 && $chapitreMax != $chapitre->numero_chapitre) {
+        if ($chapitreMax != $chapitre->numero_chapitre) {
             $numeroChapitre = $chapitre->numero_chapitre+1;
 
             $nextChapitre = Chapitre::where([
@@ -141,19 +181,20 @@ class IntranetController extends Controller
                 'id_chapitre' => $nextChapitre->id_chapitre
             ]);
     
-            return view('stagiaire.intranet.exercices.index', compact(['chapitre'], ['cours'], ['exercices']));
-        }  else if($chapitreMax == $chapitre->numero_chapitre) {
-            return redirect('intranet/projet');
-        } else {
-
             return redirect('/intranet/chapitre');
+        }  else if($chapitreMax == $chapitre->numero_chapitre) {
+
+            return redirect('/intranet/projet');
         }
     }
 
     public function next(Request $request) {
         $idUserAuth=null;
+
         if(Auth::user())
+
         $idUserAuth=Auth::user()->id;
+
         $exerciceCount = Exercice::where('id_chapitre', $request->get('id_chapitre'))->count();
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
@@ -187,7 +228,9 @@ class IntranetController extends Controller
 
     public function projet(Request $request) {
         $idUserAuth=null;
+
         if(Auth::user())
+
         $idUserAuth=Auth::user()->id;
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 

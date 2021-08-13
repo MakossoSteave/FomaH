@@ -64,6 +64,10 @@
                             @csrf
                             <button type="submit" class="dropdown-item">Chapitres</button>
                         </form>
+
+                        <a href="{{ route('projet', $cour->id_cours) }}" class="dropdown-item">
+                            Projets
+                        </a>
                         </div>
                     </div>
                 </div>

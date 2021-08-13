@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\FormationsContenirCours;
 use App\Models\Categorie;
 use App\Models\Formation;
+use App\Models\Formateur;
 use App\Models\Cours;
 use Illuminate\Validation\Rule;
 use App\Rules\FilenameImage;
@@ -201,7 +202,9 @@ class FormationAdminController extends Controller
     {
         $formations = Formation::orderBy('libelle','asc')->get();
 
-       return view('admin.cours.create', compact(['formations'], 'id'));
+        $formateurs = Formateur::orderBy('nom','asc')->get();
+
+        return view('admin.cours.create', compact(['formations'], ['formateurs'], 'id'));
     }
 
     public function Update_nombre_cours_total($id,$operation)
