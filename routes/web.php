@@ -80,6 +80,7 @@ Route::get('/addCategorie', [App\Http\Controllers\CategorieController::class, 'c
 Route::get('/qcm/{id}', [App\Http\Controllers\QcmController::class, 'index'])->name('qcmChapitre');
 Route::get('/addQcm/{id}', [App\Http\Controllers\QcmController::class, 'create'])->name('addQcm');
 Route::delete('/deleteQuestion/{id}', [App\Http\Controllers\QcmController::class, 'deleteQuestion'])->name('deleteQuestion');
+Route::get('/etatQCM/{id}', [App\Http\Controllers\QcmController::class, 'etat'])->name('etatQCM');
 
 Route::get('/session', [App\Http\Controllers\SessionController::class, 'index'])->name('session');
 Route::get('/addSession', [App\Http\Controllers\SessionController::class, 'create'])->name('addSession');

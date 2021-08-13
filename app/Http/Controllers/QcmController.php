@@ -209,4 +209,12 @@ class QcmController extends Controller
 
         return redirect()->back()->with('success','QCM supprimé avec succès');
     }
+
+    public function etat($id)
+    {
+        $qcm = QCM::find($id);
+        $etat = !$qcm->etat;
+        QCM::where('id',$id)->update(['etat'=>$etat]);
+        return redirect()->back()->with('success','Modifié avec succès');
+    }
 }
