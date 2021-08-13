@@ -113,6 +113,7 @@ Route::get('/intranet/exercice', [App\Http\Controllers\IntranetController::class
 Route::post('/intranet/score', [App\Http\Controllers\IntranetController::class, 'score'])->name('scoreIntranet');
 Route::post('/intranet/next', [App\Http\Controllers\IntranetController::class, 'next'])->name('nextIntranet');
 Route::get('/intranet/projet', [App\Http\Controllers\IntranetController::class, 'projet'])->name('projetIntranet');
+Route::post('/intranet/preIndex', [App\Http\Controllers\IntranetController::class, 'preIndex'])->name('preIndexIntranet');
 
 Route::resource('intranet','App\Http\Controllers\IntranetController');
 Route::resource('exercice','App\Http\Controllers\ExerciceController');
