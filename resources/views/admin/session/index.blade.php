@@ -32,8 +32,8 @@
         <div class="card-content">
             <div class="media">
             <div class="media-content">
-                <p class="title is-4">{{$session->date_debut}}</p>
-                <p class="subtitle is-6">{{$session->date_fin}}</p>
+                <p class="title is-4">{{date('d-m-Y', strtotime($session->date_debut))}}</p>
+                <p class="subtitle is-6">{{date('d-m-Y', strtotime($session->date_fin))}}</p>
             </div>
         </div>
 
@@ -60,11 +60,11 @@
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
                                     <header class="modal-card-head">
-                                    <p class="modal-card-title">Suppression de la session du {{$session->date_debut}}</p>
+                                    <p class="modal-card-title">Suppression de la session du {{date('d-m-Y', strtotime($session->date_debut))}}</p>
                                     <button class="delete" aria-label="close"></button>
                                     </header>
                                     <section class="modal-card-body">
-                                        Souhaitez-vous supprimer la session du {{$session->date_debut}} au {{$session->date_fin}} ?
+                                        Souhaitez-vous supprimer la session du {{date('d-m-Y', strtotime($session->date_debut))}} au {{date('d-m-Y', strtotime($session->date_fin))}} ?
                                     </section>
                                     <form action="{{ route('session.destroy', $session->id) }}" method="POST">
                                     @csrf

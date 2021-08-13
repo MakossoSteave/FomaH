@@ -77,7 +77,7 @@
                     @endif
             </div>
                 @foreach($exercice->questions_exercice as $question)
-                <p>{{$question->question}}</p>
+                <p class="mt-4">{{$question->question}}</p>
                     <button class="button is-link is-outlined correctionShow mb-4" id="{{$question->id}}">Voir la correction</button>
                     <div id="correctionToggle{{$question->id}}" style="display: none;">
                     @foreach($question->questions_correction as $correction)
@@ -91,7 +91,11 @@
             @endforeach
         </div>
         <footer class="buttons paginate" class="mb-4">
-            <a href="{{ url('intranet/chapitre') }}" class="button is-success sizeButton">Passer au chapitre suivant</a>
+            <form action="{{ url('intranet/nextIfExercice') }}" method="POST">
+            @csrf
+
+                <button class="button is-success sizeButton">Passer au chapitre suivant</button>
+            </form>
         </footer>
     </div>
 </div>

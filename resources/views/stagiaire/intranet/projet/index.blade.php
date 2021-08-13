@@ -81,7 +81,7 @@
             @endforeach
         </div>
         <footer class="buttons paginate" class="mb-4">
-            <a href="{{-- url('intranet/cours') --}}" class="button is-success sizeButton">Passer au cours suivant</a>
+            <a href="{{-- url('intranet/faireProjet') --}}" class="button is-success sizeButton">Soumettre mon projet</a>
         </footer>
     </div>
 </div>
