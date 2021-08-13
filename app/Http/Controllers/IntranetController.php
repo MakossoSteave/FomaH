@@ -34,7 +34,7 @@ class IntranetController extends Controller
         return view('stagiaire.intranet.index', compact(['sommaire'], ['formationName']));
     }
 
-    public function cours() {
+    public function chapitre() {
         $stagiaire = Stagiaire::where('user_id', Auth::user()->id)->first();
         
         $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
@@ -133,7 +133,7 @@ class IntranetController extends Controller
             return redirect('intranet/projet');
         } else {
 
-            return redirect('/intranet/cours');
+            return redirect('/intranet/chapitre');
         }
     }
 
@@ -165,7 +165,7 @@ class IntranetController extends Controller
                 'id_chapitre' => $nextChapitre->id_chapitre
             ]);
     
-            return redirect('/intranet/cours');
+            return redirect('/intranet/chapitre');
         }
     }
 
@@ -184,7 +184,7 @@ class IntranetController extends Controller
 
             return view('stagiaire.intranet.projet.index', compact(['projets'],['cours'],['formation']));
         } else {
-            return redirect('/intranet/cours');
+            return redirect('/intranet/chapitre');
         }
     }
 }

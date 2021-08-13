@@ -53,7 +53,7 @@
                     Navigation
                 </p>
                 <ul class="menu-list">
-                    <li><a href="{{ url('intranet/cours') }}">Cours</a></li>
+                    <li><a href="{{ url('intranet/chapitre') }}">Cours</a></li>
                     <li><a>Exercices</a></li>
                     <li><a>Lives</a></li>
                     <li><a>Aide</a></li>
