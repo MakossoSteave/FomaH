@@ -16,7 +16,7 @@ class CreateExerciceTable extends Migration
         Schema::create('exercices', function (Blueprint $table) {
             $table->engine='InnoDB';
             $table->id();;
-            $table->string('enonce');
+            $table->string('enonce', 1000);
             $table->string('image')->nullable();
             $table->boolean('etat');
             $table->bigInteger('id_chapitre')->unsigned()->index();

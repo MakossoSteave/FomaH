@@ -102,6 +102,7 @@ Route::get('/stagiaires', [App\Http\Controllers\StagiaireController::class, 'sta
 Route::get('/addStagiaire', [App\Http\Controllers\StagiaireController::class, 'create'])->name('addStagiaire');
 
 Route::get('/intranet/chapitre', [App\Http\Controllers\IntranetController::class, 'chapitre'])->name('chapitre');
+Route::post('/intranet/cours', [App\Http\Controllers\IntranetController::class, 'cours'])->name('cours');
 Route::get('/intranet/qcm', [App\Http\Controllers\IntranetController::class, 'qcm'])->name('qcm');
 Route::get('/intranet/exercice', [App\Http\Controllers\IntranetController::class, 'exercice'])->name('exercice');
 Route::post('/intranet/score', [App\Http\Controllers\IntranetController::class, 'score'])->name('score');
