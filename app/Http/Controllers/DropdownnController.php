@@ -17,6 +17,7 @@ class DropdownnController extends Controller
  $matieres = DB::table("matieres")
  ->where("categorie_id",$request->categorie_id)
  ->pluck("designation_matiere","id");
+
  return response()->json($matieres);
  }
  

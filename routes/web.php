@@ -43,23 +43,10 @@ Route::get('parametre/{id}', [
     'uses' => 'App\Http\Controllers\parametreController@show'
 ]);
 
-Route::get('dropdownn/{id}', [
-    'as' => 'dropdownn',
-    'uses' => 'App\Http\Controllers\DropdownnController@index',
-]);
-/*
-Route::get('dropdownn/{id}{autre}', [
-    'as' => 'dropdownn',
-    'uses' => 'App\Http\Controllers\DropdownnController@index',
-]);
-*/
-use App\Http\Controllers\DropdownnController;
-//Route::get('dropdown/{id}',[DropdownController::class, 'index']);
-Route::get('getMatiere',[DropdownnController::class, 'getMatiere'])->name('getMatiere');
-Route::get('getSousMatiere',[DropdownnController::class, 'getSousMatiere'])->name('getSousMatiere');
 
-
-
+Route::get('dropdownn/{id}',[App\Http\Controllers\DropdownnController::class, 'index'])->name('dropdownn');
+Route::get('getMatiere',[App\Http\Controllers\DropdownnController::class, 'getMatiere'])->name('getMatiere');
+Route::get('getSousMatiere',[App\Http\Controllers\DropdownnController::class, 'getSousMatiere'])->name('getSousMatiere');
 
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
@@ -127,6 +114,7 @@ Route::resource('qcm','App\Http\Controllers\QcmController');
 
 Route::resource('categorie','App\Http\Controllers\CategorieController');
 Route::resource('matiere','App\Http\Controllers\MatiereController');
+Route::resource('sousmatiere','App\Http\Controllers\SousMatiereController');
 
 Route::resource('section','App\Http\Controllers\SectionController');
 Route::resource('cursus','App\Http\Controllers\FormationAdminController');
@@ -135,10 +123,6 @@ Route::resource('chapitre','App\Http\Controllers\ChapitreController');
 Route::resource('centre','App\Http\Controllers\FormationController');
 Route::resource('stagiaire','App\Http\Controllers\StagiaireController');
 Route::resource('competence','App\Http\Controllers\CompetenceController');
-
-
-
-
 Route::resource('parametre','App\Http\Controllers\parametreController');
 
 
@@ -146,3 +130,6 @@ Route::get('/addMatiere', [App\Http\Controllers\MatiereController::class, 'creat
 Route::get('/categoriematiere', [App\Http\Controllers\MatiereController::class, 'categoriematiere'])->name('categoriematiere');
 Route::get('/listematiere', [App\Http\Controllers\MatiereController::class, 'index'])->name('listematiere');
 //Route::get('/matiere/{id}', [App\Http\Controllers\MatiereController::class, 'index'])->name('suitemodification');
+
+
+Route::get('/categoriematiereetsous', [App\Http\Controllers\SousMatiereController::class, 'categoriematiereetsous'])->name('categoriematiereetsous');

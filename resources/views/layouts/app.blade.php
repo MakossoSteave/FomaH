@@ -179,9 +179,10 @@
                     <a class="navbar-item" href="{{ url('categoriematiere')}}">
                         Matière           
                     </a>
-                    <a class="navbar-item">
+                    <a class="navbar-item" href="{{ url('categoriematiereetsous')}}">
                         Sous-Matière           
                     </a>
+                    
 
                     </div>
                 </div>

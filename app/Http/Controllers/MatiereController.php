@@ -115,7 +115,8 @@ class MatiereController extends Controller
     {
 
         Matiere::where('id',$id)->delete();
-        return redirect()->back()->with('success','Matiere supprimée avec succès');
+
+        return redirect()->back()->with('success','Matière supprimée avec succès');
     }
 }
 

@@ -10,7 +10,7 @@
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
         <a href="{{ route('addMatiere') }}" class="has-icons-right" id="link-black">
-            Ajouter une matière      matiere.index.blade
+            Ajouter une sous matière      sous_matiere.index.blade
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
     </div>
@@ -20,50 +20,53 @@
             {{ session('success') }}
         </div>
     @endif
-    @if($matieres->isEmpty())
+    @if($sousmatieres->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
             Aucune matiere n'existe
         </div>
     @else
 
-    @foreach ($matieres as $matiere)
+    @foreach ($sousmatieres as $sousmatiere)
     <div class="card my-6 hauteur50" >
         <div class="card-content"  >
             <div class="media">
             <div class="media-content">
                 <div class="flex">
-                    <p class="title is-4 position13" >{{$matiere->designation_matiere}}</p>
+                    <p class="title is-4 position13" >{{$sousmatiere->designation_sous_matiere}}</p>
                 </div>
             </div>
         </div>
-
             <div class="content">
                 <div class="flex">
                     <div>
                     </div>
                     <div class="flex-bottom">
-                              <!-- action=" route('categorie.edit', $categorie->id) " method="GET" -->      
-                        <form action="{{ route('matiere.edit', $matiere->id) }}" method="GET">
+                              <!-- action=" route('categorie.edit', $categorie->id) " method="GET" -->  
+                        <!-- -->
+                        <form action="{{ route('sousmatiere.edit', $sousmatiere->id) }}" method="GET">
                             @csrf
+
                             <button type="submit" class="button button-card is-info position57">Modifier</button>
                         </form>
                             <p>
-                                <a class = "button is-danger button-card modal-button position57" data-target = "#{{$matiere->id}}">Supprimer</a>
+                                <a class = "button is-danger button-card modal-button position57" data-target = "#{{$sousmatiere->id}}">Supprimer</a>
                             </p>
-                            <div id="{{$matiere->id}}" class="modal">
+                            <div id="{{$sousmatiere->id}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
                                     <header class="modal-card-head">
-                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$matiere->designation_matiere}}</p>
+                                    
                                     <button class="delete" aria-label="close"></button>
                                     </header>
                                     <section class="modal-card-body">
-                                        Souhaitez-vous supprimer la catégorie {{$matiere->designation_matiere}} ?
+                                        Souhaitez-vous supprimer la matière {{$sousmatiere->designation_sous_matiere}} ?
                                     </section>
-                                    <form action="{{ route('matiere.destroy', $matiere->id) }}" method="POST">
+                                    <!-- -->
+                                    <form action="{{ route('sousmatiere.destroy', $sousmatiere->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <input type="hidden" name="categorie_id" value="{{$matiere->categorie_id}}"/>
+
+                                    <input type="hidden" name="categorie_id" value="{{$sousmatiere->id}}"/>
                                     <footer class="modal-card-foot">
                                     <button class="button is-success">Confirmer</button>
                                     </footer>
