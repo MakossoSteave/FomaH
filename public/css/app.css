@@ -51,6 +51,10 @@
     border-radius: 290486px;
 }
 
+.qcmButton {
+    width: 15em;
+}
+
 .button.is-focused:not(:active), .button:focus:not(:active) {
     outline: 0;
     box-shadow: none;

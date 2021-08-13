@@ -76,22 +76,7 @@
             <div class="column is-one-fifth ml-4 mt-4">
                 <aside class="menu">
                     <p class="menu-label">
-                        General
-                    </p>
-                    <ul class="menu-list">
-                        <li><a>Tableau de bord
-                            </a></li>
-                    </ul>
-                    <p class="menu-label">
-                        Administration
-                    </p>
-                    <ul class="menu-list">
-                        <li><a>Parametre</a></li>
-
-
-                    </ul>
-                    <p class="menu-label">
-                        Categories
+                        Navigation
                     </p>
                     <ul class="menu-list">
                         <li><a href="{{ url('intranet/cours') }}">Cours</a></li>
