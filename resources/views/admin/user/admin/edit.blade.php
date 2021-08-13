@@ -20,32 +20,21 @@
             {{ session('error') }}
         </div>
     @endif
-    <h2 class="title is-2 has-text-centered mt-6">Ajouter un stagiaire</h2>
-    <form action="{{ route('stagiaire.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
+    <h2 class="title is-2 has-text-centered mt-6">Modifier un administrateur</h2>
+    <form action="{{ route('admin.update',$user->id) }}" method="POST" enctype="multipart/form-data" class="mt-6">
         @csrf
+        @method('PUT')
 
         <div class="field">
             <label class="label">Nom</label>
                 <div class="control">
-                    <input name="nom" class="input" type="text" placeholder="Nom du stagiaire">
-                </div>
-        </div>
-        <div class="field">
-            <label class="label">Prénom</label>
-                <div class="control">
-                    <input name="prenom" class="input" type="text" placeholder="Prénom du stagiaire">
+                    <input name="nom" class="input" type="text" placeholder="Nom de l'administrateur" value="{{$user->name}}">
                 </div>
         </div>
         <div class="field">
             <label class="label">Email</label>
                 <div class="control">
-                    <input name="email" class="input" type="text" placeholder="Email du stagiaire">
-                </div>
-        </div>
-        <div class="field">
-            <label class="label">Téléphone</label>
-                <div class="control">
-                    <input name="telephone" class="input" type="text" placeholder="Téléphone du stagiaire">
+                    <input name="email" class="input" type="text" placeholder="Email de l'administrateur" value="{{$user->email}}">
                 </div>
         </div>
         <div class="field">
@@ -77,72 +66,42 @@
                 }
                 </script>
         </div>
+        @if($user->role_id==1 || $user->role_id==4 )
         <div class="field">
-            <label class="label">Type d'inscriptions</label>
+            <label class="label">Role</label>
                 <div class="control">
                     <div class="select">
-                    <select id="selectTypeInscription" name="typeInscription">
-                        @foreach ($typeInscriptions as $typeInscription)
-                            <option value="{{$typeInscription->id}}">{{$typeInscription->type}}</option>
+                    <select name="role">
+                    
+                        @foreach ($roles as $role)
+                            <option value="{{$role->id}}"  
+                                @if($role->id==$user->role_id)selected @endif>{{$role->type}}</option>
                         @endforeach
                     </select>
                     </div>
                 </div>
         </div>
-        <div class="field" id="selectOrganisation">
-            <label class="label">Organisations</label>
-                <div class="control">
-                    <div class="select">
-                    <select  name="organisation_id">
-                    <option value=""  selected>Aucune</option>
-                        @foreach ($organisations as $organisation)
-                            <option value="{{$organisation->id}}">{{$organisation->designation}}</option>
-                        @endforeach
-                    </select>
-                    </div>
-                </div>
-        </div>
-        
-        <div class="field" id="selectCentre">
-            <label class="label">Centre</label>
-                <div class="control">
-                    <div class="select">
-                    <select name="centre_id">
-                    <option value=""  selected>Aucun</option>
-                        @foreach ($centres as $centre)
-                            <option value="{{$centre->id}}">{{$centre->designation}}</option>
-                        @endforeach
-                    </select>
-                    </div>
-                </div>
-        </div>
-        <div class="field">
-            <label class="label">Coach</label>
-                <div class="control">
-                    <div class="select">
-                    <select name="formateur_id">
-                    <option value=""  selected>Aucun</option>
-                        @foreach ($formateurs as $formateur)
-                            <option value="{{$formateur->id}}">{{$formateur->prenom}} {{$formateur->nom}}</option>
-                        @endforeach
-                    </select>
-                    </div>
-                </div>
-        </div>
+        @endif
         <div class="field">
             <label class="label">Mot de passe</label>
                 <div class="control">
-                    <input name="motdepasse" class="input" type="password" placeholder="Mot de passe du stagiaire">
+                    <input name="Oldmotdepasse" class="input" type="password" placeholder="Mot de passe de l'administrateur">
+                </div>
+        </div>
+        <div class="field">
+            <label class="label">Nouveau mot de passe</label>
+                <div class="control">
+                    <input name="motdepasse" class="input" type="password" placeholder="Nouveau mot de passe de l'administrateur">
                 </div>
         </div>
         <div class="field">
             <label class="label">Confirmation du mot de passe</label>
                 <div class="control">
-                    <input name="motdepasse_confirmation" class="input" type="password" placeholder="Confirmation du mot de passe du stagiaire">
+                    <input name="motdepasse_confirmation" class="input" type="password" placeholder="Confirmation du mot de passe de l'administrateur">
                 </div>
         </div>
             <div class="control mt-4 mb-4">
-                <button type="submit" class="button is-fullwidth is-link is-rounded">Créer</button>
+                <button type="submit" class="button is-fullwidth is-link is-rounded">Modifier</button>
             </div>
         </div>
     </form>
@@ -159,7 +118,7 @@ Votre session a expiré !
                          @if(Auth::user() && Auth::user()->role_id==2)
                         <a href="/centre">
                         @elseif(Auth::user() && Auth::user()->role_id==3)
-                        <a href="/stagiaire">
+                        <a href="/user">
                         @elseif(Auth::user() && Auth::user()->role_id==4)
                         <a href="/formateur">
                         @elseif(Auth::user() && Auth::user()->role_id==5)

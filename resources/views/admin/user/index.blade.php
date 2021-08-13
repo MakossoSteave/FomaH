@@ -4,17 +4,13 @@
 @if(Auth::user() && Auth::user()->role_id==1)
 
 <div class="container">
-    <div class="flex mt-4">
+<div class="flex mt-4">
         <p class="control has-icons-right">
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-        <a href="{{ url('addCours')}}" class="has-icons-right" id="link-black">
-            Ajouter un cours
-            <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
-        </a>
+       
     </div>
-    
     @if (session('success'))
         <div class="notification is-success has-text-centered my-4">
             {{ session('success') }}
@@ -28,55 +24,32 @@
         </div>
     @endif
 
-    @if($cours->isEmpty())
+    @if($users->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
-            Aucun cours n'existe pour cette formation
+            Aucun utilisateur n'existe
         </div>
     @else
 
   
 
-    @foreach ($cours as $cour)
+    @foreach ($users as $user)
     <div class="card my-6">
         <div class="card-content">
             <div class="media">
-            @if(! empty($cour->image))
+            @if(! empty($user->image))
             <div class="media-left">
-                <img class="image is-4by3" src="{{ URL::asset('/') }}img/cours/{{$cour->image}}" alt="Placeholder image">
+            <figure class="image is-96x96 containerProfil">
+                <img class="image is-rounded" src="{{ URL::asset('/') }}img/user/{{$user->image}}" alt="Placeholder image">
+            </figure>
             </div>
             @endif
             
             <div class="media-content">
                 <div class="flex">
             <div>
-                <p class="title is-4">{{$cour->designation}}</p>
+              
             </div>
-                <div class="dropdown is-right is-hoverable">
-                    <div class="dropdown-trigger">
-                        <button class="button borderNone is-right"
-                                aria-haspopup="true"
-                                aria-controls="dropdown-menu">
-                        <span class="icon is-small is-right"><i class="fas fa-bars"></i></span>
-                        <span class="icon is-small">
-                        </span>
-                        </button>
-                    </div>
-            
-                    <div class="dropdown-menu" 
-                        id="dropdown-menu" 
-                        role="menu">
-                        <div class="dropdown-content">
-                        <form action="{{ route('chapitres', $cour->id_cours) }}" method="GET">
-                            @csrf
-                            <button type="submit" class="dropdown-item">Chapitres</button>
-                        </form>
-
-                        <a href="{{ route('projet', $cour->id_cours) }}" class="dropdown-item">
-                            Projets
-                        </a>
-                        </div>
-                    </div>
-                </div>
+                
                 </div>
             </div>
         </div>
@@ -84,36 +57,31 @@
             <div class="content">
                 <div class="flex">
                     <div>
-                        <p class="subtitle is-4"><span class="subtitle is-6">Créé par</span> {{$cour->formateurPrenom}} {{$cour->formateurNom}}</p>
-                        <p class="title is-6 mt-4">Nombre de chapitres actifs: {{$cour->nombre_chapitres}}</p>
-                        <p class="title is-6">Prix: {{$cour->prix}}€</p>
-                        <a class="{{ $cour->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatCours', $cour->id_cours) }}">
-                        @if($cour->etat == 1) 
-                        Activé
-                        @else
-                        Désactivé
-                        @endif
-                        </a>
+                        <p><span class="title is-6"> Nom: </span> <span class="subtitle is-6"> {{$user->name}}</span></p>
+                        <p><span class="title is-6">Email:</span> <span class="subtitle is-6">{{$user->email}}</span></p>
+                        <p><span class="title is-6">Role:</span> <span class="subtitle is-6">{{$user->type}}</span></p>
+                      
+
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('cours.edit', $cour->id_cours) }}" method="GET">
+                        <form action="{{ route('utilisateur.edit', $user->id) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>
                             <p>
-                                <a class = "button is-danger button-card modal-button" data-target = "#{{$cour->id_cours}}">Supprimer</a>
+                                <a class = "button is-danger button-card modal-button" data-target = "#{{$user->id}}">Supprimer</a>
                             </p>
-                            <div id="{{$cour->id_cours}}" class="modal">
+                            <div id="{{$user->id}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
                                     <header class="modal-card-head">
-                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$cour->designation}}</p>
+                                    <p class="modal-card-title">Suppression du l'utilisateur {{$user->name}}</p>
                                     <button class="delete" aria-label="close"></button>
                                     </header>
                                     <section class="modal-card-body">
-                                        Souhaitez-vous supprimer le cours {{$cour->designation}} ?
+                                        Souhaitez-vous supprimer l'utilisateur {{$user->name}} ?
                                     </section>
-                                    <form action="{{ route('cours.destroy', $cour->id_cours) }}" method="POST">
+                                    <form action="{{ route('utilisateur.destroy', $user->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <footer class="modal-card-foot">
@@ -142,7 +110,7 @@
     </div>
 
     @endforeach
-    {!! $cours->links() !!}
+    {!! $users->links() !!}
     @endif
 </div>
 
@@ -158,7 +126,7 @@ Votre session a expiré !
                          @if(Auth::user() && Auth::user()->role_id==2)
                         <a href="/centre">
                         @elseif(Auth::user() && Auth::user()->role_id==3)
-                        <a href="/stagiaire">
+                        <a href="/user">
                         @elseif(Auth::user() && Auth::user()->role_id==4)
                         <a href="/formateur">
                         @elseif(Auth::user() && Auth::user()->role_id==5)

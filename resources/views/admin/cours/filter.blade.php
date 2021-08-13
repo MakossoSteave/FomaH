@@ -60,7 +60,7 @@
                         id="dropdown-menu" 
                         role="menu">
                         <div class="dropdown-content">
-                        <form action="{{ route('chapitre', $cour->id_cours) }}" method="GET">
+                        <form action="{{ route('chapitres', $cour->id_cours) }}" method="GET">
                             @csrf
                             <button type="submit" class="dropdown-item">Chapitres</button>
                         </form>
