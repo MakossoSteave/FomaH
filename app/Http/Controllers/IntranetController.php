@@ -128,8 +128,12 @@ class IntranetController extends Controller
         $exercices = Exercice::where('id_chapitre', $formation->id_chapitre)->with('Questions_exercice.Questions_correction')->get();
 
         $qcm = Qcm::where('id_chapitre', $formation->id_chapitre)->first();
-
-        $scoreCount = Score_qcm::where('qcm_id', $qcm->id)->count();
+        if($qcm){
+            $scoreCount = Score_qcm::where('qcm_id', $qcm->id)->count();
+        }
+        else {
+            $scoreCount =0;
+        }
 
         $chapitreMax = Chapitre::where('id_cours', $formation->id_cours)->max('numero_chapitre');
 
