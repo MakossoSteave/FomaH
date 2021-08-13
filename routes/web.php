@@ -56,7 +56,7 @@ Route::get('/cours/{id}', [App\Http\Controllers\CoursController::class, 'filter'
 Route::get('/addCours', [App\Http\Controllers\CoursController::class, 'create'])->name('addCours');
 Route::get('/etatCours/{id}', [App\Http\Controllers\CoursController::class, 'etat'])->name('etatCours');
 
-Route::get('/chapitres/{id}', [App\Http\Controllers\ChapitreController::class, 'index'])->name('chapitre');
+Route::get('/chapitres/{id}', [App\Http\Controllers\ChapitreController::class, 'index'])->name('chapitres');
 Route::get('/addChapitre/{id}', [App\Http\Controllers\ChapitreController::class, 'create'])->name('addChapitre');
 Route::get('/etatChapitre/{id}', [App\Http\Controllers\ChapitreController::class, 'etat'])->name('etatChapitre');
 
@@ -77,7 +77,7 @@ Route::delete('/deleteSection/{id}', [App\Http\Controllers\ChapitreController::c
 Route::get('/categorie', [App\Http\Controllers\CategorieController::class, 'index'])->name('categorie');
 Route::get('/addCategorie', [App\Http\Controllers\CategorieController::class, 'create'])->name('addCategorie');
 
-Route::get('/qcm/{id}', [App\Http\Controllers\QcmController::class, 'index'])->name('qcm');
+Route::get('/qcm/{id}', [App\Http\Controllers\QcmController::class, 'index'])->name('qcmChapitre');
 Route::get('/addQcm/{id}', [App\Http\Controllers\QcmController::class, 'create'])->name('addQcm');
 Route::delete('/deleteQuestion/{id}', [App\Http\Controllers\QcmController::class, 'deleteQuestion'])->name('deleteQuestion');
 
@@ -107,10 +107,12 @@ Route::get('/admins', [App\Http\Controllers\AdminController::class, 'admin'])->n
 
 Route::get('/intranet/cours', [App\Http\Controllers\IntranetController::class, 'cours'])->name('courss');
 
+Route::get('/intranet/chapitre', [App\Http\Controllers\IntranetController::class, 'chapitre'])->name('chapitre');
 Route::get('/intranet/qcm', [App\Http\Controllers\IntranetController::class, 'qcm'])->name('qcm');
 Route::get('/intranet/exercice', [App\Http\Controllers\IntranetController::class, 'exercice'])->name('exercice');
 Route::post('/intranet/score', [App\Http\Controllers\IntranetController::class, 'score'])->name('score');
 Route::post('/intranet/next', [App\Http\Controllers\IntranetController::class, 'next'])->name('next');
+Route::get('/intranet/projet', [App\Http\Controllers\IntranetController::class, 'projet'])->name('projet');
 
 Route::resource('intranet','App\Http\Controllers\IntranetController');
 Route::resource('exercice','App\Http\Controllers\ExerciceController');

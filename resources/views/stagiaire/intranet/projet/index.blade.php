@@ -60,34 +60,29 @@
                 </ul>
             </aside>
         </div>
-        <div class="column is-9">
+    <div class="column is-9">
         <div class="content is-medium">
-            @foreach($chapitre->chapitre as $chap)
-        <h3 class="title is-3">{{$chap->numero_chapitre}}. {{$chap->designation}}</h3>
-        <video class="video" width="100%" controls>
-            <source src="{{ URL::asset('/') }}video/chapitre/{{$chap->video}}" >
-            Votre lecteur ne supporte pas ce type de video
-        </video>
-            @foreach($chap->section as $section)
-                <div class="box mt-4">
-                    <h4 id="const" class="title is-3 has-text-centered">{{$section->designation}}</h4>
-                        <article class="message is-primary">
-                            <span class="icon has-text-primary">
-                            </span>
-                            <div class="message-body">
-                            {{$section->contenu}}
-                            </div>
-                        </article>
-                        @if(! empty($section->image))
-                            <img class="imageSection" src="{{ URL::asset('/') }}img/section/{{$section->image}}" alt="Placeholder image">
-                        @endif
-                </div>
+            <h1 class="has-text-centered">Projet</h1>
+            @foreach($projets as $projet)
+            <div class="box mt-4">
+                    <article class="message is-primary">
+                        <span class="icon has-text-primary">
+                        </span>
+                        <div class="message-body">
+                        {{$projet->description}}
+                        </div>
+                    </article>
+                    @if(!empty($projet->document))
+                    @foreach($projet->document as $document)
+                        <embed class="docSize mt-4" src="{{ URL::asset('/') }}doc/projet/{{$document->lien}}" alt="Placeholder image">
+                    @endforeach
+                    @endif
+            </div>
             @endforeach
-        @endforeach
-    </div>
-    <footer class="buttons paginate" class="mb-4">
-        <a href="{{ url('intranet/qcm') }}" class="button is-success sizeButton">Faire le QCM</a>
-    </footer>
+        </div>
+        <footer class="buttons paginate" class="mb-4">
+            <a href="{{-- url('intranet/cours') --}}" class="button is-success sizeButton">Passer au cours suivant</a>
+        </footer>
     </div>
 </div>
 </div>

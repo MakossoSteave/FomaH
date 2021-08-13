@@ -51,7 +51,12 @@
     border-radius: 290486px;
 }
 
-.qcmButton {
+.docSize {
+    width: 100%;
+    height: 50em;
+}
+
+.sizeButton {
     width: 15em;
 }
 

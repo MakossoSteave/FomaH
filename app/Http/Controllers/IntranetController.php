@@ -55,7 +55,10 @@ class IntranetController extends Controller
     }
 
     public function qcm() {
-        $stagiaire = Stagiaire::where('user_id', Auth::user()->id)->first();
+        $idUserAuth=null;
+        if(Auth::user())
+        $idUserAuth=Auth::user()->id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
         
         $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
 
@@ -77,7 +80,9 @@ class IntranetController extends Controller
     }
 
     public function score(Request $request) {
-
+        $idUserAuth=null;
+        if(Auth::user())
+        $idUserAuth=Auth::user()->id;
         $resultat = 0;
 
         for ($idRadio=0; $idRadio < count($request->get('reponseNameRadio')); $idRadio++) { 
@@ -91,7 +96,7 @@ class IntranetController extends Controller
             $idScore = rand(10000000, 99999999);
         } while(Score_qcm::find($idScore) != null);
 
-        $stagiaire = Stagiaire::where('user_id', Auth::user()->id)->first();
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
         Score_qcm::create([
             'id' => $idScore,
@@ -104,8 +109,10 @@ class IntranetController extends Controller
     }
 
     public function exercice() {
-
-        $stagiaire = Stagiaire::where('user_id', Auth::user()->id)->first();
+        $idUserAuth=null;
+        if(Auth::user())
+        $idUserAuth=Auth::user()->id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
         $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
 
@@ -119,7 +126,9 @@ class IntranetController extends Controller
     }
 
     public function next(Request $request) {
-
+        $idUserAuth=null;
+        if(Auth::user())
+        $idUserAuth=Auth::user()->id;
         $exerciceCount = Exercice::where('id_chapitre', $request->get('id_chapitre'))->count();
 
         if($exerciceCount >= 1) {

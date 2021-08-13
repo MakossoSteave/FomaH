@@ -84,7 +84,7 @@
                 <button type="submit" class="dropdown-item">Sections</button>
             </form>
 
-            <form action="{{ route('qcm', $chapitre->id_chapitre) }}" method="GET">
+            <form action="{{ route('qcmChapitre', $chapitre->id_chapitre) }}" method="GET">
                 @csrf
                 <button type="submit" class="dropdown-item">QCM</button>
             </form>
