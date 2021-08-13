@@ -350,7 +350,7 @@ class CoursController extends Controller
         }
         else {
         Cours::where('id_cours', $id)->update(array('etat' => $etat));
-        return redirect()->back()->with('success','Modifié avec succès');
+        return redirect()->back()->with('success','Etat modifié avec succès');
     }
     }
     public function destroy($id)

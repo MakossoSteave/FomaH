@@ -215,6 +215,6 @@ class QcmController extends Controller
         $qcm = QCM::find($id);
         $etat = !$qcm->etat;
         QCM::where('id',$id)->update(['etat'=>$etat]);
-        return redirect()->back()->with('success','Modifié avec succès');
+        return redirect()->back()->with('success','Etat modifié avec succès');
     }
 }

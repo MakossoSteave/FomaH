@@ -29,11 +29,49 @@
 
     @foreach ($sessions as $session)
     <div class="card my-6">
+        
         <div class="card-content">
             <div class="media">
+                
+            
             <div class="media-content">
+            <div class="media-content">
+                <div class="flex">
+            <div>
+              
+            </div>
+                <div class="dropdown is-right is-hoverable">
+                    <div class="dropdown-trigger">
+                        <button class="button borderNone is-right"
+                                aria-haspopup="true"
+                                aria-controls="dropdown-menu">
+                        <span class="icon is-small is-right"><i class="fas fa-bars"></i></span>
+                        <span class="icon is-small">
+                        </span>
+                        </button>
+                    </div>
+            
+                    <div class="dropdown-menu" 
+                        id="dropdown-menu" 
+                        role="menu">
+                        <div class="dropdown-content">
+                       
+
+                        <a href="" class="dropdown-item">
+                            Liste des stagiaires
+                        </a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div> 
+            <p class="title is-6 mb-0">Date:</p>
                 <p class="title is-4">{{date('d-m-Y', strtotime($session->date_debut))}}</p>
                 <p class="subtitle is-6">{{date('d-m-Y', strtotime($session->date_fin))}}</p>
+                <p><span class="title is-6"> Cursus: </span> <span class="subtitle is-6"> {{$session->libelle}}</span></p>
+                <p><span class="title is-6"> Formateur: </span> <span class="subtitle is-6"> {{$session->nom}} {{$session->prenom}}</span></p>
+                <p><span class="title is-6"> Statut: </span> <span class="subtitle is-6"> {{$session->statut}}</span></p>
+            
             </div>
         </div>
 

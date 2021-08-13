@@ -14,8 +14,11 @@ class SessionController extends Controller
 {
     public function index()
     {
-        $sessions = Session::all();
-                   
+        $sessions = Session::select('sessions.*','formations.libelle','statut.statut','formateurs.nom','formateurs.prenom')
+        ->leftJoin('formateurs','formateurs.id','sessions.formateur_id')
+        ->join('formations','formations.id','sessions.formations_id')
+        ->join('statut','statut.id','sessions.statut_id')  
+        ->get();        
         return view('admin.session.index',compact(['sessions']));
     }
 

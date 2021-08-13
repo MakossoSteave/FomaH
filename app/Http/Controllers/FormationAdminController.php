@@ -247,7 +247,7 @@ class FormationAdminController extends Controller
             return redirect()->back()->with('error',"L'état ne peut pas être modifié car aucun cours n'est actif ! ");
         }else {
         Formation::where('id', $id)->update(array('etat' => $etat));
-        return redirect()->back()->with('success','Modifié avec succès');
+        return redirect()->back()->with('success','Etat modifié avec succès');
         }
        
     }

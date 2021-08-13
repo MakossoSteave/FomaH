@@ -375,7 +375,7 @@ class ChapitreController extends Controller
             }*/
             }
         Chapitre::where('id_chapitre', $id_chapitre)->update(array('etat' => $etat));
-        return redirect()->back()->with('success','Modifié avec succès');
+        return redirect()->back()->with('success','Etat modifié avec succès');
     }
 
     public function destroy($id_chapitre)
