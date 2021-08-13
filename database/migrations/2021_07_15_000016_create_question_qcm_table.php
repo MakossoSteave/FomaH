@@ -17,7 +17,7 @@ class CreateQuestionQcmTable extends Migration
             $table->engine='InnoDB';
             $table->id();
             $table->string('question');
-            $table->string('explication')->nullable();
+            $table->string('explication', 5000)->nullable();
             $table->boolean('etat');
             $table->bigInteger('qcm_id')->unsigned()->index();
             $table->foreign('qcm_id')->references('id')->on('qcm')->onDelete('cascade');

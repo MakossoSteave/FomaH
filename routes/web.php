@@ -64,8 +64,7 @@ Route::get('/cours/{id}', [App\Http\Controllers\CoursController::class, 'filter'
 Route::get('/addCours', [App\Http\Controllers\CoursController::class, 'create'])->name('addCours');
 Route::get('/etatCours/{id}', [App\Http\Controllers\CoursController::class, 'etat'])->name('etatCours');
 
-Route::get('/chapitres', [App\Http\Controllers\ChapitreController::class, 'index'])->name('chapitre');
-Route::get('/chapitre/{id}', [App\Http\Controllers\ChapitreController::class, 'filter'])->name('chapitre.filter');
+Route::get('/chapitres/{id}', [App\Http\Controllers\ChapitreController::class, 'index'])->name('chapitres');
 Route::get('/addChapitre/{id}', [App\Http\Controllers\ChapitreController::class, 'create'])->name('addChapitre');
 
 Route::get('/cursus', [App\Http\Controllers\FormationAdminController::class, 'index'])->name('cursus');
@@ -85,7 +84,7 @@ Route::delete('/deleteSection/{id}', [App\Http\Controllers\ChapitreController::c
 Route::get('/categorie', [App\Http\Controllers\CategorieController::class, 'index'])->name('categorie');
 Route::get('/addCategorie', [App\Http\Controllers\CategorieController::class, 'create'])->name('addCategorie');
 
-Route::get('/qcm/{id}', [App\Http\Controllers\QcmController::class, 'index'])->name('qcm');
+Route::get('/qcm/{id}', [App\Http\Controllers\QcmController::class, 'index'])->name('qcmChapitre');
 Route::get('/addQcm/{id}', [App\Http\Controllers\QcmController::class, 'create'])->name('addQcm');
 Route::delete('/deleteQuestion/{id}', [App\Http\Controllers\QcmController::class, 'deleteQuestion'])->name('deleteQuestion');
 
@@ -109,6 +108,20 @@ Route::delete('/deleteQuestionExercice/{id}', [App\Http\Controllers\ExerciceCont
 Route::get('/stagiaires', [App\Http\Controllers\StagiaireController::class, 'stagiaire'])->name('stagiaires');
 Route::get('/addStagiaire', [App\Http\Controllers\StagiaireController::class, 'create'])->name('addStagiaire');
 
+Route::get('/utilisateurs', [App\Http\Controllers\UtilisateurController::class, 'index'])->name('utilisateurs');
+
+Route::get('/admins', [App\Http\Controllers\AdminController::class, 'admin'])->name('admins');
+
+Route::get('/intranet/chapitre', [App\Http\Controllers\IntranetController::class, 'chapitre'])->name('chapitreIntranet');
+Route::post('/intranet/cours', [App\Http\Controllers\IntranetController::class, 'cours'])->name('coursIntranet');
+Route::post('/intranet/nextIfExercice', [App\Http\Controllers\IntranetController::class, 'nextIfExercice'])->name('nextIfExerciceIntranet');
+Route::get('/intranet/qcm', [App\Http\Controllers\IntranetController::class, 'qcm'])->name('qcmIntranet');
+Route::get('/intranet/exercice', [App\Http\Controllers\IntranetController::class, 'exercice'])->name('exerciceIntranet');
+Route::post('/intranet/score', [App\Http\Controllers\IntranetController::class, 'score'])->name('scoreIntranet');
+Route::post('/intranet/next', [App\Http\Controllers\IntranetController::class, 'next'])->name('nextIntranet');
+Route::get('/intranet/projet', [App\Http\Controllers\IntranetController::class, 'projet'])->name('projetIntranet');
+
+Route::resource('intranet','App\Http\Controllers\IntranetController');
 Route::resource('exercice','App\Http\Controllers\ExerciceController');
 Route::resource('projet','App\Http\Controllers\ProjetController');
 Route::resource('document','App\Http\Controllers\DocumentController');
@@ -136,3 +149,6 @@ Route::get('/listematiere', [App\Http\Controllers\MatiereController::class, 'ind
 
 
 Route::get('/categoriematiereetsous', [App\Http\Controllers\SousMatiereController::class, 'categoriematiereetsous'])->name('categoriematiereetsous');
+Route::resource('utilisateur','App\Http\Controllers\UtilisateurController');
+Route::resource('admin','App\Http\Controllers\AdminController');
+Route::resource('parametre','App\Http\Controllers\parametreController');

@@ -91,16 +91,19 @@
                         <p><span class="title is-6">Email:</span> <span class="subtitle is-6">{{$stagiaire->email}}</span></p>
                         <p><span class="title is-6">Téléphone:</span> <span class="subtitle is-6">{{$stagiaire->telephone}}</span></p>
                         @if($stagiaire->formateur_id)
-                        <p><span class="title is-6">Coach:</span> <span class="subtitle is-6">{{$stagiaire->coachPrenom}}{{$stagiaire->coachNom}}</span></p>
+                        <p><span class="title is-6">Coach:</span> <span class="subtitle is-6">{{$stagiaire->coachPrenom}} {{$stagiaire->coachNom}}</span></p>
                         @endif
                         <p><span class="title is-6">Type d'inscription:</span> <span class="subtitle is-6">{{$stagiaire->typeInscription}}</span></p>                        
                         @if($stagiaire->organisation)
                         <p><span class="title is-6">Organisation:</span> <span class="subtitle is-6">{{$stagiaire->organisation}}</span></p>
                         @endif
+                        @if($stagiaire->centre)
+                        <p><span class="title is-6">Centre:</span> <span class="subtitle is-6">{{$stagiaire->centre}}</span></p>
+                        @endif
 
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('stagiaire.edit', $stagiaire->id) }}" method="GET">
+                        <form action="{{ route('stagiaire.edit', $stagiaire->user_id) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>

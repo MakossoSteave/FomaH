@@ -18,12 +18,12 @@ class CreateSuivreformationsTable extends Migration
             $table->bigInteger('id_stagiaire')->unsigned();
             $table->bigInteger('id_formations')->unsigned();
             $table->primary(['id_stagiaire', 'id_formations']);
-            $table->foreign('id_formations')->references('id')->on('formations');    
-            $table->foreign('id_stagiaire')->references('id')->on('stagiaires');
+            $table->foreign('id_formations')->references('id')->on('formations')->onDelete('cascade');    
+            $table->foreign('id_stagiaire')->references('id')->on('stagiaires')->onDelete('cascade');
             $table->bigInteger('id_cours')->unsigned()->index();
-            $table->foreign('id_cours')->references('id_cours')->on('cours')->onDelete('cascade');
+            $table->foreign('id_cours')->references('id_cours')->on('cours');
             $table->bigInteger('id_chapitre')->unsigned()->index();
-            $table->foreign('id_chapitre')->references('id_chapitre')->on('chapitres')->onDelete('cascade');
+            $table->foreign('id_chapitre')->references('id_chapitre')->on('chapitres');
             $table->integer('nombre_chapitre_lu');
             $table->integer('progression');
             $table->timestamps();

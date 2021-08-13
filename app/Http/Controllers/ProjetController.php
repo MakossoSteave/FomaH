@@ -33,8 +33,10 @@ class ProjetController extends Controller
         do {
             $idProjet = rand(10000000, 99999999);
         } while(Projet::find($idProjet) != null);
-
-        $utilisateurID = Auth::user()->id;
+        $idUserAuth=null;
+        if(Auth::user())
+        $idUserAuth=Auth::user()->id;
+        $utilisateurID = $idUserAuth;
         $formateur= new FormateurController;
         $formateurID= $formateur->findFormateurID($utilisateurID);  
 

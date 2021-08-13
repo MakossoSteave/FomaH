@@ -41,7 +41,7 @@
             </div>
             @endif
            
-            <div class="columns">
+<div class="columns">
   <div class="column is-narrow">
     <div style="width: 600px;">
    
@@ -63,7 +63,7 @@
         </p>
     </div>
   </div>
-    <div class="column">
+    <div class="column marginChapitre">
         <div class="dropdown is-right is-hoverable">
           <div class="dropdown-trigger">
             <button class="button borderNone is-right"
@@ -84,7 +84,7 @@
                 <button type="submit" class="dropdown-item">Sections</button>
             </form>
 
-            <form action="{{ route('qcm', $chapitre->id_chapitre) }}" method="GET">
+            <form action="{{ route('qcmChapitre', $chapitre->id_chapitre) }}" method="GET">
                 @csrf
                 <button type="submit" class="dropdown-item">QCM</button>
             </form>

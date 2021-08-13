@@ -79,7 +79,7 @@ class parametreController extends Controller
             }
         else if ($request->has('telephone')) {
             $request->validate([
-                'telephone' => ['regex:/[0-9]{10}/']
+                'telephone' => ['regex:/[0-9]{9}/','max:10']
             ]);
             if(Auth::user()->role_id==3){
                 Stagiaire::where('user_id',$idUser)->update(["telephone"=>$request->get('telephone')]);
@@ -90,7 +90,7 @@ class parametreController extends Controller
         }
         else if ($request->hasFile('image')) {
             $request->validate([
-                'image' => ['mimes:jpeg,png,bmp,tiff,gif,GIF','max:10000',
+                'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF','max:10000',
                 new FilenameImage('/[\w\W]{4,181}$/')]
             ]);
             $destinationPath = public_path('img/user/');

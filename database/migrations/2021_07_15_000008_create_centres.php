@@ -17,6 +17,8 @@ class CreateCentres extends Migration
             $table->engine='InnoDB';
             $table->id();
             $table->string('designation');
+            $table->bigInteger('user_id')->unsigned()->index();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

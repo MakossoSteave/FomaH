@@ -20,6 +20,7 @@ class CreateFaireProjetTable extends Migration
             $table->primary(['id_projet', 'id_stagiaire']);
             $table->foreign('id_stagiaire')->references('id')->on('stagiaires');    
             $table->foreign('id_projet')->references('id')->on('projets');
+            $table->string('lien', 1000);
             $table->boolean('statut_reussite')->nullable();
             $table->boolean('resultat_description')->nullable();
             $table->timestamps();

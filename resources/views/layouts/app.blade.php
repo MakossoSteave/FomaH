@@ -140,7 +140,7 @@
                 </a>
 
                 <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link" href="{{ url('cursus')}}">
+                    <a class="navbar-link" href="{{ url('utilisateurs')}}">
                     Utilisateur
                     </a>
 
@@ -158,7 +158,7 @@
                     <a class="navbar-item">
                     Organisation
                     </a>
-                    <a class="navbar-item">
+                    <a class="navbar-item" href="{{ url('admins')}}">
                     Admin
                     </a>
                     </div>
@@ -320,6 +320,7 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="{{ URL::asset('/') }}js/addFieldForm.js"></script>
+    <script src="{{ URL::asset('/') }}js/toggle.js"></script>
     <script src="https://unpkg.com/popper.js@1/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@4"></script>
     <script>

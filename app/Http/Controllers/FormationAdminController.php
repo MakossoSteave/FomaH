@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\FormationsContenirCours;
 use App\Models\Categorie;
 use App\Models\Formation;
+use App\Models\Formateur;
 use App\Models\Cours;
 use Illuminate\Validation\Rule;
 use App\Rules\FilenameImage;
@@ -37,7 +38,7 @@ class FormationAdminController extends Controller
          'volume_horaire' =>  ['required','numeric','min:0'],
          'prix' =>  ['required','numeric','min:0'],
          'categorie_id' =>'required',
-         'image' => ['mimes:jpeg,png,bmp,tif,gif,GIF ','max:10000',
+         'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,jpg,GIF ','max:10000',
          new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 
@@ -100,7 +101,7 @@ class FormationAdminController extends Controller
          'etat' => [
             'required',
              Rule::in(['0', '1'])],
-             'image' => ['mimes:jpeg,png,bmp,tif,gif,GIF ','max:10000',
+             'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,jpg,GIF ','max:10000',
              new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 
@@ -201,7 +202,9 @@ class FormationAdminController extends Controller
     {
         $formations = Formation::orderBy('libelle','asc')->get();
 
-       return view('admin.cours.create', compact(['formations'], 'id'));
+        $formateurs = Formateur::orderBy('nom','asc')->get();
+
+        return view('admin.cours.create', compact(['formations'], ['formateurs'], 'id'));
     }
 
     public function Update_nombre_cours_total($id,$operation)

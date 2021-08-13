@@ -15,7 +15,7 @@ class CreateSessionTable extends Migration
     {
         Schema::create('sessions', function (Blueprint $table) {
             $table->engine='InnoDB';
-            $table->id();;
+            $table->id();
             $table->date('date_debut');
             $table->date('date_fin');
             $table->boolean('etat');

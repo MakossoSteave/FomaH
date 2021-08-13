@@ -38,9 +38,40 @@
     border: none;
 }
 
+.progress {
+    height: 2.5em;
+}
+
+.percentage {
+    display: flex;
+    justify-content: center;
+}
+
+.reponseCss {
+    border-radius: 290486px;
+}
+
+.docSize {
+    width: 100%;
+    height: 50em;
+}
+
+.marginChapitre {
+    margin-left: 11em;
+}
+
+.sizeButton {
+    width: 15em;
+}
+
 .button.is-focused:not(:active), .button:focus:not(:active) {
     outline: 0;
     box-shadow: none;
+}
+
+.paginate {
+    display: flex;
+    justify-content: center;
 }
 
 .flex-bottom {
@@ -51,6 +82,23 @@
 .button-card {
     width: 10em;
     margin-right: 1em;
+}
+
+#sommaire {
+    margin-left: 5em;
+}
+
+#home {
+    margin-left: 1em;
+}
+
+.imageSection {
+    width: 100%;
+    height: 35rem;
+}
+
+.page {
+    width: 10em;
 }
 
 #link-black {
@@ -126,3 +174,7 @@
 .containerProfil { position: relative; }
 .containerProfil  img { display: block; height:90px;width:auto; }
 .containerProfil .fa-pencil-alt { position: absolute; bottom:0; right:0; }
+
+#selectOrganisation , #selectCentre{
+    display:none;
+}
