@@ -38,8 +38,7 @@ class SessionController extends Controller
         $request->validate([
          'date_debut' => ['required'],
          'date_fin' => ['required'],
-         'formation_id' => ['required'],
-         'statut_id' => ['required']
+         'formation_id' => ['required']
         ]);
 
         do {
@@ -59,7 +58,7 @@ class SessionController extends Controller
             'etat' => 0,
             'formateur_id' => $formateur,
             'formations_id' => $request->get('formation_id'),
-            'statut_id' => $request->get('statut_id')
+            'statut_id' => 2
         ]);
        
         return redirect('/session')->with('success','Session créé avec succès');
