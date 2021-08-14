@@ -93,7 +93,14 @@ class SessionController extends Controller
 
        return view('admin.session.edit',compact(['session'],['formateurs'],['formations'],['statuts']));
     }
-
+    public function editStagiaire($id,$idSession)
+    {
+        $stagiaire=Lier_sessions_stagiaire::
+        where('id_session',$idSession)
+        ->where('id_stagiaire',$id)
+        ->first();
+        return view('admin.session.stagiaire.edit',compact(['stagiaire']));
+    }
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -117,7 +124,24 @@ class SessionController extends Controller
 
         return redirect('/session')->with('success','Session modifié avec succès');
     }
+    public function editResultStagiaire(Request $request, $id,$idSession)
+    {
+        $request->validate([
+           
+            'resultat' => ['required','string','max:3000'],
+            'validation' => [
+                'required',
+                 Rule::in(['0', '1'])]
+        ]);
 
+        Lier_sessions_stagiaire:: where('id_session',$idSession)
+        ->where('id_stagiaire',$id)->update([
+            'validation' => $request->get('validation'),
+            'resultat_description' => $request->get('resultat')
+        ]);
+
+        return redirect('/StagiaireSession/'.$idSession)->with('success','Résultat modifié avec succès');
+    }
     public function Session_Stagiaire($id){
     $stagiaires=Lier_sessions_stagiaire::select('lier_sessions_stagiaires.*','users.image','stagiaires.nom','stagiaires.prenom','stagiaires.user_id','stagiaires.id as stagiaireID','sessions.statut_id as sessionStatut')
     ->join('stagiaires','stagiaires.id','lier_sessions_stagiaires.id_stagiaire')

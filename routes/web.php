@@ -90,6 +90,8 @@ Route::get('/AjouterStagiaireSession/{id}', [App\Http\Controllers\SessionControl
 Route::post('/AddStagiaire/{id}', [App\Http\Controllers\SessionController::class, 'store_stagiaire_session'])->name('AddStagiaire');
 Route::delete('/removeStagiaire/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'removeStagiaire'])->name('removeStagiaire');
 Route::get('/etatStagiaireSession/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'etatStagiaireSession'])->name('etatStagiaireSession');
+Route::get('/editStagiaireSession/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'editStagiaire'])->name('editStagiaireSession');
+Route::post('/editStagiaireSession/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'editResultStagiaire'])->name('editResultStagiaire');
 
 Route::get('/document/{id}', [App\Http\Controllers\DocumentController::class, 'index'])->name('document');
 Route::get('/addDocument/{id}', [App\Http\Controllers\DocumentController::class, 'create'])->name('addDocument');
