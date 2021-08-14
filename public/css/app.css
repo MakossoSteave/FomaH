@@ -60,6 +60,17 @@
     margin-left: 11em;
 }
 
+#intranetNav {
+    color: #3273DC;
+    margin-left: .5em;
+    vertical-align: top;
+    font-weight: 500;
+}
+
+#intranetNav:focus {
+    outline: none;
+}
+
 .sizeButton {
     width: 15em;
 }

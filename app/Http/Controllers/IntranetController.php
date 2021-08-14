@@ -13,6 +13,7 @@ use App\Models\Exercice;
 use App\Models\Chapitre;
 use App\Models\Projet;
 use App\Models\Session;
+use App\Models\Lier_sessions_stagiaire;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,6 @@ use Illuminate\Support\Facades\Auth;
 class IntranetController extends Controller
 {
     public function index(){
-        // var_dump(date('Y-m-d'));
         
         $idUserAuth=null;
 
@@ -34,15 +34,70 @@ class IntranetController extends Controller
        
         $formationName = null;
         $sommaire = null;
+        $session = null;
         if ($countFormation == 1) {
-            $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+       
+        $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
 
-            $formationName = Formation::where('id', $formation->id_formations)->first();
+        $session = Session::where('id', $sessionStagiaire->id_session)->first();
 
-            $sommaire = FormationsContenirCours::where('id_formation', $formation->id_formations)->with('Cours.Chapitre.Section')->orderby('numero_cours', 'ASC')->get();
+        $sommaire = null;
+
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+        $formationName = Formation::where('id', $formation->id_formations)->first();
+
+        $sommaire = FormationsContenirCours::where('id_formation', $formation->id_formations)->with('Cours.Chapitre.Section')->orderby('numero_cours', 'ASC')->get();
         }
+        return view('stagiaire.intranet.index', compact(['sommaire'], ['formationName'], ['session']));
+    }
 
-        return view('stagiaire.intranet.index', compact(['sommaire'], ['formationName']));
+    public function preIndex() {
+        $idUserAuth=null;
+
+        if(Auth::user())
+
+        $idUserAuth=Auth::user()->id;
+
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        
+        $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
+        
+        $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
+        if($sessionStagiaire){
+            $session = Session::where('id', $sessionStagiaire->id_session)->first();
+        } else {
+            $session=null;
+        }
+        
+
+        if ($session && $countFormation == 1 && date('Y-m-d') >= $session->date_debut && date('Y-m-d') <= $session->date_fin) {
+
+            Session::where('id', $sessionStagiaire->id_session)->update([
+                'statut_id' => 3
+            ]);
+ 
+            return redirect('/intranet');
+
+        } else if($session && $countFormation == 1 && date('Y-m-d') <= $session->date_debut) {
+
+            Session::where('id', $sessionStagiaire->id_session)->update([
+                'statut_id' => 2
+            ]);
+
+            return redirect('/intranet');
+
+        } else if($session && $countFormation == 1 && date('Y-m-d') >= $session->date_fin) {
+
+            Session::where('id', $sessionStagiaire->id_session)->update([
+                'statut_id' => 5
+            ]);
+
+            return redirect('/intranet');
+        } else {
+            return redirect('/stagiaire');
+        }
     }
 
     public function chapitre() {
@@ -214,8 +269,10 @@ class IntranetController extends Controller
         $chapitreMax = Chapitre::where('id_cours', $formation->id_cours)->max('numero_chapitre');
 
         if($exerciceCount >= 1) {
+
             return redirect('/intranet/exercice');
         } else if($chapitreMax == $chapitre->numero_chapitre) {
+
             return redirect('/intranet/projet');
         } else {
 
@@ -240,6 +297,7 @@ class IntranetController extends Controller
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
         $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();

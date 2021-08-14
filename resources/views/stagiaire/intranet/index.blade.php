@@ -88,6 +88,7 @@
 
             </div>
             @if($formationName)
+            @if($session->statut_id == 3)
             <div class="column">
                 <h1 class="has-text-centered mb-4 is-size-3">{{$formationName->libelle}}</h1>
                 <p class="mb-4">{{$formationName->description}}</p>
@@ -106,6 +107,11 @@
                         </ol>
                     </div>
             </div>
+            @elseif($session->statut_id == 2)
+            <p>Non débutée</p>
+            @elseif($session->statut_id == 5)
+            <p>Terminée</p>
+            @endif
             @else 
             <div class="column is-9">
             <div class="notification is-warning has-text-centered my-4">
@@ -113,6 +119,7 @@
         </div>
             </div>
              @endif
+          
         </div>
 
         <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
