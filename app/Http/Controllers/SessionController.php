@@ -73,7 +73,17 @@ class SessionController extends Controller
         return redirect()->back()->with('success','Etat modifié avec succès');
     }
 
+    public function etatStagiaireSession($id,$idSession)
+    {
+        $etatStagiaire = Lier_sessions_stagiaire::where('id_stagiaire',$id)
+        ->where('id_session',$idSession)
+        ->first();
+        $etat = !$etatStagiaire->etat;
 
+        Lier_sessions_stagiaire::where('id_stagiaire',$id)
+        ->where('id_session',$idSession)->update(array('etat' => $etat));
+        return redirect()->back()->with('success','Etat modifié avec succès');
+    }
     public function edit($id)
     {
        $session = Session::find($id);

@@ -92,7 +92,13 @@
                         <p><span class="title is-6">Description du résultat:</span> </p><p><span class="subtitle is-5 has-text-white">{{$stagiaire->resultat_description}}</span></p>
                         @endif
                        
-
+                        <a class="{{ $stagiaire->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatStagiaireSession', [$stagiaire->stagiaireID,$id]) }}">
+                        @if($stagiaire->etat == 1) 
+                        Activé
+                        @else
+                        Désactivé
+                        @endif
+                        </a>
                     </div>
                     <div class="flex-bottom">
                     @if($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5 )
