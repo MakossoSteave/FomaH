@@ -85,6 +85,9 @@ Route::get('/etatQCM/{id}', [App\Http\Controllers\QcmController::class, 'etat'])
 Route::get('/session', [App\Http\Controllers\SessionController::class, 'index'])->name('session');
 Route::get('/addSession', [App\Http\Controllers\SessionController::class, 'create'])->name('addSession');
 Route::get('/etatSession/{id}', [App\Http\Controllers\SessionController::class, 'etat'])->name('etatSession');
+Route::get('/StagiaireSession/{id}', [App\Http\Controllers\SessionController::class, 'Session_Stagiaire'])->name('StagiaireSession');
+Route::get('/AjouterStagiaireSession/{id}', [App\Http\Controllers\SessionController::class, 'Session_Stagiaire_Ajout'])->name('AddStagiaireSession');
+Route::post('/AddStagiaire/{id}', [App\Http\Controllers\SessionController::class, 'store_stagiaire_session'])->name('AddStagiaire');
 
 Route::get('/document/{id}', [App\Http\Controllers\DocumentController::class, 'index'])->name('document');
 Route::get('/addDocument/{id}', [App\Http\Controllers\DocumentController::class, 'create'])->name('addDocument');

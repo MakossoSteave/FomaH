@@ -8,6 +8,8 @@ use Illuminate\Validation\Rule;
 use App\Models\Session;
 use App\Models\Formateur;
 use App\Models\Formation;
+use App\Models\Lier_sessions_stagiaire;
+use App\Models\Stagiaire;
 use App\Models\Statut;
 
 class SessionController extends Controller
@@ -88,7 +90,9 @@ class SessionController extends Controller
         $request->validate([
             'date_debut' => ['required'],
             'date_fin' => ['required'],
-            'etat' => ['required'],
+            'etat' => [
+                'required',
+                 Rule::in(['0', '1'])],
             'formation_id' => ['required'],
             'statut_id' => ['required']
         ]);
@@ -105,6 +109,44 @@ class SessionController extends Controller
         return redirect('/session')->with('success','Session modifié avec succès');
     }
 
+    public function Session_Stagiaire($id){
+    $stagiaires=Lier_sessions_stagiaire::select('lier_sessions_stagiaires.*','users.image','stagiaires.nom','stagiaires.prenom','stagiaires.user_id','stagiaires.id as stagiaireID','sessions.statut_id as sessionStatut')
+    ->join('stagiaires','stagiaires.id','lier_sessions_stagiaires.id_stagiaire')
+    ->join('users','users.id','stagiaires.user_id')
+    ->join('sessions','sessions.id','lier_sessions_stagiaires.id_session')
+    ->where('id_session',$id)
+    ->orderBy('created_at','desc')->paginate(8)->setPath('StagiaireSession');
+    return view('admin.session.stagiaire.index',compact(['stagiaires','id']));
+    }
+    public function Session_Stagiaire_Ajout(Request $request,$id){
+        $stagiairesInscrits= Lier_sessions_stagiaire::select('lier_sessions_stagiaires.id_stagiaire')
+        ->where('id_session',$id)
+        ->get();
+        $stagiaires= Stagiaire::select('stagiaires.nom','stagiaires.prenom','stagiaires.id') 
+        ->whereNotIn('id',$stagiairesInscrits)
+        ->orderBy('created_at','desc')
+        ->get();
+        $request->session()->put('stagiaires', $stagiaires);
+        return view('admin.session.stagiaire.create',compact(['stagiaires','id']));
+    }
+
+    public function store_stagiaire_session(Request $request,$id){
+        $request->validate([
+            'etat' => [
+                'required',
+                 Rule::in(['0', '1'])],
+            'stagiaire_id' => ['required','in:'.$request->session()->get('stagiaires')->implode('id', ', ')]/*,
+            'id' => ['required','regex:/[0-9]{8}/']*/
+        ]);
+       
+        Lier_sessions_stagiaire::create([
+            'id_session'=> $id,
+            'id_stagiaire'=>  $request->get('stagiaire_id'),
+            'etat' =>  $request->get('etat')
+        ]);
+        return redirect('/StagiaireSession/'.$id)->with('success','Le stagiaire a été ajouté avec succès');
+
+    }
     public function destroy($id)
     {
         Session::where('id',$id)->delete();

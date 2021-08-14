@@ -9,8 +9,8 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-        <a href="{{ route('addSession') }}" class="has-icons-right" id="link-black">
-            Ajouter une session
+        <a href="{{ route('AddStagiaireSession',$id) }}" class="has-icons-right" id="link-black">
+            Ajouter un stagiaire
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
     </div>
@@ -21,21 +21,35 @@
         </div>
     @endif
 
-    @if($sessions->isEmpty())
+    @if (session('error'))
+        <div class="notification is-danger has-text-centered my-4">
+        <button class="delete"></button>
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if($stagiaires->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
-            Aucune session n'existe
+            Aucun stagiaire n'existe
         </div>
     @else
 
-    @foreach ($sessions as $session)
-    <div class="card my-6">
-        
+  
+
+    @foreach ($stagiaires as $stagiaire)
+    <div class="card my-6 
+@if($stagiaire->validation && ($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5) ) {{ $stagiaire->validation == 1 ? 'has-background-success' : 'has-background-danger'  }} @endif">
         <div class="card-content">
             <div class="media">
-                
+            @if(! empty($stagiaire->image))
+            <div class="media-left">
+            <figure class="image is-96x96 containerProfil">
+                <img class="image is-rounded" src="{{ URL::asset('/') }}img/user/{{$stagiaire->image}}" alt="Placeholder image">
+            </figure>
+            </div>
+            @endif
             
-            <div class="media-content">
-            <div class="media-content">
+           <!--<div class="media-content">
                 <div class="flex">
             <div>
               
@@ -55,56 +69,52 @@
                         id="dropdown-menu" 
                         role="menu">
                         <div class="dropdown-content">
-                       
+                        <form action="" method="GET">
+                            @csrf
+                            <button type="submit" class="dropdown-item">Suivis</button>
+                        </form>
 
-                        <a href="{{ route('StagiaireSession', $session->id) }}" class="dropdown-item">
-                            Liste des stagiaires
+                        <a href="" class="dropdown-item">
+                            Projets
                         </a>
                         </div>
                     </div>
                 </div>
-                </div>
-            </div> 
-            <p class="title is-6 mb-0">Date:</p>
-                <p class="title is-4">{{date('d-m-Y', strtotime($session->date_debut))}}</p>
-                <p class="subtitle is-6">{{date('d-m-Y', strtotime($session->date_fin))}}</p>
-                <p><span class="title is-6"> Cursus: </span> <span class="subtitle is-6"> {{$session->libelle}}</span></p>
-                <p><span class="title is-6"> Formateur: </span> <span class="subtitle is-6"> {{$session->nom}} {{$session->prenom}}</span></p>
-                <p><span class="title is-6"> Statut: </span> <span class="subtitle is-6"> {{$session->statut}}</span></p>
+                </div></div></div>-->
             
-            </div>
         </div>
 
             <div class="content">
                 <div class="flex">
                     <div>
-                        <a class="{{ $session->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatSession', $session->id) }}">
-                        @if($session->etat == 1) 
-                        Activé
-                        @else
-                        Désactivé
+                        <p><span class="title is-6"> {{$stagiaire->prenom}} {{$stagiaire->nom}} </span> </p>
+                        @if($stagiaire->resultat_description && ($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5 ))
+                        <p><span class="title is-6">Description du résultat:</span> </p><p><span class="subtitle is-5 has-text-white">{{$stagiaire->resultat_description}}</span></p>
                         @endif
-                        </a>
+                       
+
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('session.edit', $session->id) }}" method="GET">
+                    @if($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5 )
+                        <form action="{{ route('stagiaire.edit', $stagiaire->user_id) }}" method="GET">
                             @csrf
-                            <button type="submit" class="button button-card is-info">Modifier</button>
+                            <button type="submit" class="button button-card is-info">Modifier le résultat</button>
                         </form>
+                    @endif
                             <p>
-                                <a class = "button is-danger button-card modal-button" data-target = "#{{$session->id}}">Supprimer</a>
+                                <a class = "button is-warning button-card modal-button" style="width:200px;" data-target = "#{{$stagiaire->stagiaireID}}">Supprimer de la session</a>
                             </p>
-                            <div id="{{$session->id}}" class="modal">
+                            <div id="{{$stagiaire->stagiaireID}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">
                                     <header class="modal-card-head">
-                                    <p class="modal-card-title">Suppression de la session du {{date('d-m-Y', strtotime($session->date_debut))}}</p>
+                                    <p class="modal-card-title">Suppression du stagiaire {{$stagiaire->prenom}} {{$stagiaire->nom}}</p>
                                     <button class="delete" aria-label="close"></button>
                                     </header>
                                     <section class="modal-card-body">
-                                        Souhaitez-vous supprimer la session du {{date('d-m-Y', strtotime($session->date_debut))}} au {{date('d-m-Y', strtotime($session->date_fin))}} ?
+                                        Souhaitez-vous supprimer le/la stagiaire {{$stagiaire->prenom}} {{$stagiaire->nom}} de la session ?
                                     </section>
-                                    <form action="{{ route('session.destroy', $session->id) }}" method="POST">
+                                    <form action="{{ route('stagiaire.destroy', $stagiaire->stagiaireID) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <footer class="modal-card-foot">
@@ -133,9 +143,8 @@
     </div>
 
     @endforeach
-
+    {!! $stagiaires->links() !!}
     @endif
-
 </div>
 
 @else
