@@ -114,7 +114,7 @@
                                     <section class="modal-card-body">
                                         Souhaitez-vous supprimer le/la stagiaire {{$stagiaire->prenom}} {{$stagiaire->nom}} de la session ?
                                     </section>
-                                    <form action="{{ route('stagiaire.destroy', $stagiaire->stagiaireID) }}" method="POST">
+                                    <form action="{{ route('removeStagiaire', [$stagiaire->stagiaireID,$id]) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <footer class="modal-card-foot">

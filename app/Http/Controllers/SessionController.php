@@ -114,7 +114,7 @@ class SessionController extends Controller
     ->join('users','users.id','stagiaires.user_id')
     ->join('sessions','sessions.id','lier_sessions_stagiaires.id_session')
     ->where('id_session',$id)
-    ->orderBy('created_at','desc')->paginate(8)->setPath('StagiaireSession');
+    ->orderBy('etat','asc')->paginate(8)->setPath('StagiaireSession');
     return view('admin.session.stagiaire.index',compact(['stagiaires','id']));
     }
     public function Session_Stagiaire_Ajout(Request $request,$id){
@@ -145,6 +145,14 @@ class SessionController extends Controller
         ]);
         return redirect('/StagiaireSession/'.$id)->with('success','Le stagiaire a été ajouté avec succès');
 
+    }
+    public function removeStagiaire($id,$idSession)
+    {
+        Lier_sessions_stagiaire::where('id_stagiaire',$id)
+        ->where('id_session',$idSession)
+        ->delete();
+
+        return redirect()->back()->with('success','Stagiaire supprimé de la session avec succès');
     }
     public function destroy($id)
     {
