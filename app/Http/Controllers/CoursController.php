@@ -10,6 +10,8 @@ use App\Models\Formation;
 use App\Models\Cours;
 use App\Models\Chapitre;
 use App\Models\Formateur;
+use App\Models\Lier_sessions_stagiaire;
+use App\Models\Session;
 use Illuminate\Validation\Rule;
 use App\Rules\FilenameImage;
 
@@ -414,10 +416,14 @@ class CoursController extends Controller
             ->count();
         
             // $test = Cours::with('cours.formations')->get();
+            $session =  Session::where('formations_id',$c->id_formation)
+            ->where('etat',1)
+            ->where('statut_id',3)
+            ->first();
 
-        if( $cours==0){
+        if( $cours==0 && $session==null){
 
- Formation::where('id',$c->id_formation)->update([
+         Formation::where('id',$c->id_formation)->update([
                     
                     'etat' => 0
                    
