@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Chapitre;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 use App\Models\Session;
 use App\Models\Formateur;
 use App\Models\Formation;
+use App\Models\FormationsContenirCours;
 use App\Models\Lier_sessions_stagiaire;
 use App\Models\Stagiaire;
 use App\Models\Statut;
+use App\Models\Suivre_formation;
 
 class SessionController extends Controller
 {
@@ -101,7 +104,28 @@ class SessionController extends Controller
 
         Lier_sessions_stagiaire::where('id_stagiaire',$id)
         ->where('id_session',$idSession)->update(array('etat' => $etat));
-        if($etat ==1){}
+        if($etat ==1){
+            $session=Session::find($idSession);
+            $exists=Suivre_formation::where('id_stagiaire',$id)->where('id_formations',$session->formations_id)->first();
+            if( $exists==null){
+                $cours=FormationsContenirCours::where('id_formation',$session->formations_id)->where('numero_cours',1)->first();
+                if($cours){ $chapitre=Chapitre::where('id_cours',$cours->id_cours)
+                    ->where('numero_chapitre',1)
+                    ->where('etat',1)
+                    ->first();
+               
+                Suivre_formation::create([
+                    'id_stagiaire' => $id,
+                    'id_formations' => $session->formations_id,
+                    'id_cours' => $cours->id_cours,
+                    'id_chapitre' => $chapitre->id_chapitre,
+                    'id_chapitre_Courant'=> $chapitre->id_chapitre,
+                    'nombre_chapitre_lu' => 0,
+                    'progression' => 0
+                ]);
+            }
+            }
+        }
         return redirect()->back()->with('success','Etat modifié avec succès');
     }
     public function edit($id)
