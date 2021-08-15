@@ -11,7 +11,7 @@ class Centre extends Model
     public $incrementing = false;
     
     protected $fillable=[
-        'id', 'designation'
+        'id', 'designation','user_id'
     ];
 
 }

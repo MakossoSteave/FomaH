@@ -101,6 +101,7 @@ class SessionController extends Controller
 
         Lier_sessions_stagiaire::where('id_stagiaire',$id)
         ->where('id_session',$idSession)->update(array('etat' => $etat));
+        if($etat ==1){}
         return redirect()->back()->with('success','Etat modifié avec succès');
     }
     public function edit($id)
