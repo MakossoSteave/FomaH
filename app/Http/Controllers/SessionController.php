@@ -69,6 +69,25 @@ class SessionController extends Controller
         $session = Session::find($id);
         $etat = !$session->etat;
 
+        if($etat==1){
+            $cursus =Session::select('formations.*')
+            ->join('formations','formations.id','sessions.formations_id')
+            ->where('sessions.id',$id)
+            ->first();
+
+            if( $cursus->etat==0){
+                return redirect()->back()->with('error',"L'Etat ne pas être modifié car le cursus est désactivé");
+            }
+            $stagiairesInscrits= Lier_sessions_stagiaire::select('lier_sessions_stagiaires.id_stagiaire')
+            ->where('id_session',$id)
+            ->where('etat',1)
+            ->count();
+            if($stagiairesInscrits==0)
+          {
+            return redirect()->back()->with('error',"L'Etat ne pas être modifié car aucun stagiaire actif n'est inscrit");
+          }
+           
+        }        
         Session::where('id', $id)->update(array('etat' => $etat));
         return redirect()->back()->with('success','Etat modifié avec succès');
     }
@@ -112,17 +131,43 @@ class SessionController extends Controller
             'formation_id' => ['required'],
             'statut_id' => ['required']
         ]);
-
+        $etat=$request->get('etat');
+        $message=null;
+        if($etat==1){
+            $cursus = Session::select('formations.*')
+            ->join('formations','formations.id','sessions.formations_id')
+            ->where('sessions.id',$id)
+            ->first();
+            if( $cursus->etat==0){
+                $etat=0;
+                $message="L'Etat ne pas être modifié car le cursus est désactivé";
+            }else {
+            $stagiairesInscrits= Lier_sessions_stagiaire::select('lier_sessions_stagiaires.id_stagiaire')
+            ->where('id_session',$id)
+            ->where('etat',1)
+            ->count();
+            if($stagiairesInscrits==0)
+          {
+            $etat=0;
+            $message="L'Etat ne pas être modifié car aucun stagiaire actif n'est inscrit";
+          }
+        }
+        }        
         Session::where('id', $id)->update([
             'date_debut' => $request->get('date_debut'),
             'date_fin' => $request->get('date_fin'),
-            'etat' => $request->get('etat'),
+            'etat' => $etat,
             'formateur_id' => $request->get('formateur_id'),
             'formations_id' => $request->get('formation_id'),
             'statut_id' => $request->get('statut_id')
         ]);
-
-        return redirect('/session')->with('success','Session modifié avec succès');
+        if($message!=null){
+            return redirect('/session')->with('success','Session modifié avec succès')
+            ->with('error',$message);
+        } else {
+            return redirect('/session')->with('success','Session modifié avec succès');
+        }
+        
     }
     public function editResultStagiaire(Request $request, $id,$idSession)
     {
@@ -151,10 +196,9 @@ class SessionController extends Controller
     ->orderBy('etat','asc')->paginate(8)->setPath('StagiaireSession');
     $stagiairesCount = $stagiaires->count();
     //dd($stagiairesCount);
-    $cursus = Lier_sessions_stagiaire::select('formations.effectif')
-    ->join('sessions','sessions.id','lier_sessions_stagiaires.id_session')
+    $cursus = Session::select('formations.effectif')
     ->join('formations','formations.id','sessions.formations_id')
-    ->where('id_session',$id)
+    ->where('sessions.id',$id)
     ->first();
     $effectif = $cursus->effectif;
     return view('admin.session.stagiaire.index',compact(['stagiaires','id','effectif']),['stagiairesCount' => $stagiairesCount]);
@@ -179,14 +223,26 @@ class SessionController extends Controller
             'stagiaire_id' => ['required','in:'.$request->session()->get('stagiaires')->implode('id', ', ')]/*,
             'id' => ['required','regex:/[0-9]{8}/']*/
         ]);
-       
+        $stagiairesInscrits= Lier_sessions_stagiaire::select('lier_sessions_stagiaires.id_stagiaire')
+        ->where('id_session',$id)
+        ->where('etat',1)
+        ->count();
+        $cursus = Session::select('formations.*')
+        ->join('formations','formations.id','sessions.formations_id')
+        ->where('sessions.id',$id)
+        ->first();
+        $effectif = $cursus->effectif;
+        
+        if($stagiairesInscrits==$effectif){
+            return redirect('/StagiaireSession/'.$id)->with('error','Nombre maximum de stagiaire atteint'); 
+        }else{
         Lier_sessions_stagiaire::create([
             'id_session'=> $id,
             'id_stagiaire'=>  $request->get('stagiaire_id'),
             'etat' =>  $request->get('etat')
         ]);
         return redirect('/StagiaireSession/'.$id)->with('success','Le stagiaire a été ajouté avec succès');
-
+        }
     }
     public function removeStagiaire($id,$idSession)
     {

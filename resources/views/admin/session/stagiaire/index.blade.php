@@ -9,7 +9,7 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-        
+       
         @if($stagiairesCount < $effectif)
         <a href="{{ route('AddStagiaireSession',$id) }}" class="has-icons-right" id="link-black">
             Ajouter un stagiaire
@@ -33,7 +33,7 @@
 
     @if($stagiaires->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
-            Aucun stagiaire n'existe
+            Aucun stagiaire n'existe pour cette session
         </div>
     @else
 
