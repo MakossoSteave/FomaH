@@ -9,10 +9,13 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
+        
+        @if($stagiairesCount < $effectif)
         <a href="{{ route('AddStagiaireSession',$id) }}" class="has-icons-right" id="link-black">
             Ajouter un stagiaire
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
+        @endif
     </div>
     
     @if (session('success'))
