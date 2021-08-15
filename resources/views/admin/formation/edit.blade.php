@@ -77,7 +77,12 @@
                     <input name="prix" class="input" type="number" placeholder="Prix" value="{{$formation->prix}}">
                 </div>
         </div>
-
+        <div class="field">
+            <label class="label">Effectif</label>
+                <div class="control">
+                    <input name="effectif" class="input" type="number" placeholder="Effectif" value="{{$formation->effectif}}">
+                </div>
+        </div>
         <div class="field">
             <label class="label">Etat</label>
                                     

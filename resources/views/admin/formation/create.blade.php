@@ -74,6 +74,12 @@
                     <input name="prix" class="input" type="number" placeholder="Prix">
                 </div>
         </div>
+        <div class="field">
+            <label class="label">Effectif</label>
+                <div class="control">
+                    <input name="effectif" class="input" type="number" placeholder="Effectif">
+                </div>
+        </div>
 
         <div class="field">
             <label class="label">Choisir la categorie</label>

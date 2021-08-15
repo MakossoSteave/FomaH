@@ -38,6 +38,7 @@ class FormationAdminController extends Controller
          'description' => ['required','max:1000'],
          'volume_horaire' =>  ['required','numeric','min:0'],
          'prix' =>  ['required','numeric','min:0'],
+         'effectif' =>  ['required','numeric','min:1'],
          'categorie_id' =>'required',
          'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,jpg,GIF ','max:10000',
          new FilenameImage('/[\w\W]{4,181}$/')]
@@ -64,6 +65,7 @@ class FormationAdminController extends Controller
             'image' => $image,
             'volume_horaire' => $request->get('volume_horaire'),
             'prix' => $request->get('prix'),
+            'effectif' =>  $request->get('effectif'),
             'etat' => 0,
             'nombre_cours_total' => 0,
             'nombre_chapitre_total' => 0,
@@ -98,6 +100,7 @@ class FormationAdminController extends Controller
          'description' => ['required','max:1000'],
          'volume_horaire' =>  ['required','numeric','min:0'],
          'prix' =>  ['required','numeric','min:0'],
+         'effectif' =>  ['required','numeric','min:1'],
          'categorie_id' =>'required',
          'etat' => [
             'required',
@@ -148,6 +151,7 @@ class FormationAdminController extends Controller
             'image' => $image,
             'volume_horaire' => $request->get('volume_horaire'),
             'prix' => $request->get('prix'),
+            'effectif' => $request->get('effectif'),
             'etat' => $etat,
             'categorie_id' => $request->get('categorie_id')
         ]);
