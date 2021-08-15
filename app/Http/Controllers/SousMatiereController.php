@@ -19,14 +19,18 @@ class SousMatiereController extends Controller
     public function index(Request $request)
     {
         //dd($request);
-        $sousmatieres = DB::table("sous_matieres")->where('matiere_id',$request->matiere_id)->get();  
+        $designation_categorie = DB::table("categories")->where('id',$request->categorie_id)->value('designation');
+        $designation_matiere = DB::table("matieres")->where('id',$request->matiere_id)->value('designation_matiere');
+
+        $sousmatieres = DB::table("sous_matieres")->where('matiere_id',$request->matiere_id)->get();
+        //dd($designation_categorie);
+        //dd($designation_matiere);
         //dd($sousmatieres);      
-        return view('admin.sous_matiere.index',compact(['sousmatieres'])); 
+        return view('admin.sous_matiere.index',compact(['sousmatieres','designation_categorie','designation_matiere'])); 
     }
     public function categoriematiereetsous(Request $request)
     {
-        $categories = DB::table("categories")->get();  
-        $matieres = DB::table("matieres")->get();             
+        $categories = DB::table("categories")->get();             
         return view('admin.sous_matiere.categoriematiereetsous',compact(['categories'])); 
     }
     
@@ -39,6 +43,9 @@ class SousMatiereController extends Controller
      */
     public function create()
     {
+        $categories = DB::table("categories")->pluck("designation","id");
+        //$categories = DB::table("categories")->get();
+        return view('admin.sous_matiere.create',compact(['categories']));
         
     }
 
@@ -50,7 +57,28 @@ class SousMatiereController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd($request);
+        $name1 = $request->get('matiere_id');
+        $name2 = "Sélectionner une matière";
+        $request->validate(['designation_sous_matiere' => ['required','unique:sous_matieres','max:191']]);
+        //dd($name1,$name2);
+
+        if($name1 != $name2){
+
+            do {
+                $id = rand(10000000, 99999999);
+            } while(DB::table('sous_matieres')->where('id', $id)->exists());
+            
+
+            //(Matiere::find($id) != null); 
+            SousMatiere::create($request->all()+['id' => $id]);
+            $string = 'Sous-matiere: '.$request->get('designation_sous_matiere').' créée avec succès';
+
+            return redirect()->back()->with('success',$string);
+            
+        }
+        //dd($request);
+        return redirect()->back()->with('warning','vous n\' avez pas sélectionné de matière, c\'est un champ obligatoire pour créer une sous-matière');
     }
 
     /**

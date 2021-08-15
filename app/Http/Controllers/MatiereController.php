@@ -18,8 +18,14 @@ class MatiereController extends Controller
      */
     public function index(Request $request)
     {   
-        $matieres = DB::table("matieres")->where('categorie_id',$request->categorie_id)->get();        
-        return view('admin.matiere.index',compact(['matieres'])); 
+
+        $designation_categorie = DB::table("categories")->where('id',$request->categorie_id)->value('designation');
+        
+        $matieres = DB::table("matieres")->where('categorie_id',$request->categorie_id)->get();  
+        
+        //dd($designation_categorie,$matieres);
+
+        return view('admin.matiere.index',compact(['matieres','designation_categorie'])); 
     }
     public function categoriematiere(Request $request)
     {
@@ -51,15 +57,27 @@ class MatiereController extends Controller
     public function store(Request $request)
     {
         //dd($request);
+        //dd($request->get('designation_matiere'));
+        $name1 = $request->get('categorie_id');
+        $name2 = "Sélectionner une catégorie";
+        //dd($name1, $name2);
         $request->validate(['designation_matiere' => ['required','unique:matieres','max:191']]);
 
-        do {
-            $id = rand(10000000, 99999999);
-        } while(Matiere::find($id) != null); 
+        if($name1 != $name2){
+            
+        
 
-        Matiere::create($request->all()+['id' => $id]);
-          
-        return redirect()->back()->with('success','Matiere créée avec succès');
+            do {
+                $id = rand(10000000, 99999999);
+            } while(Matiere::find($id) != null); 
+
+            Matiere::create($request->all()+['id' => $id]);
+            $string = 'Matiere: '.$request->get('designation_matiere').' créée avec succès';
+            
+            return redirect()->back()->with('success',$string);
+
+        }
+        return redirect()->back()->with('warning','vous n\' avez pas sélectionné de catégorie, c\'est un champ obligatoire pour créer une matière');
     }
     
      
@@ -95,6 +113,7 @@ class MatiereController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         //dd($request);
         $request->validate([
             'designation_matiere' => ['required','max:191', Rule::unique('matieres')->where(function ($query) use($id) {         
@@ -113,10 +132,19 @@ class MatiereController extends Controller
      */
     public function destroy(Request $request , $id)
     {
+        //dd($id);
+        $b = DB::table('sous_matieres')->where('matiere_id',$id)->exists();
 
+        if($b){
+            return redirect()->back()->with('danger','LA SUPPRESSION A ECHOUE, une matière ne peut pas être supprimée 
+            si elle posséde une sous_matière, vous devez supprimer la ou les sous_matière(s) lié(es) à cette matière.');
+        }
+        $designation_matiere = DB::table('matieres')->where('id',$id)->value('designation_matiere');
+        
+        
         Matiere::where('id',$id)->delete();
 
-        return redirect()->back()->with('success','Matière supprimée avec succès');
+        return redirect()->back()->with('success','Matière '.$designation_matiere.' supprimée avec succès');
     }
 }
 

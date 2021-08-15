@@ -13,25 +13,28 @@
             </ul>
     </div>
     @endif
-    
-    <h2 class="title is-2 has-text-centered mt-6">Modifier une matiere matiere.edit.blade</h2>
-    <form action="{{ route('matiere.update', $matiere->id) }}" method="POST" enctype="multipart/form-data" class="mt-6">
-        @csrf
-        @method('PUT')
-        <input name="id"  type="hidden" value="{{$matiere->id}}">
+    <div class="hauteur100"></div>
+    <div class="notification">
+        <h2 class="title is-2 has-text-centered mt-6">Modifier une matiere //matiere.edit.blade</h2>
+        <form action="{{ route('matiere.update', $matiere->id) }}" method="POST" enctype="multipart/form-data" class="mt-6">
+            @csrf
+            @method('PUT')
+            <input name="id"  type="hidden" value="{{$matiere->id}}">
 
-        <div class="field">
-            <label class="label">Nom de la matiere</label>
-                <div class="control">
-                    <input name="designation_matiere" class="input" type="text" placeholder="Nom de la matiere" value="{{$matiere->designation_matiere}}">
-                </div>
-        </div>
-
-            <div class="control mt-4 mb-4">
-                <button type="submit" class="button is-fullwidth is-link is-rounded">Modifier</button>
+            <div class="field">
+                <label class="label">Nom de la matiere</label>
+                    <div class="control">
+                        <input name="designation_matiere" class="input" type="text" placeholder="Nom de la matiere" value="{{$matiere->designation_matiere}}">
+                    </div>
             </div>
-        </div>
-    </form>
+
+                <div class="control mt-4 mb-4">
+                    <button type="submit" class="button is-fullwidth is-link is-rounded">Modifier</button>
+                </div>
+            </div>
+        </form>
+    </div> 
+
 </div>
 @else
 <div class="notification is-danger has-text-centered my-4">

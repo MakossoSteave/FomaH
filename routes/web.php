@@ -149,6 +149,8 @@ Route::get('/listematiere', [App\Http\Controllers\MatiereController::class, 'ind
 
 
 Route::get('/categoriematiereetsous', [App\Http\Controllers\SousMatiereController::class, 'categoriematiereetsous'])->name('categoriematiereetsous');
+Route::get('/addSousMatiere', [App\Http\Controllers\SousMatiereController::class, 'create'])->name('addSousMatiere');
+
 Route::resource('utilisateur','App\Http\Controllers\UtilisateurController');
 Route::resource('admin','App\Http\Controllers\AdminController');
-Route::resource('parametre','App\Http\Controllers\parametreController');
+

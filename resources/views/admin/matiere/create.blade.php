@@ -2,6 +2,9 @@
 
 @section('content')
 @if(Auth::user() && Auth::user()->role_id==1)
+
+
+
 <div class="container is-max-desktop">
     @if ($errors->any())
     <div class="notification is-danger">
@@ -15,51 +18,63 @@
     @endif
     @if (session('success'))
         <div class="notification is-success has-text-centered my-4">
+        <button class="delete"></button>
             {{ session('success') }}
         </div>
     @endif
-
-
-    <h2 class="title is-2 has-text-centered mt-6">Ajouter une matière </h2>
-    <form action="{{ route('matiere.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
-        @csrf
-
-        <div class="form-group hauteur100">
-            
-            <label class="label">Une matière doit appartenir à une catégorie</label>
-            
-                <!-- c'est le id="categorie" qui récupère l'information-->
-                <div class="control has-icons-left">
-                    <div class="select">
-                        <div class="control">
-
-                            <select id="categorie_id" name="categorie_id" class="form-control ">
-                            <option selected>Sélectionner une catégorie</option>
-                            @foreach($categories as $key => $categorie)
-                            <option value="{{$key}}"> {{$categorie}}</option>
-                            @endforeach
-                            </select>
-
-                        </div>
-                    </div>
-                        <div class="icon is-small is-left">
-                            <i class="fa fa-certificate " aria-hidden="true" style=color:#0080FF></i>
-                        </div>
-                </div> 
+    @if (session('warning'))
+        <div class="notification is-warning has-text-centered my-4">
+        <button class="delete"></button>
+            {{ session('warning') }}
         </div>
+    @endif
 
-        <div class="field">
-            <label class="label">Nom de la matière</label>
-                <div class="control">
-                    <input name="designation_matiere" class="input" type="text" placeholder="Nom de la matière">
+    <div class="hauteur100"></div>
+    <div class="notification">
+        <h2 class="title is-2 has-text-centered mt-6">Ajouter une matière </h2>
+        
+        <form action="{{ route('matiere.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
+            @csrf
+
+            <div class="form-group hauteur100">
+                
+                <label class="label">Une matière doit appartenir à une catégorie</label>
+                
+                    <!-- c'est le id="categorie" qui récupère l'information-->
+                    <div class="control has-icons-left">
+                        <div class="select is-info">
+                            
+                                <select id="categorie_id" name="categorie_id" class="form-control ">
+                                    <option selected>Sélectionner une catégorie</option>
+                                    
+                                    @foreach($categories as $key => $categorie)
+                                    <option value="{{$key}}"> {{$categorie}}</option>
+                                    @endforeach
+                                </select>
+
+                            
+                        </div>
+                            <div class="icon is-small is-left">
+                                <i class="fa fa-certificate " aria-hidden="true" style=color:#0080FF></i>
+                            </div>
+                    </div> 
+            </div>
+
+            
+
+            <div class="field">
+                <label class="label">Nom de la matière</label>
+                    <div class="control">
+                        <input name="designation_matiere" class="input" type="text" placeholder="Nom de la matière">
+                    </div>
+                
+
+                <div class="control mt-4 mb-4">
+                    <button type="submit" class="button is-fullwidth is-link is-rounded">Créer</button>
                 </div>
             </div>
-
-            <div class="control mt-4 mb-4">
-                <button type="submit" class="button is-fullwidth is-link is-rounded">Créer</button>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>    
 
 
 
@@ -91,4 +106,15 @@ Votre session a expiré !
 
 </button>
 @endif
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+  (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+    const $notification = $delete.parentNode;
+
+    $delete.addEventListener('click', () => {
+      $notification.parentNode.removeChild($notification);
+    });
+  });
+});
+</script>
 @endsection

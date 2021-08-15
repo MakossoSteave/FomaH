@@ -6,97 +6,89 @@
 
 
 
-<div class="container is-max-desktop">
-    <div class="flex mt-4">
-        <p class="control has-icons-right">
-            <input class="input" type="search" placeholder="Rechercher..."/>
-            <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
-        </p>
-        <a href="{{ route('addMatiere') }}" class="has-icons-right" id="link-black">
-            
-            <span class="icon is-small is-right"><i class="fas fa-plus">Ajouter_une_matière</i></span>
-        </a>
-    </div>
-    
-    @if (session('success'))
-        <div class="notification is-success has-text-centered my-4">
-            {{ session('success') }}
+    <div class="container is-max-desktop">
+        <div class="flex mt-4">
+            <p class="control has-icons-right">
+                <input class="input" type="search" placeholder="Rechercher..."/>
+                <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
+            </p>
+            <a href="{{ route('addMatiere') }}" class="has-icons-right" id="link-black">
+                
+                <span class="icon is-small is-right"><i class="fas fa-plus">Ajouter_une_matière //categoriematiere</i></span>
+            </a>
         </div>
-    @endif
+        
+        @if (session('success'))
+            <div class="notification is-success has-text-centered my-4">
+                <button class="delete"></button>
+                {{ session('success') }}
+            </div>
+        @endif
 
-    @if($categories->isEmpty())
-        <div class="notification is-warning has-text-centered my-4">
-            Aucune categorie n'existe
-        </div>
-    @else
+        @if($categories->isEmpty())
+            <div class="notification is-warning has-text-centered my-4">
+                Aucune categorie n'existe
+            </div>
+        @else
 
-    
-    
-    @endif
+        @endif
 
 
+        <div class="hauteur100"></div>
+        <div class="notification">
+            <h2 class="title is-2 has-text-centered mt-6">Modifier ou supprimer une matière</h2>
 
-<h2 class="title is-2 has-text-centered mt-6">Modifier ou supprimer une matière</h2>
 
 
+                <form action="{{ route('matiere.index') }}" method="GET" enctype="multipart/form-data" class="mt-6">
 
-<form action="{{ route('matiere.index') }}" method="GET" enctype="multipart/form-data" class="mt-6">
+                    @csrf
 
-        @csrf
+                    <div class="form-group hauteur100">
+                        
+                        <label class="label">Sélectionner une liste de matière suivant leur catégorie</label>
+                        
+                            <!-- c'est le id="categorie" qui récupère l'information-->
+                            <div class="control has-icons-left">
+                                <div class="select">
+                                    <div class="control">
 
-        <div class="form-group hauteur100">
-            
-            <label class="label">Sélectionner une liste de matière suivant leur catégorie</label>
-            
-                <!-- c'est le id="categorie" qui récupère l'information-->
-                <div class="control has-icons-left">
-                    <div class="select">
-                        <div class="control">
+                                        <select id="categorie_id" name="categorie_id" class="form-control ">
+                                        <option selected>Sélectionner une catégorie</option>
 
-                            <select id="categorie_id" name="categorie_id" class="form-control ">
-                            <option selected>Sélectionner une catégorie</option>
+                                        @foreach($categories as  $categorie)
+                                        <option value="{{$categorie->id}}"> {{$categorie->designation}}</option>
+                                        @endforeach
 
-                            @foreach($categories as  $categorie)
-                            <option value="{{$categorie->id}}"> {{$categorie->designation}}</option>
-                            @endforeach
+                                        </select>
 
-                            </select>
+                                    </div>
+                                </div>
+                                    <div class="icon is-small is-left">
+                                        <i class="fa fa-certificate " aria-hidden="true" style=color:#0080FF></i>
+                                    </div>
+                            </div> 
+                    </div>
 
+                    <div class="field"></div>
+                        
+
+                        <div class="control mt-4 mb-4">
+                            <button type="submit" class="button is-fullwidth is-link is-rounded">Sélectionner</button>
                         </div>
                     </div>
-                        <div class="icon is-small is-left">
-                            <i class="fa fa-certificate " aria-hidden="true" style=color:#0080FF></i>
-                        </div>
-                </div> 
+                </form>
         </div>
-
-        <div class="field"></div>
-            
-
-            <div class="control mt-4 mb-4">
-                <button type="submit" class="button is-fullwidth is-link is-rounded">Sélectionner</button>
-            </div>
-        </div>
-    </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     </div>
+
+
+
+
+
+
+
+
 
 @else
 <div class="notification is-danger has-text-centered my-4">
@@ -124,4 +116,15 @@ Votre session a expiré !
 
 </button>
 @endif
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+  (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+    const $notification = $delete.parentNode;
+
+    $delete.addEventListener('click', () => {
+      $notification.parentNode.removeChild($notification);
+    });
+  });
+});
+</script>
 @endsection

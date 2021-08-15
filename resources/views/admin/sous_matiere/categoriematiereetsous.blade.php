@@ -12,7 +12,7 @@
                 <input class="input" type="search" placeholder="Rechercher..."/>
                 <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
             </p>
-            <a href="{{ route('addMatiere') }}" class="has-icons-right" id="link-black">
+            <a href="{{ route('addSousMatiere') }}" class="has-icons-right" id="link-black">
                 
                 <span class="icon is-small is-right"><i class="fas fa-plus">Ajouter une_sous_matière</i></span>
             </a>
@@ -34,7 +34,7 @@
         
         @endif
 
-        <div class="hauteur40"></div>
+        <div class="hauteur100"></div>
         <div class="notification">
             <h2 class="title is-2 has-text-centered mt-6">Modifier ou supprimer une sous matière</h2>
 
