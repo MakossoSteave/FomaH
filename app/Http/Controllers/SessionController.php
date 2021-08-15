@@ -106,7 +106,8 @@ class SessionController extends Controller
         ->where('id_session',$idSession)->update(array('etat' => $etat));
         if($etat ==1){
             $session=Session::find($idSession);
-            $exists=Suivre_formation::where('id_stagiaire',$id)->where('id_formations',$session->formations_id)->first();
+            $exists=Suivre_formation::where('id_stagiaire',$id)
+            ->where('id_formations',$session->formations_id)->first();
             if( $exists==null){
                 $cours=FormationsContenirCours::where('id_formation',$session->formations_id)->where('numero_cours',1)->first();
                 if($cours){ $chapitre=Chapitre::where('id_cours',$cours->id_cours)

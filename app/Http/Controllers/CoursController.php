@@ -299,7 +299,7 @@ class CoursController extends Controller
             ]);
         }
     }
-
+    
     public function etat($id)
     {
         $cours = Cours::find($id);
