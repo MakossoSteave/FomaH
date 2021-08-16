@@ -14,6 +14,7 @@ use App\Models\Chapitre;
 use App\Models\Projet;
 use App\Models\Session;
 use App\Models\Lier_sessions_stagiaire;
+use App\Models\Faire_projet;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,8 +42,6 @@ class IntranetController extends Controller
         $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
 
         $session = Session::where('id', $sessionStagiaire->id_session)->first();
-
-        $sommaire = null;
 
         $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
 
@@ -291,7 +290,7 @@ class IntranetController extends Controller
         }
     }
 
-    public function projet(Request $request) {
+    public function projet() {
         $idUserAuth=null;
 
         if(Auth::user())
@@ -306,12 +305,68 @@ class IntranetController extends Controller
 
         $projetCount = Projet::where('id_cours', $formation->id_cours)->count();
 
+        $projet = Projet::where('id_cours', $formation->id_cours)->first();
+
+        $FaireProjetCount = Faire_projet::where([
+            ['id_stagiaire', '=' ,$stagiaire->id],
+            ['id_projet','=', $projet->id]
+        ])->count();
+
+        if ($FaireProjetCount >= 1) {
+            $faireProjet = true;
+        } else {
+            $faireProjet = false;
+        }
+
         if ($projetCount == 1) {
             $projets = Projet::where('id_cours', $formation->id_cours)->with('Document')->get();
 
-            return view('stagiaire.intranet.projet.index', compact(['projets'],['cours'],['formation']));
+            return view('stagiaire.intranet.projet.index', compact(['projets'],['cours'],['formation'],['faireProjet']));
         } else {
             return redirect('/intranet/chapitre');
         }
+    }
+
+    public function faireProjet(Request $request) {
+        $idUserAuth=null;
+
+        if(Auth::user())
+
+        $idUserAuth=Auth::user()->id;
+
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+        $projet = Projet::where('id_cours', $formation->id_cours)->first();
+
+        $FaireProjetCount = Faire_projet::where([
+            ['id_stagiaire', '=' ,$stagiaire->id],
+            ['id_projet','=', $projet->id]
+        ])->count();
+
+        if ($request->hasFile('lienDocProjet')) {
+            $destinationPath = public_path('doc/faireProjet/');
+            $file = $request->file('lienDocProjet');
+            $filename = $file->getClientOriginalName();
+            $lien = time().$filename;
+            $file->move($destinationPath, $lien);
+        } else {
+            $lien = $request->get('lienProjet');
+        }
+
+        if ($FaireProjetCount < 1) {
+            Faire_projet::create([
+                'id_projet' => $projet->id,
+                'id_stagiaire' => $stagiaire->id,
+                'lien' => $lien
+            ]);
+
+            return redirect()->back()->with('success','Votre projet a bien été envoyé');
+        } else {
+
+            return redirect()->back()->with('fail','Votre projet a déjà été envoyé, vous ne pouvez pas en soumettre un autre');
+        }
+        
     }
 }

@@ -20,7 +20,7 @@ class CreateParticiperMeetingTable extends Migration
             $table->primary(['id_utilisateur', 'id_meeting']);
             $table->foreign('id_meeting')->references('id')->on('meeting_en_lignes');    
             $table->foreign('id_utilisateur')->references('id')->on('users');
-            $table->boolean('valiadtion')->nullable();
+            $table->boolean('validation')->nullable();
             $table->timestamps();
         });
     }

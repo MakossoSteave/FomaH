@@ -62,6 +62,19 @@
         </div>
     <div class="column is-9">
         <div class="content is-medium">
+        @if (session('success'))
+            <div class="notification is-success has-text-centered my-4">
+            <button class="delete"></button>
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('fail'))
+            <div class="notification is-danger has-text-centered my-4">
+            <button class="delete"></button>
+                {{ session('fail') }}
+            </div>
+        @endif
             <h1 class="has-text-centered">Projet</h1>
             @foreach($projets as $projet)
             <div class="box mt-4">
@@ -80,10 +93,64 @@
             </div>
             @endforeach
         </div>
-        <footer class="buttons paginate" class="mb-4">
-            <a href="{{-- url('intranet/faireProjet') --}}" class="button is-success sizeButton">Soumettre mon projet</a>
-        </footer>
+    <div id="projectShowFileLink" style="display: none;">
+
+        <form action="{{ url('intranet/faireProjet') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+
+        <div class="field">
+            <label class="label">Ajouter un document</label>
+            <div id="file-js-doc-projet" class="file has-name">
+                    <label class="file-label">
+                        <input class="file-input" type="file" name="lienDocProjet">
+                        <span class="file-cta">
+                        <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                        </span>
+                        <span class="file-label">
+                            Choisir un document
+                        </span>
+                        </span>
+                        <span class="file-name">
+                            Aucun document
+                        </span>
+                    </label>
+            </div>
+
+                <script>
+                const fileInput = document.querySelector('#file-js-doc-projet input[type=file]');
+                fileInput.onchange = () => {
+                    if (fileInput.files.length > 0) {
+                    const fileName = document.querySelector('#file-js-doc-projet .file-name');
+                    fileName.textContent = fileInput.files[0].name;
+                    }
+                }
+                </script>
+        </div>
+
+        <p>Ou</p>
+
+        <div class="field">
+        <label class="label">lien du projet</label>
+            <div class="control">
+                <input name="lienProjet" class="input" type="text" placeholder="lien du projet">
+            </div>
+        </div>
+        <div class="paginate mt-4">
+            <button type="submit" class="button is-success sizeButton">valider</button>
+        </div>
+        </form>
     </div>
+        @if($faireProjet == true)
+        <div class="notification is-success has-text-centered my-4">
+        Nous avons bien reçu votre projet
+        </div>
+        @elseif($faireProjet == false)
+        <footer class="buttons paginate mb-4">
+            <button class="button is-success sizeButton showFileProject" onclick="makeProject()">Soumettre mon projet</button>
+            </div>
+        </footer>
+        @endif
 </div>
 </div>
 </div>

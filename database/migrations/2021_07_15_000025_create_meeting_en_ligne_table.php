@@ -15,8 +15,9 @@ class CreateMeetingEnLigneTable extends Migration
     {
         Schema::create('meeting_en_lignes', function (Blueprint $table) {
             $table->engine='InnoDB';
-            $table->id();;
+            $table->id();
             $table->timestamp('date_meeting');
+            $table->string('lien');
             $table->bigInteger('statut_id')->unsigned()->index();
             $table->foreign('statut_id')->references('id')->on('statut')->onDelete('cascade');
             $table->bigInteger('user_id')->unsigned()->index();
