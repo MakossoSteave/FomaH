@@ -286,8 +286,18 @@ class FormationAdminController extends Controller
 
     public function destroy($id)
     {
-        Formation::where('id',$id)->delete();
-        return redirect()->back()->with('success','Supprimé avec succès');
+        
+  $session =  Session::where('formations_id',$id)
+  ->where('etat',1)
+  ->where('statut_id',3)
+  ->first();
+  if($session!=null){
+    return redirect()->back()->with('error','Ne peut pas être supprimé car une session est active !');
+  } else{
+    Formation::where('id',$id)->delete();
+    return redirect()->back()->with('success','Supprimé avec succès');
+  }
+        
     }
     public function removeCours($idCours,$idFormation){
 
