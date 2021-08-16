@@ -438,7 +438,7 @@ class IntranetController extends Controller
 
         if ($projetCount == 1) {
             $projets = Projet::where('id_cours', $formation->id_cours)->with('Document')->get();
-            
+
             $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
 
             $session = Session::where('id', $sessionStagiaire->id_session)->first();
@@ -495,5 +495,25 @@ class IntranetController extends Controller
             return redirect()->back()->with('fail','Votre projet a déjà été envoyé, vous ne pouvez pas en soumettre un autre');
         }
         
+    }
+
+    public function live() {
+
+    }
+
+    public function previousChapitre() {
+
+    }
+
+    public function previousProjets() {
+
+    }
+
+    public function previousQCM() {
+
+    }
+
+    public function previousExercices() {
+
     }
 }
