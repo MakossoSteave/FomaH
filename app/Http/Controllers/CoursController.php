@@ -182,6 +182,7 @@ class CoursController extends Controller
         }
         $etat = $request->get('etat');
         $etatCanChange=true;
+        $etatCanChangeSession=true;
         if($etat==1){
             $chapitre =  Chapitre::where('id_cours',$id)
             ->where('etat',1)
@@ -216,8 +217,14 @@ class CoursController extends Controller
         
             
         }else {
+            if(!$this->checkCours($id)){
+                $etatCanChangeSession=false;
+                $etat=1;
+            }else {
             //$this->Update_cours($id);
             $this->checkEtat($id,false);
+            }
+           
         }
       /*if($etat==1){
           $nbChap= $nombreChapitresCours+1;
@@ -242,6 +249,9 @@ class CoursController extends Controller
         if(!$etatCanChange){
             return redirect('/cours/'.$request->get('formation_id'))->with('success','Cours modifié avec succès')
             ->with('error',"L'état ne peut pas être modifié car aucun chapitre n'est actif ! ");
+        } else if(!$etatCanChangeSession){
+            return redirect('/cours/'.$request->get('formation_id'))->with('success','Cours modifié avec succès')
+            ->with('error',"L'état ne peut pas être modifié car une session est active ! ");
         }else {
             return redirect('/cours/'.$request->get('formation_id'))->with('success','Cours modifié avec succès');
         }
@@ -305,6 +315,7 @@ class CoursController extends Controller
         $cours = Cours::find($id);
         $etat = !$cours->etat;
         $etatCanChange=true;
+        $etatCanChangeSession=true;
         if($etat==1){
             $chapitre =  Chapitre::where('id_cours',$id)
             ->where('etat',1)
@@ -341,14 +352,23 @@ class CoursController extends Controller
         }   
         // etat == 0
         else {
+            if(!$this->checkCours($id)){
+                $etatCanChangeSession=false;
+                $etat=1;
+            }else {
             //$this->Update_cours($id);
             $this->checkEtat($id,false);
+            }
+            
         }
         //
 
         //return
         if(!$etatCanChange){
             return redirect()->back()->with('error',"L'état ne peut pas être modifié car aucun chapitre n'est actif ! "); 
+        }
+        else if(!$etatCanChangeSession){
+            return redirect()->back()->with('error',"L'état ne peut pas être modifié car une session est acitve ! "); 
         }
         else {
         Cours::where('id_cours', $id)->update(array('etat' => $etat));
@@ -357,7 +377,10 @@ class CoursController extends Controller
     }
     public function destroy($id)
     {
-       
+        if(!$this->checkCours($id)){
+            return redirect()->back()->with('error',"Ne peut pas être supprimé car une session est active");/* et aucun autre chapitre n'est actif");*/
+        }
+        else {
         // toutes les id formations qui contienent le cours
         $this->checkEtat($id,true);
        
@@ -400,6 +423,7 @@ class CoursController extends Controller
 
         return redirect()->back()->with('success','Cours supprimé avec succès');
     }
+    }
     public function checkEtat($id,$destroy){
         $cursus =  FormationsContenirCours::select('id_formation')
         ->where('id_cours',$id)->get();
@@ -416,12 +440,12 @@ class CoursController extends Controller
             ->count();
         
             // $test = Cours::with('cours.formations')->get();
-            $session =  Session::where('formations_id',$c->id_formation)
+           /* $session =  Session::where('formations_id',$c->id_formation)
             ->where('etat',1)
             ->where('statut_id',3)
-            ->first();
+            ->first();*/
 
-        if( $cours==0 && $session==null){
+        if( $cours==0 /*&& $session==null*/){
 
          Formation::where('id',$c->id_formation)->update([
                     
@@ -431,5 +455,21 @@ class CoursController extends Controller
         }
         if(!$destroy){ $this->Update_cours($id); }
        
+    }
+    public function checkCours($id_cours){
+       
+        $Formation=FormationsContenirCours::where('id_cours',$id_cours)
+        ->get();
+        foreach($Formation as $f){
+          //  $cursus=Formation::where('id',$f->id_formation)->where('nombre_chapitre_total',1)->get();
+            $session =  Session::where('formations_id',$f->id_formation)
+            ->where('etat',1)
+            ->where('statut_id',3)
+            ->first();
+            if($session!=null /*&& $cursus!=null*/){
+                return false;
+            }
+        }
+        return true;
     }
 }
