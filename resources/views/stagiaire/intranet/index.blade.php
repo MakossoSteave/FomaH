@@ -78,12 +78,13 @@
                     <p class="menu-label">
                         Navigation
                     </p>
-                    <ul class="menu-list">
-                        <li><a href="{{ url('intranet/chapitre') }}">Cours</a></li>
-                        <li><a>Exercices</a></li>
-                        <li><a>Lives</a></li>
-                        <li><a>Aide</a></li>
-                    </ul>
+                <ul class="menu-list">
+                    <li><a href="{{ url('intranet/chapitre') }}">Cours</a></li>
+                    <li><a>QCMs</a></li>
+                    <li><a>Exercices</a></li>
+                    <li><a>Projets</a></li>
+                    <li><a>Live</a></li>
+                </ul>
                 </aside>
 
             </div>

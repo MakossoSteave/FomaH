@@ -56,9 +56,10 @@
                 </p>
                 <ul class="menu-list">
                     <li><a href="{{ url('intranet/chapitre') }}">Cours</a></li>
+                    <li><a>QCMs</a></li>
                     <li><a>Exercices</a></li>
-                    <li><a>Lives</a></li>
-                    <li><a>Aide</a></li>
+                    <li><a>Projets</a></li>
+                    <li><a>Live</a></li>
                 </ul>
             </aside>
         </div>
@@ -89,16 +90,32 @@
         @endforeach
     </div>
     @else 
-            <div class="notification is-warning has-text-centered my-4">
+        <div class="notification is-warning has-text-centered my-4">
             Vous ne suivez aucune formation
         </div>
-             @endif
-             @if($qcmCount!=0)
+    @endif
+    @if($qcmCount != 0 && $scoreCount == 0)
     <footer class="buttons paginate" class="mb-4">
         <a href="{{ url('intranet/qcm') }}" class="button is-success sizeButton">Faire le QCM</a>
     </footer>
-    @endif
+    @elseif($qcmCount != 0 && $scoreCount == 1)
+    <div class="flex alignStart">
+        <footer class="buttons paginate" class="mb-4">
+            <a href="{{ url('intranet/qcm') }}" class="button is-success sizeButton">Voir mes résultats au QCM</a>
+        </footer>
+        @endif
+        @if($exerciceCount != 0 && $scoreCount == 1)
+        <footer class="buttons paginate" class="mb-4">
+            <a href="{{ url('intranet/exercice') }}" class="button is-info sizeButton">Accéder aux exercices</a>
+        </footer>
+        @endif
+        @if($projetCount != 0 && $scoreCount == 1)
+        <footer class="buttons paginate" class="mb-4">
+            <a href="{{ url('intranet/projet') }}" class="button is-link sizeButton">Accéder au projet</a>
+        </footer>
+        @endif
     </div>
+</div>
 </div>
 </div>
 </div>

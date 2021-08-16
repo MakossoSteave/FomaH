@@ -41,18 +41,20 @@ class IntranetController extends Controller
         $session = null;
 
         if ($countFormation == 1) {
-        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+            $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
        
-        $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
+            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
 
-        $session = Session::where('id', $sessionStagiaire->id_session)->first();
+            $session = Session::where('id', $sessionStagiaire->id_session)->first();
 
-        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+            $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
 
-        $formationName = Formation::where('id', $formation->id_formations)->first();
+            $formationName = Formation::where('id', $formation->id_formations)->first();
 
-        $sommaire = FormationsContenirCours::where('id_formation', $formation->id_formations)->with('Cours.Chapitre.Section')->orderby('numero_cours', 'ASC')->get();
+            $sommaire = FormationsContenirCours::where('id_formation', $formation->id_formations)->with('Cours.Chapitre.Section')->orderby('numero_cours', 'ASC')->get();
+            
         }
+
         return view('stagiaire.intranet.index', compact(['sommaire'], ['formationName'], ['session']));
     }
 
@@ -114,20 +116,46 @@ class IntranetController extends Controller
         
         $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
 
-        $qcmCount=0;
+        $qcmCount = 0;
 
-        $cours=null;
+        $scoreCount = 0;
 
-        $chapitre=null;
+        $exerciceCount = 0;
+
+        $projetCount = 0;
+
+        $cours = null;
+
+        $chapitre = null;
 
         if ($countFormation == 1) {
             $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
             $qcmCount = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->count();
+
             $cours = Cours::where('id_cours', $formation->id_cours)->first();
+
             $chapitre = Suivre_formation::where('id_chapitre', $formation->id_chapitre)->with('Chapitre.Section')->first();
+
+            $qcm = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->first();
+    
+            $scoreCount = Score_qcm::where([
+                ['qcm_id', $qcm->id],
+                ['stagiaire_id', $stagiaire->id]
+                ])->count();
+                
+            $exerciceCount = Exercice::where('id_chapitre', $formation->id_chapitre)->count();
+
+            $chapitreMax = Chapitre::where('id_cours', $formation->id_cours)->max('numero_chapitre');
+
+            $chap = Chapitre::where('id_chapitre', $formation->id_chapitre)->first();
+
+            if($chapitreMax == $chap->numero_chapitre) {
+                $projetCount = Projet::where('id_cours', $formation->id_cours)->count();
+            }
         }
 
-        return view('stagiaire.intranet.cours.index', compact(['chapitre'], ['cours'],'qcmCount'));
+        return view('stagiaire.intranet.cours.index', compact(['chapitre'], ['cours'],['qcmCount'],['scoreCount'],['exerciceCount'],['projetCount']));
     }
 
     public function qcm() {
@@ -208,11 +236,14 @@ class IntranetController extends Controller
         $exercices = Exercice::where('id_chapitre', $formation->id_chapitre)->with('Questions_exercice.Questions_correction')->get();
 
         $qcm = Qcm::where('id_chapitre', $formation->id_chapitre)->first();
-        if($qcm){
-            $scoreCount = Score_qcm::where('qcm_id', $qcm->id)->count();
-        }
-        else {
-            $scoreCount =0;
+
+        if($qcm) {
+            $scoreCount = Score_qcm::where([
+                ['qcm_id', $qcm->id],
+                ['stagiaire_id', $stagiaire->id]
+            ])->count();
+        } else {
+            $scoreCount = 0;
         }
 
         if ($scoreCount == 1) {

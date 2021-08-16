@@ -60,6 +60,10 @@
     margin-left: 11em;
 }
 
+.alignStart {
+    align-items: self-start;
+}
+
 #intranetNav {
     color: #3273DC;
     margin-left: .5em;

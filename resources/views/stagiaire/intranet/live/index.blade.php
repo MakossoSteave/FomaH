@@ -2,7 +2,7 @@
 
 @section('content')
 @if(Auth::user())
-<h1>lIVE</h1>
+<h1>Live</h1>
 
 @else
 <div class="notification is-danger has-text-centered my-4">
