@@ -15,6 +15,7 @@ use App\Models\Projet;
 use App\Models\Session;
 use App\Models\Lier_sessions_stagiaire;
 use App\Models\Faire_projet;
+use App\Models\Contenir_sessions_projet;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,8 +35,11 @@ class IntranetController extends Controller
         $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
        
         $formationName = null;
+
         $sommaire = null;
+
         $session = null;
+
         if ($countFormation == 1) {
         $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
        
@@ -64,12 +68,12 @@ class IntranetController extends Controller
         $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
         
         $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
+
         if($sessionStagiaire){
             $session = Session::where('id', $sessionStagiaire->id_session)->first();
         } else {
             $session=null;
-        }
-        
+        }   
 
         if ($session && $countFormation == 1 && date('Y-m-d') >= $session->date_debut && date('Y-m-d') <= $session->date_fin) {
 
@@ -79,7 +83,7 @@ class IntranetController extends Controller
  
             return redirect('/intranet');
 
-        } else if($session && $countFormation == 1 && date('Y-m-d') <= $session->date_debut) {
+        } else if($session && $countFormation == 1 && date('Y-m-d') < $session->date_debut) {
 
             Session::where('id', $sessionStagiaire->id_session)->update([
                 'statut_id' => 2
@@ -87,7 +91,7 @@ class IntranetController extends Controller
 
             return redirect('/intranet');
 
-        } else if($session && $countFormation == 1 && date('Y-m-d') >= $session->date_fin) {
+        } else if($session && $countFormation == 1 && date('Y-m-d') > $session->date_fin) {
 
             Session::where('id', $sessionStagiaire->id_session)->update([
                 'statut_id' => 5
@@ -109,9 +113,13 @@ class IntranetController extends Controller
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
         
         $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
+
         $qcmCount=0;
+
         $cours=null;
+
         $chapitre=null;
+
         if ($countFormation == 1) {
             $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
             $qcmCount = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->count();
@@ -244,9 +252,63 @@ class IntranetController extends Controller
             ]);
     
             return redirect('/intranet/chapitre');
-        }  else if($chapitreMax == $chapitre->numero_chapitre) {
 
-            return redirect('/intranet/projet');
+        } else if($chapitreMax == $chapitre->numero_chapitre) {
+
+            $idUserAuth=null;
+
+            if(Auth::user())
+
+            $idUserAuth=Auth::user()->id;
+
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+
+            $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+            $projet = Projet::where('id_cours', $formation->id_cours)->first();
+
+            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
+
+            $session = Session::where('id', $sessionStagiaire->id_session)->first();
+
+            $sessionProjet = Contenir_sessions_projet::where([
+                ['id_session', '=' ,$session->id],
+                ['id_projet','=', $projet->id]
+            ])->first();
+
+            if (date('Y-m-d') >= $sessionProjet->date_debut && date('Y-m-d') <= $sessionProjet->date_fin) {
+
+                Contenir_sessions_projet::where([
+                    ['id_session', '=' ,$session->id],
+                    ['id_projet','=', $projet->id]
+                ])->update([
+                    'statut_id' => 3
+                ]);
+    
+                return redirect('/intranet/projet');
+
+            } else if(date('Y-m-d') < $sessionProjet->date_debut) {
+
+                Contenir_sessions_projet::where([
+                    ['id_session', '=' ,$session->id],
+                    ['id_projet','=', $projet->id]
+                ])->update([
+                    'statut_id' => 2
+                ]);
+
+                return redirect('/intranet/projet');
+
+            } else if(date('Y-m-d') > $sessionProjet->date_fin) {
+
+                Contenir_sessions_projet::where([
+                    ['id_session', '=' ,$session->id],
+                    ['id_projet','=', $projet->id]
+                ])->update([
+                    'statut_id' => 5
+                ]);
+
+                return redirect('/intranet/projet');
+            } 
         }
     }
 
@@ -270,9 +332,63 @@ class IntranetController extends Controller
         if($exerciceCount >= 1) {
 
             return redirect('/intranet/exercice');
+
         } else if($chapitreMax == $chapitre->numero_chapitre) {
 
-            return redirect('/intranet/projet');
+            $idUserAuth=null;
+
+            if(Auth::user())
+
+            $idUserAuth=Auth::user()->id;
+
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+
+            $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+            $projet = Projet::where('id_cours', $formation->id_cours)->first();
+
+            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
+
+            $session = Session::where('id', $sessionStagiaire->id_session)->first();
+
+            $sessionProjet = Contenir_sessions_projet::where([
+                ['id_session', '=' ,$session->id],
+                ['id_projet','=', $projet->id]
+            ])->first();
+
+            if (date('Y-m-d') >= $sessionProjet->date_debut && date('Y-m-d') <= $sessionProjet->date_fin) {
+
+                Contenir_sessions_projet::where([
+                    ['id_session', '=' ,$session->id],
+                    ['id_projet','=', $projet->id]
+                ])->update([
+                    'statut_id' => 3
+                ]);
+    
+                return redirect('/intranet/projet');
+
+            } else if(date('Y-m-d') < $session->date_debut) {
+
+                Contenir_sessions_projet::where([
+                    ['id_session', '=' ,$session->id],
+                    ['id_projet','=', $projet->id]
+                ])->update([
+                    'statut_id' => 2
+                ]);
+
+                return redirect('/intranet/projet');
+
+            } else if(date('Y-m-d') > $session->date_fin) {
+
+                Contenir_sessions_projet::where([
+                    ['id_session', '=' ,$session->id],
+                    ['id_projet','=', $projet->id]
+                ])->update([
+                    'statut_id' => 5
+                ]);
+
+                return redirect('/intranet/projet');
+            } 
         } else {
 
             $numeroChapitre = $chapitre->numero_chapitre+1;
