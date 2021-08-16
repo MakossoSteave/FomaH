@@ -203,7 +203,7 @@ class ChapitreController extends Controller
         if($etat){
             if(!$this->checkChapitre($id_chapitre)){
                 $etat=1;
-                $message="Etat non modifié car une session est active et aucun autre chapitre n'est actif";
+                $message="Etat non modifié car une session est active";/*et aucun autre chapitre n'est actif";*/
             } else { $this->updateChapitre($chapitre,"etat");}
            
         } else {
@@ -345,7 +345,7 @@ class ChapitreController extends Controller
         $coursId=  $Chapitre->id_cours;
         if($etat==0){
             if(!$this->checkChapitre($id_chapitre)){
-                return redirect()->back()->with('error',"Etat non modifié car une session est active et aucun autre chapitre n'est actif");
+                return redirect()->back()->with('error',"Etat non modifié car une session est active"); /*et aucun autre chapitre n'est actif");*/
             }
             $this->updateChapitre($Chapitre,"etat");
         }else {
@@ -394,7 +394,7 @@ class ChapitreController extends Controller
     public function destroy($id_chapitre)
     {
         if(!$this->checkChapitre($id_chapitre)){
-            return redirect()->back()->with('error',"Ne peut pas être supprimé car une session est active et aucun autre chapitre n'est actif");
+            return redirect()->back()->with('error',"Ne peut pas être supprimé car une session est active");/* et aucun autre chapitre n'est actif");*/
         }
         else {
             $Chapitre= Chapitre::find($id_chapitre);
@@ -421,12 +421,12 @@ class ChapitreController extends Controller
         $Formation=FormationsContenirCours::where('id_cours',$chapitre->id_cours)
         ->get();
         foreach($Formation as $f){
-            $cursus=Formation::where('id',$f->id_formation)->where('nombre_chapitre_total',1)->get();
+          //  $cursus=Formation::where('id',$f->id_formation)->where('nombre_chapitre_total',1)->get();
             $session =  Session::where('formations_id',$f->id_formation)
             ->where('etat',1)
             ->where('statut_id',3)
             ->first();
-            if($session!=null && $cursus!=null){
+            if($session!=null /*&& $cursus!=null*/){
                 return false;
             }
         }
