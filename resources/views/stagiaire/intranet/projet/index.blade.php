@@ -75,6 +75,8 @@
                 {{ session('fail') }}
             </div>
         @endif
+
+        @if($sessionProjet->statut_id == 3)
             <h1 class="has-text-centered">Projet</h1>
             @foreach($projets as $projet)
             <div class="box mt-4">
@@ -155,6 +157,15 @@
 </div>
 </div>
 </section>
+@elseif($sessionProjet->statut_id == 1)
+    <div class="notification is-info has-text-centered my-4">
+        Le projet commencera le {{date('d-m-Y', strtotime($sessionProjet->date_debut))}}
+    </div>
+@elseif($sessionProjet->statut_id == 4)
+    <div class="notification is-info has-text-centered my-4">
+        Le projet est terminé depuis le {{date('d-m-Y', strtotime($sessionProjet->date_fin))}}
+    </div>
+@endif
 @else
 <div class="notification is-danger has-text-centered my-4">
 Votre session a expiré !

@@ -293,7 +293,7 @@ class IntranetController extends Controller
                     ['id_session', '=' ,$session->id],
                     ['id_projet','=', $projet->id]
                 ])->update([
-                    'statut_id' => 2
+                    'statut_id' => 1
                 ]);
 
                 return redirect('/intranet/projet');
@@ -304,7 +304,7 @@ class IntranetController extends Controller
                     ['id_session', '=' ,$session->id],
                     ['id_projet','=', $projet->id]
                 ])->update([
-                    'statut_id' => 5
+                    'statut_id' => 4
                 ]);
 
                 return redirect('/intranet/projet');
@@ -373,7 +373,7 @@ class IntranetController extends Controller
                     ['id_session', '=' ,$session->id],
                     ['id_projet','=', $projet->id]
                 ])->update([
-                    'statut_id' => 2
+                    'statut_id' => 1
                 ]);
 
                 return redirect('/intranet/projet');
@@ -384,7 +384,7 @@ class IntranetController extends Controller
                     ['id_session', '=' ,$session->id],
                     ['id_projet','=', $projet->id]
                 ])->update([
-                    'statut_id' => 5
+                    'statut_id' => 4
                 ]);
 
                 return redirect('/intranet/projet');
@@ -434,10 +434,21 @@ class IntranetController extends Controller
             $faireProjet = false;
         }
 
+        $sessionProjet = null;
+
         if ($projetCount == 1) {
             $projets = Projet::where('id_cours', $formation->id_cours)->with('Document')->get();
+            
+            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
 
-            return view('stagiaire.intranet.projet.index', compact(['projets'],['cours'],['formation'],['faireProjet']));
+            $session = Session::where('id', $sessionStagiaire->id_session)->first();
+
+            $sessionProjet = Contenir_sessions_projet::where([
+                ['id_session', '=' ,$session->id],
+                ['id_projet','=', $projet->id]
+            ])->first();
+
+            return view('stagiaire.intranet.projet.index', compact(['projets'],['cours'],['formation'],['faireProjet'],['sessionProjet']));
         } else {
             return redirect('/intranet/chapitre');
         }
