@@ -44,7 +44,7 @@
                 </div>
         </div>
 
-        <div class="field">
+     <!--   <div class="field">
             <label class="label">Choisir le statut</label>
                 <div class="control">
                     <div class="select">
@@ -56,7 +56,7 @@
                     </div>
                 </div>
         </div>
-
+-->
         <div class="field">
             <label class="label">Choisir le formateur référent (facultatif)</label>
                 <div class="control">

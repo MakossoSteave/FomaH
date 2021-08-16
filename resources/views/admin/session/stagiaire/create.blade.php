@@ -2,6 +2,7 @@
 
 @section('content')
 @if(Auth::user() && Auth::user()->role_id==1)
+
 <div class="container is-max-desktop">
     @if ($errors->any())
     <div class="notification is-danger">
@@ -13,32 +14,31 @@
             </ul>
     </div>
     @endif
-    <h2 class="title is-2 has-text-centered mt-6">Ajouter un QCM</h2>
-    <form action="{{ route('qcm.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
+    @if (session('error'))
+        <div class="notification is-danger has-text-centered my-4">
+        <button class="delete"></button>
+            {{ session('error') }}
+        </div>
+    @endif
+    <h2 class="title is-2 has-text-centered mt-6">Ajouter un stagiaire</h2>
+    <form action="{{ route('AddStagiaire',$id) }}" method="POST" enctype="multipart/form-data" class="mt-6">
         @csrf
-
-        <input type="hidden" name="id_chapitre" value="{{request()->route('id')}}">
-
+    
         <div class="field">
-            <label class="label">Titre du QCM</label>
+            <label class="label">Stagiaire</label>
                 <div class="control">
-                    <input name="designation" class="input" type="text" placeholder="Titre du QCM">
+                    <div class="select">
+                    <select name="stagiaire_id">
+                   
+                        @foreach ($stagiaires as $stagiaire)
+                            <option value="{{$stagiaire->id}}">{{$stagiaire->prenom}} {{$stagiaire->nom}}</option>
+                        @endforeach
+                    </select>
+                    </div>
                 </div>
         </div>
-        
-        <div id="addQuestion"></div>
-        
-        <div class="flex">
-            <div></div>
-            <div class="mt-2 mb-2">
-                <a id="buttonAddQuestion" class="has-icons-right has-text-black" onclick="addQuestion()">
-                    Ajouter une question
-                    <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
-                </a>
-            </div>
-        </div>
         <div class="field">
-            <label class="label">Etat QCM</label>
+            <label class="label">Etat</label>
                                     
                                     <select class="form-select block w-full mt-1"  name="etat">
                                           
@@ -51,9 +51,9 @@
                                         </select>
         </div>
             <div class="control mt-4 mb-4">
-                <button type="submit" class="button is-fullwidth is-link is-rounded">Créer</button>
+                <button type="submit" class="button is-fullwidth is-link is-rounded">Ajouter</button>
             </div>
-        </div>
+        
     </form>
 </div>
 @else

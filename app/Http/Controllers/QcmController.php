@@ -8,7 +8,7 @@ use App\Models\Qcm;
 use App\Models\Chapitre;
 use App\Models\Question_qcm;
 use App\Models\Reponse_question_qcm;
-
+use Illuminate\Validation\Rule;
 class QcmController extends Controller
 {
     public function index($id)
@@ -27,8 +27,11 @@ class QcmController extends Controller
     {
         $request->validate([
             'designation' => 'required',
-            'id_chapitre' => 'required'
-        ]);
+            'id_chapitre' => 'required',
+            'etat' => [
+                'required',
+                Rule::in(['0', '1'])]
+            ]);
 
         do {
             $idQcm = rand(10000000, 99999999);
@@ -37,7 +40,7 @@ class QcmController extends Controller
         Qcm::create([
             'id' => $idQcm,
             'designation' => $request->get('designation'),
-            'etat' => 0,
+            'etat' => $request->get('etat'),
             'id_chapitre' => $request->get('id_chapitre')
         ]);
 
@@ -103,12 +106,15 @@ class QcmController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'designation' => 'required'
+            'designation' => 'required',
+            'etat' => [
+                'required',
+                Rule::in(['0', '1'])]
         ]);
 
         Qcm::where('id', $id)->update([
             'designation' => $request->get('designation'),
-            'etat' => 0,
+            'etat' => $request->get('etat'),
             'id_chapitre' => $request->get('id_chapitre')
         ]);
 
@@ -202,5 +208,13 @@ class QcmController extends Controller
         QCM::where('id',$id)->delete();
 
         return redirect()->back()->with('success','QCM supprimé avec succès');
+    }
+
+    public function etat($id)
+    {
+        $qcm = QCM::find($id);
+        $etat = !$qcm->etat;
+        QCM::where('id',$id)->update(['etat'=>$etat]);
+        return redirect()->back()->with('success','Etat modifié avec succès');
     }
 }

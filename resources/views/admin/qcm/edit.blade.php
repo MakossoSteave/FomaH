@@ -112,7 +112,29 @@
                     </div>
             </div>
         @endforeach
-
+        <div class="field">
+            <label class="label">Etat QCM</label>
+                                    
+                                    <select class="form-select block w-full mt-1"  name="etat">
+                                          
+                                            <option 
+                                            @if($qcms->etat == 1) value="1"
+                                            @else value="0"
+                                            @endif selected>
+                                            @if($qcms->etat == 1) Activé
+                                            @else Désactivé
+                                            @endif
+                                            </option>
+                                            <option
+                                            @if(!$qcms->etat == 1) value="1"
+                                            @else value="0"
+                                            @endif>
+                                            @if(!$qcms->etat == 1) Activé
+                                            @else Désactivé
+                                            @endif
+                                            </option>
+                                        </select>
+        </div>
             <div class="control mt-4 mb-4">
                 <button type="submit" class="button is-fullwidth is-link is-rounded">Modifier</button>
             </div>

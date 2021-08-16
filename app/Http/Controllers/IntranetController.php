@@ -32,7 +32,13 @@ class IntranetController extends Controller
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
         
         $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
-
+       
+        $formationName = null;
+        $sommaire = null;
+        $session = null;
+        if ($countFormation == 1) {
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+       
         $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
 
         $session = Session::where('id', $sessionStagiaire->id_session)->first();
@@ -42,7 +48,7 @@ class IntranetController extends Controller
         $formationName = Formation::where('id', $formation->id_formations)->first();
 
         $sommaire = FormationsContenirCours::where('id_formation', $formation->id_formations)->with('Cours.Chapitre.Section')->orderby('numero_cours', 'ASC')->get();
-
+        }
         return view('stagiaire.intranet.index', compact(['sommaire'], ['formationName'], ['session']));
     }
 
@@ -56,12 +62,16 @@ class IntranetController extends Controller
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
         
         $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
-
+        
         $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
+        if($sessionStagiaire){
+            $session = Session::where('id', $sessionStagiaire->id_session)->first();
+        } else {
+            $session=null;
+        }
+        
 
-        $session = Session::where('id', $sessionStagiaire->id_session)->first();
-
-        if ($countFormation == 1 && date('Y-m-d') >= $session->date_debut && date('Y-m-d') <= $session->date_fin) {
+        if ($session && $countFormation == 1 && date('Y-m-d') >= $session->date_debut && date('Y-m-d') <= $session->date_fin) {
 
             Session::where('id', $sessionStagiaire->id_session)->update([
                 'statut_id' => 3
@@ -69,7 +79,7 @@ class IntranetController extends Controller
  
             return redirect('/intranet');
 
-        } else if($countFormation == 1 && date('Y-m-d') <= $session->date_debut) {
+        } else if($session && $countFormation == 1 && date('Y-m-d') <= $session->date_debut) {
 
             Session::where('id', $sessionStagiaire->id_session)->update([
                 'statut_id' => 2
@@ -77,7 +87,7 @@ class IntranetController extends Controller
 
             return redirect('/intranet');
 
-        } else if($countFormation == 1 && date('Y-m-d') >= $session->date_fin) {
+        } else if($session && $countFormation == 1 && date('Y-m-d') >= $session->date_fin) {
 
             Session::where('id', $sessionStagiaire->id_session)->update([
                 'statut_id' => 5
@@ -99,15 +109,17 @@ class IntranetController extends Controller
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
         
         $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
-
+        $qcmCount=0;
+        $cours=null;
+        $chapitre=null;
         if ($countFormation == 1) {
             $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
-
+            $qcmCount = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->count();
             $cours = Cours::where('id_cours', $formation->id_cours)->first();
             $chapitre = Suivre_formation::where('id_chapitre', $formation->id_chapitre)->with('Chapitre.Section')->first();
         }
 
-        return view('stagiaire.intranet.cours.index', compact(['chapitre'], ['cours']));
+        return view('stagiaire.intranet.cours.index', compact(['chapitre'], ['cours'],'qcmCount'));
     }
 
     public function qcm() {
@@ -123,12 +135,12 @@ class IntranetController extends Controller
 
         $cours = Cours::where('id_cours', $formation->id_cours)->first();
 
-        $qcms = Qcm::where('id_chapitre', $formation->id_chapitre)->with('Question_qcm.Reponse_question_qcm')->get();
+        $qcms = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->with('Question_qcm.Reponse_question_qcm')->get();
 
-        $qcm = Qcm::where('id_chapitre', $formation->id_chapitre)->first();
-
+        $qcm = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->first();
+    
         $scoreCount = Score_qcm::where('qcm_id', $qcm->id)->count();
-
+       
         $score = null;
 
         if ($scoreCount == 1) {
@@ -188,8 +200,12 @@ class IntranetController extends Controller
         $exercices = Exercice::where('id_chapitre', $formation->id_chapitre)->with('Questions_exercice.Questions_correction')->get();
 
         $qcm = Qcm::where('id_chapitre', $formation->id_chapitre)->first();
-
-        $scoreCount = Score_qcm::where('qcm_id', $qcm->id)->count();
+        if($qcm){
+            $scoreCount = Score_qcm::where('qcm_id', $qcm->id)->count();
+        }
+        else {
+            $scoreCount =0;
+        }
 
         if ($scoreCount == 1) {
     

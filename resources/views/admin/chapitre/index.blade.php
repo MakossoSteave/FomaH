@@ -63,7 +63,7 @@
         </p>
     </div>
   </div>
-    <div class="column marginChapitre">
+    <div class="column"><!--  marginChapitre : dropdown ne s'affiche plus -->
         <div class="dropdown is-right is-hoverable">
           <div class="dropdown-trigger">
             <button class="button borderNone is-right"

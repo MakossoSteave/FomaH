@@ -64,6 +64,7 @@
                         <p class="subtitle is-6">Nombre de cours actifs: {{$formation->nombre_cours_total}}</p>
                         <p class="subtitle is-6">Nombre de chapitre actifs: {{$formation->nombre_chapitre_total}}</p>
                         <p class="subtitle is-6">Prix: {{$formation->prix}}€</p>
+                        <p class="subtitle is-6">Effectif: {{$formation->effectif}}</p>
                         <a class="{{ $formation->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatFormation', $formation->id) }}">
                         @if($formation->etat == 1) 
                         Activé

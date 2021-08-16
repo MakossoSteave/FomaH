@@ -14,7 +14,7 @@ class Suivre_formation extends Model
     protected $primaryKey = 'id_stagiaire';
     
     protected $fillable=[
-        'id_stagiaire', 'id_formations', 'id_cours', 'id_chapitre', 'nombre_chapitre_lu', 'progression'
+        'id_stagiaire', 'id_formations', 'id_cours', 'id_chapitre', 'nombre_chapitre_lu', 'progression','id_chapitre_Courant','id_projet','id_qcm'
     ];
 
     public function Cours()

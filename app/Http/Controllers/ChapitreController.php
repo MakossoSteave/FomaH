@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Chapitre;
 use App\Models\Section;
 use App\Models\Cours;
+use App\Models\Session;
 use App\Http\Controllers\CoursController;
+use App\Models\Formation;
 use App\Models\FormationsContenirCours;
 
 use Illuminate\Http\Request;
@@ -197,10 +199,13 @@ class ChapitreController extends Controller
             $chapitre=Chapitre::find($id_chapitre);
             $video = $chapitre->video;
         }
-
-        if($request->get('etat')==0){
-            
-            $this->updateChapitre($chapitre,"etat");
+        $etat=$request->get('etat');
+        if($etat){
+            if(!$this->checkChapitre($id_chapitre)){
+                $etat=1;
+                $message="Etat non modifié car une session est active";/*et aucun autre chapitre n'est actif";*/
+            } else { $this->updateChapitre($chapitre,"etat");}
+           
         } else {
             $Numero= Chapitre::where('id_cours',$idCours)->where('etat',1)->max('numero_chapitre');
             Chapitre::where('id_chapitre',$id_chapitre)->update([
@@ -227,7 +232,7 @@ class ChapitreController extends Controller
             'designation' => $request->get('designation'),
             'image' => $image,
             'video' => $video,
-            'etat' => $request->get('etat')
+            'etat' => $etat
         ]); 
         if ($request->has('updateSection')) {
 
@@ -311,8 +316,13 @@ class ChapitreController extends Controller
                 ]);
             }
         }
+        if($message!=null){
+            return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Modifié avec succés')
+            ->with('error',$message);
+        }else {
+            return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Modifié avec succés');
 
-        return redirect('/chapitres/'.intval($request->session()->get('idCours')))->with('success','Modifié avec succés');
+        }
     }
 
     public function deleteSection($id)
@@ -334,6 +344,9 @@ class ChapitreController extends Controller
         $etat = !$Chapitre->etat;
         $coursId=  $Chapitre->id_cours;
         if($etat==0){
+            if(!$this->checkChapitre($id_chapitre)){
+                return redirect()->back()->with('error',"Etat non modifié car une session est active"); /*et aucun autre chapitre n'est actif");*/
+            }
             $this->updateChapitre($Chapitre,"etat");
         }else {
             $Numero= Chapitre::where('id_cours',$coursId)->where('etat',1)->max('numero_chapitre');
@@ -375,28 +388,50 @@ class ChapitreController extends Controller
             }*/
             }
         Chapitre::where('id_chapitre', $id_chapitre)->update(array('etat' => $etat));
-        return redirect()->back()->with('success','Modifié avec succès');
+        return redirect()->back()->with('success','Etat modifié avec succès');
     }
 
     public function destroy($id_chapitre)
     {
-        $Chapitre= Chapitre::find($id_chapitre);
+        if(!$this->checkChapitre($id_chapitre)){
+            return redirect()->back()->with('error',"Ne peut pas être supprimé car une session est active");/* et aucun autre chapitre n'est actif");*/
+        }
+        else {
+            $Chapitre= Chapitre::find($id_chapitre);
         
-        $coursId=  $Chapitre->id_cours;
-       // $this->checkEtat($coursId,$id_chapitre);
-       
-        Chapitre::where('id_chapitre',$id_chapitre)->delete();
-
-        //update numero chapitre
-       // if($Chapitre->etat==1){
-            $this->updateChapitre($Chapitre,null);
-        //}
+            $coursId=  $Chapitre->id_cours;
+           // $this->checkEtat($coursId,$id_chapitre);
+           
+            Chapitre::where('id_chapitre',$id_chapitre)->delete();
+    
+            //update numero chapitre
+           // if($Chapitre->etat==1){
+                $this->updateChapitre($Chapitre,null);
+            //}
+            
+            //
+    
+            return redirect()->back()->with('success','Supprimé avec succès');
+        }
         
-        //
-
-        return redirect()->back()->with('success','Supprimé avec succès');
     }
-
+    public function checkChapitre($id_chapitre){
+        $chapitre=Chapitre::find($id_chapitre);
+        //$cours=Cours::where('id_cours',$chapitre->id_cours);
+        $Formation=FormationsContenirCours::where('id_cours',$chapitre->id_cours)
+        ->get();
+        foreach($Formation as $f){
+          //  $cursus=Formation::where('id',$f->id_formation)->where('nombre_chapitre_total',1)->get();
+            $session =  Session::where('formations_id',$f->id_formation)
+            ->where('etat',1)
+            ->where('statut_id',3)
+            ->first();
+            if($session!=null /*&& $cursus!=null*/){
+                return false;
+            }
+        }
+        return true;
+    }
     public function checkEtat($id,$id_chapitre){
         $ChapitreActifCours= Chapitre::where('id_cours',$id)->where('etat',1)->where('id_chapitre',"!=",$id_chapitre)->count();
         if($ChapitreActifCours == 0){
