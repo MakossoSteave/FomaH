@@ -63,7 +63,7 @@
                             <div class="dropdown-content">
                         
 
-                            <a href="" class="dropdown-item">
+                            <a href="{{ route('progressionStagiaire', [$stagiaire->stagiaireID,$id]) }}" class="dropdown-item">
                                Voir la progression
                             </a>
                            

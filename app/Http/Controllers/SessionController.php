@@ -368,4 +368,10 @@ class SessionController extends Controller
         return redirect()->back()->with('success','Diplôme crée avec succès');
 
     }
+    public function progressionStagiaire($id,$idSession){
+        $stagiaire = Suivre_formation::where('id_stagiaire',$id)
+        ->where('id_session',$idSession)
+        ->first();
+        return view('admin.session.stagiaire.progression',compact(['stagiaire']));
+    }
 }
