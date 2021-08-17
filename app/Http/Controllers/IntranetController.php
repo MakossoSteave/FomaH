@@ -138,12 +138,12 @@ class IntranetController extends Controller
             $chapitre = Suivre_formation::where('id_chapitre', $formation->id_chapitre)->with('Chapitre.Section')->first();
 
             $qcm = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->first();
-    
-            $scoreCount = Score_qcm::where([
-                ['qcm_id', $qcm->id],
-                ['stagiaire_id', $stagiaire->id]
-                ])->count();
-                
+            if($qcm)
+           { $scoreCount = Score_qcm::where([
+            ['qcm_id', $qcm->id],
+            ['stagiaire_id', $stagiaire->id]
+            ])->count();}
+                else {$scoreCount = 0;}
             $exerciceCount = Exercice::where('id_chapitre', $formation->id_chapitre)->count();
 
             $chapitreMax = Chapitre::where('id_cours', $formation->id_cours)->max('numero_chapitre');
@@ -272,14 +272,18 @@ class IntranetController extends Controller
 
         if ($chapitreMax != $chapitre->numero_chapitre) {
             $numeroChapitre = $chapitre->numero_chapitre+1;
-
+            $nombreChapitre = (Formation::find($formation->id_formations))->nombre_chapitre_total;
             $nextChapitre = Chapitre::where([
                 'id_cours' => $formation->id_cours,
-                'numero_chapitre' => $numeroChapitre
+                'numero_chapitre' => $numeroChapitre,
+                'etat'=>1
             ])->first();
-    
+
             Suivre_formation::where('id_stagiaire', $stagiaire->id)->update([
-                'id_chapitre' => $nextChapitre->id_chapitre
+                'id_chapitre' => $nextChapitre->id_chapitre,
+                'id_chapitre_Courant'=> $nextChapitre->id_chapitre,
+                'nombre_chapitre_lu' => $formation->nombre_chapitre_lu+1,
+                'progression' => (($formation->nombre_chapitre_lu+1)/$nombreChapitre)*100
             ]);
     
             return redirect('/intranet/chapitre');
@@ -423,14 +427,18 @@ class IntranetController extends Controller
         } else {
 
             $numeroChapitre = $chapitre->numero_chapitre+1;
-
+            $nombreChapitre = (Formation::find($formation->id_formations))->nombre_chapitre_total;
             $nextChapitre = Chapitre::where([
                 'id_cours' => $formation->id_cours,
-                'numero_chapitre' => $numeroChapitre
+                'numero_chapitre' => $numeroChapitre,
+                'etat'=>1
             ])->first();
 
             Suivre_formation::where('id_stagiaire', $stagiaire->id)->update([
-                'id_chapitre' => $nextChapitre->id_chapitre
+                'id_chapitre' => $nextChapitre->id_chapitre,
+                'id_chapitre_Courant'=> $nextChapitre->id_chapitre,
+                'nombre_chapitre_lu' => $formation->nombre_chapitre_lu+1,
+                'progression' => (($formation->nombre_chapitre_lu+1)/$nombreChapitre)*100
             ]);
     
             return redirect('/intranet/chapitre');
