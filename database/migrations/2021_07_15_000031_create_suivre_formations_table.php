@@ -16,8 +16,10 @@ class CreateSuivreformationsTable extends Migration
         Schema::create('suivre_formations', function (Blueprint $table) {
             $table->engine='InnoDB';
             $table->bigInteger('id_stagiaire')->unsigned();
-            $table->bigInteger('id_formations')->unsigned();
-            $table->primary(['id_stagiaire', 'id_formations']);
+            $table->bigInteger('id_session')->unsigned();
+            $table->bigInteger('id_formations')->unsigned(); 
+            $table->foreign('id_session')->references('id')->on('sessions')->onDelete('cascade');    
+            $table->primary(['id_stagiaire', 'id_session']);
             $table->foreign('id_formations')->references('id')->on('formations')->onDelete('cascade');    
             $table->foreign('id_stagiaire')->references('id')->on('stagiaires')->onDelete('cascade');
             $table->bigInteger('id_cours')->unsigned()->index();

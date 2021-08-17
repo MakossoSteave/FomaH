@@ -107,7 +107,7 @@ class SessionController extends Controller
         if($etat ==1){
             $session=Session::find($idSession);
             $exists=Suivre_formation::where('id_stagiaire',$id)
-            ->where('id_formations',$session->formations_id)->first();
+            ->where('id_session',$idSession)->first();
               $existsAutreFormation=Lier_sessions_stagiaire::where('id_stagiaire',$id)
             ->where('id_session','!=',$idSession)->where('etat',1)->first();
             if( $exists==null && $existsAutreFormation==null){
@@ -119,6 +119,7 @@ class SessionController extends Controller
                
                 Suivre_formation::create([
                     'id_stagiaire' => $id,
+                    'id_session'=>$idSession,
                     'id_formations' => $session->formations_id,
                     'id_cours' => $cours->id_cours,
                     'id_chapitre' => $chapitre->id_chapitre,
@@ -275,7 +276,7 @@ class SessionController extends Controller
         if($request->get('etat')==1){
             $session=Session::find($id);
             $exists=Suivre_formation::where('id_stagiaire',$request->get('stagiaire_id'))
-            ->where('id_formations',$session->formations_id)->first();
+            ->where('id_session',$id)->first();
             $existsAutreFormation=Lier_sessions_stagiaire::where('id_stagiaire',$request->get('stagiaire_id'))
             ->where('id_session','!=',$id)->where('etat',1)->first();
             if( $exists==null && $existsAutreFormation==null){
@@ -287,6 +288,7 @@ class SessionController extends Controller
                
                 Suivre_formation::create([
                     'id_stagiaire' => $request->get('stagiaire_id'),
+                    'id_session' => $id,
                     'id_formations' => $session->formations_id,
                     'id_cours' => $cours->id_cours,
                     'id_chapitre' => $chapitre->id_chapitre,
