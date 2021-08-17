@@ -102,8 +102,7 @@ class SessionController extends Controller
         ->first();
         $etat = !$etatStagiaire->etat;
 
-        Lier_sessions_stagiaire::where('id_stagiaire',$id)
-        ->where('id_session',$idSession)->update(array('etat' => $etat));
+  
         if($etat ==1){
             $session=Session::find($idSession);
             $exists=Suivre_formation::where('id_stagiaire',$id)
@@ -132,6 +131,8 @@ class SessionController extends Controller
                 return redirect()->back()->with('error','Stagiaire déjà inscrit dans une autre session');
             }
         }
+        Lier_sessions_stagiaire::where('id_stagiaire',$id)
+        ->where('id_session',$idSession)->update(array('etat' => $etat));
         return redirect()->back()->with('success','Etat modifié avec succès');
     }
     public function edit($id)
@@ -268,11 +269,7 @@ class SessionController extends Controller
         if($stagiairesInscrits==$effectif){
             return redirect('/StagiaireSession/'.$id)->with('error','Nombre maximum de stagiaire atteint'); 
         }else{
-        Lier_sessions_stagiaire::create([
-            'id_session'=> $id,
-            'id_stagiaire'=>  $request->get('stagiaire_id'),
-            'etat' =>  $request->get('etat')
-        ]);
+       
         if($request->get('etat')==1){
             $session=Session::find($id);
             $exists=Suivre_formation::where('id_stagiaire',$request->get('stagiaire_id'))
@@ -301,6 +298,11 @@ class SessionController extends Controller
                 return redirect()->back()->with('error','Stagiaire déjà inscrit dans une autre session');
             }
         }
+        Lier_sessions_stagiaire::create([
+            'id_session'=> $id,
+            'id_stagiaire'=>  $request->get('stagiaire_id'),
+            'etat' =>  $request->get('etat')
+        ]);
         return redirect('/StagiaireSession/'.$id)->with('success','Le stagiaire a été ajouté avec succès');
         }
     }
