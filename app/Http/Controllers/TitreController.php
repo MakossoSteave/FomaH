@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chapitre;
+use App\Models\Cours;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -30,9 +31,17 @@ class TitreController extends Controller
     public function destroy($id)
     {   $titre = Titre::find($id);
         if($titre){
-            Titre::where('id',$id)->delete();
             $stagiaire = Stagiaire::find($titre->stagiaire_id);
-            Storage::delete("session/$titre->session_id/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf");
+            if($titre->session_id !=null){
+                
+                Storage::delete("session/$titre->session_id/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf");
+            }
+            else {
+                $cours= Cours::where('designation',$titre->intitule)->first();
+                Storage::delete("cours/$cours->id_cours/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf");
+            }
+            Titre::where('id',$id)->delete();
+           
             return redirect()->back()->with('success','Titre supprimé avec succès');
 
             //"session/$idSession/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf"
