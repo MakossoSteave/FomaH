@@ -108,7 +108,9 @@ class SessionController extends Controller
             $session=Session::find($idSession);
             $exists=Suivre_formation::where('id_stagiaire',$id)
             ->where('id_formations',$session->formations_id)->first();
-            if( $exists==null){
+            $existsAutreFormation=Suivre_formation::where('id_stagiaire',$id)
+            ->where('id_formations','!=',$session->formations_id)->where('etat',1)->first();
+            if( $exists==null && $existsAutreFormation==null){
                 $cours=FormationsContenirCours::where('id_formation',$session->formations_id)->where('numero_cours',1)->first();
                 if($cours){ $chapitre=Chapitre::where('id_cours',$cours->id_cours)
                     ->where('numero_chapitre',1)
@@ -125,6 +127,8 @@ class SessionController extends Controller
                     'progression' => 0
                 ]);
             }
+            }else if($existsAutreFormation!=null){
+                return redirect()->back()->with('error','Stagiaire déjà inscrit dans une autre session');
             }
         }
         return redirect()->back()->with('success','Etat modifié avec succès');
@@ -232,6 +236,7 @@ class SessionController extends Controller
     public function Session_Stagiaire_Ajout(Request $request,$id){
         $stagiairesInscrits= Lier_sessions_stagiaire::select('lier_sessions_stagiaires.id_stagiaire')
         ->where('id_session',$id)
+        ->orWhere('etat',1)
         ->get();
         $stagiaires= Stagiaire::select('stagiaires.nom','stagiaires.prenom','stagiaires.id') 
         ->whereNotIn('id',$stagiairesInscrits)
@@ -267,6 +272,33 @@ class SessionController extends Controller
             'id_stagiaire'=>  $request->get('stagiaire_id'),
             'etat' =>  $request->get('etat')
         ]);
+        if($request->get('etat')==1){
+            $session=Session::find($id);
+            $exists=Suivre_formation::where('id_stagiaire',$request->get('stagiaire_id'))
+            ->where('id_formations',$session->formations_id)->first();
+            $existsAutreFormation=Suivre_formation::where('id_stagiaire',$request->get('stagiaire_id'))
+            ->where('id_formations','!=',$session->formations_id)->where('etat',1)->first();
+            if( $exists==null && $existsAutreFormation==null){
+                $cours=FormationsContenirCours::where('id_formation',$session->formations_id)->where('numero_cours',1)->first();
+                if($cours){ $chapitre=Chapitre::where('id_cours',$cours->id_cours)
+                    ->where('numero_chapitre',1)
+                    ->where('etat',1)
+                    ->first();
+               
+                Suivre_formation::create([
+                    'id_stagiaire' => $request->get('stagiaire_id'),
+                    'id_formations' => $session->formations_id,
+                    'id_cours' => $cours->id_cours,
+                    'id_chapitre' => $chapitre->id_chapitre,
+                    'id_chapitre_Courant'=> $chapitre->id_chapitre,
+                    'nombre_chapitre_lu' => 0,
+                    'progression' => 0
+                ]);
+            }
+            }else if($existsAutreFormation!=null){
+                return redirect()->back()->with('error','Stagiaire déjà inscrit dans une autre session');
+            }
+        }
         return redirect('/StagiaireSession/'.$id)->with('success','Le stagiaire a été ajouté avec succès');
         }
     }

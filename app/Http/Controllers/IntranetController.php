@@ -41,13 +41,13 @@ class IntranetController extends Controller
         $session = null;
 
         if ($countFormation == 1) {
-            $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+            $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->where('etat',1)->first();
        
             $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
 
             $session = Session::where('id', $sessionStagiaire->id_session)->first();
 
-            $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+            $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->where('etat',1)->first();
 
             $formationName = Formation::where('id', $formation->id_formations)->first();
 
@@ -129,7 +129,7 @@ class IntranetController extends Controller
         $chapitre = null;
 
         if ($countFormation == 1) {
-            $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+            $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->where('etat',1)->first();
 
             $qcmCount = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->count();
 
@@ -167,7 +167,7 @@ class IntranetController extends Controller
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
         
-        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->where('etat',1)->first();
 
         $cours = Cours::where('id_cours', $formation->id_cours)->first();
 
@@ -227,7 +227,7 @@ class IntranetController extends Controller
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
-        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->where('etat',1)->first();
 
         $cours = Cours::where('id_cours', $formation->id_cours)->first();
 
@@ -264,7 +264,7 @@ class IntranetController extends Controller
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
-        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->where('etat',1)->first();
 
         $chapitre = Chapitre::where('id_chapitre', $formation->id_chapitre)->first();
 
@@ -272,7 +272,7 @@ class IntranetController extends Controller
 
         if ($chapitreMax != $chapitre->numero_chapitre) {
             $numeroChapitre = $chapitre->numero_chapitre+1;
-            $nombreChapitre = (Formation::find($formation->id_formations))->nombre_chapitre_total;
+            $nombreTotalChapitreCursus = (Formation::find($formation->id_formations))->nombre_chapitre_total;
             $nextChapitre = Chapitre::where([
                 'id_cours' => $formation->id_cours,
                 'numero_chapitre' => $numeroChapitre,
@@ -283,7 +283,7 @@ class IntranetController extends Controller
                 'id_chapitre' => $nextChapitre->id_chapitre,
                 'id_chapitre_Courant'=> $nextChapitre->id_chapitre,
                 'nombre_chapitre_lu' => $formation->nombre_chapitre_lu+1,
-                'progression' => (($formation->nombre_chapitre_lu+1)/$nombreChapitre)*100
+                'progression' => (($formation->nombre_chapitre_lu+1)/$nombreTotalChapitreCursus)*100
             ]);
     
             return redirect('/intranet/chapitre');
@@ -298,7 +298,7 @@ class IntranetController extends Controller
 
             $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
-            $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+            $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->where('etat',1)->first();
 
             $projet = Projet::where('id_cours', $formation->id_cours)->first();
 
@@ -358,7 +358,7 @@ class IntranetController extends Controller
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
-        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->where('etat',1)->first();
 
         $chapitre = Chapitre::where('id_chapitre', $formation->id_chapitre)->first();
 
@@ -378,7 +378,7 @@ class IntranetController extends Controller
 
             $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
-            $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+            $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->where('etat',1)->first();
 
             $projet = Projet::where('id_cours', $formation->id_cours)->first();
 
@@ -454,7 +454,7 @@ class IntranetController extends Controller
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
-        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->where('etat',1)->first();
 
         $cours = Cours::where('id_cours', $formation->id_cours)->first();
 
@@ -502,7 +502,7 @@ class IntranetController extends Controller
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
-        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->where('etat',1)->first();
 
         $projet = Projet::where('id_cours', $formation->id_cours)->first();
 
