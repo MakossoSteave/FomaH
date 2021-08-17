@@ -14,7 +14,8 @@ use App\Models\Lier_sessions_stagiaire;
 use App\Models\Stagiaire;
 use App\Models\Statut;
 use App\Models\Suivre_formation;
-
+use Illuminate\Support\Facades\Storage;
+use PDF;
 class SessionController extends Controller
 {
     public function index()
@@ -321,5 +322,33 @@ class SessionController extends Controller
         Session::where('id',$id)->delete();
 
         return redirect('/session')->with('success','Session supprimé avec succès');
+    }
+
+    public function createPDF($id,$idSession){
+        $session= Session::find($idSession);
+        $formation= Formation::find($session->formations_id);
+        $stagiaire = Stagiaire::find($id);
+        $data = [
+
+            'prenom' => $stagiaire->prenom,
+            'nom' => $stagiaire->nom,
+            'type' => 'cursus',
+            'titre' => $formation->libelle, 
+            'date' =>  	$session->date_fin /*date('m/d/Y')*/
+
+        ];
+
+          
+
+        $pdf = PDF::loadView('admin.session.diplome', $data);
+        $pdf->stream("$stagiaire->prenom $stagiaire->nom s.pdf");
+        $destinationPath = public_path("doc/session/$idSession/diplome/");
+       
+       
+
+        Storage::put("doc/session/$idSession/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf", $pdf->output());
+
+        return $pdf->download("$stagiaire->prenom $stagiaire->nom diplome.pdf");
+
     }
 }

@@ -94,7 +94,7 @@
                         @if($stagiaire->resultat_description && ($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5 ))
                         <p><span class="title is-6">Description du résultat:</span> </p><p><span class="subtitle is-5 has-text-white">{{$stagiaire->resultat_description}}</span></p>
                         @endif
-                       
+                        <a class="btn btn-primary" href="{{ route('createPDF', [$stagiaire->stagiaireID,$id]) }}">Export to PDF</a>
                         <a class="{{ $stagiaire->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatStagiaireSession', [$stagiaire->stagiaireID,$id]) }}">
                         @if($stagiaire->etat == 1) 
                         Activé
@@ -183,20 +183,3 @@ Votre session a expiré !
 </button>
 @endif
 @endsection
-<!-- diplome
-    <div style="width:800px; height:600px; padding:20px; text-align:center; border: 10px solid #787878">
-<div style="width:750px; height:550px; padding:20px; text-align:center; border: 5px solid #787878">
-       <span style="font-size:50px; font-weight:bold">Certificate of Completion</span>
-       <br><br>
-       <span style="font-size:25px"><i>This is to certify that</i></span>
-       <br><br>
-       <span style="font-size:30px"><b>$student.getFullName()</b></span><br/><br/>
-       <span style="font-size:25px"><i>has completed the course</i></span> <br/><br/>
-       <span style="font-size:30px">$course.getName()</span> <br/><br/>
-       <span style="font-size:20px">with score of <b>$grade.getPoints()%</b></span> <br/><br/><br/><br/>
-       <span style="font-size:25px"><i>dated</i></span><br>
-     
-      
-</div>
-</div>
-                        -->
