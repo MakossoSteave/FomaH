@@ -73,7 +73,7 @@
         <form action="{{ url('intranet/next') }}" method="POST">
         @csrf
 
-        <input type="hidden" name="id_chapitre" value="{{$formation->id_chapitre}}">
+        <input type="hidden" name="id_chapitre" value="{{$formation->id_chapitre_Courant}}">
         <input type="hidden" name="id_cours" value="{{$formation->id_cours}}">
         @foreach($qcms as $qcm)
         <input type="hidden" name="qcm_id" value="{{$qcm->id}}">

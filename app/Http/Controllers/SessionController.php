@@ -128,6 +128,8 @@ class SessionController extends Controller
                     'nombre_chapitre_lu' => 0,
                     'progression' => 0
                 ]);
+            }else {
+                return redirect()->back()->with('error','Aucun cours actif !'); 
             }
             }else if($existsAutreFormation!=null){
                 return redirect()->back()->with('error','Stagiaire déjà inscrit dans une autre session');
@@ -295,6 +297,8 @@ class SessionController extends Controller
                     'nombre_chapitre_lu' => 0,
                     'progression' => 0
                 ]);
+            }else {
+                return redirect()->back()->with('error','Aucun cours actif !'); 
             }
             }else if($existsAutreFormation!=null){
                 return redirect()->back()->with('error','Stagiaire déjà inscrit dans une autre session');
