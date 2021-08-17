@@ -119,7 +119,7 @@ class SessionController extends Controller
                
                 Suivre_formation::create([
                     'id_stagiaire' => $id,
-                    'id_session'=>$idSession,
+                    'id_session'=> $idSession,
                     'id_formations' => $session->formations_id,
                     'id_cours' => $cours->id_cours,
                     'id_chapitre' => $chapitre->id_chapitre,
