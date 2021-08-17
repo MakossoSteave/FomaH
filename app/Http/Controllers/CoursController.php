@@ -377,8 +377,12 @@ class CoursController extends Controller
     }
     public function destroy($id)
     {
-        if(!$this->checkCours($id)){
+        $cours = Cours::find($id);
+        if($cours->etat==1)
+        {
+            if(!$this->checkCours($id)){
             return redirect()->back()->with('error',"Ne peut pas être supprimé car une session est active");/* et aucun autre chapitre n'est actif");*/
+            }
         }
         else {
         // toutes les id formations qui contienent le cours
@@ -391,7 +395,7 @@ class CoursController extends Controller
         $nombreChapitresCours=Cours::where('id_cours',$id)->value('nombre_chapitres');
         $Formation= new FormationAdminController;
 
-        $cours = Cours::find($id);
+        
         $formationContenirCours = FormationsContenirCours::
             where('id_cours',$id)->get();
         foreach($formationContenirCours as $f)

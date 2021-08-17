@@ -300,20 +300,22 @@ class FormationAdminController extends Controller
         
     }
     public function removeCours($idCours,$idFormation){
-  
-        $Formation=FormationsContenirCours::where('id_cours',$idCours)
-        ->get();
-        foreach($Formation as $f){
-          //  $cursus=Formation::where('id',$f->id_formation)->where('nombre_chapitre_total',1)->get();
-            $session =  Session::where('formations_id',$f->id_formation)
-            ->where('etat',1)
-            ->where('statut_id',3)
-            ->first();
-            if($session!=null /*&& $cursus!=null*/){
-                return redirect()->back()->with('error','Ne peut pas être supprimé car une session est active');
+        $cours = Cours::find($idCours);
+        if($cours->etat==1){
+            $Formation=FormationsContenirCours::where('id_cours',$idCours)
+            ->get();
+            foreach($Formation as $f){
+              //  $cursus=Formation::where('id',$f->id_formation)->where('nombre_chapitre_total',1)->get();
+                $session =  Session::where('formations_id',$f->id_formation)
+                ->where('etat',1)
+                ->where('statut_id',3)
+                ->first();
+                if($session!=null /*&& $cursus!=null*/){
+                    return redirect()->back()->with('error','Ne peut pas être supprimé car une session est active');
+                }
             }
-      
-    }
+        }
+        
   $formationContenirCours = FormationsContenirCours::
             where('id_cours',$idCours)
             ->where('id_formation',$idFormation)
@@ -322,7 +324,7 @@ class FormationAdminController extends Controller
 
             $Formation= new FormationAdminController;
 
-            $cours = Cours::find($idCours);
+            
             $formationContenirCours = FormationsContenirCours::
                 where('id_cours',$idCours)->get();
                 $nombreChapitresCours=Cours::where('id_cours',$idCours)->value('nombre_chapitres');

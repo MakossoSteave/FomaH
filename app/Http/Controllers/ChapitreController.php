@@ -393,13 +393,16 @@ class ChapitreController extends Controller
 
     public function destroy($id_chapitre)
     {
+        $Chapitre= Chapitre::find($id_chapitre);
+        if($Chapitre->etat==1){
         if(!$this->checkChapitre($id_chapitre)){
             return redirect()->back()->with('error',"Ne peut pas être supprimé car une session est active");/* et aucun autre chapitre n'est actif");*/
         }
+    }
         else {
-            $Chapitre= Chapitre::find($id_chapitre);
+            
         
-            $coursId=  $Chapitre->id_cours;
+           
            // $this->checkEtat($coursId,$id_chapitre);
            
             Chapitre::where('id_chapitre',$id_chapitre)->delete();
