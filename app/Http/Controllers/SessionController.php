@@ -311,7 +311,9 @@ class SessionController extends Controller
         Lier_sessions_stagiaire::where('id_stagiaire',$id)
         ->where('id_session',$idSession)
         ->delete();
-
+        Suivre_formation::where('id_stagiaire',$id)
+        ->where('id_session',$idSession)
+        ->delete();
         return redirect()->back()->with('success','Stagiaire supprimé de la session avec succès');
     }
     public function destroy($id)
