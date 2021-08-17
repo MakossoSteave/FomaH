@@ -94,7 +94,8 @@
                         @if($stagiaire->resultat_description && ($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5 ))
                         <p><span class="title is-6">Description du résultat:</span> </p><p><span class="subtitle is-5 has-text-white">{{$stagiaire->resultat_description}}</span></p>
                         @endif
-                        <a class="btn btn-primary" href="{{ route('createPDF', [$stagiaire->stagiaireID,$id]) }}">Export to PDF</a>
+                        
+                        
                         <a class="{{ $stagiaire->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatStagiaireSession', [$stagiaire->stagiaireID,$id]) }}">
                         @if($stagiaire->etat == 1) 
                         Activé
@@ -109,6 +110,12 @@
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier le résultat</button>
                         </form>
+                    @endif
+                    @if($stagiaire->validation==1 && ($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5) )
+                    <form action="{{ route('createPDF', [$stagiaire->stagiaireID,$id]) }}" method="GET">
+                            @csrf
+                            <button type="submit" class="button button-card is-info">Générer le diplôme</button>
+                    </form>
                     @endif
                             <p>
                                 <a class = "button is-warning button-card modal-button" style="width:200px;" data-target = "#{{$stagiaire->stagiaireID}}">Supprimer de la session</a>

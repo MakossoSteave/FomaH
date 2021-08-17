@@ -14,6 +14,7 @@ use App\Models\Lier_sessions_stagiaire;
 use App\Models\Stagiaire;
 use App\Models\Statut;
 use App\Models\Suivre_formation;
+use App\Models\Titre;
 use Illuminate\Support\Facades\Storage;
 use PDF;
 class SessionController extends Controller
@@ -341,14 +342,25 @@ class SessionController extends Controller
           
 
         $pdf = PDF::loadView('admin.session.diplome', $data);
-        $pdf->stream("$stagiaire->prenom $stagiaire->nom s.pdf");
-        $destinationPath = public_path("doc/session/$idSession/diplome/");
-       
-       
-
-        Storage::put("doc/session/$idSession/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf", $pdf->output());
-
-        return $pdf->download("$stagiaire->prenom $stagiaire->nom diplome.pdf");
+        Storage::put("session/$idSession/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf", $pdf->output());
+        $titre= Titre::where('stagiaire_id',$id)->where('intitule',$formation->libelle)->first();
+        if($titre==null){
+        do {
+            $idTitre = rand(10000000, 99999999);
+        } while(Titre::find($idTitre) != null);
+        Titre::create([
+            'id' =>  $idTitre,
+            'intitule' => $formation->libelle,
+            'date_obtention' => $session->date_fin,
+            'stagiaire_id'=>$id
+        ]);
+    }
+    else {
+        Titre::where('stagiaire_id',$id)->where('intitule',$formation->libelle)->update([
+            'date_obtention' => $session->date_fin
+        ]);
+    }
+        return redirect()->back()->with('success','Diplôme crée avec succès');
 
     }
 }
