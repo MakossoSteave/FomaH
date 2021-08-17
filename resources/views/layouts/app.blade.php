@@ -164,7 +164,7 @@
                     </div>
                 </div>
                
-                <a class="navbar-item">
+                <a class="navbar-item" href="{{ url('titre')}}">
                     Titre
                 </a>
 <!--

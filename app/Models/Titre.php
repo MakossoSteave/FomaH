@@ -14,6 +14,6 @@ class Titre extends Model
     public $incrementing = false;
 
     protected $fillable=[
-        'id', 'intitule', 'date_obtention','stagiaire_id'
+        'id', 'intitule', 'date_obtention','stagiaire_id','session_id'
     ];
 }   

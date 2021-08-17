@@ -130,6 +130,7 @@ Route::resource('exercice','App\Http\Controllers\ExerciceController');
 Route::resource('projet','App\Http\Controllers\ProjetController');
 Route::resource('document','App\Http\Controllers\DocumentController');
 Route::resource('session','App\Http\Controllers\SessionController');
+Route::resource('titre','App\Http\Controllers\TitreController');
 Route::resource('qcm','App\Http\Controllers\QcmController');
 Route::resource('categorie','App\Http\Controllers\CategorieController');
 Route::resource('section','App\Http\Controllers\SectionController');

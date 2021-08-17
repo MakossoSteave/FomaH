@@ -25,7 +25,7 @@ class SessionController extends Controller
         ->leftJoin('formateurs','formateurs.id','sessions.formateur_id')
         ->join('formations','formations.id','sessions.formations_id')
         ->join('statut','statut.id','sessions.statut_id')  
-        ->get();        
+        ->orderBy('updated_at','desc')->paginate(8)->setPath('session');      
         return view('admin.session.index',compact(['sessions']));
     }
 
@@ -352,7 +352,8 @@ class SessionController extends Controller
             'id' =>  $idTitre,
             'intitule' => $formation->libelle,
             'date_obtention' => $session->date_fin,
-            'stagiaire_id'=>$id
+            'stagiaire_id'=>$id,
+            'session_id' => $idSession
         ]);
     }
     else {

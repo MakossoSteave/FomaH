@@ -21,7 +21,7 @@
        <span style="font-size:25px"><i>Ceci certifie que</i></span>
        <br><br>
        <span style="font-size:30px"><b>{{$prenom}} {{$nom}}</b></span><br/><br/>
-       <span style="font-size:25px"><i>a terminé le {{$type}}</i></span> <br/><br/>
+       <span style="font-size:25px"><i>a terminé(e) le {{$type}}</i></span> <br/><br/>
        <span style="font-size:30px">{{$titre}}</span> <br/><br/>
       <!-- <span style="font-size:20px">with score of <b>$grade.getPoints()%</b></span> <br/><br/><br/><br/>-->
        <span style="font-size:25px"><i>Date d'obtention: {{$date}}</i></span><br>
