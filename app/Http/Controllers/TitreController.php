@@ -28,6 +28,15 @@ class TitreController extends Controller
         ->orderBy('updated_at','desc')->paginate(8)->setPath('titre');          
         return view('admin.titre.index',compact(['titres']));
     }
+    public function show($id)
+    {
+        $titres = Titre::select('titres.*','stagiaires.nom','stagiaires.prenom','sessions.id as sessionID')
+        ->join('stagiaires','stagiaires.id','titres.stagiaire_id')
+        ->join('sessions','sessions.id','titres.session_id')
+        ->where('titres.session_id',$id)
+        ->orderBy('updated_at','desc')->paginate(8)->setPath('titre');          
+        return view('admin.titre.index',compact(['titres']));
+    }
     public function destroy($id)
     {   $titre = Titre::find($id);
         if($titre){

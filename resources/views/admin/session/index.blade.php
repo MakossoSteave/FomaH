@@ -69,6 +69,11 @@
                         <a href="{{ route('StagiaireSession', $session->id) }}" class="dropdown-item">
                             Liste des stagiaires
                         </a>
+                        @if($session->statut_id==4 || $session->statut_id==5 )
+                        <a href="{{ route('titre.show', $session->id) }}" class="dropdown-item">
+                            Titres
+                        </a>
+                        @endif
                         </div>
                     </div>
                 </div>

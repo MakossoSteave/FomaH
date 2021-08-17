@@ -29,7 +29,7 @@
 
     @if($titres->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
-            Aucune titre n'existe
+            Aucun titre n'existe
         </div>
     @else
 
