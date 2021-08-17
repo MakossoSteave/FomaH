@@ -138,7 +138,7 @@ class FormationAdminController extends Controller
         }else {
             $session =  Session::where('formations_id',$id)
             ->where('etat',1)
-            ->where('statut_id',3)
+            
             ->first();
             if($session!=null){
                 $etat=1;
@@ -264,7 +264,7 @@ class FormationAdminController extends Controller
         }else {
             $session =  Session::where('formations_id',$id)
             ->where('etat',1)
-            ->where('statut_id',3)
+            
             ->first();
             if($session!=null){
                 $etat=1;
@@ -289,7 +289,7 @@ class FormationAdminController extends Controller
         
   $session =  Session::where('formations_id',$id)
   ->where('etat',1)
-  ->where('statut_id',3)
+  
   ->first();
   if($session!=null){
     return redirect()->back()->with('error','Ne peut pas être supprimé car une session est active !');

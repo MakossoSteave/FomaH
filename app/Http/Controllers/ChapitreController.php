@@ -205,7 +205,7 @@ class ChapitreController extends Controller
         if($etat){
             if(!$this->checkChapitre($id_chapitre)){
                 $etat=1;
-                $message="Etat non modifié car une session est active";/*et aucun autre chapitre n'est actif";*/
+                $message="Etat non modifié car une session est en cours";/*et aucun autre chapitre n'est actif";*/
             } else { $this->updateChapitre($chapitre,"etat");}
            
         } else {
@@ -347,7 +347,7 @@ class ChapitreController extends Controller
         $coursId=  $Chapitre->id_cours;
         if($etat==0){
             if(!$this->checkChapitre($id_chapitre)){
-                return redirect()->back()->with('error',"Etat non modifié car une session est active"); /*et aucun autre chapitre n'est actif");*/
+                return redirect()->back()->with('error',"Etat non modifié car une session est en cours"); /*et aucun autre chapitre n'est actif");*/
             }
             $this->updateChapitre($Chapitre,"etat");
         }else {
@@ -398,7 +398,7 @@ class ChapitreController extends Controller
         $Chapitre= Chapitre::find($id_chapitre);
         if($Chapitre->etat==1){
         if(!$this->checkChapitre($id_chapitre)){
-            return redirect()->back()->with('error',"Ne peut pas être supprimé car une session est active");/* et aucun autre chapitre n'est actif");*/
+            return redirect()->back()->with('error',"Ne peut pas être supprimé car une session est en cours");/* et aucun autre chapitre n'est actif");*/
         }
     }
         else {

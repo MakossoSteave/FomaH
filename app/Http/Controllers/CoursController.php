@@ -251,7 +251,7 @@ class CoursController extends Controller
             ->with('error',"L'état ne peut pas être modifié car aucun chapitre n'est actif ! ");
         } else if(!$etatCanChangeSession){
             return redirect('/cours/'.$request->get('formation_id'))->with('success','Cours modifié avec succès')
-            ->with('error',"L'état ne peut pas être modifié car une session est active ! ");
+            ->with('error',"L'état ne peut pas être modifié car une session est en cours ! ");
         }else {
             return redirect('/cours/'.$request->get('formation_id'))->with('success','Cours modifié avec succès');
         }
@@ -381,10 +381,10 @@ class CoursController extends Controller
         if($cours->etat==1)
         {
             if(!$this->checkCours($id)){
-            return redirect()->back()->with('error',"Ne peut pas être supprimé car une session est active");/* et aucun autre chapitre n'est actif");*/
+            return redirect()->back()->with('error',"Ne peut pas être supprimé car une session est en cours");/* et aucun autre chapitre n'est actif");*/
             }
         }
-        else {
+       
         // toutes les id formations qui contienent le cours
         $this->checkEtat($id,true);
        
@@ -426,7 +426,7 @@ class CoursController extends Controller
         Cours::where('id_cours',$id)->delete();
 
         return redirect()->back()->with('success','Cours supprimé avec succès');
-    }
+    
     }
     public function checkEtat($id,$destroy){
         $cursus =  FormationsContenirCours::select('id_formation')
