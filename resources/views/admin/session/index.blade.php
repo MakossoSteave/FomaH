@@ -46,37 +46,35 @@
             <div class="media-content">
             <div class="media-content">
                 <div class="flex">
-            <div>
-              
-            </div>
-                <div class="dropdown is-right is-hoverable">
-                    <div class="dropdown-trigger">
-                        <button class="button borderNone is-right"
-                                aria-haspopup="true"
-                                aria-controls="dropdown-menu">
-                        <span class="icon is-small is-right"><i class="fas fa-bars"></i></span>
-                        <span class="icon is-small">
-                        </span>
-                        </button>
-                    </div>
-            
-                    <div class="dropdown-menu" 
-                        id="dropdown-menu" 
-                        role="menu">
-                        <div class="dropdown-content">
-                       
+                 <div></div>
+                    <div class="dropdown is-right is-hoverable">
+                        <div class="dropdown-trigger">
+                            <button class="button borderNone is-right"
+                                    aria-haspopup="true"
+                                    aria-controls="dropdown-menu">
+                            <span class="icon is-small is-right"><i class="fas fa-bars"></i></span>
+                            <span class="icon is-small">
+                            </span>
+                            </button>
+                        </div>
+                
+                        <div class="dropdown-menu" 
+                            id="dropdown-menu" 
+                            role="menu">
+                            <div class="dropdown-content">
+                        
 
-                        <a href="{{ route('StagiaireSession', $session->id) }}" class="dropdown-item">
-                            Liste des stagiaires
-                        </a>
-                        @if($session->statut_id==4 || $session->statut_id==5 )
-                        <a href="{{ route('titre.show', $session->id) }}" class="dropdown-item">
-                            Titres
-                        </a>
-                        @endif
+                            <a href="{{ route('StagiaireSession', $session->id) }}" class="dropdown-item">
+                                Liste des stagiaires
+                            </a>
+                            @if($session->statut_id==4 || $session->statut_id==5 )
+                            <a href="{{ route('titre.show', $session->id) }}" class="dropdown-item">
+                                Titres
+                            </a>
+                            @endif
+                            </div>
                         </div>
                     </div>
-                </div>
                 </div>
             </div> 
             <p class="title is-6 mb-0">Date:</p>

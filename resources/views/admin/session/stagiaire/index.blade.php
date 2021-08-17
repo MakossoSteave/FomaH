@@ -42,6 +42,37 @@
     @foreach ($stagiaires as $stagiaire)
     <div class="card my-6 
 @if($stagiaire->validation!==null && ($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5) ) {{ $stagiaire->validation == 1 ? 'has-background-success' : 'has-background-danger'  }} @endif">
+@if($stagiaire->etat == 1) 
+<div class="media-content">
+                <div class="flex">
+                 <div></div>
+                    <div class="dropdown is-right is-hoverable">
+                        <div class="dropdown-trigger">
+                            <button class="button borderNone is-right  @if($stagiaire->validation!==null && ($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5) ) {{ $stagiaire->validation == 1 ? 'has-background-success' : 'has-background-danger'  }} @endif"
+                                    aria-haspopup="true"
+                                    aria-controls="dropdown-menu">
+                            <span class="icon is-small is-right"><i class="fas fa-bars"></i></span>
+                            <span class="icon is-small">
+                            </span>
+                            </button>
+                        </div>
+                
+                        <div class="dropdown-menu" 
+                            id="dropdown-menu" 
+                            role="menu">
+                            <div class="dropdown-content">
+                        
+
+                            <a href="" class="dropdown-item">
+                               Voir la progression
+                            </a>
+                           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            @endif
         <div class="card-content">
             <div class="media">
             @if(! empty($stagiaire->image))
@@ -105,13 +136,13 @@
                         </a>
                     </div>
                     <div class="flex-bottom">
-                    @if($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5 )
+                    @if(($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5) && $stagiaire->etat == 1 )
                         <form action="{{ route('editStagiaireSession', [$stagiaire->stagiaireID,$id]) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier le résultat</button>
                         </form>
                     @endif
-                    @if($stagiaire->validation==1 && ($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5) )
+                    @if( $stagiaire->etat == 1 && $stagiaire->validation==1 && ($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5) )
                     <form action="{{ route('createPDF', [$stagiaire->stagiaireID,$id]) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Générer le diplôme</button>
