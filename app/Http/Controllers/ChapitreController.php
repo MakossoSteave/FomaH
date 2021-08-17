@@ -60,8 +60,10 @@ class ChapitreController extends Controller
         } while((Chapitre::find($id_chapitre))!=null);
        // Chapitre::where
 
-        $Cours = new CoursController;
+   
         if($request->get('etat')==1){
+            $CoursController = new CoursController;
+                $CoursController->Update_nombre_chapitres($idCours,1);
             $numero_chapitre=
             Chapitre::where('id_cours',$idCours)->where('etat',1)->count();
         }
