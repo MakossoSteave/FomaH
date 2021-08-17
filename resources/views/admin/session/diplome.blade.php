@@ -13,7 +13,7 @@
 <body><div style="width:650px; height:450px; padding:20px; text-align:center; border: 10px solid #667EEA">
 <div style="width:600px; height:400px; padding:20px; text-align:center; border: 5px solid #667EEA">
 
-                    <div  class="text-2xl tracking-wide ml-2 font-semibold">
+                    <div  class="text-2xl tracking-wide ml-2 font-semibold" style="color:#434190;">
                         <img  src="<?php echo $_SERVER["DOCUMENT_ROOT"].'/favicon.png';?>" width="25" height="25">
                         HubDigitForma</div>       
 <span style="font-size:50px; font-weight:bold">Certificat d'achèvement</span>
