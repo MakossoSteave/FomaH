@@ -65,7 +65,7 @@
                                     <button class="delete" aria-label="close"></button>
                                     </header>
                                     <section class="modal-card-body">
-                                        Souhaitez-vous supprimer la catégorie {{$competence->designation_ca}} ?
+                                        Souhaitez-vous supprimer la compétence :  {{$competence->designation_s_ma}} ?
                                     </section>
                                     <form action="{{ route('competence.destroy', $competence->competence_id) }}" method="POST">
                         <!--                -->

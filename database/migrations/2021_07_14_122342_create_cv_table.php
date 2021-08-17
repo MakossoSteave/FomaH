@@ -1,10 +1,10 @@
- <?php
+<?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDocumentTable extends Migration
+class CreateCvTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateDocumentTable extends Migration
      */
     public function up()
     {
-        Schema::create('documents', function (Blueprint $table) {
+        Schema::create('cvs', function (Blueprint $table) {
             $table->engine='InnoDB';
-            $table->id();;
-            $table->string('designation');
+            $table->id();
+            $table->string('designationcv');
             $table->string('lien');
             $table->timestamps();
         });
@@ -29,6 +29,6 @@ class CreateDocumentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('cv');
     }
 }

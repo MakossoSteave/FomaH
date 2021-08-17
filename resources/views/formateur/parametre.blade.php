@@ -96,13 +96,14 @@
     <div class="sm:w-3/1 px-20">
     @if (session('success'))
         <div class="notification is-success has-text-centered my-4">
+            <button class="delete"></button>
             {{ session('success') }}
         </div>
     @endif
 
     @if (session('error'))
         <div class="notification is-danger has-text-centered my-4">
-        <button class="delete"></button>
+            <button class="delete"></button>
             {{ session('error') }}
         </div>
     @endif
@@ -242,6 +243,65 @@
                         </dd>
                         </div>
                 -->
+                <h2 class="title is-2 has-text-centered mt-6">Ajouter votre CV</h2>
+                <form action="{{ route('cv.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
+                    @csrf
+
+                    <input type="hidden" name="id_chapitre" value="{{request()->route('id')}}">
+
+                    <div class="field">
+                        <label class="label">Nom du document</label>
+                            <div class="control">
+                                <input name="designationcv" class="input" type="text" placeholder="Nom du document">
+                            </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Ajouter son cv</label>
+                        <div id="file-cv" class="file has-name">
+                                <label class="file-label">
+                                    <input class="file-input" type="file" name="lien">
+                                    <span class="file-cta">
+                                    <span class="file-icon">
+                                        <i class="fas fa-upload"></i>
+                                    </span>
+                                    <span class="file-label">
+                                        Choisir un document
+                                    </span>
+                                    </span>
+                                    <span class="file-name">
+                                        Aucun document
+                                    </span>
+                                </label>
+                        </div>
+
+                            <script>
+                            const fileInput = document.querySelector('#file-cv input[type=file]');
+                            fileInput.onchange = () => {
+                                if (fileInput.files.length > 0) {
+                                const fileName = document.querySelector('#file-cv .file-name');
+                                fileName.textContent = fileInput.files[0].name;
+                                }
+                            }
+                            </script>
+                    </div>
+
+                        <div class="control mt-4 mb-4">
+                            <button type="submit" class="button is-fullwidth is-link is-rounded">Créer</button>
+                        </div>
+                    </div>
+                </form>
+
+
+
+
+                
+
+
+
+
+
+
 
                 <form method="POST" action="{{route('parametre.update', $id->id)}}" enctype="multipart/form-data">
                 @csrf
@@ -324,4 +384,17 @@ Votre session a expiré !
 
 </button>
 @endif
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+  (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+    const $notification = $delete.parentNode;
+
+    $delete.addEventListener('click', () => {
+      $notification.parentNode.removeChild($notification);
+    });
+  });
+});
+</script>
+
 @endsection

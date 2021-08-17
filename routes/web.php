@@ -131,6 +131,7 @@ Route::resource('qcm','App\Http\Controllers\QcmController');
 Route::resource('categorie','App\Http\Controllers\CategorieController');
 Route::resource('matiere','App\Http\Controllers\MatiereController');
 Route::resource('sousmatiere','App\Http\Controllers\SousMatiereController');
+Route::resource('cv','App\Http\Controllers\CvController');
 
 Route::resource('section','App\Http\Controllers\SectionController');
 Route::resource('cursus','App\Http\Controllers\FormationAdminController');

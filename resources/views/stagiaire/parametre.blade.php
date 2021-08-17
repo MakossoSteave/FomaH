@@ -287,7 +287,7 @@
                     @endif
                         <input type="text" class="focus:outline-blue focus:ring focus:border-blue-300 p-2"
                     
-                        placeholder="Numéro de téléphone" name="telephone">
+                        placeholder="Numéro de téléphone " name="telephone">
                         <input type="submit"  class="font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
                             value="modifier"
                         />
@@ -323,7 +323,7 @@
                 @method('PUT')
                 <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">
-                        Mot de passe actuel
+                        Mot de passe actuel 
                     </dt>
                     <input class="focus:outline-blue focus:ring focus:border-blue-300" type="password"
                         placeholder="Mot de passe actuel" name="motdepasse">

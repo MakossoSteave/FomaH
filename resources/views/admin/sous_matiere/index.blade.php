@@ -31,10 +31,11 @@
     @else
 
     <div class="hauteur100"></div>
-    <div class="notification">
+    <!-- <div class="notification"> -->
     <h2 class="title is-4 has-text-centered mt-6 ">Liste de sous_matière(s) :</h2>
     <h2 class="title is-5 has-text-centered mt-6" >De la catégorie <span class="has-text-weight-bold has-text-link">{{$designation_categorie}}</span> 
     et matière <span class="has-text-weight-bold has-text-link">{{$designation_matiere}}</span></h2>
+    
     @foreach ($sousmatieres as $sousmatiere)
         <div class="card my-6 hauteur50" >
             <div class="card-content"  >
@@ -54,32 +55,33 @@
                             <!-- -->
                             <form action="{{ route('sousmatiere.edit', $sousmatiere->id) }}" method="GET">
                                 @csrf
-
                                 <button type="submit" class="button button-card is-info position57">Modifier</button>
                             </form>
                                 <p>
                                     <a class = "button is-danger button-card modal-button position57" data-target = "#{{$sousmatiere->id}}">Supprimer</a>
                                 </p>
-                                <div id="{{$sousmatiere->id}}" class="modal">
+                                <div id="{{$sousmatiere->id}}" class="modal" >
                                     <div class="modal-background"></div>
                                     <div class="modal-card">
-                                        <header class="modal-card-head">
-                                        
-                                        <button class="delete" aria-label="close"></button>
+
+                                        <header class="modal-card-head">            
+                                            <button class="delete" aria-label="close"></button>
                                         </header>
+
                                         <section class="modal-card-body">
                                             Souhaitez-vous supprimer la sous matière {{$sousmatiere->designation_sous_matiere}} ?
                                         </section>
-                                        <!-- -->
+                                        
                                         <form action="{{ route('sousmatiere.destroy', $sousmatiere->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
 
-                                        <input type="hidden" name="categorie_id" value="{{$sousmatiere->id}}"/>
+                                           <input type="hidden" name="categorie_id" value="{{$sousmatiere->id}}"/>
                                         <footer class="modal-card-foot">
-                                        <button class="button is-success">Confirmer</button>
+                                            <button class="button is-success">Confirmer</button>
                                         </footer>
-                                        </form>
+                                    
+                                </form>
                                     </div>
                                 </div>
                                 <script>
@@ -101,10 +103,11 @@
             </div>
         </div>
     @endforeach
-    </div>
-    
-    @endif
+
+
+@endif
 </div>
+
 
 @else
 <div class="notification is-danger has-text-centered my-4">
@@ -132,17 +135,7 @@ Votre session a expiré !
 
 </button>
 @endif
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-  (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
-    const $notification = $delete.parentNode;
 
-    $delete.addEventListener('click', () => {
-      $notification.parentNode.removeChild($notification);
-    });
-  });
-});
-</script>
 @endsection
 
 

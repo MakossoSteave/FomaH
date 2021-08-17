@@ -41,9 +41,10 @@
     @else
 
     <div class="hauteur100"></div>
-    <div class="notification">
+    
     <h2 class="title is-4 has-text-centered mt-6 ">Liste de matière(s) :</h2>
     <h2 class="title is-5 has-text-centered mt-6" >De la catégorie <span class="has-text-weight-bold has-text-link">{{$designation_categorie}}</span></h2>  
+    
     @foreach ($matieres as $matiere)
         <div class="card my-6 hauteur50" >
             <div class="card-content"  >
@@ -68,29 +69,28 @@
                                 <p>
                                     <a class = "button is-danger button-card modal-button position57" data-target = "#{{$matiere->id}}">Supprimer</a>
                                 </p>
-                                <div id="{{$matiere->id}}" class="modal" data-closable>
+                                <div id="{{$matiere->id}}" class="modal" >
                                     <div class="modal-background"></div>
                                     <div class="modal-card">
+
                                         <header class="modal-card-head">
                                             <p class="modal-card-title">La matière {{$matiere->designation_matiere}} a t'elle une sous_matière ?</p>
-                                            <!--    <pclass="modal-card-title">pour supprimer une matière {{$matiere->designation_matiere}}</p>         -->
-                                            <!--    <button class="delete" aria-label="close"></button>                                                 -->
-                                            
+                                            <button class="delete" aria-label="close" ></button>                                        
                                         </header>
+
                                         <section class="modal-card-body">
                                             Souhaitez-vous supprimer la matière {{$matiere->designation_matiere}} ?
                                         </section>
+
                                         <form action="{{ route('matiere.destroy', $matiere->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        
-                                        
-                                            <footer class="modal-card-foot" data-close>
+                                  
+                                        <footer class="modal-card-foot" data-close>
                                             <button class="button is-success">Confirmer</button>
-                                            <button class="delete" aria-label="close" data-close></button>
-                                            </footer>
+                                        </footer>
                                         </form>
-                                    </div>
+                                    </div>    
                                 </div>
                                 <script>
                                 $(".modal-button").click(function() {
@@ -111,11 +111,9 @@
             </div>
         </div>
     @endforeach
-    </div>
     
     @endif
 </div>
-
 @else
 <div class="notification is-danger has-text-centered my-4">
 @if(Auth::user() && Auth::user()->role_id!=1)
