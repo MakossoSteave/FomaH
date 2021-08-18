@@ -105,7 +105,7 @@ class IntranetController extends Controller
         }
     }
 
-    public function chapitre() {
+    public function oneChapitre() {
         $idUserAuth=null;
 
         if(Auth::user())
@@ -538,7 +538,11 @@ class IntranetController extends Controller
 
         $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
 
-        $allCours = FormationsContenirCours::where('id_formation','=', $formation->id_formations)->with('Cours')->get();
+        $maxCours = FormationsContenirCours::where('id_cours', $formation->id_cours)->first();
+
+        $allCours = FormationsContenirCours::where('id_formation','=', $formation->id_formations)
+        ->where('numero_cours','<=', $maxCours->numero_cours)
+        ->with('Cours')->get();
 
         foreach ($allCours as $cour) {
             $chapitre = Chapitre::where('id_chapitre', $formation->id_chapitre)->first();
@@ -547,7 +551,7 @@ class IntranetController extends Controller
         $arrayChap[] = $chapitre['numero_chapitre'];
 
         foreach($allCours as $cour) {
-            $chapitres[] = Cours::where('id_cours', $cour->id_cours)
+            $lessons[] = Cours::where('id_cours', $cour->id_cours)
             ->with('Chapitre', function ($query) use ($arrayChap, $cour, $formation) {
                 if($cour->id_cours == $formation->id_cours) {
                     $query->where('numero_chapitre','<=', max($arrayChap))->where('id_cours', $cour->id_cours);
@@ -557,7 +561,9 @@ class IntranetController extends Controller
             })->get();
         }
 
-        dd($chapitres);
+        // dd($lessons);
+        
+        return view('stagiaire.intranet.cours.previousIndex', compact(['lessons']));
     }
 
     public function previousProjets() {

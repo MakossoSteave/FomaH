@@ -113,7 +113,7 @@ Route::get('/utilisateurs', [App\Http\Controllers\UtilisateurController::class, 
 
 Route::get('/admins', [App\Http\Controllers\AdminController::class, 'admin'])->name('admins');
 
-Route::get('/intranet/chapitre', [App\Http\Controllers\IntranetController::class, 'chapitre'])->name('chapitreIntranet');
+Route::get('/intranet/chapitre', [App\Http\Controllers\IntranetController::class, 'oneChapitre'])->name('chapitreIntranet');
 Route::post('/intranet/cours', [App\Http\Controllers\IntranetController::class, 'cours'])->name('coursIntranet');
 Route::post('/intranet/nextIfExercice', [App\Http\Controllers\IntranetController::class, 'nextIfExercice'])->name('nextIfExerciceIntranet');
 Route::get('/intranet/qcm', [App\Http\Controllers\IntranetController::class, 'qcm'])->name('qcmIntranet');
