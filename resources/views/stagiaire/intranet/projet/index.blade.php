@@ -2,65 +2,6 @@
 
 @section('content')
 @if(Auth::user())
-<section class="hero is-info">
-    <div class="hero-body">
-        <div class="columns">
-            <div class="column is-9">
-                <div class="container content">
-                    <a id="home" class="icon is-medium" href="{{ url('intranet') }}"><i class="fas fa-home mr-2"></i>Accueil</a>
-                    <h1 class="title">Cours de <em>{{$cours->designation}}</em></h1>
-                </div>
-            </div>
-            <nav class="column is-3">
-                <div class="relative">
-                    <ul>
-                        <li><i class="fas fa-user"></i>
-                            <a href="#">
-                                <span
-                                    class="group text-white inline-flex items-center text-base font-medium hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    {{Str::ucfirst(Auth::user()->name)}} </span>
-                            </a>
-                        </li>
-                        <li> <i class="fas fa-envelope text-blue-900 font-medium"></i>
-                            <a href="#">
-                                <span
-                                    class="group  text-base font-medium hover:text-blue-900 text-white">Messages
-                                </span>
-                            </a>
-                        </li>
-
-                    </ul>
-
-                    <div class="relative">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <a href="../stagiaire">
-                            <button type="button"
-                                class="group  text-white inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-
-                                <span>Quitter</span>
-                            </button></a>
-                    </div>
-            </nav>
-        </div>
-    </div>
-</section>
-<section class="section">
-    <div class="container">
-    <div class="columns">
-        <div class="column is-3">
-            <aside class="is-medium menu">
-                <p class="menu-label">
-                    Navigation
-                </p>
-                <ul class="menu-list">
-                    <li><a href="{{ url('intranet/chapitre') }}">Cours</a></li>
-                    <li><a>QCMs</a></li>
-                    <li><a>Exercices</a></li>
-                    <li><a>Projets</a></li>
-                    <li><a>Live</a></li>
-                </ul>
-            </aside>
-        </div>
     <div class="column is-9">
         <div class="content is-medium">
         @if (session('success'))
