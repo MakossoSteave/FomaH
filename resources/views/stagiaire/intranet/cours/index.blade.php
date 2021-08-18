@@ -1,68 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.appIntranet')
 
 @section('content')
 @if(Auth::user())
-<section class="hero is-info">
-    <div class="hero-body">
-        <div class="columns">
-            <div class="column is-9">
-                <div class="container content">
-                    <a id="home" class="icon is-medium" href="{{ url('intranet') }}"><i class="fas fa-home mr-2"></i>Accueil</a>
-                    @if($cours)
-                    <h1 class="title">Cours de <em>{{$cours->designation}}</em></h1>
-                    @endif
-                </div>
-            </div>
-            <nav class="column is-3">
-                <div class="relative">
-                    <ul>
-                        <li><i class="fas fa-user"></i>
-                            <a href="#">
-                                <span
-                                    class="group text-white inline-flex items-center text-base font-medium hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    {{Str::ucfirst(Auth::user()->name)}} </span>
-                            </a>
-                        </li>
-                        <li> <i class="fas fa-envelope text-blue-900 font-medium"></i>
-                            <a href="#">
-                                <span
-                                    class="group  text-base font-medium hover:text-blue-900 text-white">Messages
-                                </span>
-                            </a>
-                        </li>
 
-                    </ul>
-
-                    <div class="relative">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <a href="../stagiaire">
-                            <button type="button"
-                                class="group  text-white inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-
-                                <span>Quitter</span>
-                            </button></a>
-                    </div>
-            </nav>
-        </div>
-    </div>
-</section>
-<section class="section">
-    <div class="container">
-    <div class="columns">
-        <div class="column is-3">
-            <aside class="is-medium menu">
-                <p class="menu-label">
-                    Navigation
-                </p>
-                <ul class="menu-list">
-                    <li><a href="{{ url('intranet/chapitre') }}">Cours</a></li>
-                    <li><a>QCMs</a></li>
-                    <li><a>Exercices</a></li>
-                    <li><a>Projets</a></li>
-                    <li><a>Live</a></li>
-                </ul>
-            </aside>
-        </div>
         <div class="column is-9">
         @if($cours)
         <div class="content is-medium">
@@ -103,6 +43,14 @@
         <footer class="buttons paginate" class="mb-4">
             <a href="{{ url('intranet/qcm') }}" class="button is-success sizeButton">Voir mes résultats au QCM</a>
         </footer>
+        @endif
+        @if($exerciceCount == 0 && $projetCount == 0 && $scoreCount == 1)
+        <form action="{{ url('intranet/next') }}" method="POST">
+        @csrf
+        <footer class="buttons paginate" class="mb-4">
+            <button type="submit" class="button is-info sizeButton">Continuer</button>
+        </footer>
+        </form>
         @endif
         @if($exerciceCount != 0 && $scoreCount == 1)
         <footer class="buttons paginate" class="mb-4">

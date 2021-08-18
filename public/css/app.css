@@ -64,6 +64,10 @@
     align-items: self-start;
 }
 
+.section {
+    min-height: 100vh;
+}
+
 #intranetNav {
     color: #3273DC;
     margin-left: .5em;
