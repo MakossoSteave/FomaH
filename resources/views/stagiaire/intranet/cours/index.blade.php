@@ -53,8 +53,6 @@
         </form>
         @endif
         @if($exerciceCount != 0 && $scoreCount == 1)
-        <form action="{{ url('intranet/next') }}" method="POST">
-        @csrf
         <footer class="buttons paginate" class="mb-4">
             <a href="{{ url('intranet/exercice') }}" class="button is-info sizeButton">Accéder aux exercices</a>
         </footer>
