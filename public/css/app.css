@@ -60,6 +60,25 @@
     margin-left: 11em;
 }
 
+.alignStart {
+    align-items: self-start;
+}
+
+.section {
+    min-height: 100vh;
+}
+
+#intranetNav {
+    color: #3273DC;
+    margin-left: .5em;
+    vertical-align: top;
+    font-weight: 500;
+}
+
+#intranetNav:focus {
+    outline: none;
+}
+
 .sizeButton {
     width: 15em;
 }

@@ -22,7 +22,7 @@ class CreateLierSessionStagiaireTable extends Migration
             $table->foreign('id_session')->references('id')->on('sessions');
             $table->boolean('etat');
             $table->boolean('validation')->nullable();
-            $table->boolean('resultat_description')->nullable();
+            $table->string('resultat_description',3000)->nullable();
             $table->timestamps();
         });
     }

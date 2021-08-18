@@ -87,10 +87,20 @@ Route::get('/addCategorie', [App\Http\Controllers\CategorieController::class, 'c
 Route::get('/qcm/{id}', [App\Http\Controllers\QcmController::class, 'index'])->name('qcmChapitre');
 Route::get('/addQcm/{id}', [App\Http\Controllers\QcmController::class, 'create'])->name('addQcm');
 Route::delete('/deleteQuestion/{id}', [App\Http\Controllers\QcmController::class, 'deleteQuestion'])->name('deleteQuestion');
+Route::get('/etatQCM/{id}', [App\Http\Controllers\QcmController::class, 'etat'])->name('etatQCM');
 
 Route::get('/session', [App\Http\Controllers\SessionController::class, 'index'])->name('session');
 Route::get('/addSession', [App\Http\Controllers\SessionController::class, 'create'])->name('addSession');
 Route::get('/etatSession/{id}', [App\Http\Controllers\SessionController::class, 'etat'])->name('etatSession');
+Route::get('/StagiaireSession/{id}', [App\Http\Controllers\SessionController::class, 'Session_Stagiaire'])->name('StagiaireSession');
+Route::get('/AjouterStagiaireSession/{id}', [App\Http\Controllers\SessionController::class, 'Session_Stagiaire_Ajout'])->name('AddStagiaireSession');
+Route::post('/AddStagiaire/{id}', [App\Http\Controllers\SessionController::class, 'store_stagiaire_session'])->name('AddStagiaire');
+Route::delete('/removeStagiaire/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'removeStagiaire'])->name('removeStagiaire');
+Route::get('/etatStagiaireSession/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'etatStagiaireSession'])->name('etatStagiaireSession');
+Route::get('/editStagiaireSession/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'editStagiaire'])->name('editStagiaireSession');
+Route::get('/createPDF/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'createPDF'])->name('createPDF');
+Route::post('/editStagiaireSession/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'editResultStagiaire'])->name('editResultStagiaire');
+Route::get('/progressionStagiaire/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'progressionStagiaire'])->name('progressionStagiaire');
 
 Route::get('/document/{id}', [App\Http\Controllers\DocumentController::class, 'index'])->name('document');
 Route::get('/addDocument/{id}', [App\Http\Controllers\DocumentController::class, 'create'])->name('addDocument');
@@ -120,12 +130,15 @@ Route::get('/intranet/exercice', [App\Http\Controllers\IntranetController::class
 Route::post('/intranet/score', [App\Http\Controllers\IntranetController::class, 'score'])->name('scoreIntranet');
 Route::post('/intranet/next', [App\Http\Controllers\IntranetController::class, 'next'])->name('nextIntranet');
 Route::get('/intranet/projet', [App\Http\Controllers\IntranetController::class, 'projet'])->name('projetIntranet');
+Route::post('/intranet/preIndex', [App\Http\Controllers\IntranetController::class, 'preIndex'])->name('preIndexIntranet');
+Route::post('/intranet/faireProjet', [App\Http\Controllers\IntranetController::class, 'faireProjet'])->name('faireProjetIntranet');
 
 Route::resource('intranet','App\Http\Controllers\IntranetController');
 Route::resource('exercice','App\Http\Controllers\ExerciceController');
 Route::resource('projet','App\Http\Controllers\ProjetController');
 Route::resource('document','App\Http\Controllers\DocumentController');
 Route::resource('session','App\Http\Controllers\SessionController');
+Route::resource('titre','App\Http\Controllers\TitreController');
 Route::resource('qcm','App\Http\Controllers\QcmController');
 
 Route::resource('categorie','App\Http\Controllers\CategorieController');

@@ -32,6 +32,7 @@
         <div class="card-content">
             <div class="media">
             <div class="media-content">
+          
                 <p class="title is-4">{{$qcm->designation}}</p>
                 @foreach($qcm->question_qcm as $questions)
                 <p class="subtitle is-5 mt-4"> {{$questions->question}}</p>
@@ -40,14 +41,22 @@
                     <p class="subtitle is-6 {{ ($reponses->validation == 1) ?  'has-text-success' : 'has-text-danger'}}"> {{$reponses->reponse}}</p>
                     @endforeach
                 @endforeach
+                
             </div>
         </div>
 
             <div class="content">
-                <div class="flex">
+                <div class="flex"><a class="{{ $qcm->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatQCM', $qcm->id) }}">
+                    @if($qcm->etat == 1) 
+                    Activé
+                    @else
+                    Désactivé
+                    @endif
+                    </a>
                     <div>
                     </div>
                     <div class="flex-bottom">
+                        
                         <form action="{{ route('qcm.edit', $qcm->id) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier</button>

@@ -12,7 +12,7 @@ class Formation extends Model
     public $incrementing = false;
     
     protected $fillable=[
-        'id', 'libelle','description','image','volume_horaire','nombre_cours_total','nombre_chapitre_total','etat','reference','prix','userRef', 'categorie_id'
+        'id', 'libelle','description','image','volume_horaire','nombre_cours_total','nombre_chapitre_total','etat','reference','prix','userRef', 'categorie_id','effectif'
     ];
 
     // public function FormationContenirCours()

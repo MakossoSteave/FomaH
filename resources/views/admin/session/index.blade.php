@@ -4,7 +4,9 @@
 @if(Auth::user() && Auth::user()->role_id==1)
 
 <div class="container">
+    
     <div class="flex mt-4">
+  
         <p class="control has-icons-right">
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
@@ -14,7 +16,14 @@
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
     </div>
-    
+
+
+    @if (session('error'))
+        <div class="notification is-danger has-text-centered my-4">
+        <button class="delete"></button>
+            {{ session('error') }}
+        </div>
+    @endif  
     @if (session('success'))
         <div class="notification is-success has-text-centered my-4">
             {{ session('success') }}
@@ -29,11 +38,52 @@
 
     @foreach ($sessions as $session)
     <div class="card my-6">
+        
         <div class="card-content">
             <div class="media">
+                
+            
             <div class="media-content">
+            <div class="media-content">
+                <div class="flex">
+                 <div></div>
+                    <div class="dropdown is-right is-hoverable">
+                        <div class="dropdown-trigger">
+                            <button class="button borderNone is-right"
+                                    aria-haspopup="true"
+                                    aria-controls="dropdown-menu">
+                            <span class="icon is-small is-right"><i class="fas fa-bars"></i></span>
+                            <span class="icon is-small">
+                            </span>
+                            </button>
+                        </div>
+                
+                        <div class="dropdown-menu" 
+                            id="dropdown-menu" 
+                            role="menu">
+                            <div class="dropdown-content">
+                        
+
+                            <a href="{{ route('StagiaireSession', $session->id) }}" class="dropdown-item">
+                                Liste des stagiaires
+                            </a>
+                            @if($session->statut_id==4 || $session->statut_id==5 )
+                            <a href="{{ route('titre.show', $session->id) }}" class="dropdown-item">
+                                Titres
+                            </a>
+                            @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <p class="title is-6 mb-0">Date:</p>
                 <p class="title is-4">{{date('d-m-Y', strtotime($session->date_debut))}}</p>
                 <p class="subtitle is-6">{{date('d-m-Y', strtotime($session->date_fin))}}</p>
+                <p><span class="title is-6"> Cursus: </span> <span class="subtitle is-6"> {{$session->libelle}}</span></p>
+                <p><span class="title is-6"> Formateur: </span> <span class="subtitle is-6"> {{$session->nom}} {{$session->prenom}}</span></p>
+                <p><span class="title is-6"> Statut: </span> <span class="subtitle is-6"> {{$session->statut}}</span></p>
+            
             </div>
         </div>
 

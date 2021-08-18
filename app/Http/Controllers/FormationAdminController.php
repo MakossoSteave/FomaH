@@ -9,6 +9,7 @@ use App\Models\Categorie;
 use App\Models\Formation;
 use App\Models\Formateur;
 use App\Models\Cours;
+use App\Models\Session;
 use Illuminate\Validation\Rule;
 use App\Rules\FilenameImage;
 
@@ -37,6 +38,7 @@ class FormationAdminController extends Controller
          'description' => ['required','max:1000'],
          'volume_horaire' =>  ['required','numeric','min:0'],
          'prix' =>  ['required','numeric','min:0'],
+         'effectif' =>  ['required','numeric','min:1'],
          'categorie_id' =>'required',
          'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,jpg,GIF ','max:10000',
          new FilenameImage('/[\w\W]{4,181}$/')]
@@ -63,6 +65,7 @@ class FormationAdminController extends Controller
             'image' => $image,
             'volume_horaire' => $request->get('volume_horaire'),
             'prix' => $request->get('prix'),
+            'effectif' =>  $request->get('effectif'),
             'etat' => 0,
             'nombre_cours_total' => 0,
             'nombre_chapitre_total' => 0,
@@ -97,6 +100,7 @@ class FormationAdminController extends Controller
          'description' => ['required','max:1000'],
          'volume_horaire' =>  ['required','numeric','min:0'],
          'prix' =>  ['required','numeric','min:0'],
+         'effectif' =>  ['required','numeric','min:1'],
          'categorie_id' =>'required',
          'etat' => [
             'required',
@@ -115,7 +119,8 @@ class FormationAdminController extends Controller
             $image = $request->get('image-link');
         }
         $etat = $request->get('etat');
-        $etatCanChange=true;
+        $etatCanChangeCours=true;
+        $etatCanChangeSession=true;
         if($etat==1){
         
             $coursDeLaFormation = FormationsContenirCours::select('id_cours')
@@ -128,7 +133,16 @@ class FormationAdminController extends Controller
             
             if( $cours ==0){
                 $etat=0;
-                $etatCanChange=false;
+                $etatCanChangeCours=false;
+            }
+        }else {
+            $session =  Session::where('formations_id',$id)
+            ->where('etat',1)
+            
+            ->first();
+            if($session!=null){
+                $etat=1;
+                $etatCanChangeSession=false;
             }
         }
         Formation::where('id',$id)->update([
@@ -137,13 +151,17 @@ class FormationAdminController extends Controller
             'image' => $image,
             'volume_horaire' => $request->get('volume_horaire'),
             'prix' => $request->get('prix'),
+            'effectif' => $request->get('effectif'),
             'etat' => $etat,
             'categorie_id' => $request->get('categorie_id')
         ]);
-        if(!$etatCanChange){
+        if(!$etatCanChangeCours){
             return redirect('/cursus')->with('success','Formation modifié avec succès')
             ->with('error',"L'état ne peut pas être modifié car aucun cours n'est actif ! ");
-        }else {
+        }  else if(!$etatCanChangeSession){
+            return redirect('/cursus')->with('success','Formation modifié avec succès')->with('error',"L'état ne peut pas être modifié car une session est active ! ");
+        }
+        else {
             return redirect('/cursus')->with('success','Formation modifié avec succès');
         }
       
@@ -227,7 +245,8 @@ class FormationAdminController extends Controller
     {
         $formation = Formation::find($id);
         $etat = !$formation->etat;
-        $etatCanChange=true;
+        $etatCanChangeCours=true;
+        $etatCanChangeSession=true;
         if($etat==1){
         
             $coursDeLaFormation = FormationsContenirCours::select('id_cours')
@@ -240,26 +259,64 @@ class FormationAdminController extends Controller
             
             if( $cours ==0){
                 $etat=0;
-                $etatCanChange=false;
+                $etatCanChangeCours=false;
+            }
+        }else {
+            $session =  Session::where('formations_id',$id)
+            ->where('etat',1)
+            
+            ->first();
+            if($session!=null){
+                $etat=1;
+                $etatCanChangeSession=false;
             }
         }
-        if(!$etatCanChange){
+        if(!$etatCanChangeCours){
             return redirect()->back()->with('error',"L'état ne peut pas être modifié car aucun cours n'est actif ! ");
-        }else {
+        }
+        else if(!$etatCanChangeSession){
+            return redirect()->back()->with('error',"L'état ne peut pas être modifié car une session est active ! ");
+        }
+        else {
         Formation::where('id', $id)->update(array('etat' => $etat));
-        return redirect()->back()->with('success','Modifié avec succès');
+        return redirect()->back()->with('success','Etat modifié avec succès');
         }
        
     }
 
     public function destroy($id)
     {
-        Formation::where('id',$id)->delete();
-        return redirect()->back()->with('success','Supprimé avec succès');
+        
+  $session =  Session::where('formations_id',$id)
+  ->where('etat',1)
+  
+  ->first();
+  if($session!=null){
+    return redirect()->back()->with('error','Ne peut pas être supprimé car une session est active !');
+  } else{
+    Formation::where('id',$id)->delete();
+    return redirect()->back()->with('success','Supprimé avec succès');
+  }
+        
     }
     public function removeCours($idCours,$idFormation){
-
-        $formationContenirCours = FormationsContenirCours::
+        $cours = Cours::find($idCours);
+        if($cours->etat==1){
+            $Formation=FormationsContenirCours::where('id_cours',$idCours)
+            ->get();
+            foreach($Formation as $f){
+              //  $cursus=Formation::where('id',$f->id_formation)->where('nombre_chapitre_total',1)->get();
+                $session =  Session::where('formations_id',$f->id_formation)
+                ->where('etat',1)
+                ->where('statut_id',3)
+                ->first();
+                if($session!=null /*&& $cursus!=null*/){
+                    return redirect()->back()->with('error','Ne peut pas être supprimé car une session est active');
+                }
+            }
+        }
+        
+  $formationContenirCours = FormationsContenirCours::
             where('id_cours',$idCours)
             ->where('id_formation',$idFormation)
             ->first();
@@ -267,7 +324,7 @@ class FormationAdminController extends Controller
 
             $Formation= new FormationAdminController;
 
-            $cours = Cours::find($idCours);
+            
             $formationContenirCours = FormationsContenirCours::
                 where('id_cours',$idCours)->get();
                 $nombreChapitresCours=Cours::where('id_cours',$idCours)->value('nombre_chapitres');

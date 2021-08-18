@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Centre extends Model
+class Titre extends Model
 {
     use HasFactory;
-    public $incrementing = false;
-    
-    protected $fillable=[
-        'id', 'designation','user_id'
-    ];
 
-}
+    protected $table = "titres";
+
+    public $incrementing = false;
+
+    protected $fillable=[
+        'id', 'intitule', 'date_obtention','stagiaire_id','session_id'
+    ];
+}   

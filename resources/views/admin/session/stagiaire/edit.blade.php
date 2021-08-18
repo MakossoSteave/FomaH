@@ -2,6 +2,7 @@
 
 @section('content')
 @if(Auth::user() && Auth::user()->role_id==1)
+
 <div class="container is-max-desktop">
     @if ($errors->any())
     <div class="notification is-danger">
@@ -13,47 +14,40 @@
             </ul>
     </div>
     @endif
-    <h2 class="title is-2 has-text-centered mt-6">Ajouter un QCM</h2>
-    <form action="{{ route('qcm.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
+    @if (session('error'))
+        <div class="notification is-danger has-text-centered my-4">
+        <button class="delete"></button>
+            {{ session('error') }}
+        </div>
+    @endif
+    <h2 class="title is-2 has-text-centered mt-6">Modifier résultat stagiaire</h2>
+    <form action="{{ route('editResultStagiaire',[$stagiaire->id_stagiaire,$stagiaire->id_session]) }}" method="POST" enctype="multipart/form-data" class="mt-6">
         @csrf
-
-        <input type="hidden" name="id_chapitre" value="{{request()->route('id')}}">
-
+    
+    
         <div class="field">
-            <label class="label">Titre du QCM</label>
-                <div class="control">
-                    <input name="designation" class="input" type="text" placeholder="Titre du QCM">
-                </div>
-        </div>
-        
-        <div id="addQuestion"></div>
-        
-        <div class="flex">
-            <div></div>
-            <div class="mt-2 mb-2">
-                <a id="buttonAddQuestion" class="has-icons-right has-text-black" onclick="addQuestion()">
-                    Ajouter une question
-                    <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
-                </a>
-            </div>
-        </div>
-        <div class="field">
-            <label class="label">Etat QCM</label>
+            <label class="label">validation</label>
                                     
-                                    <select class="form-select block w-full mt-1"  name="etat">
+                                    <select class="form-select block w-full mt-1"  name="validation">
                                           
-                                            <option value="1">
-                                                 Activé
+                                            <option value="1"
+                                             @if($stagiaire->validation == 1  )
+                                                selected
+                                                @endif >
+                                                 Réussit
                                             </option>
-                                            <option value="0" selected>
-                                                 Désactivé
+                                            <option value="0" @if($stagiaire->validation == 0)
+                                                selected
+                                                @endif>
+                                                 Échoue
                                             </option>
                                         </select>
         </div>
+        <div class='field'><label class='label'>Description du résultat</label><div class='control'><textarea name='resultat' class='textarea' type='text' placeholder='Description du résultat' >{{$stagiaire->resultat_description}}</textarea></div></div>
             <div class="control mt-4 mb-4">
-                <button type="submit" class="button is-fullwidth is-link is-rounded">Créer</button>
+                <button type="submit" class="button is-fullwidth is-link is-rounded">Modifier</button>
             </div>
-        </div>
+        
     </form>
 </div>
 @else

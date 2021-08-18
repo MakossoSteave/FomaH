@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Centre extends Model
+class Participer_meeting extends Model
 {
     use HasFactory;
+
     public $incrementing = false;
+
+    protected $primaryKey = 'id_utilisateur';
     
     protected $fillable=[
-        'id', 'designation','user_id'
+        'id_utilisateur', 'id_meeting','validation'
     ];
-
 }

@@ -21,7 +21,12 @@
             {{ session('success') }}
         </div>
     @endif
-   
+    @if (session('error'))
+        <div class="notification is-danger has-text-centered my-4">
+        <button class="delete"></button>
+            {{ session('error') }}
+        </div>
+    @endif
     @if($chapitres->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
             Aucun chapitre n'existe pour ce cours
@@ -63,7 +68,7 @@
         </p>
     </div>
   </div>
-    <div class="column marginChapitre">
+    <div class="column"><!--  marginChapitre : dropdown ne s'affiche plus -->
         <div class="dropdown is-right is-hoverable">
           <div class="dropdown-trigger">
             <button class="button borderNone is-right"
