@@ -214,6 +214,7 @@
                         <input type="text" class="focus:outline-blue focus:ring focus:border-blue-300 p-2"
                     
                         placeholder="Numéro de téléphone" name="telephone">
+
                         <input type="submit"  class="font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
                             value="modifier"
                         />
@@ -243,18 +244,18 @@
                         </dd>
                         </div>
                 -->
-                <h2 class="title is-2 has-text-centered mt-6">Ajouter votre CV</h2>
+        <!--    <h2 class="title is-2 has-text-centered mt-6">Ajouter votre CV</h2> -->
                 <form action="{{ route('cv.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
                     @csrf
 
                     <input type="hidden" name="id_chapitre" value="{{request()->route('id')}}">
 
-                    <div class="field">
+        <!--        <div class="field">
                         <label class="label">Nom du document</label>
                             <div class="control">
                                 <input name="designationcv" class="input" type="text" placeholder="Nom du document">
                             </div>
-                    </div>
+                    </div>          -->
 
                     <div class="field">
                         <label class="label">Ajouter son cv</label>
@@ -288,6 +289,7 @@
 
                         <div class="control mt-4 mb-4">
                             <button type="submit" class="button is-fullwidth is-link is-rounded">Créer</button>
+                            <input type="submit"  class="font-medium text-indigo-600 hover:text-indigo-500 parametreButton" value="modifier"/>
                         </div>
                     </div>
                 </form>

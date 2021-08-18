@@ -60,7 +60,7 @@ class CvController extends Controller
             'designationcv' => $request->get('designationcv'),
             'lien' => $lien
         ]);
-
+        dd($request);
     }
 
     /**
