@@ -360,7 +360,7 @@ class IntranetController extends Controller
 
         $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
 
-        $chapitre = Chapitre::where('id_chapitre', $formation->id_chapitre_Courant)->first();
+        $chapitre = Chapitre::where('id_chapitre', $formation->id_chapitre)->first();
 
         $chapitreMax = Chapitre::where('id_cours', $formation->id_cours)->max('numero_chapitre');
 
