@@ -16,7 +16,7 @@
                 <div class="card-content">
                 <div class="content">
                     <h4>{{$chapitre->designation}}</h4>
-                    <a class="button is-link modal-button" data-target="modal-image2">Voir le cours</a>
+                        <a href="{{url('intranet/chapitres/'.$chapitre->id_chapitre)}}" class="button is-link modal-button">Voir le cours</a>
                 </div>
                 </div>
             </div>

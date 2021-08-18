@@ -560,10 +560,16 @@ class IntranetController extends Controller
                 }
             })->get();
         }
-
-        // dd($lessons);
         
         return view('stagiaire.intranet.cours.previousIndex', compact(['lessons']));
+    }
+
+    public function onePreviousChapter($id) {
+        $chapitre = Chapitre::where('id_chapitre', $id)->with(['Section' => function($query) use($id) {
+            $query->where('sections.id', $id);
+        }])->first();
+
+        return view('stagiaire.intranet.cours.onePreviousIndex', compact(['chapitre']));
     }
 
     public function previousProjets() {

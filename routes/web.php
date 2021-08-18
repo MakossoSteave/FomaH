@@ -124,6 +124,7 @@ Route::get('/intranet/projet', [App\Http\Controllers\IntranetController::class, 
 Route::post('/intranet/preIndex', [App\Http\Controllers\IntranetController::class, 'preIndex'])->name('preIndexIntranet');
 Route::post('/intranet/faireProjet', [App\Http\Controllers\IntranetController::class, 'faireProjet'])->name('faireProjetIntranet');
 Route::get('/intranet/previousChapter', [App\Http\Controllers\IntranetController::class, 'previousChapter'])->name('previousChapterIntranet');
+Route::get('/intranet/chapitres/{id}', [App\Http\Controllers\IntranetController::class, 'onePreviousChapter'])->name('onePreviousChapter');
 
 Route::resource('intranet','App\Http\Controllers\IntranetController');
 Route::resource('exercice','App\Http\Controllers\ExerciceController');
