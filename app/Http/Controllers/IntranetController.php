@@ -475,7 +475,7 @@ class IntranetController extends Controller
             $session = Session::where('id', $sessionStagiaire->id_session)->first();
 
             $sessionProjet = Contenir_sessions_projet::where([
-                ['id_session', '=' ,$session->id],
+                ['id_session', '=', $session->id],
                 ['id_projet','=', $projet->id]
             ])->first();
 
@@ -525,15 +525,39 @@ class IntranetController extends Controller
 
             return redirect()->back()->with('fail','Votre projet a déjà été envoyé, vous ne pouvez pas en soumettre un autre');
         }
-        
     }
 
-    public function live() {
+    public function previousChapter() {
+        $idUserAuth=null;
 
-    }
+        if(Auth::user())
 
-    public function previousChapitre() {
+        $idUserAuth=Auth::user()->id;
 
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+        $allCours = FormationsContenirCours::where('id_formation','=', $formation->id_formations)->with('Cours')->get();
+
+        foreach ($allCours as $cour) {
+            $chapitre = Chapitre::where('id_chapitre', $formation->id_chapitre)->first();
+        }
+
+        $arrayChap[] = $chapitre['numero_chapitre'];
+
+        foreach($allCours as $cour) {
+            $chapitres[] = Cours::where('id_cours', $cour->id_cours)
+            ->with('Chapitre', function ($query) use ($arrayChap, $cour, $formation) {
+                if($cour->id_cours == $formation->id_cours) {
+                    $query->where('numero_chapitre','<=', max($arrayChap))->where('id_cours', $cour->id_cours);
+                } else {
+                    $query->where('id_cours', $cour->id_cours);
+                }
+            })->get();
+        }
+
+        dd($chapitres);
     }
 
     public function previousProjets() {
@@ -545,6 +569,10 @@ class IntranetController extends Controller
     }
 
     public function previousExercices() {
+
+    }
+
+    public function live() {
 
     }
 }
