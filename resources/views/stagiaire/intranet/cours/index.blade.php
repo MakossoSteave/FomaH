@@ -44,7 +44,17 @@
             <a href="{{ url('intranet/qcm') }}" class="button is-success sizeButton">Voir mes résultats au QCM</a>
         </footer>
         @endif
+        @if($exerciceCount == 0 && $projetCount == 0 && $scoreCount == 1)
+        <form action="{{ url('intranet/next') }}" method="POST">
+        @csrf
+        <footer class="buttons paginate" class="mb-4">
+            <button type="submit" class="button is-info sizeButton">Continuer</button>
+        </footer>
+        </form>
+        @endif
         @if($exerciceCount != 0 && $scoreCount == 1)
+        <form action="{{ url('intranet/next') }}" method="POST">
+        @csrf
         <footer class="buttons paginate" class="mb-4">
             <a href="{{ url('intranet/exercice') }}" class="button is-info sizeButton">Accéder aux exercices</a>
         </footer>

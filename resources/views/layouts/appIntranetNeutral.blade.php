@@ -91,6 +91,9 @@
     <div class="columns">
         <div class="column is-3">
             <aside class="is-medium menu">
+                <ul class="menu-list">
+                    <li><a href="{{ url('intranet/chapitre') }}">Reprendre</a></li>
+                </ul>
                 <p class="menu-label">
                     Navigation
                 </p>
@@ -103,12 +106,8 @@
                 </ul>
             </aside>
         </div>
-        
-        <main>
        
-            @yield('content')
-
-        </main>
+        @yield('content')
 
         <footer class="text-gray-100 bg-gray-800">
         <div class="max-w-3xl mx-auto py-6">

@@ -142,7 +142,7 @@ class IntranetController extends Controller
             $scoreCount = Score_qcm::where([
                 ['qcm_id', $qcm->id],
                 ['stagiaire_id', $stagiaire->id]
-                ])->count();
+            ])->count();
                 
             $exerciceCount = Exercice::where('id_chapitre', $formation->id_chapitre)->count();
 

@@ -93,11 +93,14 @@
     <div class="columns">
         <div class="column is-3">
             <aside class="is-medium menu">
+                <ul class="menu-list">
+                    <li><a href="{{ url('intranet/chapitre') }}">Reprendre</a></li>
+                </ul>
                 <p class="menu-label">
                     Navigation
                 </p>
                 <ul class="menu-list">
-                    <li><a href="{{ url('intranet/chapitre') }}">Cours</a></li>
+                    <li><a>Cours</a></li>
                     <li><a>QCMs</a></li>
                     <li><a>Exercices</a></li>
                     <li><a>Projets</a></li>
@@ -106,11 +109,8 @@
             </aside>
         </div>
         
-        <main>
-       
             @yield('content')
 
-        </main>
 
         <footer class="text-gray-100 bg-gray-800">
         <div class="max-w-3xl mx-auto py-6">
