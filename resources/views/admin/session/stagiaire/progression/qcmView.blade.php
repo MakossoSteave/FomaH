@@ -20,7 +20,7 @@
 
     @if($qcm==null))
         <div class="notification is-warning has-text-centered my-4">
-            Aucun QCM n'existe pour ce chapitre
+            Aucun QCM n'existe pour ce stagiaire
         </div>
     @else
 

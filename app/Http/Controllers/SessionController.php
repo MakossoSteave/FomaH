@@ -234,13 +234,13 @@ class SessionController extends Controller
     ->orderBy('etat','asc')->paginate(8)->setPath('StagiaireSession');
     $stagiairesCount = $stagiaires->count();
     $sessionStatut=(Session::find($id))->statut_id;
-    
+    $sessionEtat=(Session::find($id))->etat;
     $cursus = Session::select('formations.effectif')
     ->join('formations','formations.id','sessions.formations_id')
     ->where('sessions.id',$id)
     ->first();
     $effectif = $cursus->effectif;
-    return view('admin.session.stagiaire.index',compact(['stagiaires','id','effectif']),['sessionStatut' =>$sessionStatut,'stagiairesCount' => $stagiairesCount]);
+    return view('admin.session.stagiaire.index',compact(['stagiaires','id','effectif']),['sessionStatut' =>$sessionStatut,'stagiairesCount' => $stagiairesCount,'sessionEtat'=>$sessionEtat]);
     }
     public function Session_Stagiaire_Ajout(Request $request,$id){
         $stagiairesInscrits= Lier_sessions_stagiaire::select('lier_sessions_stagiaires.id_stagiaire')

@@ -136,13 +136,13 @@
                         </a>
                     </div>
                     <div class="flex-bottom">
-                    @if(($sessionStatut==4 || $sessionStatut==5) && $stagiaire->etat == 1 )
+                    @if(($sessionStatut==4 || $sessionStatut==5) && $stagiaire->etat == 1  && ( $sessionEtat==1) )
                         <form action="{{ route('editStagiaireSession', [$stagiaire->stagiaireID,$id]) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier le résultat</button>
                         </form>
                     @endif
-                    @if( $stagiaire->etat == 1 && $stagiaire->validation==1 && ($sessionStatut==4 || $sessionStatut==5) )
+                    @if( $stagiaire->etat == 1 && $stagiaire->validation==1 && ($sessionStatut==4 || $sessionStatut==5)  && ( $sessionEtat==1) )
                     <form action="{{ route('createPDF', [$stagiaire->stagiaireID,$id]) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Générer le diplôme</button>
