@@ -10,7 +10,12 @@
                 {{ session('success') }}
             </div>
         @endif
-
+        @if (session('warning'))
+        <div class="notification is-warning has-text-centered  my-4">
+        <button class="delete"></button>
+            {{ session('warning') }}
+        </div>
+      @endif
         @if (session('fail'))
             <div class="notification is-danger has-text-centered my-4">
             <button class="delete"></button>

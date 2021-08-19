@@ -5,6 +5,12 @@
 @if(Auth::user())
 
 <div class="column is-9">
+@if (session('warning'))
+        <div class="column is-9 notification is-warning has-text-centered ">
+        <button class="delete"></button>
+            {{ session('warning') }}
+        </div>
+ @endif
     <div class="content is-medium">
         <h3 class="title is-3">{{$chapitre->numero_chapitre}}. {{$chapitre->designation}}</h3>
         <video class="video" width="100%" controls>

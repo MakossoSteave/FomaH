@@ -3,6 +3,12 @@
 @section('content')
 @if(Auth::user())
       <div class="columns is-multiline">
+      @if (session('warning'))
+        <div class="column is-9 notification is-warning has-text-centered ">
+        <button class="delete"></button>
+            {{ session('warning') }}
+        </div>
+      @endif
     @foreach($lessons as $lesson)
         @foreach($lesson as $l)
             @foreach($l->Chapitre as $chapitre)

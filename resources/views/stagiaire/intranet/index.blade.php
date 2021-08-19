@@ -24,6 +24,12 @@
             </div>
         </div>
             @endif
+            @if (session('warning'))
+        <div class="notification is-warning has-text-centered my-4">
+        <button class="delete"></button>
+            {{ session('warning') }}
+        </div>
+ @endif
     </div>  
 </div>
 </section>

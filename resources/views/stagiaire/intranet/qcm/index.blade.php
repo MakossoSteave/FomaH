@@ -3,6 +3,12 @@
 @section('content')
 @if(Auth::user())
     <div class="column is-9">
+    @if (session('warning'))
+        <div class="column is-9 notification is-warning has-text-centered ">
+        <button class="delete"></button>
+            {{ session('warning') }}
+        </div>
+    @endif
         <div class="content is-medium">
             @foreach($qcms as $qcm)
             <h1 class="has-text-centered">QCM - {{$qcm->designation}}</h1>

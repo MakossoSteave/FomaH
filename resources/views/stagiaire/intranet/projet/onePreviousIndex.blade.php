@@ -5,6 +5,12 @@
 @if(Auth::user())
 
 <div class="column is-9">
+@if (session('warning'))
+        <div class="notification is-warning has-text-centered  my-4">
+        <button class="delete"></button>
+            {{ session('warning') }}
+        </div>
+      @endif
     <div class="content is-medium">
     <h1 class="has-text-centered">Projet</h1>
         <div class="box mt-4">

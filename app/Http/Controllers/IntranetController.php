@@ -25,12 +25,53 @@ use Illuminate\Support\Facades\Auth;
 class IntranetController extends Controller
 {
     public function index(){
-        
+        $idUserAuth=null;
+
+        if(Auth::user())
+        $idUserAuth=Auth::user()->id;
+        $idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
         $idUserAuth=null;
 
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
         
@@ -79,6 +120,25 @@ class IntranetController extends Controller
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
@@ -169,6 +229,25 @@ class IntranetController extends Controller
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
         
@@ -224,6 +303,25 @@ class IntranetController extends Controller
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
         
@@ -253,6 +351,25 @@ class IntranetController extends Controller
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
         $resultat = 0;
 
@@ -285,6 +402,25 @@ class IntranetController extends Controller
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
@@ -323,6 +459,25 @@ class IntranetController extends Controller
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
@@ -356,6 +511,25 @@ class IntranetController extends Controller
             if(Auth::user())
 
             $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
             $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
@@ -415,6 +589,25 @@ class IntranetController extends Controller
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
         $exerciceCount = Exercice::where('etat',1)->where('id_chapitre', $request->get('id_chapitre'))->count();
 
@@ -438,6 +631,25 @@ class IntranetController extends Controller
             if(Auth::user())
 
             $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
             $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
@@ -513,6 +725,25 @@ class IntranetController extends Controller
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
@@ -562,6 +793,25 @@ class IntranetController extends Controller
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
@@ -605,6 +855,25 @@ class IntranetController extends Controller
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
@@ -651,6 +920,25 @@ class IntranetController extends Controller
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
@@ -681,6 +969,25 @@ class IntranetController extends Controller
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
@@ -740,6 +1047,25 @@ class IntranetController extends Controller
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
@@ -768,6 +1094,25 @@ class IntranetController extends Controller
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
@@ -775,7 +1120,7 @@ class IntranetController extends Controller
         ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
 
         $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
-
+if($meeting){
         $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
 
         $endMeeting = date('Y-m-d H:i:s', strtotime($sessionLive->date_meeting.' +2 hours'));
@@ -803,6 +1148,9 @@ class IntranetController extends Controller
 
             return redirect('/intranet/live');
         }
+    }else {
+        return redirect()->back()->with("warning","Pas de live prévu");
+    }
     }
 
     public function live() {
@@ -811,6 +1159,25 @@ class IntranetController extends Controller
         if(Auth::user())
 
         $idUserAuth=Auth::user()->id;
+$idUserRole=Auth::user()->role_id;
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        if(!$SuivreFormation){
+            if($idUserRole==2)
+            return redirect("/centre");
+            else if($idUserRole==3)
+            return redirect("/stagiaire");
+            
+            else if($idUserRole==4)
+            
+            return redirect("/formateur");
+            else if($idUserRole==5)
+            
+            return redirect("/organisme");
+            else
+            return redirect("/");
+        }
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
@@ -818,9 +1185,12 @@ class IntranetController extends Controller
         ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
 
         $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
-
+        if($meeting){
         $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
 
         return view('stagiaire.intranet.live.index', compact(['sessionLive']));
+        }else {
+            return redirect()->back()->with("warning","Pas de live prévu");
+        }
     }
 }
