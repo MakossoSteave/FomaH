@@ -3,28 +3,27 @@
 @section('content')
 @if(Auth::user())
       <div class="columns is-multiline">
-    @foreach($lessons as $lesson)
-        @foreach($lesson as $l)
-            @foreach($l->Chapitre as $chapitre)
+        @foreach($qcms as $qcm)
+            @foreach($qcm as $q)
             <div class="column is-4">
             <div class="card is-shady">
                 <div class="card-image">
-                <video class="video is-4by3" controls>
-                    <source src="{{ URL::asset('/') }}video/chapitre/{{$chapitre->video}}" >
-                    Votre lecteur ne supporte pas ce type de video
-                </video>
-            </div>
+                <img src="{{ URL::asset('/') }}img/quiz.jpg" alt="" class="img is-4by3">
+                </div>
                 <div class="card-content">
                 <div class="content">
-                    <h4>{{$chapitre->designation}}</h4>
-                        <a href="{{url('intranet/chapitres/'.$chapitre->id_chapitre)}}" class="button is-link modal-button">Voir le cours</a>
+                    <h4>{{$q->designation}}</h4>
+                    @foreach($q->Score_qcm as $scores)
+                        <span class="percentage mb-4">{{$scores->resultat}}% de réussite</span>
+                        <progress class="progress is-success" value="{{$scores->resultat}}" max="100"></progress>
+                    @endforeach
+                        <a href="{{url('intranet/qcms/'.$q->id)}}" class="button is-link modal-button">Voir le QCM</a>
                 </div>
                 </div>
             </div>
             </div>
-            @endforeach
         @endforeach
-    @endforeach
+      @endforeach
       </div>
     </section>
 

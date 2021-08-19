@@ -133,6 +133,12 @@ Route::post('/intranet/preIndex', [App\Http\Controllers\IntranetController::clas
 Route::post('/intranet/faireProjet', [App\Http\Controllers\IntranetController::class, 'faireProjet'])->name('faireProjetIntranet');
 Route::get('/intranet/previousChapter', [App\Http\Controllers\IntranetController::class, 'previousChapter'])->name('previousChapterIntranet');
 Route::get('/intranet/chapitres/{id}', [App\Http\Controllers\IntranetController::class, 'onePreviousChapter'])->name('onePreviousChapter');
+Route::get('/intranet/previousQCM', [App\Http\Controllers\IntranetController::class, 'previousQCM'])->name('previousQCMIntranet');
+Route::get('/intranet/qcms/{id}', [App\Http\Controllers\IntranetController::class, 'onePreviousQCM'])->name('onePreviousQCMIntranet');
+Route::get('/intranet/previousExercices', [App\Http\Controllers\IntranetController::class, 'previousExercices'])->name('previousExercicesIntranet');
+Route::get('/intranet/exercices/{id}', [App\Http\Controllers\IntranetController::class, 'onePreviousExercice'])->name('onePreviousExerciceIntranet');
+Route::get('/intranet/previousProjets', [App\Http\Controllers\IntranetController::class, 'previousProjets'])->name('previousProjetsIntranet');
+Route::get('/intranet/projets/{id}', [App\Http\Controllers\IntranetController::class, 'onePreviousProjet'])->name('onePreviousProjetIntranet');
 
 Route::get('storage/{filename}', function ($filename)
 {

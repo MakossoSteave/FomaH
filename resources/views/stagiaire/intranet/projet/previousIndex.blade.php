@@ -3,28 +3,21 @@
 @section('content')
 @if(Auth::user())
       <div class="columns is-multiline">
-    @foreach($lessons as $lesson)
-        @foreach($lesson as $l)
-            @foreach($l->Chapitre as $chapitre)
+        @foreach($projets as $projet)
             <div class="column is-4">
             <div class="card is-shady">
                 <div class="card-image">
-                <video class="video is-4by3" controls>
-                    <source src="{{ URL::asset('/') }}video/chapitre/{{$chapitre->video}}" >
-                    Votre lecteur ne supporte pas ce type de video
-                </video>
-            </div>
+                <img src="{{ URL::asset('/') }}img/projet.jpg" alt="" class="img is-4by3">
+                </div>
                 <div class="card-content">
                 <div class="content">
-                    <h4>{{$chapitre->designation}}</h4>
-                        <a href="{{url('intranet/chapitres/'.$chapitre->id_chapitre)}}" class="button is-link modal-button">Voir le cours</a>
+                    <h4 class="excerpt">{{$projet->description}}</h4>
+                        <a href="{{url('intranet/projets/'.$projet->id)}}" class="button is-link modal-button">Voir le Projet</a>
                 </div>
                 </div>
             </div>
-            </div>
-            @endforeach
-        @endforeach
-    @endforeach
+        </div>
+      @endforeach
       </div>
     </section>
 
