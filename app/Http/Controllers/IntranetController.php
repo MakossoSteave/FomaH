@@ -22,6 +22,8 @@ use App\Models\Meeting_en_ligne;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+date_default_timezone_set('Europe/Paris');
+
 class IntranetController extends Controller
 {
     public function index(){
@@ -769,7 +771,7 @@ class IntranetController extends Controller
             ]);
 
             return redirect('/intranet/live');
-        } else if(date('Y-m-d H:i:s') == $sessionLive->date_meeting || date('Y-m-d H:i:s') <= $endMeeting) {
+        } else if(date('Y-m-d H:i:s') >= $sessionLive->date_meeting && date('Y-m-d H:i:s') <= $endMeeting) {
 
             $sessionLive->update([
                 'statut_id' => 3
