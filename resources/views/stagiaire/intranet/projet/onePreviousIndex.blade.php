@@ -8,20 +8,20 @@
     <div class="content is-medium">
     <h1 class="has-text-centered">Projet</h1>
         <div class="box mt-4">
-                    <article class="message is-primary">
-                        <span class="icon has-text-primary">
-                        </span>
-                        <div class="message-body">
-                        {{$projet->description}}
-                        </div>
-                    </article>
-                    @if(!empty($projet->document))
-                    @foreach($projet->document as $document)
-                        <embed class="docSize mt-4" src="{{ URL::asset('/') }}doc/projet/{{$document->lien}}" alt="Placeholder image">
-                    @endforeach
-                    @endif
-            </div>
-</div>
+                <article class="message is-primary">
+                    <span class="icon has-text-primary">
+                    </span>
+                    <div class="message-body">
+                    {{$projet->description}}
+                    </div>
+                </article>
+                @if(!empty($projet->document))
+                @foreach($projet->document as $document)
+                    <embed class="docSize mt-4" src="{{ URL::asset('/') }}doc/projet/{{$document->lien}}" alt="Placeholder image">
+                @endforeach
+                @endif
+        </div>
+    </div>
 </div>
 </section>
 @else

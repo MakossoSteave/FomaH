@@ -6,22 +6,11 @@
         @if($session->statut_id == 3)
         <div class="column is-9">
             <div class="content is-medium">
+            <h3 class="has-text-centered">Votre Progression</h2>
+                <span class="percentage mb-4">{{$progress}}% de progression</span>
+                <progress class="progress is-success" value="{{$progress}}" max="100"></progress>
                 <h1 class="has-text-centered mb-4 is-size-3">{{$formationName->libelle}}</h1>
-                <p class="mb-4">{{$formationName->description}}</p>
-                    <div class="content" id="sommaire">
-                        <ol class="is-upper-roman">
-                            @foreach($sommaire as $sommaires)
-                            @foreach($sommaires->cours as $cours)
-                            <li>{{$cours->designation}}</li>
-                            <ol>
-                                @foreach($cours->chapitre as $chapitre)
-                                <li>{{$chapitre->designation}}</li>
-                                @endforeach
-                            </ol>
-                            @endforeach
-                            @endforeach
-                        </ol>
-                    </div>
+                    <p class="mb-4">{{$formationName->description}}</p>
             </div>
             @elseif($session->statut_id == 2)
             <p>Non débutée</p>
@@ -34,7 +23,7 @@
             Vous ne suivez aucune formation
             </div>
         </div>
-                @endif
+            @endif
     </div>  
 </div>
 </section>
