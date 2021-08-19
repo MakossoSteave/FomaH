@@ -458,6 +458,9 @@ class CoursController extends Controller
                     'etat' => 0
                    
                 ]);}
+               Session::where('formations_id',$c->id_formation)->update([
+                   'etat' => 0
+               ]);
         }
         if(!$destroy){ $this->Update_cours($id); }
        
