@@ -16,6 +16,8 @@ use App\Models\Session;
 use App\Models\Lier_sessions_stagiaire;
 use App\Models\Faire_projet;
 use App\Models\Contenir_sessions_projet;
+use App\Models\Participer_meeting;
+use App\Models\Meeting_en_ligne;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -735,7 +737,63 @@ class IntranetController extends Controller
         return view('stagiaire.intranet.projet.onePreviousIndex', compact(['projet']));
     }
 
-    public function live() {
+    public function statutLive() {
+        $idUserAuth=null;
 
+        if(Auth::user())
+
+        $idUserAuth=Auth::user()->id;
+
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+        $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
+
+        $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
+
+        $endMeeting = date('Y-m-d H:i:s', strtotime($sessionLive->date_meeting.' +2 hours'));
+
+        if(date('Y-m-d H:i:s') < $sessionLive->date_meeting) {
+
+            $sessionLive->update([
+                'statut_id' => 1
+            ]);
+
+            return redirect('/intranet/live');
+
+        } else if(date('Y-m-d H:i:s') > $endMeeting) {
+
+            $sessionLive->update([
+                'statut_id' => 4
+            ]);
+
+            return redirect('/intranet/live');
+        } else if(date('Y-m-d H:i:s') == $sessionLive->date_meeting || date('Y-m-d H:i:s') <= $endMeeting) {
+
+            $sessionLive->update([
+                'statut_id' => 3
+            ]);
+
+            return redirect('/intranet/live');
+        }
+    }
+
+    public function live() {
+        $idUserAuth=null;
+
+        if(Auth::user())
+
+        $idUserAuth=Auth::user()->id;
+
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+        $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
+
+        $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
+
+        return view('stagiaire.intranet.live.index', compact(['sessionLive']));
     }
 }
