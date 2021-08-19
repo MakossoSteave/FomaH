@@ -9,17 +9,26 @@ use App\Models\User;
 use App\Models\Organisation;
 use App\Models\Formateur;
 use App\Models\types_inscription;
+use App\Models\Suivre_formation;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Rules\FilenameImage;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 class StagiaireController extends Controller
 {
     
     public function index(){
         $data = Formation::orderBy('id','desc')->paginate(8)->setPath('stagiaire');
+        $idUserAuth=null;
 
-        return view('stagiaire/index',compact(['data']));
+        if(Auth::user())
+        $idUserAuth=Auth::user()->id;
+
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
+        return view('stagiaire/index',compact(['data']),['SuivreFormation'=>$SuivreFormation]);
     }
 
     public function create(Request $request)
