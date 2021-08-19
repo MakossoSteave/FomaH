@@ -1,9 +1,15 @@
-@extends('layouts.appIntranet')
+@extends('layouts.appIntranetNeutral')
 
 @section('content')
 @if(Auth::user())
-<h1>Live</h1>
-
+    <div class="column is-9">
+        <div class="content is-medium">
+            <h1 class="has-text-centered">Live</h1>
+            <h2>{{date('d-m-Y H:i', strtotime($sessionLive->date_meeting))}}</h2>
+            <a href="{{$sessionLive->lien}}" class="button is-link is-inverted is-large is-fullwidth has-text-black">Accéder au live</a>
+        </div>
+    </div>
+</section>
 @else
 <div class="notification is-danger has-text-centered my-4">
 Votre session a expiré !

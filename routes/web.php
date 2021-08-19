@@ -139,6 +139,8 @@ Route::get('/intranet/previousExercices', [App\Http\Controllers\IntranetControll
 Route::get('/intranet/exercices/{id}', [App\Http\Controllers\IntranetController::class, 'onePreviousExercice'])->name('onePreviousExerciceIntranet');
 Route::get('/intranet/previousProjets', [App\Http\Controllers\IntranetController::class, 'previousProjets'])->name('previousProjetsIntranet');
 Route::get('/intranet/projets/{id}', [App\Http\Controllers\IntranetController::class, 'onePreviousProjet'])->name('onePreviousProjetIntranet');
+Route::get('/intranet/live', [App\Http\Controllers\IntranetController::class, 'live'])->name('liveIntranet');
+Route::get('/intranet/statutLive', [App\Http\Controllers\IntranetController::class, 'statutLive'])->name('statutLiveIntranet');
 
 Route::get('storage/{filename}', function ($filename)
 {
