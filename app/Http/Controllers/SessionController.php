@@ -226,20 +226,21 @@ class SessionController extends Controller
         return redirect('/StagiaireSession/'.$idSession)->with('success','Résultat modifié avec succès');
     }
     public function Session_Stagiaire($id){
-    $stagiaires=Lier_sessions_stagiaire::select('lier_sessions_stagiaires.*','users.image','stagiaires.nom','stagiaires.prenom','stagiaires.user_id','stagiaires.id as stagiaireID','sessions.statut_id as sessionStatut')
+    $stagiaires=Lier_sessions_stagiaire::select('lier_sessions_stagiaires.*','users.image','stagiaires.nom','stagiaires.prenom','stagiaires.user_id','stagiaires.id as stagiaireID')
     ->join('stagiaires','stagiaires.id','lier_sessions_stagiaires.id_stagiaire')
     ->join('users','users.id','stagiaires.user_id')
     ->join('sessions','sessions.id','lier_sessions_stagiaires.id_session')
     ->where('id_session',$id)
     ->orderBy('etat','asc')->paginate(8)->setPath('StagiaireSession');
     $stagiairesCount = $stagiaires->count();
-    //dd($stagiairesCount);
+    $sessionStatut=(Session::find($id))->statut_id;
+    
     $cursus = Session::select('formations.effectif')
     ->join('formations','formations.id','sessions.formations_id')
     ->where('sessions.id',$id)
     ->first();
     $effectif = $cursus->effectif;
-    return view('admin.session.stagiaire.index',compact(['stagiaires','id','effectif']),['stagiairesCount' => $stagiairesCount]);
+    return view('admin.session.stagiaire.index',compact(['stagiaires','id','effectif']),['sessionStatut' =>$sessionStatut,'stagiairesCount' => $stagiairesCount]);
     }
     public function Session_Stagiaire_Ajout(Request $request,$id){
         $stagiairesInscrits= Lier_sessions_stagiaire::select('lier_sessions_stagiaires.id_stagiaire')
@@ -348,7 +349,10 @@ class SessionController extends Controller
           
 
         $pdf = PDF::loadView('admin.session.diplome', $data);
+        if($stagiaire->prenom)
         Storage::put("/public/session/$idSession/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf", $pdf->output());
+        else
+        Storage::put("/public/session/$idSession/diplome/$stagiaire->nom diplome.pdf", $pdf->output());
         $titre= Titre::where('stagiaire_id',$id)->where('intitule',$formation->libelle)->first();
         if($titre==null){
         do {
