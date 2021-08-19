@@ -201,7 +201,7 @@ class IntranetController extends Controller
 
             $chapitreMax = Chapitre::where('id_cours', $formation->id_cours)->where('etat',1)->max('numero_chapitre');
 
-            $chap = Chapitre::where('id_chapitre', $formation->id_chapitre)->first();
+            $chap = Chapitre::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->first();
 
             if($chapitreMax == $chap->numero_chapitre) {
                 $projetCount = Projet::where('id_cours', $formation->id_cours)->count();
