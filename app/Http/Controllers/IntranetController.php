@@ -572,15 +572,40 @@ class IntranetController extends Controller
         return view('stagiaire.intranet.cours.onePreviousIndex', compact(['chapitre']));
     }
 
-    public function previousProjets() {
+    public function previousQCM() {
+        $idUserAuth=null;
 
+        if(Auth::user())
+
+        $idUserAuth=Auth::user()->id;
+
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+        $qcmScores = Score_qcm::where('stagiaire_id', $stagiaire->id)->get();
+
+        foreach($qcmScores as $qcmScore) {
+            $qcms[] = Qcm::where('id', $qcmScore->qcm_id)->with('Score_qcm')->get();
+        }
+        
+        return view('stagiaire.intranet.qcm.previousIndex', compact(['qcms']));
     }
 
-    public function previousQCM() {
+    public function onePreviousQCM($id) {
+        $qcm = Qcm::where('id', $id)->with(['Question_qcm' => function($query) use($id) {
+            $query->where('question_qcm.qcm_id', $id)
+            ->with('Reponse_question_qcm');
+        }])->first();
 
+        return view('stagiaire.intranet.qcm.onePreviousIndex', compact(['qcm']));
     }
 
     public function previousExercices() {
+
+    }
+
+    public function previousProjets() {
 
     }
 
