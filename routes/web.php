@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Http\Response; 
 // use App\Models\Formations;
 // use App\Models\User;
 
@@ -105,6 +107,8 @@ Route::get('/addProjet/{id}', [App\Http\Controllers\ProjetController::class, 'cr
 Route::get('/etatProjet/{id}', [App\Http\Controllers\ProjetController::class, 'etat'])->name('etatProjet');
 Route::delete('/deleteDocument/{id}', [App\Http\Controllers\ProjetController::class, 'deleteDocument'])->name('deleteDocument');
 
+Route::get('/viewTitre/{id}', [App\Http\Controllers\TitreController::class, 'view'])->name('viewTitre');
+
 Route::get('/exercice/{id}', [App\Http\Controllers\ExerciceController::class, 'index'])->name('exercice');
 Route::get('/addExercice/{id}', [App\Http\Controllers\ExerciceController::class, 'create'])->name('addExercice');
 Route::get('/etatExercice/{id}', [App\Http\Controllers\ExerciceController::class, 'etat'])->name('etatExercice');
@@ -129,6 +133,23 @@ Route::post('/intranet/preIndex', [App\Http\Controllers\IntranetController::clas
 Route::post('/intranet/faireProjet', [App\Http\Controllers\IntranetController::class, 'faireProjet'])->name('faireProjetIntranet');
 Route::get('/intranet/previousChapter', [App\Http\Controllers\IntranetController::class, 'previousChapter'])->name('previousChapterIntranet');
 Route::get('/intranet/chapitres/{id}', [App\Http\Controllers\IntranetController::class, 'onePreviousChapter'])->name('onePreviousChapter');
+
+Route::get('storage/{filename}', function ($filename)
+{
+    $path = storage_path('public/' . $filename);
+ 
+    if (!File::exists($path)) {
+        abort(404);
+    }
+ 
+    $file = File::get($path);
+    $type = File::mimeType($path);
+ 
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+ 
+    return $response;
+});
 
 Route::resource('intranet','App\Http\Controllers\IntranetController');
 Route::resource('exercice','App\Http\Controllers\ExerciceController');

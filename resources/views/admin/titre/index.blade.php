@@ -62,6 +62,9 @@
                             <p>
                                 <a class = "button is-danger button-card modal-button" data-target = "#{{$titre->id}}">Supprimer</a>
                             </p>
+                            <p>
+                                <a class = "button is-success button-card modal-button" href="{{Route('viewTitre',$titre->id)}}">Voir</a>
+                            </p>
                             <div id="{{$titre->id}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">

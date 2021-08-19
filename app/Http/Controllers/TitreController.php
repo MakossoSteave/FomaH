@@ -43,15 +43,38 @@ class TitreController extends Controller
             $stagiaire = Stagiaire::find($titre->stagiaire_id);
             if($titre->session_id !=null){
                 
-                Storage::delete("session/$titre->session_id/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf");
+                Storage::delete("/public/session/$titre->session_id/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf");
             }
             else {
                 $cours= Cours::where('designation',$titre->intitule)->first();
-                Storage::delete("cours/$cours->id_cours/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf");
+                Storage::delete("/public/cours/$cours->id_cours/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf");
             }
             Titre::where('id',$id)->delete();
            
             return redirect()->back()->with('success','Titre supprimé avec succès');
+
+            //"session/$idSession/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf"
+        }
+        else {
+            return redirect()->back()->with('error','Titre non trouvé');
+        }
+       
+    }
+    public function view($id){
+        $titre = Titre::find($id);
+        if($titre){
+            $stagiaire = Stagiaire::find($titre->stagiaire_id);
+            if($titre->session_id !=null){
+                
+                $diplome="session/$titre->session_id/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf";
+            }
+            else {
+                $cours= Cours::where('designation',$titre->intitule)->first();
+                $diplome="cours/$cours->id_cours/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf";
+            }
+           
+           
+            return redirect('storage/'.$diplome);
 
             //"session/$idSession/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf"
         }

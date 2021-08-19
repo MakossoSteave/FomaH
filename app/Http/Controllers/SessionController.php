@@ -348,7 +348,7 @@ class SessionController extends Controller
           
 
         $pdf = PDF::loadView('admin.session.diplome', $data);
-        Storage::put("session/$idSession/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf", $pdf->output());
+        Storage::put("/public/session/$idSession/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf", $pdf->output());
         $titre= Titre::where('stagiaire_id',$id)->where('intitule',$formation->libelle)->first();
         if($titre==null){
         do {
@@ -380,9 +380,7 @@ class SessionController extends Controller
         return view('admin.session.stagiaire.progression.index',compact(['stagiaire']));
     }
     public function qcmStagiaire($id,$idSession){
-       /* $qcm=Score_qcm::select('score_qcm.*')
-        ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_session')
-        ->where('stagiaire_id',$id);*/
+      
         $qcms=Score_qcm::select('score_qcm.*','qcm.designation')
         ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','score_qcm.stagiaire_id')
         ->join('sessions','sessions.id','lier_sessions_stagiaires.id_session')
@@ -403,4 +401,21 @@ class SessionController extends Controller
         $qcm = Qcm::find($id);
         return view('admin.session.stagiaire.progression.qcmView',compact(['qcm']));
     }
+    public function projetStagiaire($id,$idSession){
+      
+         $qcms=Score_qcm::select('score_qcm.*','qcm.designation')
+         ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','score_qcm.stagiaire_id')
+         ->join('sessions','sessions.id','lier_sessions_stagiaires.id_session')
+         ->join('formations_contenir_cours','formations_contenir_cours.id_formation','sessions.formations_id')
+         ->join('chapitres','chapitres.id_cours','formations_contenir_cours.id_cours')
+         ->join('qcm', function($join)
+                         {
+                              $join->on('chapitres.id_chapitre', '=', 'qcm.id_chapitre');
+                              $join->on('score_qcm.qcm_id','=','qcm.id');
+                         }) 
+         ->where('lier_sessions_stagiaires.id_session',$idSession)
+         ->where('score_qcm.stagiaire_id',$id)
+         ->orderBy('updated_at','desc')->paginate(8)->setPath('qcmStagiaire');
+         return view('admin.session.stagiaire.progression.qcm',compact(['qcms']));
+     }
 }
