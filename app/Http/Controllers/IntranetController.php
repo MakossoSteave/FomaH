@@ -602,7 +602,61 @@ class IntranetController extends Controller
     }
 
     public function previousExercices() {
+        $idUserAuth=null;
 
+        if(Auth::user())
+
+        $idUserAuth=Auth::user()->id;
+
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+        $maxCours = FormationsContenirCours::where('id_cours', $formation->id_cours)->first();
+
+        $allCours = FormationsContenirCours::where('id_formation','=', $formation->id_formations)
+        ->where('numero_cours','<=', $maxCours->numero_cours)
+        ->with('Cours')->get();
+
+        foreach ($allCours as $cour) {
+            $chapitre = Chapitre::where('id_chapitre', $formation->id_chapitre)->first();
+        }
+
+        $arrayChap[] = $chapitre['numero_chapitre'];
+
+        foreach($allCours as $cour) {
+            $lessons[] = Cours::where('id_cours', $cour->id_cours)
+            ->with('Chapitre', function ($query) use ($arrayChap, $cour, $formation) {
+                if($cour->id_cours == $formation->id_cours) {
+                    $query->where('numero_chapitre','<=', max($arrayChap))->where('id_cours', $cour->id_cours);
+                } else {
+                    $query->where('id_cours', $cour->id_cours);
+                }
+            })->get();
+        }
+
+        foreach($lessons as $lesson) {
+            foreach($lesson as $l) {
+                foreach($l->chapitre as $chapitre) {
+                    $chapitreIds[] = $chapitre->id_chapitre;
+                }
+            }
+        }
+        
+        foreach($chapitreIds as $chapitreId) {
+            $exercices[] = Exercice::where('id_chapitre', $chapitreId)->first();
+        }
+
+        return view('stagiaire.intranet.exercices.previousIndex', compact(['exercices']));
+    }
+
+    public function onePreviousExercice($id) {
+        $exercice = Exercice::where('id', $id)->with(['Questions_exercice' => function($query) use($id) {
+            $query->where('questions_exercices.exercice_id', $id)
+            ->with('Questions_correction');
+        }])->first();
+
+        return view('stagiaire.intranet.exercices.onePreviousIndex', compact(['exercice']));
     }
 
     public function previousProjets() {

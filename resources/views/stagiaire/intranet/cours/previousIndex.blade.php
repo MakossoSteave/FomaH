@@ -3,8 +3,9 @@
 @section('content')
 @if(Auth::user())
       <div class="columns is-multiline">
-        @foreach($lessons as $lesson)
-            @foreach($lesson[0]->Chapitre as $chapitre)
+    @foreach($lessons as $lesson)
+        @foreach($lesson as $l)
+            @foreach($l->Chapitre as $chapitre)
             <div class="column is-4">
             <div class="card is-shady">
                 <div class="card-image">
@@ -22,7 +23,8 @@
             </div>
             </div>
             @endforeach
-      @endforeach
+        @endforeach
+    @endforeach
       </div>
     </section>
 
