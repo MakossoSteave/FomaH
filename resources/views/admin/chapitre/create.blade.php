@@ -95,7 +95,7 @@
                 </a>
             </div>
         </div>
-        <div class="field">
+       <!-- <div class="field">
             <label class="label">Etat chapitre</label>
                                     
                                     <select class="form-select block w-full mt-1"  name="etat">
@@ -107,7 +107,7 @@
                                                  Désactivé
                                             </option>
                                         </select>
-        </div>
+        </div>-->
             <div class="control mt-4 mb-4">
                 <button type="submit" class="button is-fullwidth is-link is-rounded">Créer</button>
             </div>
