@@ -368,7 +368,8 @@ class SessionController extends Controller
     }
     else {
         Titre::where('stagiaire_id',$id)->where('intitule',$formation->libelle)->update([
-            'date_obtention' => $session->date_fin
+            'date_obtention' => $session->date_fin,
+            'session_id' => $idSession
         ]);
     }
         return redirect()->back()->with('success','Diplôme crée avec succès');
