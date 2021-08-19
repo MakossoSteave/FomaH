@@ -202,13 +202,14 @@ class ChapitreController extends Controller
             $video = $chapitre->video;
         }
         $etat=$request->get('etat');
-        if($etat){
+        $message=null;
+        if($etat==0){
             if(!$this->checkChapitre($id_chapitre)){
                 $etat=1;
                 $message="Etat non modifié car une session est en cours";/*et aucun autre chapitre n'est actif";*/
             } else { $this->updateChapitre($chapitre,"etat");}
            
-        } else {
+        } else if($etat==1 && $etat!=$chapitre->etat) {
             $Numero= Chapitre::where('id_cours',$idCours)->where('etat',1)->max('numero_chapitre');
             Chapitre::where('id_chapitre',$id_chapitre)->update([
                     
