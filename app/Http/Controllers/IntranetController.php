@@ -660,7 +660,30 @@ class IntranetController extends Controller
     }
 
     public function previousProjets() {
+        $idUserAuth=null;
 
+        if(Auth::user())
+
+        $idUserAuth=Auth::user()->id;
+
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+        $sessionProjets = Contenir_sessions_projet::where('id_session', $formation->id_session)
+        ->orWhere('statut_id', 3)->orWhere('statut_id', 4)->get();
+
+        foreach($sessionProjets as $sessionProjet) {
+            $projets[] = Projet::where('id', $sessionProjet->id_projet)->first();
+        }
+
+        return view('stagiaire.intranet.projet.previousIndex', compact(['projets']));
+    }
+
+    public function onePreviousProjet($id) {
+        $projet = Projet::where('id', $id)->with('Document')->first();
+
+        return view('stagiaire.intranet.projet.onePreviousIndex', compact(['projet']));
     }
 
     public function live() {

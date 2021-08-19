@@ -129,6 +129,8 @@ Route::get('/intranet/previousQCM', [App\Http\Controllers\IntranetController::cl
 Route::get('/intranet/qcms/{id}', [App\Http\Controllers\IntranetController::class, 'onePreviousQCM'])->name('onePreviousQCMIntranet');
 Route::get('/intranet/previousExercices', [App\Http\Controllers\IntranetController::class, 'previousExercices'])->name('previousExercicesIntranet');
 Route::get('/intranet/exercices/{id}', [App\Http\Controllers\IntranetController::class, 'onePreviousExercice'])->name('onePreviousExerciceIntranet');
+Route::get('/intranet/previousProjets', [App\Http\Controllers\IntranetController::class, 'previousProjets'])->name('previousProjetsIntranet');
+Route::get('/intranet/projets/{id}', [App\Http\Controllers\IntranetController::class, 'onePreviousProjet'])->name('onePreviousProjetIntranet');
 
 Route::resource('intranet','App\Http\Controllers\IntranetController');
 Route::resource('exercice','App\Http\Controllers\ExerciceController');

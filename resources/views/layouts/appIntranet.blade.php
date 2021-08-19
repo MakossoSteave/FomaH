@@ -103,7 +103,7 @@
                     <li><a href="{{ url('intranet/previousChapter') }}">Cours</a></li>
                     <li><a href="{{ url('intranet/previousQCM') }}">QCMs</a></li>
                     <li><a href="{{ url('intranet/previousExercices') }}">Exercices</a></li>
-                    <li><a>Projets</a></li>
+                    <li><a href="{{ url('intranet/previousProjets') }}">Projets</a></li>
                     <li><a>Live</a></li>
                 </ul>
             </aside>
