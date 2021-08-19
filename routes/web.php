@@ -117,7 +117,7 @@ Route::get('/utilisateurs', [App\Http\Controllers\UtilisateurController::class, 
 
 Route::get('/admins', [App\Http\Controllers\AdminController::class, 'admin'])->name('admins');
 
-Route::get('/intranet/chapitre', [App\Http\Controllers\IntranetController::class, 'chapitre'])->name('chapitreIntranet');
+Route::get('/intranet/chapitre', [App\Http\Controllers\IntranetController::class, 'oneChapitre'])->name('chapitreIntranet');
 Route::post('/intranet/cours', [App\Http\Controllers\IntranetController::class, 'cours'])->name('coursIntranet');
 Route::post('/intranet/nextIfExercice', [App\Http\Controllers\IntranetController::class, 'nextIfExercice'])->name('nextIfExerciceIntranet');
 Route::get('/intranet/qcm', [App\Http\Controllers\IntranetController::class, 'qcm'])->name('qcmIntranet');
@@ -127,6 +127,8 @@ Route::post('/intranet/next', [App\Http\Controllers\IntranetController::class, '
 Route::get('/intranet/projet', [App\Http\Controllers\IntranetController::class, 'projet'])->name('projetIntranet');
 Route::post('/intranet/preIndex', [App\Http\Controllers\IntranetController::class, 'preIndex'])->name('preIndexIntranet');
 Route::post('/intranet/faireProjet', [App\Http\Controllers\IntranetController::class, 'faireProjet'])->name('faireProjetIntranet');
+Route::get('/intranet/previousChapter', [App\Http\Controllers\IntranetController::class, 'previousChapter'])->name('previousChapterIntranet');
+Route::get('/intranet/chapitres/{id}', [App\Http\Controllers\IntranetController::class, 'onePreviousChapter'])->name('onePreviousChapter');
 
 Route::resource('intranet','App\Http\Controllers\IntranetController');
 Route::resource('exercice','App\Http\Controllers\ExerciceController');

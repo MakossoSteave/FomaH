@@ -36,7 +36,7 @@
             <form action="{{ url('intranet/nextIfExercice') }}" method="POST">
             @csrf
 
-                <button class="button is-success sizeButton">Passer au chapitre suivant</button>
+                <button class="button is-success sizeButton">Continuer</button>
             </form>
         </footer>
     </div>

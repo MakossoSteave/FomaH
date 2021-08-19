@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.appIntranet')
 
 @section('content')
 @if(Auth::user())

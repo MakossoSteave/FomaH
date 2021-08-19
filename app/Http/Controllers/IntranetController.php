@@ -105,7 +105,7 @@ class IntranetController extends Controller
         }
     }
 
-    public function chapitre() {
+    public function oneChapitre() {
         $idUserAuth=null;
 
         if(Auth::user())
@@ -483,7 +483,7 @@ class IntranetController extends Controller
             $session = Session::where('id', $sessionStagiaire->id_session)->first();
 
             $sessionProjet = Contenir_sessions_projet::where([
-                ['id_session', '=' ,$session->id],
+                ['id_session', '=', $session->id],
                 ['id_projet','=', $projet->id]
             ])->first();
 
@@ -533,15 +533,51 @@ class IntranetController extends Controller
 
             return redirect()->back()->with('fail','Votre projet a déjà été envoyé, vous ne pouvez pas en soumettre un autre');
         }
+    }
+
+    public function previousChapter() {
+        $idUserAuth=null;
+
+        if(Auth::user())
+
+        $idUserAuth=Auth::user()->id;
+
+        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+        $maxCours = FormationsContenirCours::where('id_cours', $formation->id_cours)->first();
+
+        $allCours = FormationsContenirCours::where('id_formation','=', $formation->id_formations)
+        ->where('numero_cours','<=', $maxCours->numero_cours)
+        ->with('Cours')->get();
+
+        foreach ($allCours as $cour) {
+            $chapitre = Chapitre::where('id_chapitre', $formation->id_chapitre)->first();
+        }
+
+        $arrayChap[] = $chapitre['numero_chapitre'];
+
+        foreach($allCours as $cour) {
+            $lessons[] = Cours::where('id_cours', $cour->id_cours)
+            ->with('Chapitre', function ($query) use ($arrayChap, $cour, $formation) {
+                if($cour->id_cours == $formation->id_cours) {
+                    $query->where('numero_chapitre','<=', max($arrayChap))->where('id_cours', $cour->id_cours);
+                } else {
+                    $query->where('id_cours', $cour->id_cours);
+                }
+            })->get();
+        }
         
+        return view('stagiaire.intranet.cours.previousIndex', compact(['lessons']));
     }
 
-    public function live() {
+    public function onePreviousChapter($id) {
+        $chapitre = Chapitre::where('id_chapitre', $id)->with(['Section' => function($query) use($id) {
+            $query->where('sections.id', $id);
+        }])->first();
 
-    }
-
-    public function previousChapitre() {
-
+        return view('stagiaire.intranet.cours.onePreviousIndex', compact(['chapitre']));
     }
 
     public function previousProjets() {
@@ -553,6 +589,10 @@ class IntranetController extends Controller
     }
 
     public function previousExercices() {
+
+    }
+
+    public function live() {
 
     }
 }
