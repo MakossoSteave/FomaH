@@ -197,11 +197,11 @@ class IntranetController extends Controller
                 ['stagiaire_id', $stagiaire->id]
             ])->count();
                 
-            $exerciceCount = Exercice::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->count();
+            $exerciceCount = Exercice::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->count();
 
-            $chapitreMax = Chapitre::where('id_cours', $formation->id_cours)->where('etat',1)->max('numero_chapitre');
+            $chapitreMax = Chapitre::where('etat',1)->where('id_cours', $formation->id_cours)->max('numero_chapitre');
 
-            $chap = Chapitre::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->first();
+            $chap = Chapitre::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
 
             if($chapitreMax == $chap->numero_chapitre) {
                 $projetCount = Projet::where('id_cours', $formation->id_cours)->count();
@@ -284,9 +284,9 @@ class IntranetController extends Controller
 
         $cours = Cours::where('id_cours', $formation->id_cours)->first();
 
-        $chapitre = Chapitre::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->first();
+        $chapitre = Chapitre::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
 
-        $exercices = Exercice::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->with('Questions_exercice.Questions_correction')->get();
+        $exercices = Exercice::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->with('Questions_exercice.Questions_correction')->get();
 
         $qcm = Qcm::where('id_chapitre', $formation->id_chapitre)->first();
 
@@ -319,9 +319,9 @@ class IntranetController extends Controller
 
         $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
 
-        $chapitre = Chapitre::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->first();
+        $chapitre = Chapitre::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
 
-        $chapitreMax = Chapitre::where('id_cours', $formation->id_cours)->where('etat',1)->max('numero_chapitre');
+        $chapitreMax = Chapitre::where('etat',1)->where('id_cours', $formation->id_cours)->max('numero_chapitre');
 
         if ($chapitreMax != $chapitre->numero_chapitre) {
             $numeroChapitre = $chapitre->numero_chapitre+1;
@@ -405,15 +405,15 @@ class IntranetController extends Controller
 
         $idUserAuth=Auth::user()->id;
 
-        $exerciceCount = Exercice::where('id_chapitre', $request->get('id_chapitre')->where('etat',1))->count();
+        $exerciceCount = Exercice::where('etat',1)->where('id_chapitre', $request->get('id_chapitre'))->count();
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
 
         $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
 
-        $chapitre = Chapitre::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->first();
+        $chapitre = Chapitre::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
 
-        $chapitreMax = Chapitre::where('id_cours', $formation->id_cours)->where('etat',1)->max('numero_chapitre');
+        $chapitreMax = Chapitre::where('etat',1)->where('id_cours', $formation->id_cours)->max('numero_chapitre');
 
         if($exerciceCount >= 1) {
 
@@ -602,7 +602,7 @@ class IntranetController extends Controller
         ->with('Cours')->get();
 
         foreach ($allCours as $cour) {
-            $chapitre = Chapitre::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->first();
+            $chapitre = Chapitre::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
         }
 
         $arrayChap[] = $chapitre['numero_chapitre'];
@@ -622,7 +622,7 @@ class IntranetController extends Controller
     }
 
     public function onePreviousChapter($id) {
-        $chapitre = Chapitre::where('id_chapitre', $id)->where('etat',1)->with(['Section' => function($query) use($id) {
+        $chapitre = Chapitre::where('etat',1)->where('id_chapitre', $id)->with(['Section' => function($query) use($id) {
             $query->where('sections.id', $id);
         }])->first();
 
@@ -676,7 +676,7 @@ class IntranetController extends Controller
         ->with('Cours')->get();
 
         foreach ($allCours as $cour) {
-            $chapitre = Chapitre::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->first();
+            $chapitre = Chapitre::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
         }
 
         $arrayChap[] = $chapitre['numero_chapitre'];
@@ -701,14 +701,14 @@ class IntranetController extends Controller
         }
         
         foreach($chapitreIds as $chapitreId) {
-            $exercices[] = Exercice::where('id_chapitre', $chapitreId)->where('etat',1)->first();
+            $exercices[] = Exercice::where('etat',1)->where('id_chapitre', $chapitreId)->first();
         }
 
         return view('stagiaire.intranet.exercices.previousIndex', compact(['exercices']));
     }
 
     public function onePreviousExercice($id) {
-        $exercice = Exercice::where('id', $id)->where('etat',1)->with(['Questions_exercice' => function($query) use($id) {
+        $exercice = Exercice::where('etat',1)->where('id', $id)->with(['Questions_exercice' => function($query) use($id) {
             $query->where('questions_exercices.exercice_id', $id)
             ->with('Questions_correction');
         }])->first();
