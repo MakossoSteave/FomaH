@@ -4,6 +4,7 @@
 @if(Auth::user())
 
 
+
 <!-- This example requires Tailwind CSS v2.0+ -->
 <div class="bg-white  overflow-hidden sm:rounded-lg"><!-- shadow -->
     <div class="px-4 py-5 sm:px-6">
@@ -158,9 +159,8 @@
                         placeholder="Prénom" name="prenom">
                     
 
-    <input type="submit"  class="font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
-                            value="modifier"
-                        />
+                    <input type="submit"  class="font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
+                            value="modifier"/>
                     
                     </dd>
                 </div>
@@ -175,29 +175,42 @@
                     {{$role}}
                     </dd>
                 </div>
-                <form method="POST" action="{{route('parametre.update', $id->id)}}" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-500">
-                        Email
+                <!--            xxx   email   xxx                                -->
 
-                    </dt>
-                    
-                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        {{$id->email}}
+                <form method="POST" action="{{route('parametre.update', $id->id)}}" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
                     
                         
-                        
-                        <input type="text" class="focus:outline-blue focus:ring focus:border-blue-300 p-2"
-                            placeholder="Email" name="email" >
-                        <input type="submit"  class="font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
-                            value="modifier"
-                        />
-                    
-                    </dd>
-                </div>
+                        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    Email
+
+                                </dt>
+                            
+                            
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    <spam>
+                                    {{$id->email}}
+                                
+                                    <input type="text" class="focus:outline-blue focus:ring focus:border-blue-300 p-2"
+                                        placeholder="Email" name="email" >
+                                    </spam>
+                                    
+                                        <spam >
+                                        <input type="submit"  class="font-medium text-indigo-600 hover:text-indigo-500 parametreButton" value="modifier" >
+                                        </spam>
+                                    
+                                </dd>
+                            
+                        </div>
+                            
                 </form>
+
+                <!--            xxx      xxx           -->
+
+
+
                 @if($User)
                 <form method="POST"  action="{{route('parametre.update', $id->id)}}" enctype="multipart/form-data">
                 @csrf
@@ -231,79 +244,60 @@
                         {{$id->created_at}}
                     </dd>
                 </div>
-                <!-- <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            Préference
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            <div class="ml-4 flex-shrink-0">
-                                <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
-                                    Ajouter
-                                </a>
-                            </div>
-                        </dd>
-                        </div>
-                -->
-        <!--    <h2 class="title is-2 has-text-centered mt-6">Ajouter votre CV</h2> -->
-                <form action="{{ route('cv.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
-                    @csrf
-
-                    <input type="hidden" name="id_chapitre" value="{{request()->route('id')}}">
-
-        <!--        <div class="field">
-                        <label class="label">Nom du document</label>
-                            <div class="control">
-                                <input name="designationcv" class="input" type="text" placeholder="Nom du document">
-                            </div>
-                    </div>          -->
-
-                    <div class="field">
-                        <label class="label">Ajouter son cv</label>
-                        <div id="file-cv" class="file has-name">
-                                <label class="file-label">
-                                    <input class="file-input" type="file" name="lien">
-                                    <span class="file-cta">
-                                    <span class="file-icon">
-                                        <i class="fas fa-upload"></i>
-                                    </span>
-                                    <span class="file-label">
-                                        Choisir un document
-                                    </span>
-                                    </span>
-                                    <span class="file-name">
-                                        Aucun document
-                                    </span>
-                                </label>
-                        </div>
-
-                            <script>
-                            const fileInput = document.querySelector('#file-cv input[type=file]');
-                            fileInput.onchange = () => {
-                                if (fileInput.files.length > 0) {
-                                const fileName = document.querySelector('#file-cv .file-name');
-                                fileName.textContent = fileInput.files[0].name;
-                                }
-                            }
-                            </script>
-                    </div>
-
-                        <div class="control mt-4 mb-4">
-                            <button type="submit" class="button is-fullwidth is-link is-rounded">Créer</button>
-                            <input type="submit"  class="font-medium text-indigo-600 hover:text-indigo-500 parametreButton" value="modifier"/>
-                        </div>
-                    </div>
-                </form>
-
-
-
-
+               
+        
                 
 
+            <!--          XXXXX     XXXXX     XXXXX     XXXXX     XXXXX          -->
+            
 
+            <form action="{{ route('cv.store') }}" method="POST" enctype="multipart/form-data" class="mt-6">
+                    @csrf
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">   
+                
+                        <input type="hidden" name="id_chapitree" value="{{request()->route('id')}}">
+                        <input type="hidden" name="id_user" value="{{Auth::user()->id}}">
+                    <!--    {{Auth::user()->id}}    -->
 
+                        <div class="field">
+                            <dt class="text-sm font-medium text-gray-500">
+                                Ajouter son cv
+                            </dt>
+                            
+                                    <div class="control">
+                                        <input name="designationcv" class="input" type="hidden" value="cvformateur">
+                                    </div>
+                        </div>          
 
+                        <div class="field">
+                            
+                                <div id="file-cv" class="">
+                                        <label class="file-label">
+                                            <input class="file-input" type="file" name="lien">
+                                                <span class="file-cta">
+                                                    <span class="file-icon">
+                                                        <i class="fas fa-upload"></i>
+                                                    </span>
+                                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                                        Charger votre cv
+                                                    </dd>
+                                                </span>
+                            
+                                        </label>
+                                </div>
 
+                                
+                        </div>
 
+                            <input type="submit"  class="font-medium text-indigo-600 hover:text-indigo-500 parametreButton " value="créer ou modifier"/>  
+                    
+                    
+                </div>    
+            </form>
+
+            <!--          XXXXX     XXXXX     XXXXX     XXXXX     XXXXX          -->
+
+            
 
                 <form method="POST" action="{{route('parametre.update', $id->id)}}" enctype="multipart/form-data">
                 @csrf
@@ -331,8 +325,9 @@
                         <input type="submit"  class="font-medium text-indigo-600 hover:text-indigo-500 parametreButton"
                             value="modifier"
                         />
-                </form>
                 </div>
+                </form>
+                
                 
             </dl>
         </div>

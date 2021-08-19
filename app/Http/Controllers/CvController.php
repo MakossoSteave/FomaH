@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cv;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CvController extends Controller
 {
@@ -35,7 +36,10 @@ class CvController extends Controller
      */
     public function store(Request $request)
     {
-        
+        //dd($request->all());
+        //dd($request->input('id_user'));
+
+        //dd($request->input("id_chapitre"));
         $request->validate([
             'designationcv' => 'required',
             'lien' => 'required'
@@ -60,7 +64,26 @@ class CvController extends Controller
             'designationcv' => $request->get('designationcv'),
             'lien' => $lien
         ]);
-        dd($request);
+        if ((DB::table('formateurs')->select('id_cv')->where('user_id', ($request->input('id_user')))->get())!= null) {
+            $a = DB::table('formateurs')->where('user_id', $request->input('id_user'))->pluck ('id_cv');
+            
+            //dd($a);
+            
+            //dd($a->input('id_cv'));
+        }
+
+
+        DB::table('formateurs')->where('user_id', ($request->input('id_user')))->update([
+            'id_cv'         => $id
+        ]);
+
+        //$string = 'Matiere: '.$request->get('designation_matiere').' créée avec succès';
+        $string = "ici";
+            
+        return redirect()->back()->with('success',$string);
+
+
+        
     }
 
     /**

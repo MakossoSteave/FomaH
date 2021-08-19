@@ -29,8 +29,6 @@ class parametreController extends Controller
             return View('formateur.parametre', compact(['id'],['User']),['role' => $role]);
         }
 
-        //return View('stagiaire.parametre', compact(['id'],['User']),['role' => $role]);
-
     }
     public function update(Request $request,$idUser){
        
