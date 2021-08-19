@@ -686,7 +686,7 @@ class IntranetController extends Controller
 
         foreach($lessons as $lesson) {
             foreach($lesson as $l) {
-                foreach($l->chapitre as $chapitre) {
+                foreach($l->Chapitre as $chapitre) {
                     $chapitreIds[] = $chapitre->id_chapitre;
                 }
             }
