@@ -41,6 +41,7 @@ class IntranetController extends Controller
         if ($countFormation == 1) {
             $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
 
+/*
             $coursFormations = FormationsContenirCours::where('id_formation', $formation->id_formations)->get();
 
             foreach($coursFormations as $coursFormation) {
@@ -49,7 +50,9 @@ class IntranetController extends Controller
             }
 
             $arraySumTotalChapitre = array_sum($arrayNombreChapitre);
-       
+       */
+            // nombre_chapitre_total actif dans formations
+            $SumTotalChapitre = (Formation::find($formation-> 	id_formations))->nombre_chapitre_total;
             $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
 
             $session = Session::where('id', $sessionStagiaire->id_session)->first();
@@ -58,7 +61,8 @@ class IntranetController extends Controller
 
             $formationName = Formation::where('id', $formation->id_formations)->first();
 
-            $progress = intval(($formation->nombre_chapitre_lu/$arraySumTotalChapitre)*100);
+            $progress = intval(($formation->nombre_chapitre_lu
+            /*$arraySumTotalChapitre*/ /$SumTotalChapitre)*100);
         }
 
         return view('stagiaire.intranet.index', compact(['formationName'], ['session'], ['progress']));
