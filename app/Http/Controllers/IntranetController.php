@@ -36,12 +36,19 @@ class IntranetController extends Controller
        
         $formationName = null;
 
-        $sommaire = null;
-
         $session = null;
 
         if ($countFormation == 1) {
             $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
+
+            $coursFormations = FormationsContenirCours::where('id_formation', $formation->id_formations)->get();
+
+            foreach($coursFormations as $coursFormation) {
+                $nombreChapitres = Cours::where('id_cours', $coursFormation->id_cours)->first();
+                $arrayNombreChapitre[] = $nombreChapitres['nombre_chapitres'];
+            }
+
+            $arraySumTotalChapitre = array_sum($arrayNombreChapitre);
        
             $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
 
@@ -51,11 +58,10 @@ class IntranetController extends Controller
 
             $formationName = Formation::where('id', $formation->id_formations)->first();
 
-            $sommaire = FormationsContenirCours::where('id_formation', $formation->id_formations)->with('Cours.Chapitre.Section')->orderby('numero_cours', 'ASC')->get();
-            
+            $progress = intval(($formation->nombre_chapitre_lu/$arraySumTotalChapitre)*100);
         }
 
-        return view('stagiaire.intranet.index', compact(['sommaire'], ['formationName'], ['session']));
+        return view('stagiaire.intranet.index', compact(['formationName'], ['session'], ['progress']));
     }
 
     public function preIndex() {
@@ -66,6 +72,8 @@ class IntranetController extends Controller
         $idUserAuth=Auth::user()->id;
 
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+
+        $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
         
         $countFormation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->count();
         
@@ -75,7 +83,46 @@ class IntranetController extends Controller
             $session = Session::where('id', $sessionStagiaire->id_session)->first();
         } else {
             $session=null;
-        }   
+        }
+
+        $projet = Projet::where('id_cours', $formation->id_cours)->first();
+
+        $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
+
+        $session = Session::where('id', $sessionStagiaire->id_session)->first();
+
+        $sessionProjet = Contenir_sessions_projet::where([
+            ['id_session', '=' ,$session->id],
+            ['id_projet','=', $projet->id]
+        ])->first();
+
+        if (date('Y-m-d') >= $sessionProjet->date_debut && date('Y-m-d') <= $sessionProjet->date_fin) {
+
+            Contenir_sessions_projet::where([
+                ['id_session', '=' ,$session->id],
+                ['id_projet','=', $projet->id]
+            ])->update([
+                'statut_id' => 3
+            ]);
+
+        } else if(date('Y-m-d') < $sessionProjet->date_debut) {
+
+            Contenir_sessions_projet::where([
+                ['id_session', '=' ,$session->id],
+                ['id_projet','=', $projet->id]
+            ])->update([
+                'statut_id' => 1
+            ]);
+
+        } else if(date('Y-m-d') > $sessionProjet->date_fin) {
+
+            Contenir_sessions_projet::where([
+                ['id_session', '=' ,$session->id],
+                ['id_projet','=', $projet->id]
+            ])->update([
+                'statut_id' => 4
+            ]);
+        } 
 
         if ($session && $countFormation == 1 && date('Y-m-d') >= $session->date_debut && date('Y-m-d') <= $session->date_fin) {
 
@@ -281,9 +328,13 @@ class IntranetController extends Controller
 
             Suivre_formation::where('id_stagiaire', $stagiaire->id)->update([
                 'id_chapitre' => $nextChapitre->id_chapitre,
-                'id_chapitre_Courant'=> $nextChapitre->id_chapitre,
+
+               /* 'id_chapitre_Courant'=> $nextChapitre->id_chapitre,
                 'nombre_chapitre_lu' => $formation->nombre_chapitre_lu+1,
                 'progression' => (($formation->nombre_chapitre_lu+1)/$nombreTotalChapitreCursus)*100
+*/
+                'nombre_chapitre_lu' => $formation->nombre_chapitre_lu+1
+
             ]);
     
             return redirect('/intranet/chapitre');
@@ -436,9 +487,13 @@ class IntranetController extends Controller
 
             Suivre_formation::where('id_stagiaire', $stagiaire->id)->update([
                 'id_chapitre' => $nextChapitre->id_chapitre,
-                'id_chapitre_Courant'=> $nextChapitre->id_chapitre,
+
+             /*   'id_chapitre_Courant'=> $nextChapitre->id_chapitre,
                 'nombre_chapitre_lu' => $formation->nombre_chapitre_lu+1,
                 'progression' => (($formation->nombre_chapitre_lu+1)/$nombreChapitre)*100
+*/
+                'nombre_chapitre_lu' => $formation->nombre_chapitre_lu+1
+
             ]);
     
             return redirect('/intranet/chapitre');
@@ -645,7 +700,7 @@ class IntranetController extends Controller
 
         foreach($lessons as $lesson) {
             foreach($lesson as $l) {
-                foreach($l->chapitre as $chapitre) {
+                foreach($l->Chapitre as $chapitre) {
                     $chapitreIds[] = $chapitre->id_chapitre;
                 }
             }

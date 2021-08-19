@@ -14,7 +14,7 @@
             </div>
             @else
             <div class="card-image">
-                <img class="image cardImageSize" height="50vh" src="{{ URL::asset('/') }}img/exercice/{{$exercice->image}}" >
+                <img class="image cardImageSize" src="{{ URL::asset('/') }}img/exercice/{{$exercice->image}}" >
             </div>
             @endif
                 <div class="card-content">
