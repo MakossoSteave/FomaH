@@ -95,38 +95,37 @@ class IntranetController extends Controller
 
         $session = Session::where('id', $sessionStagiaire->id_session)->first();
 
-        $sessionProjet = Contenir_sessions_projet::where([
-            ['id_session', '=' ,$session->id],
-            ['id_projet','=', $projet->id]
-        ])->first();
+        $sessionProjets = Contenir_sessions_projet::where('id_session', '=' ,$session->id)->get();
 
-        if (date('Y-m-d') >= $sessionProjet->date_debut && date('Y-m-d') <= $sessionProjet->date_fin) {
+        foreach ($sessionProjets as $sessionProjet) {
+            if (date('Y-m-d') >= $sessionProjet->date_debut && date('Y-m-d') <= $sessionProjet->date_fin) {
 
-            Contenir_sessions_projet::where([
-                ['id_session', '=' ,$session->id],
-                ['id_projet','=', $projet->id]
-            ])->update([
-                'statut_id' => 3
-            ]);
-
-        } else if(date('Y-m-d') < $sessionProjet->date_debut) {
-
-            Contenir_sessions_projet::where([
-                ['id_session', '=' ,$session->id],
-                ['id_projet','=', $projet->id]
-            ])->update([
-                'statut_id' => 1
-            ]);
-
-        } else if(date('Y-m-d') > $sessionProjet->date_fin) {
-
-            Contenir_sessions_projet::where([
-                ['id_session', '=' ,$session->id],
-                ['id_projet','=', $projet->id]
-            ])->update([
-                'statut_id' => 4
-            ]);
-        } 
+                Contenir_sessions_projet::where([
+                    ['id_session', '=' ,$sessionProjet->id_session],
+                    ['id_projet', '=' ,$sessionProjet->id_projet]
+                ])->update([
+                    'statut_id' => 3
+                ]);
+    
+            } else if(date('Y-m-d') < $sessionProjet->date_debut) {
+    
+                Contenir_sessions_projet::where([
+                    ['id_session', '=' ,$sessionProjet->id_session],
+                    ['id_projet', '=' ,$sessionProjet->id_projet]
+                ])->update([
+                    'statut_id' => 1
+                ]);
+    
+            } else if(date('Y-m-d') > $sessionProjet->date_fin) {
+    
+                Contenir_sessions_projet::where([
+                    ['id_session', '=' ,$sessionProjet->id_session],
+                    ['id_projet', '=' ,$sessionProjet->id_projet]
+                ])->update([
+                    'statut_id' => 4
+                ]);
+            } 
+        }
 
         if ($session && $countFormation == 1 && date('Y-m-d') >= $session->date_debut && date('Y-m-d') <= $session->date_fin) {
 
