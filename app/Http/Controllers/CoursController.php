@@ -156,6 +156,7 @@ class CoursController extends Controller
 
     public function update(Request $request, $id)
     {
+        $coursToUpdate=Cours::find($id);
         $request->validate([
             'designation' => ['required','max:191', Rule::unique('cours')->where(function ($query) use($id) {
              
@@ -191,7 +192,8 @@ class CoursController extends Controller
                 $etat=0;
                 $etatCanChange=false;
             }
-            else {
+            
+            else if($etat==1 && $etat!=$coursToUpdate->etat) {
                 $formationContenirCours = FormationsContenirCours::
                     where('id_cours',$id)->get();
                 foreach($formationContenirCours as $f)
