@@ -86,8 +86,9 @@ class IntranetController extends Controller
             $arraySumTotalChapitre = array_sum($arrayNombreChapitre);
        */
             // nombre_chapitre_total actif dans formations
-            $SumTotalChapitre = (Formation::find($formation-> 	id_formations))->nombre_chapitre_total;
-            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
+            $SumTotalChapitre = (Formation::find($formation->id_formations))->nombre_chapitre_total;
+            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)
+            ->where('id_session',$formation->id_session)->first();
 
             $session = Session::where('id', $sessionStagiaire->id_session)->first();
 
@@ -148,7 +149,7 @@ class IntranetController extends Controller
         $countFormation = Suivre_formation::select('suivre_formations.*')
         ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->count();
         
-        $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
+        $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session',$formation->id_session)->first();
 
         if($sessionStagiaire){
             $session = Session::where('id', $sessionStagiaire->id_session)->first();
@@ -156,7 +157,7 @@ class IntranetController extends Controller
             $session=null;
         }
 
-        $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
+        $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session',$formation->id_session)->first();
 
         $session = Session::where('id', $sessionStagiaire->id_session)->first();
         $sessionProjets = Contenir_sessions_projet::where('id_session', '=' ,$session->id)->get();
@@ -640,7 +641,7 @@ class IntranetController extends Controller
 
             $projet = Projet::where('id_cours', $formation->id_cours)->first();
 
-            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
+            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session',$formation->id_session)->first();
 
             $session = Session::where('id', $sessionStagiaire->id_session)->first();
 
@@ -782,7 +783,7 @@ class IntranetController extends Controller
 
             $projet = Projet::where('id_cours', $formation->id_cours)->first();
 
-            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
+            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session',$formation->id_session)->first();
 
             $session = Session::where('id', $sessionStagiaire->id_session)->first();
 
@@ -905,7 +906,7 @@ class IntranetController extends Controller
         if ($projetCount == 1) {
             $projets = Projet::where('id_cours', $formation->id_cours)->with('Document')->get();
 
-            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
+            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session',$formation->id_session)->first();
 
             $session = Session::where('id', $sessionStagiaire->id_session)->first();
 
