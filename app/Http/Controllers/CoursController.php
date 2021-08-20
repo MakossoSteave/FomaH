@@ -11,6 +11,7 @@ use App\Models\Cours;
 use App\Models\Chapitre;
 use App\Models\Formateur;
 use App\Models\Lier_sessions_stagiaire;
+use App\Models\Projet;
 use App\Models\Session;
 use Illuminate\Validation\Rule;
 use App\Rules\FilenameImage;
@@ -183,16 +184,24 @@ class CoursController extends Controller
         }
         $etat = $request->get('etat');
         $etatCanChange=true;
+        $etatCanChangeProjet=true;
         $etatCanChangeSession=true;
         if($etat==1){
             $chapitre =  Chapitre::where('id_cours',$id)
             ->where('etat',1)
             ->count();
+            $projet = Projet::where('id_cours',$id)
+            ->where('etat',1)
+            ->count();
+
             if($chapitre ==0){
                 $etat=0;
                 $etatCanChange=false;
             }
-            
+            else if($projet ==0){
+                $etat=0;
+                $etatCanChangeProjet=false;
+            }
             else if($etat==1 && $etat!=$coursToUpdate->etat) {
                 $formationContenirCours = FormationsContenirCours::
                     where('id_cours',$id)->get();
@@ -254,6 +263,8 @@ class CoursController extends Controller
         } else if(!$etatCanChangeSession){
             return redirect('/cours/'.$request->get('formation_id'))->with('success','Cours modifié avec succès')
             ->with('error',"L'état ne peut pas être modifié car une session est en cours ! ");
+        } else if(!$etatCanChangeProjet){
+            return redirect('/cours/'.$request->get('formation_id'))->with('success','Cours modifié avec succès')->with('error',"L'état ne peut pas être modifié car aucun projet n'est actif ! "); 
         }else {
             return redirect('/cours/'.$request->get('formation_id'))->with('success','Cours modifié avec succès');
         }
@@ -316,15 +327,23 @@ class CoursController extends Controller
     {
         $cours = Cours::find($id);
         $etat = !$cours->etat;
-        $etatCanChange=true;
+        $etatCanChangeChapitre=true;
+        $etatCanChangeProjet=true;
         $etatCanChangeSession=true;
         if($etat==1){
             $chapitre =  Chapitre::where('id_cours',$id)
             ->where('etat',1)
             ->count();
+            $projet = Projet::where('id_cours',$id)
+            ->where('etat',1)
+            ->count();
             if($chapitre ==0){
                 $etat=0;
-                $etatCanChange=false;
+                $etatCanChangeChapitre=false;
+            }
+            else if($projet ==0){
+                $etat=0;
+                $etatCanChangeProjet=false;
             }
             else {
                 $formationContenirCours = FormationsContenirCours::
@@ -366,8 +385,11 @@ class CoursController extends Controller
         //
 
         //return
-        if(!$etatCanChange){
+        if(!$etatCanChangeChapitre){
             return redirect()->back()->with('error',"L'état ne peut pas être modifié car aucun chapitre n'est actif ! "); 
+        }
+        else if(!$etatCanChangeProjet){
+            return redirect()->back()->with('error',"L'état ne peut pas être modifié car aucun projet n'est actif ! "); 
         }
         else if(!$etatCanChangeSession){
             return redirect()->back()->with('error',"L'état ne peut pas être modifié car une session est acitve ! "); 
