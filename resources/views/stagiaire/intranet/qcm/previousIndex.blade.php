@@ -21,7 +21,7 @@
                     <h4>{{$q->designation}}</h4>
                     @foreach($q->Score_qcm as $scores)
                         <span class="percentage mb-4">{{$scores->resultat}}% de réussite</span>
-                        <progress class="progress is-success" value="{{$scores->resultat}}" max="100"></progress>
+                        <progress class="progress @if($scores->resultat!==null) {{ $scores->resultat>=60? 'is-success' : 'is-danger'  }} @endif" value="{{$scores->resultat}}" max="100"></progress>
                     @endforeach
                         <a href="{{url('intranet/qcms/'.$q->id)}}" class="button is-link modal-button">Voir le QCM</a>
                 </div>
