@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.appIntranet')
 
 @section('content')
 @if(Auth::user())
@@ -10,7 +10,12 @@
                 {{ session('success') }}
             </div>
         @endif
-
+        @if (session('warning'))
+        <div class="notification is-warning has-text-centered  my-4">
+        <button class="delete"></button>
+            {{ session('warning') }}
+        </div>
+      @endif
         @if (session('fail'))
             <div class="notification is-danger has-text-centered my-4">
             <button class="delete"></button>
@@ -103,10 +108,12 @@
     <div class="notification is-info has-text-centered my-4">
         Le projet commencera le {{date('d-m-Y', strtotime($sessionProjet->date_debut))}}
     </div>
+</section>
 @elseif($sessionProjet->statut_id == 4)
     <div class="notification is-info has-text-centered my-4">
         Le projet est terminé depuis le {{date('d-m-Y', strtotime($sessionProjet->date_fin))}}
     </div>
+</section>
 @endif
 @else
 <div class="notification is-danger has-text-centered my-4">

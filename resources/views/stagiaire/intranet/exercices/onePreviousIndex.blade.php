@@ -1,28 +1,29 @@
-@extends('layouts.appIntranet')
+@extends('layouts.appIntranetNeutral')
 
 @section('content')
+
 @if(Auth::user())
-    <div class="column is-9">
-    @if (session('warning'))
+
+<div class="column is-9">
+@if (session('warning'))
         <div class="column is-9 notification is-warning has-text-centered ">
         <button class="delete"></button>
             {{ session('warning') }}
         </div>
-    @endif
-        <div class="content is-medium">
-            <h1 class="has-text-centered">Exercice</h1>
-            @foreach($exercices as $exercice)
+@endif
+    <div class="content is-medium">
+        <h1 class="has-text-centered">Exercice</h1>
             <div class="box mt-4">
-                    <article class="message is-primary">
-                        <span class="icon has-text-primary">
-                        </span>
-                        <div class="message-body">
-                        {{$exercice->enonce}}
-                        </div>
-                    </article>
-                    @if(!empty($exercice->image))
-                        <img class="imageSection" src="{{ URL::asset('/') }}img/exercice/{{$exercice->image}}" alt="Placeholder image">
-                    @endif
+                <article class="message is-primary">
+                    <span class="icon has-text-primary">
+                    </span>
+                    <div class="message-body">
+                    {{$exercice->enonce}}
+                    </div>
+                </article>
+                @if(!empty($exercice->image))
+                    <img class="imageSection" src="{{ URL::asset('/') }}img/exercice/{{$exercice->image}}" alt="Placeholder image">
+                @endif
             </div>
                 @foreach($exercice->questions_exercice as $question)
                 <p class="mt-4">{{$question->question}}</p>
@@ -36,18 +37,8 @@
                     @endforeach
                     </div>
                 @endforeach
-            @endforeach
         </div>
-        <footer class="buttons paginate" class="mb-4">
-            <form action="{{ url('intranet/nextIfExercice') }}" method="POST">
-            @csrf
-
-                <button class="button is-success sizeButton">Continuer</button>
-            </form>
-        </footer>
     </div>
-</div>
-</div>
 </div>
 </section>
 @else
@@ -62,4 +53,5 @@ Votre session a expiré !
 
 </button>
 @endif
+
 @endsection

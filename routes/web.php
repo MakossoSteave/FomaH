@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Http\Response; 
 // use App\Models\Formations;
 // use App\Models\User;
 
@@ -101,6 +103,8 @@ Route::get('/editStagiaireSession/{id}/{idSession}', [App\Http\Controllers\Sessi
 Route::get('/createPDF/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'createPDF'])->name('createPDF');
 Route::post('/editStagiaireSession/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'editResultStagiaire'])->name('editResultStagiaire');
 Route::get('/progressionStagiaire/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'progressionStagiaire'])->name('progressionStagiaire');
+Route::get('/qcmStagiaire/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'qcmStagiaire'])->name('qcmStagiaire');
+Route::get('/qcmViewStagiaire/{id}', [App\Http\Controllers\SessionController::class, 'qcmViewStagiaire'])->name('qcmViewStagiaire');
 
 Route::get('/document/{id}', [App\Http\Controllers\DocumentController::class, 'index'])->name('document');
 Route::get('/addDocument/{id}', [App\Http\Controllers\DocumentController::class, 'create'])->name('addDocument');
@@ -109,6 +113,8 @@ Route::get('/projet/{id}', [App\Http\Controllers\ProjetController::class, 'index
 Route::get('/addProjet/{id}', [App\Http\Controllers\ProjetController::class, 'create'])->name('addProjet');
 Route::get('/etatProjet/{id}', [App\Http\Controllers\ProjetController::class, 'etat'])->name('etatProjet');
 Route::delete('/deleteDocument/{id}', [App\Http\Controllers\ProjetController::class, 'deleteDocument'])->name('deleteDocument');
+
+Route::get('/viewTitre/{id}', [App\Http\Controllers\TitreController::class, 'view'])->name('viewTitre');
 
 Route::get('/exercice/{id}', [App\Http\Controllers\ExerciceController::class, 'index'])->name('exercice');
 Route::get('/addExercice/{id}', [App\Http\Controllers\ExerciceController::class, 'create'])->name('addExercice');
@@ -122,7 +128,7 @@ Route::get('/utilisateurs', [App\Http\Controllers\UtilisateurController::class, 
 
 Route::get('/admins', [App\Http\Controllers\AdminController::class, 'admin'])->name('admins');
 
-Route::get('/intranet/chapitre', [App\Http\Controllers\IntranetController::class, 'chapitre'])->name('chapitreIntranet');
+Route::get('/intranet/chapitre', [App\Http\Controllers\IntranetController::class, 'oneChapitre'])->name('chapitreIntranet');
 Route::post('/intranet/cours', [App\Http\Controllers\IntranetController::class, 'cours'])->name('coursIntranet');
 Route::post('/intranet/nextIfExercice', [App\Http\Controllers\IntranetController::class, 'nextIfExercice'])->name('nextIfExerciceIntranet');
 Route::get('/intranet/qcm', [App\Http\Controllers\IntranetController::class, 'qcm'])->name('qcmIntranet');
@@ -132,6 +138,33 @@ Route::post('/intranet/next', [App\Http\Controllers\IntranetController::class, '
 Route::get('/intranet/projet', [App\Http\Controllers\IntranetController::class, 'projet'])->name('projetIntranet');
 Route::post('/intranet/preIndex', [App\Http\Controllers\IntranetController::class, 'preIndex'])->name('preIndexIntranet');
 Route::post('/intranet/faireProjet', [App\Http\Controllers\IntranetController::class, 'faireProjet'])->name('faireProjetIntranet');
+Route::get('/intranet/previousChapter', [App\Http\Controllers\IntranetController::class, 'previousChapter'])->name('previousChapterIntranet');
+Route::get('/intranet/chapitres/{id}', [App\Http\Controllers\IntranetController::class, 'onePreviousChapter'])->name('onePreviousChapter');
+Route::get('/intranet/previousQCM', [App\Http\Controllers\IntranetController::class, 'previousQCM'])->name('previousQCMIntranet');
+Route::get('/intranet/qcms/{id}', [App\Http\Controllers\IntranetController::class, 'onePreviousQCM'])->name('onePreviousQCMIntranet');
+Route::get('/intranet/previousExercices', [App\Http\Controllers\IntranetController::class, 'previousExercices'])->name('previousExercicesIntranet');
+Route::get('/intranet/exercices/{id}', [App\Http\Controllers\IntranetController::class, 'onePreviousExercice'])->name('onePreviousExerciceIntranet');
+Route::get('/intranet/previousProjets', [App\Http\Controllers\IntranetController::class, 'previousProjets'])->name('previousProjetsIntranet');
+Route::get('/intranet/projets/{id}', [App\Http\Controllers\IntranetController::class, 'onePreviousProjet'])->name('onePreviousProjetIntranet');
+Route::get('/intranet/live', [App\Http\Controllers\IntranetController::class, 'live'])->name('liveIntranet');
+Route::get('/intranet/statutLive', [App\Http\Controllers\IntranetController::class, 'statutLive'])->name('statutLiveIntranet');
+
+Route::get('storage/{filename}', function ($filename)
+{
+    $path = storage_path('public/' . $filename);
+ 
+    if (!File::exists($path)) {
+        abort(404);
+    }
+ 
+    $file = File::get($path);
+    $type = File::mimeType($path);
+ 
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+ 
+    return $response;
+});
 
 Route::resource('intranet','App\Http\Controllers\IntranetController');
 Route::resource('exercice','App\Http\Controllers\ExerciceController');

@@ -19,7 +19,6 @@ class UtilisateurController extends Controller
         $idUserAuth=null;
         if(Auth::user())
         $idUserAuth=Auth::user()->id;
-
         $users = User::select('users.*','roles.type')
         ->join('roles','users.role_id','=','roles.id')
         ->where('users.id','!=',$idUserAuth)

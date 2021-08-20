@@ -3,15 +3,8 @@
 @section('content')
 @if(Auth::user() && Auth::user()->role_id==1)
 
-<div class="container">
-    <div class="flex mt-4">
-        <p class="control has-icons-right">
-            <input class="input" type="search" placeholder="Rechercher..."/>
-            <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
-        </p>
-       
-      
-    </div>
+<div class="container mt-6">
+ 
     
     @if (session('success'))
         <div class="notification is-success has-text-centered my-4">
@@ -25,47 +18,9 @@
             {{ session('error') }}
         </div>
     @endif
-
-   
-
   
-
-    
-    <div class="card my-6 
-">
-
-<div class="media-content">
-                <div class="flex">
-                 <div></div>
-                    <div class="dropdown is-right is-hoverable">
-                        <div class="dropdown-trigger">
-                            <button class="button borderNone is-right  "
-                                    aria-haspopup="true"
-                                    aria-controls="dropdown-menu">
-                            <span class="icon is-small is-right"><i class="fas fa-bars"></i></span>
-                            <span class="icon is-small">
-                            </span>
-                            </button>
-                        </div>
-                
-                        <div class="dropdown-menu" 
-                            id="dropdown-menu" 
-                            role="menu">
-                            <div class="dropdown-content">
-                        
-
-                            <a href="" class="dropdown-item">
-                              qcm
-                            </a>
-                           
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-           
         <div class="card-content">
-            <div class="media">
+            <div class="media  mt-6">
           
             
            <!--<div class="media-content">
@@ -106,22 +61,32 @@
             <div class="content">
                 <div class="flex">
                     <div>
-                    <p><span class="title is-6">  Progression: </span>@if($stagiaire->progression) {{$stagiaire->progression}}
-                    @else 0 @endif <span class="title is-6">  % </span></p>
-                       
-                        
-                        
-                      
+                    <p><span class="title is-6">  Progression: </span>@if($stagiaire->progression) {{$stagiaire->progression}}@else 0 @endif<span class="title is-6">% </span></p>
+                    <p><span class="title is-6">  Dernier cours suivis: </span>@if($stagiaire->NomCours) {{$stagiaire->NomCours}}
+                    @else Aucun @endif </p>
+                    <p><span class="title is-6">  Dernier chapitre suivis: </span>@if($stagiaire->NomChapitre) {{$stagiaire->NomChapitre}}
+                    @else Aucun @endif </p> 
+                    <p><span class="title is-6">  Nombre total de chapitres lus: </span>@if($stagiaire->nombre_chapitre_lu) {{$stagiaire->nombre_chapitre_lu}}
+                    @else 0 @endif</p>   
+                    
+                   
                     </div>
                     <div class="flex-bottom">
-                  
+                    <form action="{{ route('qcmStagiaire',  [$stagiaire->id_stagiaire,$stagiaire->id_session]) }}" method="GET">
+                            @csrf
+                            <button type="submit" class="button button-card is-info" style="width:200px;">Voir résultat des QCM</button>
+                    </form>
+                    <form action="" method="GET">
+                            @csrf
+                            <button type="submit" class="button button-card is-info">Voir les projets</button>
+                    </form>
                    
                           
                            
                              
                                
                     </div>
-                </div>
+              
 
 
 @else

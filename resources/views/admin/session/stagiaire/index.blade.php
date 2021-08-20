@@ -10,7 +10,7 @@
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
        
-        @if($stagiairesCount < $effectif)
+        @if(($stagiairesCount < $effectif) && ($sessionStatut==1 || $sessionStatut==2 || $sessionStatut==3 ))
         <a href="{{ route('AddStagiaireSession',$id) }}" class="has-icons-right" id="link-black">
             Ajouter un stagiaire
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
@@ -41,14 +41,14 @@
 
     @foreach ($stagiaires as $stagiaire)
     <div class="card my-6 
-@if($stagiaire->validation!==null && ($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5) ) {{ $stagiaire->validation == 1 ? 'has-background-success' : 'has-background-danger'  }} @endif">
+@if($stagiaire->validation!==null && ($sessionStatut==4 || $sessionStatut==5) ) {{ $stagiaire->validation == 1 ? 'has-background-success' : 'has-background-danger'  }} @endif">
 @if($stagiaire->etat == 1) 
 <div class="media-content">
                 <div class="flex">
                  <div></div>
                     <div class="dropdown is-right is-hoverable">
                         <div class="dropdown-trigger">
-                            <button class="button borderNone is-right  @if($stagiaire->validation!==null && ($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5) ) {{ $stagiaire->validation == 1 ? 'has-background-success' : 'has-background-danger'  }} @endif"
+                            <button class="button borderNone is-right  @if($stagiaire->validation!==null && ($sessionStatut==4 || $sessionStatut==5) ) {{ $stagiaire->validation == 1 ? 'has-background-success' : 'has-background-danger'  }} @endif"
                                     aria-haspopup="true"
                                     aria-controls="dropdown-menu">
                             <span class="icon is-small is-right"><i class="fas fa-bars"></i></span>
@@ -122,7 +122,7 @@
                 <div class="flex">
                     <div>
                         <p><span class="title is-6"> {{$stagiaire->prenom}} {{$stagiaire->nom}} </span> </p>
-                        @if($stagiaire->resultat_description && ($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5 ))
+                        @if($stagiaire->resultat_description && ($sessionStatut==4 || $sessionStatut==5 ))
                         <p><span class="title is-6">Description du résultat:</span> </p><p><span class="subtitle is-5 has-text-white">{{$stagiaire->resultat_description}}</span></p>
                         @endif
                         
@@ -136,13 +136,13 @@
                         </a>
                     </div>
                     <div class="flex-bottom">
-                    @if(($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5) && $stagiaire->etat == 1 )
+                    @if(($sessionStatut==4 || $sessionStatut==5) && $stagiaire->etat == 1  && ( $sessionEtat==1) )
                         <form action="{{ route('editStagiaireSession', [$stagiaire->stagiaireID,$id]) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Modifier le résultat</button>
                         </form>
                     @endif
-                    @if( $stagiaire->etat == 1 && $stagiaire->validation==1 && ($stagiaire->sessionStatut==4 || $stagiaire->sessionStatut==5) )
+                    @if( $stagiaire->etat == 1 && $stagiaire->validation==1 && ($sessionStatut==4 || $sessionStatut==5)  && ( $sessionEtat==1) )
                     <form action="{{ route('createPDF', [$stagiaire->stagiaireID,$id]) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Générer le diplôme</button>

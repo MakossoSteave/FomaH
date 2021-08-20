@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Document;
 use App\Models\Projet;
 use App\Models\ContenirDocumentsProjet;
-
+use App\Rules\FilenameDocument;
 
 class ProjetController extends Controller
 {
@@ -49,6 +49,7 @@ class ProjetController extends Controller
         ]);
 
         if ($request->has('documents')) {
+
                 for ($indexDoc=0; $indexDoc < count($request->get('documents')); $indexDoc++) { 
 
                 do {
@@ -56,6 +57,11 @@ class ProjetController extends Controller
                 } while(Projet::find($idDoc) != null);
         
                 if ($request->hasFile("documents.$indexDoc.lien")) {
+                    $request->validate([
+                        "documents.$indexDoc.lien" =>  ['required','mimes:pdf,PDF','max:1000000',
+                    new FilenameDocument('/[\w\W]{4,181}$/')]
+                    ]);
+                   
                     $destinationPath = public_path('doc/projet/');
                     $file = $request->file("documents.$indexDoc.lien");
                     $filename = $file->getClientOriginalName();
@@ -109,6 +115,10 @@ class ProjetController extends Controller
         if ($request->has('documentsUpdate')) {
             for ($indexDoc=0; $indexDoc < count($request->get('documentsUpdate')); $indexDoc++) {
                 if ($request->hasFile("documentsUpdate.$indexDoc.lien")) {
+                    $request->validate([
+                        "documentsUpdate.$indexDoc.lien" =>  ['mimes:pdf,PDF','max:1000000',
+                    new FilenameDocument('/[\w\W]{4,181}$/')]
+                    ]);
                     $destinationPath = public_path('doc/projet/');
                     $file = $request->file("documentsUpdate.$indexDoc.lien");
                     $filename = $file->getClientOriginalName();
@@ -134,6 +144,10 @@ class ProjetController extends Controller
             } while(Projet::find($idDoc) != null);
     
             if ($request->hasFile("documents.$indexDoc.lien")) {
+                $request->validate([
+                    "documents.$indexDoc.lien" =>  ['mimes:pdf,PDF','max:1000000',
+                new FilenameDocument('/[\w\W]{4,181}$/')]
+                ]);
                 $destinationPath = public_path('doc/projet/');
                 $file = $request->file("documents.$indexDoc.lien");
                 $filename = $file->getClientOriginalName();

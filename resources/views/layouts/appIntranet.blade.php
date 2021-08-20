@@ -100,11 +100,11 @@
                     Navigation
                 </p>
                 <ul class="menu-list">
-                    <li><a>Cours</a></li>
-                    <li><a>QCMs</a></li>
-                    <li><a>Exercices</a></li>
-                    <li><a>Projets</a></li>
-                    <li><a>Live</a></li>
+                    <li><a href="{{ url('intranet/previousChapter') }}">Cours</a></li>
+                    <li><a href="{{ url('intranet/previousQCM') }}">QCMs</a></li>
+                    <li><a href="{{ url('intranet/previousExercices') }}">Exercices</a></li>
+                    <li><a href="{{ url('intranet/previousProjets') }}">Projets</a></li>
+                    <li><a href="{{ url('intranet/statutLive') }}">Live</a></li>
                 </ul>
             </aside>
         </div>

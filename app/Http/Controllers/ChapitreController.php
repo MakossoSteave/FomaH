@@ -9,7 +9,7 @@ use App\Models\Session;
 use App\Http\Controllers\CoursController;
 use App\Models\Formation;
 use App\Models\FormationsContenirCours;
-
+use App\Models\Qcm;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Rules\FilenameImage;
@@ -49,10 +49,10 @@ class ChapitreController extends Controller
       
           new FilenameVideo('/[\w\W]{4,181}$/')],
           'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF','max:10000',
-          new FilenameImage('/[\w\W]{4,181}$/')],
+          new FilenameImage('/[\w\W]{4,181}$/')]/*,
           'etat' => [
               'required',
-               Rule::in(['0', '1'])]
+               Rule::in(['0', '1'])] */
         ]);
 
         do {
@@ -61,7 +61,7 @@ class ChapitreController extends Controller
        // Chapitre::where
 
    
-        if($request->get('etat')==1){
+       /* if($request->get('etat')==1){
             $CoursController = new CoursController;
                 $CoursController->Update_nombre_chapitres($idCours,1);
             $numero_chapitre=
@@ -70,7 +70,7 @@ class ChapitreController extends Controller
         else {
             $numero_chapitre=
             Chapitre::where('id_cours',$idCours)->count();
-        }
+        }*/
 
        // ((Cours::where('id_cours',$idCours)->value('nombre_chapitres')));//numero chapitre = nombre chapitre total cours+1
        /*    $Cours->Update_nombre_chapitres($idCours,1);//ajouter +1 au nombre total de chapitre cours
@@ -79,7 +79,8 @@ class ChapitreController extends Controller
         if($FindCours!=null){
         $Formation->Update_nombre_chapitre_total(FormationsContenirCours::where('id_cours',$idCours)->value('id_formation'),1);
         }*/
-
+        $numero_chapitre=
+        Chapitre::where('id_cours',$idCours)->count();
         if ($request->hasFile('image')) {
             $destinationPath = public_path('img/chapitre/');
             $file = $request->file('image');
@@ -96,7 +97,7 @@ class ChapitreController extends Controller
             $video = time().$filenameVideo;
             $fileVideo->move($destinationPathVideo, $video);
        
-        Chapitre::create(['designation' => $request->get('designation')] + ['numero_chapitre' => $numero_chapitre+1] + ['id_chapitre' => $id_chapitre]+['video'=>$video]+['image'=>$image]+['etat'=> $request->get('etat')]+['id_cours'=>$idCours]);
+        Chapitre::create(['designation' => $request->get('designation')] + ['numero_chapitre' => $numero_chapitre+1] + ['id_chapitre' => $id_chapitre]+['video'=>$video]+['image'=>$image]+['etat'=> 0]+['id_cours'=>$idCours]);
         // $this->etat($id_chapitre);
 
             if ($request->has('section')) {
@@ -202,13 +203,19 @@ class ChapitreController extends Controller
             $video = $chapitre->video;
         }
         $etat=$request->get('etat');
-        if($etat){
+        $message=null;
+        if($etat==0){
             if(!$this->checkChapitre($id_chapitre)){
                 $etat=1;
                 $message="Etat non modifié car une session est en cours";/*et aucun autre chapitre n'est actif";*/
             } else { $this->updateChapitre($chapitre,"etat");}
            
-        } else {
+        } else if($etat==1 && $etat!=$chapitre->etat) {
+            $qcm=Qcm::where('etat',1)->where('id_chapitre',$id_chapitre)->count();
+            if($qcm==0){
+                $etat=0;
+                $message="Etat non modifié car aucun qcm n'est active";
+            } else {
             $Numero= Chapitre::where('id_cours',$idCours)->where('etat',1)->max('numero_chapitre');
             Chapitre::where('id_chapitre',$id_chapitre)->update([
                     
@@ -229,7 +236,7 @@ class ChapitreController extends Controller
                
                 }
             }
-
+        }
         Chapitre::where('id_chapitre',$id_chapitre)->update([
             'designation' => $request->get('designation'),
             'image' => $image,
@@ -351,6 +358,11 @@ class ChapitreController extends Controller
             }
             $this->updateChapitre($Chapitre,"etat");
         }else {
+            $qcm=Qcm::where('etat',1)->where('id_chapitre',$id_chapitre)->count();
+            if($qcm==0){
+                return redirect()->back()->with('error',"Etat non modifié car aucun qcm n'est active");
+                
+            } 
             $Numero= Chapitre::where('id_cours',$coursId)->where('etat',1)->max('numero_chapitre');
             Chapitre::where('id_chapitre',$id_chapitre)->update([
                     

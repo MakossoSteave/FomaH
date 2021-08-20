@@ -5,6 +5,12 @@
 
         <div class="column is-9">
         @if($cours)
+        @if (session('warning'))
+        <div class="column is-9 notification is-warning has-text-centered ">
+        <button class="delete"></button>
+            {{ session('warning') }}
+        </div>
+        @endif
         <div class="content is-medium">
             @foreach($chapitre->chapitre as $chap)
         <h3 class="title is-3">{{$chap->numero_chapitre}}. {{$chap->designation}}</h3>
@@ -30,7 +36,7 @@
         @endforeach
     </div>
     @else 
-        <div class="notification is-warning has-text-centered my-4">
+        <div class="column is-9 notification is-warning has-text-centered ">
             Vous ne suivez aucune formation
         </div>
     @endif
@@ -44,11 +50,11 @@
             <a href="{{ url('intranet/qcm') }}" class="button is-success sizeButton">Voir mes résultats au QCM</a>
         </footer>
         @endif
-        @if($exerciceCount == 0 && $projetCount == 0 && $scoreCount == 1)
+        @if($projetCount == 0 && $scoreCount == 1)
         <form action="{{ url('intranet/next') }}" method="POST">
         @csrf
         <footer class="buttons paginate" class="mb-4">
-            <button type="submit" class="button is-info sizeButton">Continuer</button>
+            <button type="submit" class="button is-link sizeButton">Continuer</button>
         </footer>
         </form>
         @endif

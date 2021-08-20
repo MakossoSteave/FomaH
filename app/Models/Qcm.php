@@ -21,4 +21,9 @@ class Qcm extends Model
     {
         return $this->hasMany(Question_qcm::class,'qcm_id','id');       
     }
+
+    public function Score_qcm()
+    {
+        return $this->hasMany(Score_qcm::class,'qcm_id','id');       
+    }
 }

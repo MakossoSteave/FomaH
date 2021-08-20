@@ -11,6 +11,8 @@ use App\Models\Formateur;
 use App\Models\Formation;
 use App\Models\FormationsContenirCours;
 use App\Models\Lier_sessions_stagiaire;
+use App\Models\Qcm;
+use App\Models\Score_qcm;
 use App\Models\Stagiaire;
 use App\Models\Statut;
 use App\Models\Suivre_formation;
@@ -224,20 +226,21 @@ class SessionController extends Controller
         return redirect('/StagiaireSession/'.$idSession)->with('success','Résultat modifié avec succès');
     }
     public function Session_Stagiaire($id){
-    $stagiaires=Lier_sessions_stagiaire::select('lier_sessions_stagiaires.*','users.image','stagiaires.nom','stagiaires.prenom','stagiaires.user_id','stagiaires.id as stagiaireID','sessions.statut_id as sessionStatut')
+    $stagiaires=Lier_sessions_stagiaire::select('lier_sessions_stagiaires.*','users.image','stagiaires.nom','stagiaires.prenom','stagiaires.user_id','stagiaires.id as stagiaireID')
     ->join('stagiaires','stagiaires.id','lier_sessions_stagiaires.id_stagiaire')
     ->join('users','users.id','stagiaires.user_id')
     ->join('sessions','sessions.id','lier_sessions_stagiaires.id_session')
     ->where('id_session',$id)
     ->orderBy('etat','asc')->paginate(8)->setPath('StagiaireSession');
     $stagiairesCount = $stagiaires->count();
-    //dd($stagiairesCount);
+    $sessionStatut=(Session::find($id))->statut_id;
+    $sessionEtat=(Session::find($id))->etat;
     $cursus = Session::select('formations.effectif')
     ->join('formations','formations.id','sessions.formations_id')
     ->where('sessions.id',$id)
     ->first();
     $effectif = $cursus->effectif;
-    return view('admin.session.stagiaire.index',compact(['stagiaires','id','effectif']),['stagiairesCount' => $stagiairesCount]);
+    return view('admin.session.stagiaire.index',compact(['stagiaires','id','effectif']),['sessionStatut' =>$sessionStatut,'stagiairesCount' => $stagiairesCount,'sessionEtat'=>$sessionEtat]);
     }
     public function Session_Stagiaire_Ajout(Request $request,$id){
         $stagiairesInscrits= Lier_sessions_stagiaire::select('lier_sessions_stagiaires.id_stagiaire')
@@ -346,7 +349,10 @@ class SessionController extends Controller
           
 
         $pdf = PDF::loadView('admin.session.diplome', $data);
-        Storage::put("session/$idSession/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf", $pdf->output());
+        if($stagiaire->prenom)
+        Storage::put("/public/session/$idSession/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf", $pdf->output());
+        else
+        Storage::put("/public/session/$idSession/diplome/$stagiaire->nom diplome.pdf", $pdf->output());
         $titre= Titre::where('stagiaire_id',$id)->where('intitule',$formation->libelle)->first();
         if($titre==null){
         do {
@@ -362,16 +368,59 @@ class SessionController extends Controller
     }
     else {
         Titre::where('stagiaire_id',$id)->where('intitule',$formation->libelle)->update([
-            'date_obtention' => $session->date_fin
+            'date_obtention' => $session->date_fin,
+            'session_id' => $idSession
         ]);
     }
         return redirect()->back()->with('success','Diplôme crée avec succès');
 
     }
     public function progressionStagiaire($id,$idSession){
-        $stagiaire = Suivre_formation::where('id_stagiaire',$id)
+        $stagiaire = Suivre_formation::select('suivre_formations.*','cours.designation as NomCours','chapitres.designation as NomChapitre')
+        ->join('cours','cours.id_cours','suivre_formations.id_cours')
+        ->join('chapitres','chapitres.id_chapitre','suivre_formations.id_chapitre')
+        ->where('id_stagiaire',$id)
         ->where('id_session',$idSession)
         ->first();
-        return view('admin.session.stagiaire.progression',compact(['stagiaire']));
+        return view('admin.session.stagiaire.progression.index',compact(['stagiaire']));
     }
+    public function qcmStagiaire($id,$idSession){
+      
+        $qcms=Score_qcm::select('score_qcm.*','qcm.designation')
+        ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','score_qcm.stagiaire_id')
+        ->join('sessions','sessions.id','lier_sessions_stagiaires.id_session')
+        ->join('formations_contenir_cours','formations_contenir_cours.id_formation','sessions.formations_id')
+        ->join('chapitres','chapitres.id_cours','formations_contenir_cours.id_cours')
+        ->join('qcm', function($join)
+                        {
+                             $join->on('chapitres.id_chapitre', '=', 'qcm.id_chapitre');
+                             $join->on('score_qcm.qcm_id','=','qcm.id');
+                        }) 
+        ->where('lier_sessions_stagiaires.id_session',$idSession)
+        ->where('score_qcm.stagiaire_id',$id)
+        ->orderBy('updated_at','desc')->paginate(8)->setPath('qcmStagiaire');
+        return view('admin.session.stagiaire.progression.qcm',compact(['qcms']));
+    }
+
+    public function qcmViewStagiaire($id){
+        $qcm = Qcm::find($id);
+        return view('admin.session.stagiaire.progression.qcmView',compact(['qcm']));
+    }
+    public function projetStagiaire($id,$idSession){
+      
+         $qcms=Score_qcm::select('score_qcm.*','qcm.designation')
+         ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','score_qcm.stagiaire_id')
+         ->join('sessions','sessions.id','lier_sessions_stagiaires.id_session')
+         ->join('formations_contenir_cours','formations_contenir_cours.id_formation','sessions.formations_id')
+         ->join('chapitres','chapitres.id_cours','formations_contenir_cours.id_cours')
+         ->join('qcm', function($join)
+                         {
+                              $join->on('chapitres.id_chapitre', '=', 'qcm.id_chapitre');
+                              $join->on('score_qcm.qcm_id','=','qcm.id');
+                         }) 
+         ->where('lier_sessions_stagiaires.id_session',$idSession)
+         ->where('score_qcm.stagiaire_id',$id)
+         ->orderBy('updated_at','desc')->paginate(8)->setPath('qcmStagiaire');
+         return view('admin.session.stagiaire.progression.qcm',compact(['qcms']));
+     }
 }
