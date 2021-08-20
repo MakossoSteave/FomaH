@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Document;
 use App\Models\Projet;
 use App\Models\ContenirDocumentsProjet;
+use App\Models\Cours;
 use App\Rules\FilenameDocument;
 
 class ProjetController extends Controller
@@ -106,10 +107,29 @@ class ProjetController extends Controller
         $request->validate([
             'description' => 'required'
         ]);
-
+        $projet = Projet::find($id);
+        
+        $etat=$request->get('etat');
+        $message=null;
+        
+        if($etat==0){
+            if(!$this->checkProjet($id)){
+                $etat=0;
+                $message='Etat non modifié car une session active est en cours';  
+            }else {
+                $ProjetCount=Projet::where('etat',1)->where('id','!=',$id)->where('id_cours',$projet->id_cours)
+                ->count();
+                if($ProjetCount==0){
+                    Cours::where('id_cours',$projet->id_cours)
+                    ->update(['etat' => 0]);
+                    $CoursController= new CoursController;
+                    $CoursController->checkEtat($projet->id_cours,false);
+                }
+            }
+        }
         Projet::where('id', $id)->update([
             'description' => $request->get('description'),
-            'etat' => $request->get('etat')
+            'etat' => $etat
         ]);
 
         if ($request->has('documentsUpdate')) {
@@ -171,8 +191,13 @@ class ProjetController extends Controller
     }
 
         $idProjet = Projet::where('id',$id)->get();
-
-        return redirect('/projet/'.$idProjet[0]->id_cours)->with('success','Projet modifié avec succès');
+if($message!=null){
+    return redirect('/projet/'.$idProjet[0]->id_cours)->with('success','Projet modifié avec succès')
+    ->with('error',$message);
+}else{
+    return redirect('/projet/'.$idProjet[0]->id_cours)->with('success','Projet modifié avec succès');
+}
+       
     }
 
     public function deleteDocument($id)
@@ -195,8 +220,27 @@ class ProjetController extends Controller
     {
         $projet = Projet::find($id);
         $etat = !$projet->etat;
-
+        
+        if($etat==0){
+            if(!$this->checkProjet($id)){
+                return redirect()->back()->with('error','Etat non modifié car une session active est en cours');  
+            }else {
+                $ProjetCount=Projet::where('etat',1)->where('id','!=',$id)->where('id_cours',$projet->id_cours)
+                ->count();
+                if($ProjetCount==0){
+                    Cours::where('id_cours',$projet->id_cours)
+                    ->update(['etat' => 0]);
+                    $CoursController= new CoursController;
+                    $CoursController->checkEtat($projet->id_cours,false);
+                }
+            }
+        }
         Projet::where('id', $id)->update(array('etat' => $etat));
         return redirect()->back()->with('success','Etat modifié avec succès');
+    }
+    public function checkProjet($id){
+        $projet = Projet::find($id);
+        $CoursController= new CoursController;
+        return ($CoursController->checkCours($projet->id_cours));
     }
 }
