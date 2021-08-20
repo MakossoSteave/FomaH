@@ -19,7 +19,11 @@
             {{ session('success') }}
         </div>
     @endif
-
+    @if (session('error'))
+        <div class="notification is-danger has-text-centered my-4">
+            {{ session('error') }}
+        </div>
+    @endif
     @if($projets->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
             Aucun projet n'existe pour ce cours

@@ -114,7 +114,7 @@ class ProjetController extends Controller
         
         if($etat==0){
             if(!$this->checkProjet($id)){
-                $etat=0;
+                $etat=1;
                 $message='Etat non modifié car une session active est en cours';  
             }else {
                 $ProjetCount=Projet::where('etat',1)->where('id','!=',$id)->where('id_cours',$projet->id_cours)
