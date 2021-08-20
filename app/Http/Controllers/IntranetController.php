@@ -320,7 +320,7 @@ class IntranetController extends Controller
 
             $qcmCount = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->count();
 
-            $cours = Cours::where('id_cours', $formation->id_cours)->first();
+            $cours = Cours::where('etat',1)->where('id_cours', $formation->id_cours)->first();
 
             $chapitre = Suivre_formation::where('id_chapitre', $formation->id_chapitre)->with('Chapitre.Section')->first();
 
@@ -387,7 +387,7 @@ class IntranetController extends Controller
         $formation = Suivre_formation::select('suivre_formations.*')
         ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
 
-        $cours = Cours::where('id_cours', $formation->id_cours)->first();
+        $cours = Cours::where('etat',1)->where('id_cours', $formation->id_cours)->first();
 
         $qcms = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->with('Question_qcm.Reponse_question_qcm')->get();
 
@@ -508,7 +508,7 @@ class IntranetController extends Controller
         $formation = Suivre_formation::select('suivre_formations.*')
         ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
 
-        $cours = Cours::where('id_cours', $formation->id_cours)->first();
+        $cours = Cours::where('etat',1)->where('id_cours', $formation->id_cours)->first();
 
         $chapitre = Chapitre::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
 
@@ -884,7 +884,7 @@ class IntranetController extends Controller
         $formation = Suivre_formation::select('suivre_formations.*')
         ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
 
-        $cours = Cours::where('id_cours', $formation->id_cours)->first();
+        $cours = Cours::where('etat',1)->where('id_cours', $formation->id_cours)->first();
 
         $projetCount = Projet::where('id_cours', $formation->id_cours)->count();
 
@@ -1049,12 +1049,12 @@ class IntranetController extends Controller
         $arrayChap[] = $chapitre['numero_chapitre'];
 
         foreach($allCours as $cour) {
-            $lessons[] = Cours::where('id_cours', $cour->id_cours)
+            $lessons[] = Cours::where('etat',1)->where('id_cours', $cour->id_cours)
             ->with('Chapitre', function ($query) use ($arrayChap, $cour, $formation) {
                 if($cour->id_cours == $formation->id_cours) {
-                    $query->where('numero_chapitre','<=', max($arrayChap))->where('id_cours', $cour->id_cours);
+                    $query->where('numero_chapitre','<=', max($arrayChap))->where('id_cours', $cour->id_cours)->where('etat',1);
                 } else {
-                    $query->where('id_cours', $cour->id_cours);
+                    $query->where('id_cours', $cour->id_cours)->where('etat',1);
                 }
             })->get();
         }
@@ -1185,12 +1185,12 @@ class IntranetController extends Controller
         $arrayChap[] = $chapitre['numero_chapitre'];
 
         foreach($allCours as $cour) {
-            $lessons[] = Cours::where('id_cours', $cour->id_cours)
+            $lessons[] = Cours::where('etat',1)->where('id_cours', $cour->id_cours)
             ->with('Chapitre', function ($query) use ($arrayChap, $cour, $formation) {
                 if($cour->id_cours == $formation->id_cours) {
-                    $query->where('numero_chapitre','<=', max($arrayChap))->where('id_cours', $cour->id_cours);
+                    $query->where('numero_chapitre','<=', max($arrayChap))->where('id_cours', $cour->id_cours)->where('etat',1);
                 } else {
-                    $query->where('id_cours', $cour->id_cours);
+                    $query->where('id_cours', $cour->id_cours)->where('etat',1);
                 }
             })->get();
         }
@@ -1319,6 +1319,7 @@ class IntranetController extends Controller
         ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
 
         $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->count();
+        
 if($meeting !=0){
         $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
         $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
@@ -1373,11 +1374,11 @@ if($meeting !=0){
                 return redirect('/intranet/live');
             }
         } else {
-            return redirect('/intranet/live');
+            return redirect()->back()->with("warning","Pas de live prévu");
         }
+    }
     }else {
         return redirect()->back()->with("warning","Pas de live prévu");
-    }
     }
     }
     public function live() {
