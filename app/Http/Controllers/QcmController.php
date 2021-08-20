@@ -111,10 +111,28 @@ class QcmController extends Controller
                 'required',
                 Rule::in(['0', '1'])]
         ]);
-
+        $qcm = Qcm::find($id);
+        $chapitre= Chapitre::find($qcm->id_chapitre);
+        $etat=$request->get('etat');
+        $message=null;
+        if($etat==0){
+            if(!$this->checkQcm($id)){
+                $etat=1;
+                $message='Etat non modifié car une session active est en cours';  
+            }else {
+                $qcmCount=Qcm::where('etat',1)->where('id','!=',$id)->where('id_chapitre',$qcm->id_chapitre)
+                ->count();
+                if($qcmCount==0){
+                    Chapitre::where('id_chapitre',$qcm->id_chapitre)
+                    ->update(['etat' => 0]);
+                    $ChapitreController= new ChapitreController;
+                    $ChapitreController->updateChapitre($chapitre,"etat");
+                }
+            }
+        }
         Qcm::where('id', $id)->update([
             'designation' => $request->get('designation'),
-            'etat' => $request->get('etat'),
+            'etat' => $etat,
             'id_chapitre' => $request->get('id_chapitre')
         ]);
 
@@ -194,8 +212,13 @@ class QcmController extends Controller
                 }
             }
         }
-
-        return redirect('/qcm/'.$request->get('id_chapitre'))->with('success','QCM modifié avec succès');
+        if($message!=null){
+            return redirect('/qcm/'.$request->get('id_chapitre'))->with('success','QCM modifié avec succès')
+            ->with('error',$message);  
+        }else {
+            return redirect('/qcm/'.$request->get('id_chapitre'))->with('success','QCM modifié avec succès');
+        }
+      
     }
 
     public function deleteQuestion($id)
@@ -214,7 +237,27 @@ class QcmController extends Controller
     {
         $qcm = QCM::find($id);
         $etat = !$qcm->etat;
+        $chapitre= Chapitre::find($qcm->id_chapitre);
+        if($etat==0){
+            if(!$this->checkQcm($id)){
+                return redirect()->back()->with('error','Etat non modifié car une session active est en cours');  
+            }else {
+                $qcmCount=Qcm::where('etat',1)->where('id','!=',$id)->where('id_chapitre',$qcm->id_chapitre)
+                ->count();
+                if($qcmCount==0){
+                    Chapitre::where('id_chapitre',$qcm->id_chapitre)
+                    ->update(['etat' => 0]);
+                    $ChapitreController= new ChapitreController;
+                    $ChapitreController->updateChapitre($chapitre,"etat");
+                }
+            }
+        }
         QCM::where('id',$id)->update(['etat'=>$etat]);
         return redirect()->back()->with('success','Etat modifié avec succès');
+    }
+    public function checkQcm($id){
+        $qcm = Qcm::find($id);
+        $ChapitreController= new ChapitreController;
+        return ($ChapitreController->checkChapitre($qcm->id_chapitre));
     }
 }

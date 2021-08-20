@@ -21,6 +21,12 @@
         </div>
     @endif
 
+    @if (session('error'))
+        <div class="notification is-danger has-text-centered my-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
     @if($qcms->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
             Aucun QCM n'existe pour ce chapitre
