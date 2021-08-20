@@ -24,29 +24,13 @@ class StagiaireController extends Controller
 
         if(Auth::user())
         $idUserAuth=Auth::user()->id;
-$idUserRole=Auth::user()->role_id;
         $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
-            return redirect("/");
+        if($stagiaire){
+            $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+            ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();}
+        else {
+            $SuivreFormation = false; 
         }
-
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();
         return view('stagiaire/index',compact(['data']),['SuivreFormation'=>$SuivreFormation]);
     }
 
