@@ -186,7 +186,7 @@ class CoursController extends Controller
         $etatCanChange=true;
         $etatCanChangeProjet=true;
         $etatCanChangeSession=true;
-        if($etat==1){
+        if($etat==1 && $etat!=$coursToUpdate->etat){
             $chapitre =  Chapitre::where('id_cours',$id)
             ->where('etat',1)
             ->count();

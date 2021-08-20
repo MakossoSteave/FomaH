@@ -160,6 +160,7 @@ class SessionController extends Controller
     }
     public function update(Request $request, $id)
     {
+        $session=Session::find($id);
         $request->validate([
             'date_debut' => ['required'],
             'date_fin' => ['required'],
@@ -171,7 +172,7 @@ class SessionController extends Controller
         ]);
         $etat=$request->get('etat');
         $message=null;
-        if($etat==1){
+        if($etat==1 && $etat!=$session->etat){
             $cursus = Session::select('formations.*')
             ->join('formations','formations.id','sessions.formations_id')
             ->where('sessions.id',$id)

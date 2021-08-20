@@ -115,7 +115,7 @@ class QcmController extends Controller
         $chapitre= Chapitre::find($qcm->id_chapitre);
         $etat=$request->get('etat');
         $message=null;
-        if($etat==0){
+        if($etat==0 && $etat!=$qcm->etat){
             if(!$this->checkQcm($id)){
                 $etat=1;
                 $message='Etat non modifié car une session active est en cours';  

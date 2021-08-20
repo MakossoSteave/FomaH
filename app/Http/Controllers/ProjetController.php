@@ -112,7 +112,7 @@ class ProjetController extends Controller
         $etat=$request->get('etat');
         $message=null;
         
-        if($etat==0){
+        if($etat==0 && $etat!=$projet->etat){
             if(!$this->checkProjet($id)){
                 $etat=1;
                 $message='Etat non modifié car une session active est en cours';  

@@ -188,7 +188,7 @@ class ChapitreController extends Controller
             $image = time().$filename;
             $file->move($destinationPath, $image);
         } else {
-            $chapitre=Chapitre::find($id_chapitre);
+            
             $image = $chapitre->image;
         }
 
@@ -199,12 +199,12 @@ class ChapitreController extends Controller
             $video = time().$filenameVideo;
             $fileVideo->move($destinationPathVideo, $video);
         } else {
-            $chapitre=Chapitre::find($id_chapitre);
+           
             $video = $chapitre->video;
         }
         $etat=$request->get('etat');
         $message=null;
-        if($etat==0){
+        if($etat==0 && $etat!=$chapitre->etat){
             if(!$this->checkChapitre($id_chapitre)){
                 $etat=1;
                 $message="Etat non modifié car une session est en cours";/*et aucun autre chapitre n'est actif";*/
@@ -476,7 +476,7 @@ class ChapitreController extends Controller
         }
          // Mettre à jour le nombre de cours total dans chaque formations
          $this->checkEtat($Chapitre->id_cours,$Chapitre->id_chapitre); 
-         $coursCheckChange = Cours::find($Chapitre->id_cours);
+     //    $coursCheckChange = Cours::find($Chapitre->id_cours);
          /*if($coursCheckChange->etat==0 && $coursCheckChange->etat!=$cours->etat){
             foreach($FindFormation as $f){
             $Formation->Update_nombre_cours_total($f->id_formation,-1);

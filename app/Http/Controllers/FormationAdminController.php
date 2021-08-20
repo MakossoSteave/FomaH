@@ -92,6 +92,7 @@ class FormationAdminController extends Controller
 
     public function update(Request $request, $id)
     {
+        $formation=Formation::find($id);
         $request->validate([
          'libelle' =>['required','max:191', Rule::unique('formations')->where(function ($query) use($id) {
              
@@ -121,7 +122,7 @@ class FormationAdminController extends Controller
         $etat = $request->get('etat');
         $etatCanChangeCours=true;
         $etatCanChangeSession=true;
-        if($etat==1){
+        if($etat==1 && $etat!=$formation->etat){
         
             $coursDeLaFormation = FormationsContenirCours::select('id_cours')
             ->where('id_formation',$id)
@@ -135,7 +136,7 @@ class FormationAdminController extends Controller
                 $etat=0;
                 $etatCanChangeCours=false;
             }
-        }else {
+        }else  if($etat==0 && $etat!=$formation->etat){
             $session =  Session::where('formations_id',$id)
             ->where('etat',1)
             
