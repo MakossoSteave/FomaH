@@ -62,7 +62,7 @@
                                 <div class="modal-card">
                                     <header class="modal-card-head">
                                     <p class="modal-card-title"></p>
-                                    <button class="delete" aria-label="close"></button>
+                                    <button class="delete" id="{{$competence->competence_id}}" aria-label="close"></button>
                                     </header>
                                     <section class="modal-card-body">
                                         Souhaitez-vous supprimer la compétence :  {{$competence->designation_s_ma}} ?
@@ -84,10 +84,11 @@
                                 $(target).addClass("is-active");
                             });
                             
-                            $(".delete").click(function() {
-                                var target = $(".modal-button").data("target");
-                                $("html").removeClass("is-clipped");
-                                $(target).removeClass("is-active");
+                            $('.delete').click(function (event) {
+                                $("#"+event.target.id).click(function() {
+                                    $("html").removeClass("is-clipped");
+                                    $(this).removeClass("is-active");
+                                });
                             });
                         </script>
                     </div>
