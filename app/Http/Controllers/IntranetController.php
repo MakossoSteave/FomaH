@@ -318,13 +318,13 @@ class IntranetController extends Controller
             $formation = Suivre_formation::select('suivre_formations.*')
             ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
 
-            $qcmCount = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->count();
+            $qcmCount = Qcm::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->count();
 
             $cours = Cours::where('etat',1)->where('id_cours', $formation->id_cours)->first();
 
             $chapitre = Suivre_formation::where('id_chapitre', $formation->id_chapitre)->with('Chapitre.Section')->first();
 
-            $qcm = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->first();
+            $qcm = Qcm::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
     
             $scoreCount = Score_qcm::where([
                 ['qcm_id', $qcm->id],
@@ -389,9 +389,9 @@ class IntranetController extends Controller
 
         $cours = Cours::where('etat',1)->where('id_cours', $formation->id_cours)->first();
 
-        $qcms = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->with('Question_qcm.Reponse_question_qcm')->get();
+        $qcms = Qcm::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->with('Question_qcm.Reponse_question_qcm')->get();
 
-        $qcm = Qcm::where('id_chapitre', $formation->id_chapitre)->where('etat',1)->first();
+        $qcm = Qcm::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
     
         $scoreCount = Score_qcm::where('qcm_id', $qcm->id)->count();
        
@@ -514,7 +514,7 @@ class IntranetController extends Controller
 
         $exercices = Exercice::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->with('Questions_exercice.Questions_correction')->get();
 
-        $qcm = Qcm::where('id_chapitre', $formation->id_chapitre)->first();
+        $qcm = Qcm::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
 
         if($qcm) {
             $scoreCount = Score_qcm::where([
@@ -1115,14 +1115,14 @@ class IntranetController extends Controller
         $qcmScores = Score_qcm::where('stagiaire_id', $stagiaire->id)->get();
 
         foreach($qcmScores as $qcmScore) {
-            $qcms[] = Qcm::where('id', $qcmScore->qcm_id)->with('Score_qcm')->get();
+            $qcms[] = Qcm::where('etat',1)->where('id', $qcmScore->qcm_id)->with('Score_qcm')->get();
         }
         
         return view('stagiaire.intranet.qcm.previousIndex', compact(['qcms']));
     }
 
     public function onePreviousQCM($id) {
-        $qcm = Qcm::where('id', $id)->with(['Question_qcm' => function($query) use($id) {
+        $qcm = Qcm::where('etat',1)->where('id', $id)->with(['Question_qcm' => function($query) use($id) {
             $query->where('question_qcm.qcm_id', $id)
             ->with('Reponse_question_qcm');
         }])->first();
