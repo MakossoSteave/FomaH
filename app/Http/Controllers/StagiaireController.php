@@ -24,10 +24,15 @@ class StagiaireController extends Controller
 
         if(Auth::user())
         $idUserAuth=Auth::user()->id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+        $stagiaire = Stagiaire::select('stagiaires.*')->where('user_id', $idUserAuth)->first();
         if($stagiaire){
             $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->exists();}
+            ->join('sessions','sessions.id','suivre_formations.id_session')
+            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
+            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+            ->where('lier_sessions_stagiaires.etat',1)
+            ->where('sessions.etat',1)
+            ->where('sessions.statut_id',3)->exists();}
         else {
             $SuivreFormation = false; 
         }
