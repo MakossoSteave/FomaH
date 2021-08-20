@@ -52,6 +52,7 @@ Route::get('message/{id}', [
     'message'
 ]);
 Route::get('/Ajoutforma', [App\Http\Controllers\FormationController::class, 'create'])->name('Ajoutforma');
+Route::get('/formation/{id}', [App\Http\Controllers\FormationController::class, 'show'])->name('oneFormation');
 
 Route::get('/cours', [App\Http\Controllers\CoursController::class, 'index'])->name('cours');
 Route::get('/cours/{id}', [App\Http\Controllers\CoursController::class, 'filter'])->name('coursFilter');
