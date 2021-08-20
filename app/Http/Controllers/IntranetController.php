@@ -63,6 +63,12 @@ class IntranetController extends Controller
             $formationName = Formation::where('id', $formation->id_formations)->first();
 
             $progress = intval(($formation->nombre_chapitre_lu/$arraySumTotalChapitre)*100);
+
+            $meetings = Participer_meeting::where('id_utilisateur', $idUserAuth)->get();
+
+            foreach ($meetings as $meeting) {
+                $sessionLives[] = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
+            }
         }
 
         return view('stagiaire.intranet.index', compact(['formationName'], ['session'], ['progress']));
@@ -776,33 +782,39 @@ class IntranetController extends Controller
 
         $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
 
-        $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
+        $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->count();
 
-        $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
+        if($meeting != 0) {
+            $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
 
-        $endMeeting = date('Y-m-d H:i:s', strtotime($sessionLive->date_meeting.' +2 hours'));
-
-        if(date('Y-m-d H:i:s') < $sessionLive->date_meeting) {
-
-            $sessionLive->update([
-                'statut_id' => 1
-            ]);
-
-            return redirect('/intranet/live');
-
-        } else if(date('Y-m-d H:i:s') > $endMeeting) {
-
-            $sessionLive->update([
-                'statut_id' => 4
-            ]);
-
-            return redirect('/intranet/live');
-        } else if(date('Y-m-d H:i:s') >= $sessionLive->date_meeting && date('Y-m-d H:i:s') <= $endMeeting) {
-
-            $sessionLive->update([
-                'statut_id' => 3
-            ]);
-
+            $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
+    
+            $endMeeting = date('Y-m-d H:i:s', strtotime($sessionLive->date_meeting.' +2 hours'));
+    
+            if(date('Y-m-d H:i:s') < $sessionLive->date_meeting) {
+    
+                $sessionLive->update([
+                    'statut_id' => 1
+                ]);
+    
+                return redirect('/intranet/live');
+    
+            } else if(date('Y-m-d H:i:s') > $endMeeting) {
+    
+                $sessionLive->update([
+                    'statut_id' => 4
+                ]);
+    
+                return redirect('/intranet/live');
+            } else if(date('Y-m-d H:i:s') >= $sessionLive->date_meeting && date('Y-m-d H:i:s') <= $endMeeting) {
+    
+                $sessionLive->update([
+                    'statut_id' => 3
+                ]);
+    
+                return redirect('/intranet/live');
+            }
+        } else {
             return redirect('/intranet/live');
         }
     }
@@ -818,10 +830,18 @@ class IntranetController extends Controller
 
         $formation = Suivre_formation::where('id_stagiaire', $stagiaire->id)->first();
 
-        $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
+        $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->count();
 
-        $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
+        $sessionLive = null;
 
-        return view('stagiaire.intranet.live.index', compact(['sessionLive']));
+        if($meeting != 0) {
+            $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
+
+            $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
+    
+            return view('stagiaire.intranet.live.index', compact(['sessionLive']));
+        } else {
+            return view('stagiaire.intranet.live.index', compact(['sessionLive']));
+        }
     }
 }
