@@ -89,8 +89,6 @@ class IntranetController extends Controller
             $session=null;
         }
 
-        $projet = Projet::where('id_cours', $formation->id_cours)->first();
-
         $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->first();
 
         $session = Session::where('id', $sessionStagiaire->id_session)->first();
@@ -125,6 +123,35 @@ class IntranetController extends Controller
                     'statut_id' => 4
                 ]);
             } 
+        }
+
+        $meetings = Participer_meeting::where('id_utilisateur', $idUserAuth)->get();
+
+        foreach ($meetings as $meeting) {
+            $sessionLives[] = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
+        }
+
+        foreach ($sessionLives as $sessionLive) {
+            $endMeeting = date('Y-m-d H:i:s', strtotime($sessionLive->date_meeting.' +2 hours'));
+
+            if(date('Y-m-d H:i:s') < $sessionLive->date_meeting) {
+
+                $sessionLive->update([
+                    'statut_id' => 1
+                ]);
+
+            } else if(date('Y-m-d H:i:s') > $endMeeting) {
+
+                $sessionLive->update([
+                    'statut_id' => 4
+                ]);
+                
+            } else if(date('Y-m-d H:i:s') >= $sessionLive->date_meeting && date('Y-m-d H:i:s') <= $endMeeting) {
+
+                $sessionLive->update([
+                    'statut_id' => 3
+                ]);
+            }
         }
 
         if ($session && $countFormation == 1 && date('Y-m-d') >= $session->date_debut && date('Y-m-d') <= $session->date_fin) {
