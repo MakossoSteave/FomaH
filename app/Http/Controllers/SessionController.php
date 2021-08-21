@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chapitre;
+use App\Models\Contenir_sessions_projet;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -11,6 +12,7 @@ use App\Models\Formateur;
 use App\Models\Formation;
 use App\Models\FormationsContenirCours;
 use App\Models\Lier_sessions_stagiaire;
+use App\Models\Projet;
 use App\Models\Qcm;
 use App\Models\Score_qcm;
 use App\Models\Stagiaire;
@@ -93,7 +95,26 @@ class SessionController extends Controller
           {
             return redirect()->back()->with('error',"L'Etat ne pas être modifié car aucun stagiaire actif n'est inscrit");
           }
-           
+          if($session->statut_id==3){
+            $AllcoursSession=FormationsContenirCours::where('id_formation',$session->formations_id)
+            ->where('numero_cours','!=',0)
+            ->get();
+            foreach($AllcoursSession as $c){
+                $projet = Projet::where('etat',1)
+                ->where('id_cours',$c->id_cours)
+                ->first();
+                $exists = Contenir_sessions_projet::where('id_session',$id)
+                ->where('id_projet',$projet->id)->exists();
+                
+                if(!$exists){
+                    Contenir_sessions_projet::create([
+                        'id_projet' => $projet->id ,
+                        'id_session' => $id ,
+                        'statut_id' => 1
+                    ]); 
+                }
+            }
+        }
         }        
         Session::where('id', $id)->update(array('etat' => $etat));
         return redirect()->back()->with('success','Etat modifié avec succès');
@@ -200,6 +221,26 @@ class SessionController extends Controller
             'formations_id' => $request->get('formation_id'),
             'statut_id' => $request->get('statut_id')
         ]);
+        if(($etat==1 && $request->get('statut_id')==3) && ($etat!=$session->etat || $request->get('statut_id')!=$session->statut_id)){
+            $AllcoursSession=FormationsContenirCours::where('id_formation',$request->get('formation_id'))
+            ->where('numero_cours','!=',0)
+            ->get();
+            foreach($AllcoursSession as $c){
+                $projet = Projet::where('etat',1)
+                ->where('id_cours',$c->id_cours)
+                ->first();
+                $exists = Contenir_sessions_projet::where('id_session',$id)
+                ->where('id_projet',$projet->id)->exists();
+                dd($exists);
+                if(!$exists){
+                    Contenir_sessions_projet::create([
+                        'id_projet' => $projet->id ,
+                        'id_session' => $id ,
+                        'statut_id' => 1
+                    ]); 
+                }
+            }
+        }
         if($message!=null){
             return redirect('/session')->with('success','Session modifié avec succès')
             ->with('error',$message);
