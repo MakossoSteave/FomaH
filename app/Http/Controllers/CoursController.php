@@ -9,6 +9,7 @@ use App\Models\FormationsContenirCours;
 use App\Models\Formation;
 use App\Models\Cours;
 use App\Models\Chapitre;
+use App\Models\Contenir_sessions_projet;
 use App\Models\Formateur;
 use App\Models\Lier_sessions_stagiaire;
 use App\Models\Projet;
@@ -220,6 +221,27 @@ class CoursController extends Controller
                         // Mettre à jour le nombre de chapitre total dans chaque formations
         
                         $Formation->Update_nombre_chapitre_total($f->id_formation,$nombreChapitresCours);
+                    
+                        $session =  Session::where('formations_id',$f->id_formation)
+                        ->where('etat',1)
+                        ->where('statut_id',3)
+                        ->get();
+                        if($session!=null){
+                            $projet = Projet::where('etat',1)
+                            ->where('id_cours',$id)
+                            ->first();
+                            foreach($session as $s){
+                            $exists = Contenir_sessions_projet::where('id_session',$s->id)
+                            ->where('id_projet',$projet->id)->exists();
+                
+                            if(!$exists){
+                                Contenir_sessions_projet::create([
+                                    'id_projet' => $projet->id ,
+                                    'id_session' => $s->id ,
+                                    'statut_id' => 1
+                                ]); 
+                            }}
+                        }
                     }
 
             }
@@ -363,7 +385,29 @@ class CoursController extends Controller
                                     
                         // Mettre à jour le nombre de chapitre total dans chaque formations
         
-                        $Formation->Update_nombre_chapitre_total($f->id_formation,$nombreChapitresCours);
+                        $session =  Session::where('formations_id',$f->id_formation)
+                        ->where('etat',1)
+                        ->where('statut_id',3)
+                        ->get();
+                        if($session!=null){
+                            $projet = Projet::where('etat',1)
+                            ->where('id_cours',$id)
+                            ->first();
+                            foreach($session as $s){
+                            $exists = Contenir_sessions_projet::where('id_session',$s->id)
+                            ->where('id_projet',$projet->id)->exists();
+                
+                            if(!$exists){
+                                Contenir_sessions_projet::create([
+                                    'id_projet' => $projet->id ,
+                                    'id_session' => $s->id ,
+                                    'statut_id' => 1
+                                ]); 
+                            }
+                        }  }  $Formation->Update_nombre_chapitre_total($f->id_formation,$nombreChapitresCours);
+                    
+                    
+                    
                     }
 
                
@@ -448,7 +492,7 @@ class CoursController extends Controller
 
         // Supprimer le cours
         Cours::where('id_cours',$id)->delete();
-
+       
         return redirect()->back()->with('success','Cours supprimé avec succès');
     
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Chapitre;
 use App\Models\Contenir_sessions_projet;
+use App\Models\Faire_projet;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -231,7 +232,7 @@ class SessionController extends Controller
                 ->first();
                 $exists = Contenir_sessions_projet::where('id_session',$id)
                 ->where('id_projet',$projet->id)->exists();
-                dd($exists);
+                
                 if(!$exists){
                     Contenir_sessions_projet::create([
                         'id_projet' => $projet->id ,
@@ -424,7 +425,9 @@ class SessionController extends Controller
         ->where('id_stagiaire',$id)
         ->where('id_session',$idSession)
         ->first();
-        return view('admin.session.stagiaire.progression.index',compact(['stagiaire']));
+        $SumTotalChapitre = (Formation::find($stagiaire->id_formations))->nombre_chapitre_total;
+        $progress=(($stagiaire->nombre_chapitre_lu/$SumTotalChapitre)*100);
+        return view('admin.session.stagiaire.progression.index',compact(['stagiaire']),['progress'=>  $progress]);
     }
     public function qcmStagiaire($id,$idSession){
       
@@ -448,21 +451,20 @@ class SessionController extends Controller
         $qcm = Qcm::find($id);
         return view('admin.session.stagiaire.progression.qcmView',compact(['qcm']));
     }
+
     public function projetStagiaire($id,$idSession){
       
-         $qcms=Score_qcm::select('score_qcm.*','qcm.designation')
-         ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','score_qcm.stagiaire_id')
-         ->join('sessions','sessions.id','lier_sessions_stagiaires.id_session')
-         ->join('formations_contenir_cours','formations_contenir_cours.id_formation','sessions.formations_id')
-         ->join('chapitres','chapitres.id_cours','formations_contenir_cours.id_cours')
-         ->join('qcm', function($join)
-                         {
-                              $join->on('chapitres.id_chapitre', '=', 'qcm.id_chapitre');
-                              $join->on('score_qcm.qcm_id','=','qcm.id');
-                         }) 
-         ->where('lier_sessions_stagiaires.id_session',$idSession)
-         ->where('score_qcm.stagiaire_id',$id)
+         $projets=Faire_projet::select('faire_projets.*','projets.description')
+         ->join('contenir_sessions_projets','contenir_sessions_projets.id_projet','faire_projets.id_projet')
+         ->join('projets','projets.id','faire_projets.id_projet')
+         ->where('contenir_sessions_projets.id_session',$idSession)
+         ->where('faire_projets.id_stagiaire',$id)
          ->orderBy('updated_at','desc')->paginate(8)->setPath('qcmStagiaire');
-         return view('admin.session.stagiaire.progression.qcm',compact(['qcms']));
+         return view('admin.session.stagiaire.progression.projet',compact(['projets']));
      }
+
+     public function projetViewStagiaire($id){
+        $projet = Projet::find($id);
+        return view('admin.session.stagiaire.progression.projetView',compact(['projet']));
+    }
 }

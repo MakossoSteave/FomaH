@@ -18,8 +18,8 @@ class CreateContenirSessionProjetTable extends Migration
             $table->bigInteger('id_projet')->unsigned();
             $table->bigInteger('id_session')->unsigned();
             $table->primary(['id_projet', 'id_session']);
-            $table->foreign('id_session')->references('id')->on('sessions');    
-            $table->foreign('id_projet')->references('id')->on('projets');
+            $table->foreign('id_session')->references('id')->on('sessions')->onDelete('cascade');    
+            $table->foreign('id_projet')->references('id')->on('projets')->onDelete('cascade');
             $table->date('date_debut')->nullable();
             $table->date('date_fin')->nullable();
             $table->bigInteger('statut_id')->unsigned()->index();

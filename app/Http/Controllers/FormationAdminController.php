@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Models\FormationsContenirCours;
 use App\Models\Categorie;
+use App\Models\Contenir_sessions_projet;
 use App\Models\Formation;
 use App\Models\Formateur;
 use App\Models\Cours;
+use App\Models\Projet;
 use App\Models\Session;
 use Illuminate\Validation\Rule;
 use App\Rules\FilenameImage;
@@ -17,10 +19,10 @@ class FormationAdminController extends Controller
 
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $formations = Formation::orderBy('id','desc')->paginate(3)->setPath('cursus');
-                   
+        $request->session()->forget('cursusId');           
         return view('admin.formation.index',compact(['formations']));
     }
 
@@ -75,11 +77,11 @@ class FormationAdminController extends Controller
         return redirect('/cursus')->with('success','Formation créé avec succès');
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
-       $data =  Formation::find($id);
-
-       return view('admin.formation.show',compact(['data']));
+        $formation =  Formation::find($id);
+        $request->session()->put('cursusId', $id);
+       return view('admin.formation.show',compact(['formation']));
     }
 
     public function edit($id)
@@ -157,13 +159,13 @@ class FormationAdminController extends Controller
             'categorie_id' => $request->get('categorie_id')
         ]);
         if(!$etatCanChangeCours){
-            return redirect('/cursus')->with('success','Formation modifié avec succès')
+            return redirect('/cursus/'.$request->session()->get('cursusId'))->with('success','Formation modifié avec succès')
             ->with('error',"L'état ne peut pas être modifié car aucun cours n'est actif ! ");
         }  else if(!$etatCanChangeSession){
-            return redirect('/cursus')->with('success','Formation modifié avec succès')->with('error',"L'état ne peut pas être modifié car une session est active ! ");
+            return redirect('/cursus/'.$request->session()->get('cursusId'))->with('success','Formation modifié avec succès')->with('error',"L'état ne peut pas être modifié car une session est active ! ");
         }
         else {
-            return redirect('/cursus')->with('success','Formation modifié avec succès');
+            return redirect('/cursus/'.$request->session()->get('cursusId'))->with('success','Formation modifié avec succès');
         }
       
         
@@ -188,6 +190,7 @@ class FormationAdminController extends Controller
     {
         $Cours = Cours::find($request->get('id_cours'));
         //$numero_cours = FormationsContenirCours::where("id_formation","=",$id)->max('numero_cours');
+       
         if($Cours->etat==1){
         $numero_cours = FormationsContenirCours::where("id_formation","=",$id)->max('numero_cours');
     
@@ -196,6 +199,7 @@ class FormationAdminController extends Controller
             } else {
                 $numero_cours = $numero_cours+1;
             }
+           
         }
         else {
             $numero_cours = 0;
@@ -211,6 +215,31 @@ class FormationAdminController extends Controller
        
             $CoursNombreChapitre = $Cours->nombre_chapitres;
             $this->Update_nombre_chapitre_total($id,$CoursNombreChapitre);
+
+            $formationContenirCours = FormationsContenirCours::
+                where('id_cours',$Cours->id_cours)->get();
+            foreach($formationContenirCours as $f){
+            $session =  Session::where('formations_id',$f->id_formation)
+            ->where('etat',1)
+            ->where('statut_id',3)
+            ->get();
+           
+            if($session!=null){
+                $projet = Projet::where('etat',1)
+                ->where('id_cours',$Cours->id_cours)
+                ->first();
+            
+                foreach($session as $s){
+                $exists = Contenir_sessions_projet::where('id_session',$s->id)
+                ->where('id_projet',$projet->id)->exists();
+    
+                if(!$exists){
+                    Contenir_sessions_projet::create([
+                        'id_projet' => $projet->id ,
+                        'id_session' => $s->id ,
+                        'statut_id' => 1
+                    ]); 
+                }}}}
         }
        
 
@@ -376,7 +405,12 @@ class FormationAdminController extends Controller
         FormationsContenirCours::where('id_cours',$idCours)
         ->where('id_formation',$idFormation)->delete();
 
-      
+        $projet = Projet::where('etat',1)
+        ->where('id_cours',$idCours)
+        ->get();
+        foreach($projet as $p){
+            Contenir_sessions_projet::where('id_projet',$p->id)->delete();
+        }
         return redirect()->back()->with('success','Supprimé avec succès');
     } 
 }

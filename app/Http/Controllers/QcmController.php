@@ -228,8 +228,24 @@ class QcmController extends Controller
 
     public function destroy($id)
     {
-        QCM::where('id',$id)->delete();
+        $qcm = Qcm::find($id);
+        if($qcm->etat==1){
+            if(!$this->checkQcm($id)){
+                return redirect()->back()->with('error','QCM  non supprimé  car une session active est en cours');
 
+            }
+            
+        }
+        QCM::where('id',$id)->delete();
+        $qcmCount=Qcm::where('etat',1)->where('id','!=',$id)->where('id_chapitre',$qcm->id_chapitre)
+        ->count();
+        if($qcmCount==0){
+            $chapitre=Chapitre::where('id_chapitre',$qcm->id_chapitre)->first();
+            Chapitre::where('id_chapitre',$qcm->id_chapitre)
+            ->update(['etat' => 0]);
+            $ChapitreController= new ChapitreController;
+            $ChapitreController->updateChapitre($chapitre,"etat");
+        }
         return redirect()->back()->with('success','QCM supprimé avec succès');
     }
 

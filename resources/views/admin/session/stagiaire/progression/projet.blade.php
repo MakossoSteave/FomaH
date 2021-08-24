@@ -26,34 +26,29 @@
         </div>
     @endif
 
-    @if($qcms->isEmpty())
+    @if($projets->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
-            Aucun qcm n'existe pour ce stagiaire
+            Aucun projet n'existe pour ce stagiaire
         </div>
     @else
 
   
     <div class="columns is-multiline mt-3">
-    @foreach($qcms as $qcm)
-           
+    @foreach($projets as $projet)
             <div class="column is-4">
             <div class="card is-shady">
                 <div class="card-image">
-                <img src="{{ URL::asset('/') }}img/quiz.jpg" alt="" class="img is-4by3">
+                <img src="{{ URL::asset('/') }}img/projet.jpg" alt="" class="img is-4by3">
                 </div>
                 <div class="card-content">
                 <div class="content">
-                    <h4>{{$qcm->designation}}</h4>
-                   
-                        <span class="percentage mb-4">{{$qcm->resultat}}% de réussite</span>
-                        <progress class="progress @if($qcm->resultat!==null) {{ $qcm->resultat>=60? 'is-success' : 'is-danger'  }} @endif" value="{{$qcm->resultat}}" max="100"></progress>
-                   
-                        <a href="{{ Route('qcmViewStagiaire',$qcm->qcm_id)}}" class="button is-link modal-button">Voir le QCM</a>
+                    <h4 class="excerpt">{{$projet->description}}</h4>
+
+                        <a href="{{ Route('projetViewStagiaire',$projet->id_projet)}}" class="button is-link modal-button">Voir le Projet</a>
                 </div>
                 </div>
             </div>
-            </div>
-      
+        </div>
       @endforeach
     </div>
     @endif

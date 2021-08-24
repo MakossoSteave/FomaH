@@ -26,37 +26,28 @@
         </div>
     @endif
 
-    @if($qcms->isEmpty())
-        <div class="notification is-warning has-text-centered my-4">
-            Aucun qcm n'existe pour ce stagiaire
-        </div>
-    @else
 
   
     <div class="columns is-multiline mt-3">
-    @foreach($qcms as $qcm)
-           
-            <div class="column is-4">
-            <div class="card is-shady">
-                <div class="card-image">
-                <img src="{{ URL::asset('/') }}img/quiz.jpg" alt="" class="img is-4by3">
-                </div>
-                <div class="card-content">
-                <div class="content">
-                    <h4>{{$qcm->designation}}</h4>
-                   
-                        <span class="percentage mb-4">{{$qcm->resultat}}% de réussite</span>
-                        <progress class="progress @if($qcm->resultat!==null) {{ $qcm->resultat>=60? 'is-success' : 'is-danger'  }} @endif" value="{{$qcm->resultat}}" max="100"></progress>
-                   
-                        <a href="{{ Route('qcmViewStagiaire',$qcm->qcm_id)}}" class="button is-link modal-button">Voir le QCM</a>
-                </div>
-                </div>
-            </div>
-            </div>
-      
-      @endforeach
+    <div class="content is-medium">
+    <h1 class="has-text-centered">Projet</h1>
+        <div class="box mt-4 ">
+                <article class="message is-primary">
+                    <span class="icon has-text-primary">
+                    </span>
+                    <div class="message-body">
+                    {{$projet->description}}
+                    </div>
+                </article>
+                @if(!empty($projet->document))
+                @foreach($projet->document as $document)
+                    <embed class="docSize mt-4" src="{{ URL::asset('/') }}doc/projet/{{$document->lien}}" alt="Placeholder image">
+                @endforeach
+                @endif
+        </div>
     </div>
-    @endif
+    </div>
+    
 @else
 <div class="notification is-danger has-text-centered my-4">
 @if(Auth::user() && Auth::user()->role_id!=1)

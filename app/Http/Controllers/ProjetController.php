@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contenir_sessions_projet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -209,10 +210,25 @@ if($message!=null){
 
     public function destroy($id)
     {
-        ContenirDocumentsProjet::where('id_projet', $id)->delete();
+        $projet=Projet::find($id);
+        if($projet->etat==1){
+            if(!$this->checkProjet($id)){
+                return redirect()->back()->with('errorr','Projet non supprimé car une session active est en cours');
 
+            }
+        }
+        ContenirDocumentsProjet::where('id_projet', $id)->delete();
+       // Contenir_sessions_projet::where('id_projet', $id)->delete();
         Projet::where('id',$id)->delete();
 
+        $ProjetCount=Projet::where('etat',1)->where('id','!=',$id)->where('id_cours',$projet->id_cours)
+        ->count();
+        if($ProjetCount==0){
+            Cours::where('id_cours',$projet->id_cours)
+            ->update(['etat' => 0]);
+            $CoursController= new CoursController;
+            $CoursController->checkEtat($projet->id_cours,false);
+        }
         return redirect()->back()->with('success','Projet supprimé avec succès');
     }
 

@@ -106,6 +106,10 @@
                             <p>
                                 <a class = "button is-danger button-card modal-button" data-target = "#{{$session->id}}">Supprimer</a>
                             </p>
+                            <form action="{{ route('cursus.show', $session->formations_id) }}" method="GET">
+                            @csrf
+                            <button type="submit" class="button button-card is-primary">Voir le cursus</button>
+                        </form>
                             <div id="{{$session->id}}" class="modal">
                                 <div class="modal-background"></div>
                                 <div class="modal-card">

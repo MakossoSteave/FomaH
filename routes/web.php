@@ -99,6 +99,8 @@ Route::post('/editStagiaireSession/{id}/{idSession}', [App\Http\Controllers\Sess
 Route::get('/progressionStagiaire/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'progressionStagiaire'])->name('progressionStagiaire');
 Route::get('/qcmStagiaire/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'qcmStagiaire'])->name('qcmStagiaire');
 Route::get('/qcmViewStagiaire/{id}', [App\Http\Controllers\SessionController::class, 'qcmViewStagiaire'])->name('qcmViewStagiaire');
+Route::get('/projetStagiaire/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'projetStagiaire'])->name('projetStagiaire');
+Route::get('/projetViewStagiaire/{id}', [App\Http\Controllers\SessionController::class, 'projetViewStagiaire'])->name('projetViewStagiaire');
 
 Route::get('/document/{id}', [App\Http\Controllers\DocumentController::class, 'index'])->name('document');
 Route::get('/addDocument/{id}', [App\Http\Controllers\DocumentController::class, 'create'])->name('addDocument');

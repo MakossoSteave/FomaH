@@ -61,7 +61,7 @@
             <div class="content">
                 <div class="flex">
                     <div>
-                    <p><span class="title is-6">  Progression: </span>@if($stagiaire->progression) {{$stagiaire->progression}}@else 0 @endif<span class="title is-6">% </span></p>
+                    <p><span class="title is-6">  Progression: </span>@if($progress) {{$progress}}@else 0 @endif<span class="title is-6">% </span></p>
                     <p><span class="title is-6">  Dernier cours suivis: </span>@if($stagiaire->NomCours) {{$stagiaire->NomCours}}
                     @else Aucun @endif </p>
                     <p><span class="title is-6">  Dernier chapitre suivis: </span>@if($stagiaire->NomChapitre) {{$stagiaire->NomChapitre}}
@@ -76,7 +76,7 @@
                             @csrf
                             <button type="submit" class="button button-card is-info" style="width:200px;">Voir résultat des QCM</button>
                     </form>
-                    <form action="" method="GET">
+                    <form action="{{ route('projetStagiaire',  [$stagiaire->id_stagiaire,$stagiaire->id_session]) }}" method="GET">
                             @csrf
                             <button type="submit" class="button button-card is-info">Voir les projets</button>
                     </form>

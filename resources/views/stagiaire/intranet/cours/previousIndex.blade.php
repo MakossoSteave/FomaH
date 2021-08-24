@@ -12,7 +12,7 @@
     @foreach($lessons as $lesson)
         @foreach($lesson as $l)
             @foreach($l->Chapitre as $chapitre)
-            <div class="column is-4">
+            <div class="column is-5">
             <div class="card is-shady">
                 <div class="card-image">
                 <video class="video is-4by3" controls>
