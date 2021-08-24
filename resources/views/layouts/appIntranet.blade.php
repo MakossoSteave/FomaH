@@ -59,7 +59,7 @@
                 <div class="relative">
                     <ul>
                         <li><i class="fas fa-user"></i>
-                            <a href="#">
+                            <a  href="{{ route('parametre', [Auth::user()->id]) }}">
                                 <span
                                     class="group text-white inline-flex items-center text-base font-medium hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     {{Str::ucfirst(Auth::user()->name)}} </span>
