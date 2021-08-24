@@ -40,10 +40,22 @@
                 <div class="card-image">
                 <img src="{{ URL::asset('/') }}img/projet.jpg" alt="" class="img is-4by3">
                 </div>
-                <div class="card-content">
+                <div class="card-content  @if($projet->resultat_description && $projet->statut_reussite!==null) {{$projet->statut_reussite==1? 'has-background-success':'has-background-danger'}} @endif">
                 <div class="content">
-                    <h4 class="excerpt">{{$projet->description}}</h4>
-
+                    <h4 >{{$projet->description}}</h4>
+                    @if($projet->lien)
+                    @if(substr($projet->lien,-4)=='.pdf')
+                    <p> Document:  <embed class="image is-4by3" src="{{ URL::asset('/') }}doc/faireProjet/{{ $projet->lien }}" scale="tofit" /></p>
+                    @else
+                    <p> Lien: {{$projet->lien }}</p>
+                   
+                    @endif
+                    @endif
+                    @if($projet->resultat_description && $projet->statut_reussite)
+                    <p> Description résultat: {{$projet->resultat_description }}</p>
+                   
+                    @endif
+                    <a href="{{ Route('projetStagiaireModifierResultat',[$projet->id_projet,$projet->id_stagiaire,$projet->id_session])}}" class="button is-link modal-button">Modifier le résultat</a>
                         <a href="{{ Route('projetViewStagiaire',$projet->id_projet)}}" class="button is-link modal-button">Voir le Projet</a>
                 </div>
                 </div>

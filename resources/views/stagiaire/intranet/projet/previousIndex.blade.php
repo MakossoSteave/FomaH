@@ -11,13 +11,25 @@
       @endif
         @foreach($projets as $projet)
             <div class="column is-4">
-            <div class="card is-shady">
+            <div class="card is-shady @if($projet->resultat_description && $projet->statut_reussite!==null) {{$projet->statut_reussite==1? 'has-background-success':'has-background-danger'}} @endif">
                 <div class="card-image">
                 <img src="{{ URL::asset('/') }}img/projet.jpg" alt="" class="img is-4by3">
                 </div>
                 <div class="card-content">
                 <div class="content">
-                    <h4 class="excerpt">{{$projet->description}}</h4>
+                    <h4 class="@if($projet->statut_reussite===null) excerpt @endif">{{$projet->description}}</h4>
+                    @if($projet->lien)
+                    @if(substr($projet->lien,-4)=='.pdf')
+                    <p> Document:  <embed class="image is-4by3" src="{{ URL::asset('/') }}doc/faireProjet/{{ $projet->lien }}" scale="tofit" /></p>
+                    @else
+                    <p> Lien: {{$projet->lien }}</p>
+                   
+                    @endif
+                    @endif
+                    @if($projet->resultat_description && $projet->statut_reussite!==null)
+                    <p> Description résultat: {{$projet->resultat_description }}</p>
+                    @endif
+                    
                         <a href="{{url('intranet/projets/'.$projet->id)}}" class="button is-link modal-button">Voir le Projet</a>
                 </div>
                 </div>

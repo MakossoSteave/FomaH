@@ -454,7 +454,7 @@ class SessionController extends Controller
 
     public function projetStagiaire($id,$idSession){
       
-         $projets=Faire_projet::select('faire_projets.*','projets.description')
+         $projets=Faire_projet::select('faire_projets.*','projets.description','contenir_sessions_projets.id_session')
          ->join('contenir_sessions_projets','contenir_sessions_projets.id_projet','faire_projets.id_projet')
          ->join('projets','projets.id','faire_projets.id_projet')
          ->where('contenir_sessions_projets.id_session',$idSession)
@@ -466,5 +466,30 @@ class SessionController extends Controller
      public function projetViewStagiaire($id){
         $projet = Projet::find($id);
         return view('admin.session.stagiaire.progression.projetView',compact(['projet']));
+    }
+    public function projetStagiaireModifierResultat(Request $request,$id_projet,$id_stagiaire,$idSsession){
+        $projet=Faire_projet::where('id_projet',$id_projet)
+        ->where('id_stagiaire',$id_stagiaire)
+        ->first();
+        $request->session()->put('idSsession', $idSsession);
+        return view('admin.session.stagiaire.progression.projetModifResult',compact(['projet']));
+    }
+    public function editResultProjetStagiaire(Request $request, $id_projet,$id_stagiaire)
+    {
+        $request->validate([
+           
+            'resultat' => ['required','string','max:3000'],
+            'validation' => [
+                'required',
+                 Rule::in(['0', '1'])]
+        ]);
+
+        Faire_projet:: where('id_projet',$id_projet)
+        ->where('id_stagiaire',$id_stagiaire)->update([
+            'statut_reussite' => $request->get('validation'),
+            'resultat_description' => $request->get('resultat')
+        ]);
+
+        return redirect('/projetStagiaire/'.$id_stagiaire.'/'.$request->session()->get('idSsession'))->with('success','Résultat modifié avec succès');
     }
 }

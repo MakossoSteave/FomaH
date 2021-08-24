@@ -26,12 +26,23 @@
         @if($sessionProjet->statut_id == 3)
             <h1 class="has-text-centered">Projet</h1>
             @foreach($projets as $projet)
-            <div class="box mt-4">
+            <div class="box mt-4 @if($projet->resultat_description && $projet->statut_reussite!==null) {{$projet->statut_reussite==1? 'has-background-success':'has-background-danger'}} @endif">
                     <article class="message is-primary">
                         <span class="icon has-text-primary">
                         </span>
                         <div class="message-body">
                         {{$projet->description}}
+                        @if($projet->lien)
+                    @if(substr($projet->lien,-4)=='.pdf')
+                    <p> Document:  <embed class="image is-4by3" src="{{ URL::asset('/') }}doc/faireProjet/{{ $projet->lien }}" scale="tofit" /></p>
+                    @else
+                    <p> Lien: {{$projet->lien }}</p>
+                   
+                    @endif
+                    @endif
+                        @if($projet->resultat_description && $projet->statut_reussite)
+                    <p> Description résultat: {{$projet->resultat_description }}</p>
+                    @endif
                         </div>
                     </article>
                     @if(!empty($projet->document))

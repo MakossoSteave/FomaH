@@ -1274,7 +1274,9 @@ else {*/
         ->orWhere('statut_id', 3)->orWhere('statut_id', 4)->get();
 
         foreach($sessionProjets as $sessionProjet) {
-            $projets[] = Projet::where('etat',1)->where('id', $sessionProjet->id_projet)->first();
+            $projets[] = Projet::select("projets.*","faire_projets.statut_reussite","faire_projets.resultat_description","faire_projets.lien")
+            ->leftJoin("faire_projets","faire_projets.id_projet","projets.id")
+            ->where('etat',1)->where('id', $sessionProjet->id_projet)->first();
         }
 
         return view('stagiaire.intranet.projet.previousIndex', compact(['projets']));
