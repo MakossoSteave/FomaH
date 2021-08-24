@@ -17,7 +17,7 @@
             <source src="{{ URL::asset('/') }}video/chapitre/{{$chapitre->video}}" >
             Votre lecteur ne supporte pas ce type de video
         </video>
-            @foreach($chapitre->section as $section)
+            @foreach($chapitre->section->reverse() as $section)
                 <div class="box mt-4">
                     <h4 id="const" class="title is-3 has-text-centered">{{$section->designation}}</h4>
                         <article class="message is-primary">

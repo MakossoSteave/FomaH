@@ -13,7 +13,7 @@
 @endif
     <div class="content is-medium">
         <h3 class="title is-3">{{$qcm->designation}}</h3>
-        @foreach($qcm->question_qcm as $key => $question)
+        @foreach($qcm->question_qcm->reverse() as $key => $question)
                 <div class="box mt-4">
                     <h4 id="const" class="title is-3 has-text-centered">{{$question->question}}</h4>
                         @if(!empty($question->explication))
