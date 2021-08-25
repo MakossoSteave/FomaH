@@ -2,7 +2,7 @@
 
 @section('content')
 @if(Auth::user() && Auth::user()->role_id==1)
-dd($session->)
+
 <div class="container">
     
     <div class="flex mt-4">
