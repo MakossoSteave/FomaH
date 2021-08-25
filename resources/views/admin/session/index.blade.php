@@ -152,7 +152,7 @@
     </div>
 
     @endforeach
-
+    {!! $sessions->links() !!}
     @endif
 
 </div>

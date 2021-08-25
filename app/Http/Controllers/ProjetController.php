@@ -16,7 +16,9 @@ class ProjetController extends Controller
 {
     public function index($id)
     {
-        $projets = Projet::where('id_cours', $id)->with('Document')->get();
+        $projets = Projet::where('id_cours', $id)->with('Document')
+        ->orderBy('updated_at','desc')->paginate(8)
+        ;
 
         return view('admin.projet.index', compact(['projets']));
     }
