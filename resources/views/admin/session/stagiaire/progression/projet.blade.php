@@ -60,8 +60,41 @@
                     <p> Description résultat: {{$projet->resultat_description }}</p>
                    
                     @endif
-                    <a href="{{ Route('projetStagiaireModifierResultat',[$projet->id_projet,$projet->id_stagiaire,$projet->id_session])}}" class="button is-link modal-button">Modifier le résultat</a>
-                        <a href="{{ Route('projetViewStagiaire',$projet->id_projet)}}" class="button is-link modal-button">Voir le Projet</a>
+                    <a href="{{ Route('projetStagiaireModifierResultat',[$projet->id_projet,$projet->id_stagiaire,$projet->id_session])}}" class="button is-link">Modifier le résultat</a>
+                    <button  data-target = "#{{$projet->id_projet}}" class="button is-danger modal-button">Supprimer</button> 
+                    <div id="{{$projet->id_projet}}" class="modal">
+                                <div class="modal-background"></div>
+                                <div class="modal-card">
+                                    <header class="modal-card-head">
+                                    <p class="modal-card-title">Suppression du projet du stagiaire</p>
+                                    <button class="delete" aria-label="close"></button>
+                                    </header>
+                                    <section class="modal-card-body">
+                                        Souhaitez-vous supprimer le projet du stagiaire ?
+                                    </section>
+                                    <form action="{{ Route('deleteResultProjetStagiaire',[$projet->id_projet,$projet->id_stagiaire,$projet->id_session])}}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <footer class="modal-card-foot">
+                                    <button class="button is-success">Confirmer</button>
+                                    </footer>
+                                    </form>
+                                </div>
+                            </div>
+                            <script>
+                            $(".modal-button").click(function() {
+                                var target = $(this).data("target");
+                                $("html").addClass("is-clipped");
+                                $(target).addClass("is-active");
+                            });
+                            
+                            $(".delete").click(function() {
+                                var target = $(".modal-button").data("target");
+                                $("html").removeClass("is-clipped");
+                                $(target).removeClass("is-active");
+                            });
+                        </script>
+                    <a href="{{ Route('projetViewStagiaire',$projet->id_projet)}}" class="button is-link mt-1">Voir le Projet</a>
                 </div>
                 </div>
             </div>

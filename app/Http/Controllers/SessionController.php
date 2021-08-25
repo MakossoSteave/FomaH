@@ -504,4 +504,14 @@ class SessionController extends Controller
 
         return redirect('/projetStagiaire/'.$id_stagiaire.'/'.$request->session()->get('idSsession'))->with('success','Résultat modifié avec succès');
     }
+
+    public function deleteResultProjetStagiaire(Request $request, $id_projet,$id_stagiaire)
+    {
+      
+
+        Faire_projet:: where('id_projet',$id_projet)
+        ->where('id_stagiaire',$id_stagiaire)->delete();
+
+        return redirect()->back()->with('success','Supprimé avec succès');
+    }
 }
