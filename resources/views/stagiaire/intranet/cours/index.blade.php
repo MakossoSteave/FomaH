@@ -10,6 +10,7 @@
         <div class="column is-9 notification is-success has-text-centered">
         Félicitations vous avez réussi !
         </div>
+        <p class="mb-2">{{$ResultatsessionStagiaire->resultat_description}}</p>
         @if($titre)
         <a class = "button is-success button-card modal-button" href="{{Route('viewTitre',$titre->id)}}">Voir le diplôme</a>
         @endif
