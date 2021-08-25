@@ -18,45 +18,8 @@
             {{ session('error') }}
         </div>
     @endif
-  
+    <div class="card is-shady">
         <div class="card-content">
-            <div class="media  mt-6">
-          
-            
-           <!--<div class="media-content">
-                <div class="flex">
-            <div>
-              
-            </div>
-                <div class="dropdown is-right is-hoverable">
-                    <div class="dropdown-trigger">
-                        <button class="button borderNone is-right"
-                                aria-haspopup="true"
-                                aria-controls="dropdown-menu">
-                        <span class="icon is-small is-right"><i class="fas fa-bars"></i></span>
-                        <span class="icon is-small">
-                        </span>
-                        </button>
-                    </div>
-            
-                    <div class="dropdown-menu" 
-                        id="dropdown-menu" 
-                        role="menu">
-                        <div class="dropdown-content">
-                        <form action="" method="GET">
-                            @csrf
-                            <button type="submit" class="dropdown-item">Suivis</button>
-                        </form>
-
-                        <a href="" class="dropdown-item">
-                            Projets
-                        </a>
-                        </div>
-                    </div>
-                </div>
-                </div></div></div>-->
-            
-        </div>
 
             <div class="content">
                 <div class="flex">
@@ -89,7 +52,8 @@
               
 
 
-@else
+                </div>
+                    @else
 <div class="notification is-danger has-text-centered my-4">
 @if(Auth::user() && Auth::user()->role_id!=1)
 Vous n'êtes pas autorisé !
