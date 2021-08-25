@@ -639,44 +639,7 @@ if($cours){
     return redirect('/intranet/chapitre');
 }
 else {*/
-            $idUserAuth=null;
-        $idUserRole=null;
-
-            if(Auth::user()){
-
-            $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;}
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
-            return redirect("/");
-        }
-
-            
-
+         
             $formation = Suivre_formation::select('suivre_formations.*')
             ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
 
@@ -1482,11 +1445,13 @@ if($meeting !=0){
         $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
 
         return view('stagiaire.intranet.live.index', compact(['sessionLive']));
-        }else {
+        } 
+        
+        else {
             return redirect()->back()->with("warning","Pas de live prévu");
         }
     }
-    public function coursSuivant(Request $request){
+    public function coursSuivant(Request $request) {
         $idUserAuth=null;
         $idUserRole=null;
 
