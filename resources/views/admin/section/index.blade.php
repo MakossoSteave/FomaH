@@ -100,7 +100,7 @@
     </div>
 
     @endforeach
-
+    {!! $sections->links() !!}
     @endif
 
 </div>

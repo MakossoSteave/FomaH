@@ -67,11 +67,14 @@
                             <a href="{{ route('StagiaireSession', $session->id) }}" class="dropdown-item">
                                 Liste des stagiaires
                             </a>
-                            @if($session->statut_id==4 || $session->statut_id==5 )
+                            @if(date('Y-m-d')>=$session->date_fin)
                             <a href="{{ route('titre.show', $session->id) }}" class="dropdown-item">
                                 Titres
                             </a>
                             @endif
+                            <a href="{{ route('Session_Projet', $session->id) }}"  class="dropdown-item">
+                                Projets
+                            </a>
                             </div>
                         </div>
                     </div>

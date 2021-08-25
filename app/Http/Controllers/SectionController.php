@@ -16,7 +16,9 @@ class SectionController extends Controller
     {
         $sections = Section::where('id_chapitre', $id)
         ->orderBy('created_at','asc')
-        ->get();
+        ->paginate(8)
+        ->setPath('section');
+        
 
         $this->idChapitre = $id;
 

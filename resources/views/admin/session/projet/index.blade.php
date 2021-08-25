@@ -8,10 +8,7 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-        <a href="{{ route('addProjet', request()->route('id') ) }}" class="has-icons-right" id="link-black">
-            Ajouter un projet
-            <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
-        </a>
+       
     </div>
     
     @if (session('success'))
@@ -38,26 +35,29 @@
                 <div class="flex">
                     <div>
                         <div class="media">
-                        @foreach($projet->document as $document)
+        
+                        <div class="media-content">
+                            <div class="flex">
+                               
+                                <p class="title is-4">{{$projet->description}}</p>
+                            </div>
+                            <p class="subtitle is-6 mt-2">Cours: {{$projet->Cours}}</p>
+                            <p class="subtitle is-6">Statut: {{$projet->statut}}</p>
+                            <p class="subtitle is-6">Date début: {{$projet->date_debut}}</p>
+                            <p class="subtitle is-6">Date fin: {{$projet-> 	date_fin}}</p>
+                            @if(count($projet->document)!=0)
+                            <p class="subtitle is-6">Documents:</p>
+                            @foreach($projet->document as $document)
                         @if(!empty($document->lien))
-                        <div class="media-left">
+                        <div class="media-left mt-2">
                             <embed class="image is-4by3" src="{{ URL::asset('/') }}doc/projet/{{ $document->lien }}" />
                         </div>
                         @endif
                         @endforeach
-                        <div class="media-content">
-                            <div class="flex">
-                                <p class="title is-4">{{$projet->description}}</p>
-                            </div>
+                        @endif
                         </div>
                     </div>
-                    <a class="{{ $projet->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatProjet', $projet->id) }}">
-                            @if($projet->etat == 1) 
-                            Activé
-                            @else
-                            Désactivé
-                            @endif
-                    </a>
+                   
                     <!-- <div>
                     <p class="subtitle is-4"><span class="subtitle is-6">Créé par</span> {{-- $formateur->prenom --}} {{-- $formateur->nom --}}</p>
                     </div> -->
@@ -76,40 +76,9 @@
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>
                             <p>
-                                <a class = "button is-danger button-card modal-button" data-target = "#{{$projet->id}}">Supprimer</a>
+
                             </p>
-                            <div id="{{$projet->id}}" class="modal">
-                                <div class="modal-background"></div>
-                                <div class="modal-card">
-                                    <header class="modal-card-head">
-                                    <p class="modal-card-title">Confirmez-vous la suppression de {{$projet->description}}</p>
-                                    <button class="delete" aria-label="close"></button>
-                                    </header>
-                                    <section class="modal-card-body">
-                                        Souhaitez-vous supprimer la catégorie {{$projet->description}} ?
-                                    </section>
-                                    <form action="{{ route('projet.destroy', $projet->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <footer class="modal-card-foot">
-                                    <button class="button is-success">Confirmer</button>
-                                    </footer>
-                                    </form>
-                                </div>
-                            </div>
-                            <script>
-                            $(".modal-button").click(function() {
-                                var target = $(this).data("target");
-                                $("html").addClass("is-clipped");
-                                $(target).addClass("is-active");
-                            });
                             
-                            $(".delete").click(function() {
-                                var target = $(".modal-button").data("target");
-                                $("html").removeClass("is-clipped");
-                                $(target).removeClass("is-active");
-                            });
-                        </script>
                     </div>
                 </div>
             </div>

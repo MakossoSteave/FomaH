@@ -10,9 +10,17 @@
         <div class="column is-9 notification is-success has-text-centered">
         Félicitations vous avez réussi !
         </div>
+        <div class="content is-medium">
+        <img class="image mt-4" src="{{ URL::asset('/') }}img/graduate.jpg" alt="graduateImage" style="height:430px;width:auto;">
+        </div>
         <p class="mb-2">{{$ResultatsessionStagiaire->resultat_description}}</p>
         @if($titre)
         <a class = "button is-success button-card modal-button" href="{{Route('viewTitre',$titre->id)}}">Voir le diplôme</a>
+        @else
+        <div class="column is-9 notification is-warning has-text-centered">
+        Vous recevrez votre diplôme prochainement
+        </div>
+      
         @endif
         @else
         <div class="column is-9 notification is-warning has-text-centered">

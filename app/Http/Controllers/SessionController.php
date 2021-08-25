@@ -514,4 +514,16 @@ class SessionController extends Controller
 
         return redirect()->back()->with('success','Supprimé avec succès');
     }
+
+    public function Session_Projet($id){
+        $projets=Projet::select('contenir_sessions_projets.*','projets.*','cours.designation as Cours','statut')
+        ->join('contenir_sessions_projets','projets.id','contenir_sessions_projets.id_projet')
+        ->join('cours','cours.id_cours','projets.id_cours')
+        ->join('statut','statut.id','contenir_sessions_projets.statut_id')
+        ->where('contenir_sessions_projets.id_session',$id)
+        ->with('Document')
+        ->orderBy('contenir_sessions_projets.created_at','asc')->paginate(8)->setPath('Session_Projet');
+     
+        return view('admin.session.projet.index',compact(['projets']));
+        }
 }

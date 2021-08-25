@@ -1007,7 +1007,7 @@ else {*/
             $file->move($destinationPath, $lien);
         } else if(!empty($request->get('lienProjet'))){
             $request->validate([
-                'lienProjet' =>  ['string','max:191']
+                'lienProjet' =>  ['string','max:191','starts_with:http']
             ]);
             $lien = $request->get('lienProjet');
         }
@@ -1370,7 +1370,7 @@ else {*/
         ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
 
         $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->count();
-        
+       
 if($meeting !=0){
         $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
         $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
@@ -1425,10 +1425,12 @@ if($meeting !=0){
                 return redirect('/intranet/live');
             }
         } else {
+          
             return redirect()->back()->with("warning","Pas de live prévu");
         }
     }
     }else {
+        
         return redirect()->back()->with("warning","Pas de live prévu");
     }
     }
