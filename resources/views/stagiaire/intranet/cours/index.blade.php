@@ -5,11 +5,24 @@
 
         <div class="column is-9">
         @if($SessionTerminée)
-        
+        @if($ResultatsessionStagiaire)
+        @if($ResultatsessionStagiaire->validation==1)
+        <div class="column is-9 notification is-success has-text-centered">
+        Félicitations vous avez réussi !
+        </div>
+        @if($titre)
+        <a class = "button is-success button-card modal-button" href="{{Route('viewTitre',$titre->id)}}">Voir le diplôme</a>
+        @endif
+        @else
+        <div class="column is-9 notification is-warning has-text-centered">
+        Non validé
+        </div>
+        @endif
+        @else
         <div class="column is-9 notification is-warning has-text-centered">
        Session terminée veuillez attendre le résultat
         </div>
-        
+        @endif
         @else
         @if($cours)
         @if (session('warning'))

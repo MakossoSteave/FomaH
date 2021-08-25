@@ -13,6 +13,7 @@ use App\Models\Exercice;
 use App\Models\Chapitre;
 use App\Models\Projet;
 use App\Models\Session;
+use App\Models\Titre;
 use App\Models\Lier_sessions_stagiaire;
 use App\Models\Faire_projet;
 use App\Models\Contenir_sessions_projet;
@@ -263,7 +264,7 @@ class IntranetController extends Controller
     public function oneChapitre(Request $request) {
         $idUserAuth=null;
         $idUserRole=null;
-
+        $titre=null;
         if(Auth::user()){
 
         $idUserAuth=Auth::user()->id;
@@ -343,10 +344,31 @@ class IntranetController extends Controller
         }
         if($request->session()->get('sessionTerminée')==true){
             $SessionTerminée=true;
+            $ResultatsessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session',$formation->id_session)->where('validation','!=',null)->first();
+            if($ResultatsessionStagiaire){
+                if($ResultatsessionStagiaire->validation==1){
+                    $titre = Titre::where('session_id',$formation->id_session)
+                    ->where('stagiaire_id',$stagiaire->id)->first();
+                    /*if($titre){
+                      
+                        if($titre->session_id !=null){
+                            if($stagiaire->prenom)
+                            $diplome="session/$titre->session_id/diplome/$stagiaire->prenom $stagiaire->nom diplome.pdf";
+                            else
+                            $diplome="session/$titre->session_id/diplome/$stagiaire->nom diplome.pdf";
+            
+                        }
+                }else {
+                    $titre=null;
+                }*/
+            }
+        }
         }else {
             $SessionTerminée=false;
+            $ResultatsessionStagiaire =null;
+           
         }
-        return view('stagiaire.intranet.cours.index', compact(['chapitre'], ['cours'],['qcmCount'],['scoreCount'],['exerciceCount'],['projetCount'],['SessionTerminée']));
+        return view('stagiaire.intranet.cours.index', compact(['chapitre'], ['cours'],['qcmCount'],['scoreCount'],['exerciceCount'],['projetCount'],['SessionTerminée'],['ResultatsessionStagiaire'],['titre']));
     }
 
     public function qcm() {

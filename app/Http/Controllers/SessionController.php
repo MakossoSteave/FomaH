@@ -284,12 +284,18 @@ class SessionController extends Controller
     $stagiairesCount = $stagiaires->count();
     $sessionStatut=(Session::find($id))->statut_id;
     $sessionEtat=(Session::find($id))->etat;
+    $sessionDateFin=(Session::find($id))->date_fin;
+    if(date('Y-m-d')>=$sessionDateFin){
+        $sessionTerminée=true;
+    }else{
+        $sessionTerminée=false;
+    }
     $cursus = Session::select('formations.effectif')
     ->join('formations','formations.id','sessions.formations_id')
     ->where('sessions.id',$id)
     ->first();
     $effectif = $cursus->effectif;
-    return view('admin.session.stagiaire.index',compact(['stagiaires','id','effectif']),['sessionStatut' =>$sessionStatut,'stagiairesCount' => $stagiairesCount,'sessionEtat'=>$sessionEtat]);
+    return view('admin.session.stagiaire.index',compact(['stagiaires','id','effectif']),['sessionStatut' =>$sessionStatut,'stagiairesCount' => $stagiairesCount,'sessionEtat'=>$sessionEtat,'sessionTerminée'=>$sessionTerminée]);
     }
     public function Session_Stagiaire_Ajout(Request $request,$id){
         $stagiairesInscrits= Lier_sessions_stagiaire::select('lier_sessions_stagiaires.id_stagiaire')
