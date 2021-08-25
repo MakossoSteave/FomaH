@@ -32,7 +32,7 @@
             </ul>
     </div>
     @endif
-        @if($sessionProjet->statut_id == 3)
+        @if($sessionProjet->statut_id == 3 || ($sessionProjet->statut_id == 4 && $faireProjet == false))
             <h1 class="has-text-centered">Projet</h1>
             @foreach($projets as $projet)
             <div class="box mt-4 @if($projet->resultat_description && $projet->statut_reussite!==null) {{$projet->statut_reussite==1? 'has-background-success':'has-background-danger'}} @endif">
@@ -117,7 +117,19 @@
     </div>
         @if($faireProjet == true)
         @if($FaireProjetResult->statut_reussite!==null)
-        <button class="button is-success sizeButton showFileProject" >Continuer</button>
+        @if($FaireProjetResult->statut_reussite==1)
+        <div class="notification is-success has-text-centered my-4">
+        Bravo vous avez réussi
+        </div>
+        <footer class="buttons paginate" class="mb-4">
+        <a href="{{Route('coursSuivant')}}" class="button is-success sizeButton " >Continuer</a>
+        </footer>
+       
+        @else
+        <div class="notification is-danger has-text-centered my-4">
+        Projet non validé
+        </div>
+        @endif
         @else
         <div class="notification is-success has-text-centered my-4">
         Nous avons bien reçu votre projet
@@ -142,6 +154,9 @@
     <div class="notification is-info has-text-centered my-4">
         Le projet est terminé depuis le {{date('d-m-Y', strtotime($sessionProjet->date_fin))}}
     </div>
+    <footer class="buttons paginate" class="mb-4">
+        <a href="{{Route('coursSuivant')}}" class="button is-success sizeButton" >Continuer</a>
+        </footer>
 </section>
 @endif
 @else

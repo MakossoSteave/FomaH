@@ -4,6 +4,13 @@
 @if(Auth::user())
 
         <div class="column is-9">
+        @if($SessionTerminée)
+        
+        <div class="column is-9 notification is-warning has-text-centered">
+       Session terminée veuillez attendre le résultat
+        </div>
+        
+        @else
         @if($cours)
         @if (session('warning'))
         <div class="column is-9 notification is-warning has-text-centered ">
@@ -70,10 +77,12 @@
         @endif
     </div>
 </div>
+@endif
 </div>
 </div>
 </div>
 </section>
+
 @else
 <div class="notification is-danger has-text-centered my-4">
 Votre session a expiré !
