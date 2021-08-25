@@ -238,7 +238,9 @@ class CoursController extends Controller
                                 Contenir_sessions_projet::create([
                                     'id_projet' => $projet->id ,
                                     'id_session' => $s->id ,
-                                    'statut_id' => 1
+                                    'statut_id' => 1,
+                                    'date_debut' =>$session->date_debut,
+                                    'date_fin' =>$session->date_fin
                                 ]); 
                             }}
                         }
@@ -401,7 +403,9 @@ class CoursController extends Controller
                                 Contenir_sessions_projet::create([
                                     'id_projet' => $projet->id ,
                                     'id_session' => $s->id ,
-                                    'statut_id' => 1
+                                    'statut_id' => 1,
+                                    'date_debut' =>$session->date_debut,
+                                    'date_fin' =>$session->date_fin
                                 ]); 
                             }
                         }  }  $Formation->Update_nombre_chapitre_total($f->id_formation,$nombreChapitresCours);

@@ -46,9 +46,14 @@
                     @if($projet->lien)
                     @if(substr($projet->lien,-4)=='.pdf')
                     <p> Document:  <embed class="image is-4by3" src="{{ URL::asset('/') }}doc/faireProjet/{{ $projet->lien }}" scale="tofit" /></p>
+                    @elseif(substr($projet->lien,0,4)=='http')
+                    <p> Lien: <a href="{{$projet->lien }}">{{$projet->lien }}</a></p>
                     @else
-                    <p> Lien: {{$projet->lien }}</p>
-                   
+                    <p> Document:
+                        
+                    <a href="{{ URL::asset('/') }}doc/faireProjet/{{ $projet->lien }}" download>
+                    <embed class="image is-4by3 is-inline" src="{{ URL::asset('/') }}doc/faireProjet/{{ $projet->lien }}" scale="tofit" />Télécharger</p>
+                    </a>
                     @endif
                     @endif
                     @if($projet->resultat_description && $projet->statut_reussite)

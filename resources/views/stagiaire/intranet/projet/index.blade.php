@@ -22,7 +22,16 @@
                 {{ session('fail') }}
             </div>
         @endif
-
+        @if ($errors->any())
+    <div class="notification is-danger">
+        <button class="delete"></button>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+    </div>
+    @endif
         @if($sessionProjet->statut_id == 3)
             <h1 class="has-text-centered">Projet</h1>
             @foreach($projets as $projet)
@@ -35,9 +44,14 @@
                         @if($projet->lien)
                     @if(substr($projet->lien,-4)=='.pdf')
                     <p> Document:  <embed class="image is-4by3" src="{{ URL::asset('/') }}doc/faireProjet/{{ $projet->lien }}" scale="tofit" /></p>
+                    @elseif(substr($projet->lien,0,4)=='http')
+                    <p> Lien: <a href="{{$projet->lien }}">{{$projet->lien }}</a></p>
                     @else
-                    <p> Lien: {{$projet->lien }}</p>
-                   
+                    <p> Document:
+                        
+                    <a href="{{ URL::asset('/') }}doc/faireProjet/{{ $projet->lien}}" download>
+                    <embed class="image is-4by3 is-inline" src="{{ URL::asset('/') }}doc/faireProjet/{{$projet->lien}}"/>Télécharger</p>
+                    </a>
                     @endif
                     @endif
                         @if($projet->resultat_description && $projet->statut_reussite)
@@ -102,9 +116,13 @@
         </form>
     </div>
         @if($faireProjet == true)
+        @if($FaireProjetResult->statut_reussite!==null)
+        <button class="button is-success sizeButton showFileProject" >Continuer</button>
+        @else
         <div class="notification is-success has-text-centered my-4">
         Nous avons bien reçu votre projet
         </div>
+        @endif
         @elseif($faireProjet == false)
         <footer class="buttons paginate mb-4">
             <button class="button is-success sizeButton showFileProject" onclick="makeProject()">Soumettre mon projet</button>

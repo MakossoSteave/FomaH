@@ -18,7 +18,7 @@ use App\Models\Faire_projet;
 use App\Models\Contenir_sessions_projet;
 use App\Models\Participer_meeting;
 use App\Models\Meeting_en_ligne;
-
+use App\Rules\FilenameDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -889,16 +889,20 @@ else {*/
             ['id_stagiaire', '=' ,$stagiaire->id],
             ['id_projet','=', $projet->id]
         ])->count();
-
+        $FaireProjetResult = null;
         if ($FaireProjetCount >= 1) {
             $faireProjet = true;
+            $FaireProjetResult = Faire_projet::where([
+                ['id_stagiaire', '=' ,$stagiaire->id],
+                ['id_projet','=', $projet->id]
+            ])->first();
         } else {
             $faireProjet = false;
         }
 
         $sessionProjet = null;
 
-        if ($projetCount == 1) {
+        if ($projetCount > 0) {
             $projets = Projet::where('etat',1)->where('id_cours', $formation->id_cours)->with('Document')->get();
 
             $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session',$formation->id_session)->first();
@@ -910,7 +914,7 @@ else {*/
                 ['id_projet','=', $projet->id]
             ])->first();
 
-            return view('stagiaire.intranet.projet.index', compact(['projets'],['cours'],['formation'],['faireProjet'],['sessionProjet']));
+            return view('stagiaire.intranet.projet.index', compact(['projets'],['cours'],['formation'],['faireProjet'],['sessionProjet'],['FaireProjetResult']));
         } else {
             return redirect('/intranet/chapitre');
         }
@@ -966,15 +970,24 @@ else {*/
         ])->count();
 
         if ($request->hasFile('lienDocProjet')) {
+            $request->validate([
+                'lienDocProjet' =>  ['max:2000000',
+            new FilenameDocument('/[\w\W]{4,181}$/')]
+            ]);
             $destinationPath = public_path('doc/faireProjet/');
             $file = $request->file('lienDocProjet');
             $filename = $file->getClientOriginalName();
             $lien = time().$filename;
             $file->move($destinationPath, $lien);
-        } else {
+        } else if(!empty($request->get('lienProjet'))){
+            $request->validate([
+                'lienProjet' =>  ['string','max:191']
+            ]);
             $lien = $request->get('lienProjet');
         }
-
+        else {
+            return redirect()->back()->with('fail','Veuillez télécharger un document ou saisir un lien');
+        }
         if ($FaireProjetCount < 1) {
             Faire_projet::create([
                 'id_projet' => $projet->id,
