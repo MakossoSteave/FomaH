@@ -2,7 +2,7 @@
 
 @section('content')
 @if(Auth::user() && Auth::user()->role_id==1)
-
+dd($session->)
 <div class="container">
     
     <div class="flex mt-4">
@@ -65,9 +65,9 @@
                         
 
                             <a href="{{ route('StagiaireSession', $session->id) }}" class="dropdown-item">
-                                Liste des stagiaires
+                                Stagiaires
                             </a>
-                            @if(date('Y-m-d')>=$session->date_fin)
+                            @if(date('Y-m-d')>=$session->date_fin && $session->statut_id!==1 && $session->statut_id!==2)
                             <a href="{{ route('titre.show', $session->id) }}" class="dropdown-item">
                                 Titres
                             </a>
