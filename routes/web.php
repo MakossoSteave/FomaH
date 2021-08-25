@@ -105,6 +105,8 @@ Route::get('/projetStagiaireModifierResultat/{id_projet}/{id_stagiaire}/{idSessi
 Route::post('/editResultProjetStagiaire/{id_projet}/{id_stagiaire}', [App\Http\Controllers\SessionController::class, 'editResultProjetStagiaire'])->name('editResultProjetStagiaire');
 Route::delete('/deleteResultProjetStagiaire/{id_projet}/{id_stagiaire}', [App\Http\Controllers\SessionController::class, 'deleteResultProjetStagiaire'])->name('deleteResultProjetStagiaire');
 Route::get('/Session_Projet/{id}', [App\Http\Controllers\SessionController::class, 'Session_Projet'])->name('Session_Projet');
+Route::get('/editProjet/{id_projet}/{idSession}', [App\Http\Controllers\SessionController::class, 'editProjet'])->name('editProjet');
+Route::put('/projetUpdate/{id_projet}/{idSession}', [App\Http\Controllers\SessionController::class, 'projetUpdate'])->name('projetUpdate');
 
 Route::get('/document/{id}', [App\Http\Controllers\DocumentController::class, 'index'])->name('document');
 Route::get('/addDocument/{id}', [App\Http\Controllers\DocumentController::class, 'create'])->name('addDocument');

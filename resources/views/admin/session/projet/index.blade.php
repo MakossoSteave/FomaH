@@ -70,7 +70,7 @@
                     <div>
                     </div>
                     <div class="flex-bottom">
-                        <form action="{{ route('projet.edit', $projet->id) }}" method="GET">
+                        <form action="{{ route('editProjet', [$projet->id,$idSession]) }}" method="GET">
                             @csrf
                             <input type="hidden" name="id_cours" value="{{request()->route('id')}}">
                             <button type="submit" class="button button-card is-info">Modifier</button>

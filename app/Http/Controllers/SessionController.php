@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Chapitre;
 use App\Models\Contenir_sessions_projet;
+use App\Models\ContenirDocumentsProjet;
+use App\Models\Cours;
+use App\Models\Document;
 use App\Models\Faire_projet;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-
+use App\Rules\FilenameDocument;
 use App\Models\Session;
 use App\Models\Formateur;
 use App\Models\Formation;
@@ -523,7 +526,106 @@ class SessionController extends Controller
         ->where('contenir_sessions_projets.id_session',$id)
         ->with('Document')
         ->orderBy('contenir_sessions_projets.created_at','asc')->paginate(8)->setPath('Session_Projet');
-     
-        return view('admin.session.projet.index',compact(['projets']));
+       
+        return view('admin.session.projet.index',compact(['projets']),['idSession'=>$id]);
         }
+
+        public function editProjet(Request $request, $id_projet,$id_session){
+            $projets = Projet::select('contenir_sessions_projets.*','projets.*','statut')
+            ->join('contenir_sessions_projets','projets.id','contenir_sessions_projets.id_projet')
+            ->join('statut','statut.id','contenir_sessions_projets.statut_id')
+            ->where('projets.id', $id_projet)->with('Document')->get();
+            $statuts = Statut::all();
+            $request->session()->put('statutsProjet', $statuts);
+            return view('admin.session.projet.edit',compact(['projets','statuts']),['id_session'=>$id_session]);
+        }
+        public function projetUpdate(Request $request, $id_projet,$id_session){
+
+            $request->validate([
+                'description' => 'required',
+                'statut_id' => ['required','numeric'
+                ,'in:'.$request->session()->get('statutsProjet')->implode('id', ', ')],
+                'date_debut'=>['required','date'],
+                'date_fin'=>['required','date']
+                                
+            ]);
+            
+            
+           Contenir_sessions_projet::where('id_projet',$id_projet)
+           ->where('id_session',$id_session)->update([
+               'date_debut' => $request->get('date_debut'),
+               'date_fin' => $request->get('date_fin'),
+               'statut_id' => $request->get('statut_id')
+           ]);
+            
+            
+            Projet::where('id', $id_projet)->update([
+                'description' => $request->get('description')
+            ]);
+    
+            if ($request->has('documentsUpdate')) {
+                for ($indexDoc=0; $indexDoc < count($request->get('documentsUpdate')); $indexDoc++) {
+                    if ($request->hasFile("documentsUpdate.$indexDoc.lien")) {
+                        $request->validate([
+                            "documentsUpdate.$indexDoc.lien" =>  ['mimes:pdf,PDF','max:1000000',
+                        new FilenameDocument('/[\w\W]{4,181}$/')]
+                        ]);
+                        $destinationPath = public_path('doc/projet/');
+                        $file = $request->file("documentsUpdate.$indexDoc.lien");
+                        $filename = $file->getClientOriginalName();
+                        $lien = time().$filename;
+                        $file->move($destinationPath, $lien);
+                    } else {
+                        $document = Document::find($request->documentsUpdate[$indexDoc]['documentID']);
+                        $lien = $document->lien;
+                    }
+    
+                    Document::where('id', $request->documentsUpdate[$indexDoc]['documentID'])->update([
+                        'designation' => $request->documentsUpdate[$indexDoc]['designation'],
+                        'lien' => $lien
+                    ]);
+                }
+            }
+    
+            if ($request->has('documents')) {
+                for ($indexDoc=0; $indexDoc < count($request->get('documents')); $indexDoc++) { 
+    
+                do {
+                    $idDoc = rand(10000000, 99999999);
+                } while(Projet::find($idDoc) != null);
+        
+                if ($request->hasFile("documents.$indexDoc.lien")) {
+                    $request->validate([
+                        "documents.$indexDoc.lien" =>  ['mimes:pdf,PDF','max:1000000',
+                    new FilenameDocument('/[\w\W]{4,181}$/')]
+                    ]);
+                    $destinationPath = public_path('doc/projet/');
+                    $file = $request->file("documents.$indexDoc.lien");
+                    $filename = $file->getClientOriginalName();
+                    $lien = time().$filename;
+                    $file->move($destinationPath, $lien);
+                } else {
+                    $lien = null;
+                }
+        
+                Document::create([
+                    'id' => $idDoc,
+                    'designation' => $request->documents[$indexDoc]['designation'],
+                    'lien' => $lien
+                ]);
+        
+                ContenirDocumentsProjet::create([
+                    'id_projet' => $id_projet,
+                    'id_document' => $idDoc
+                ]);
+            }
+        }
+    
+            $idProjet = Projet::where('id',$id_projet)->get();
+   
+        return redirect('/Session_Projet/'.$id_session)->with('success','Projet modifié avec succès');
+    
+           
+        }
+    
 }
