@@ -41,7 +41,7 @@
                 </article>
                 @if(!empty($projet->document))
                 @foreach($projet->document as $document)
-                    <embed class="docSize mt-4" src="{{ URL::asset('/') }}doc/projet/{{$document->lien}}" alt="Placeholder image">
+                    <embed class="docSize mt-4" src="{{ URL::asset('/') }}doc/projet/{{$document->lien}}" alt="Placeholder image" style="height:500px;">
                 @endforeach
                 @endif
         </div>
