@@ -22,10 +22,10 @@ class CreateSuivreformationsTable extends Migration
             $table->primary(['id_stagiaire', 'id_session']);
             $table->foreign('id_formations')->references('id')->on('formations')->onDelete('cascade');    
             $table->foreign('id_stagiaire')->references('id')->on('stagiaires')->onDelete('cascade');
-            $table->bigInteger('id_cours')->unsigned()->index();
-            $table->foreign('id_cours')->references('id_cours')->on('cours');
-            $table->bigInteger('id_chapitre')->unsigned()->index();
-            $table->foreign('id_chapitre')->references('id_chapitre')->on('chapitres');
+            $table->bigInteger('id_cours')->unsigned()->index()->nullable();
+            $table->foreign('id_cours')->references('id_cours')->on('cours')->onDelete('set null');
+            $table->bigInteger('id_chapitre')->unsigned()->index()->nullable();
+            $table->foreign('id_chapitre')->references('id_chapitre')->on('chapitres')->onDelete('set null');;
             $table->bigInteger('id_chapitre_Courant')->unsigned()->index();
             $table->foreign('id_chapitre_Courant')->references('id_chapitre')->on('chapitres');
             $table->bigInteger('id_projet')->unsigned()->index()->nullable();
