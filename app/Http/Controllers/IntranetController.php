@@ -249,7 +249,7 @@ class IntranetController extends Controller
 
             return redirect('/intranet');
 
-        } else if($session && $countFormation == 1 && date('Y-m-d') > $session->date_fin) {
+        } else if($session && $countFormation == 1 && date('Y-m-d') > strtotime($session->date_fin.' +10 days')) {
 
             Session::where('id', $sessionStagiaire->id_session)->update([
                 'statut_id' => 5
