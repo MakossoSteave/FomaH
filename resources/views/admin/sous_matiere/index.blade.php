@@ -96,7 +96,26 @@
                                     $("html").removeClass("is-clipped");
                                     $(target).removeClass("is-active");
                                 });
-                            </script>
+                                </script>
+                                <!--
+                                <script>
+                                $(".modal-button").click(function() {
+                                    var target = $(this).data("target");
+                                    $("html").addClass("is-clipped");
+                                    $(target).addClass("is-active");
+                                });
+                                
+                                $('.delete').click(function (event) {
+                                    $("#"+event.target.id).click(function() {
+                                        $("html").removeClass("is-clipped");
+                                        $(this).removeClass("is-active");
+                                    });
+                                });
+
+                                
+                                </script>
+                            -->
+
                         </div>
                     </div>
                 </div>

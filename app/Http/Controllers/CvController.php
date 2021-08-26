@@ -42,6 +42,7 @@ class CvController extends Controller
         //dd($request->input('id_user'));
 
         //dd($request->input("id_chapitre"));
+       
 
         $userId = Auth::user()->id;
 
@@ -51,6 +52,7 @@ class CvController extends Controller
         ]);
 
         $formateur = Formateur::where('user_id', $userId)->first();
+        
 
         if ($formateur->id_cv == null) {
 
@@ -67,6 +69,7 @@ class CvController extends Controller
             } else {
                 $lien = null;
             }
+            
     
             Cv::create([
                 'id' => $id,
@@ -93,6 +96,7 @@ class CvController extends Controller
                 'designationcv' => $request->get('designationcv'),
                 'lien' => $lien
             ]);
+            //dd($destinationPath, $file->getClientOriginalName(), $request->file('lien'));
         }
 
         //$string = 'Matiere: '.$request->get('designation_matiere').' créée avec succès';
@@ -112,7 +116,10 @@ class CvController extends Controller
      */
     public function show($id)
     {
-        //
+        $cv = Cv::find($id);
+
+       return view('admin.cv.edit',compact(['cv']));
+        
     }
 
     /**

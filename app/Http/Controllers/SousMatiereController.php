@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Matiere;
 use App\Models\Categorie;
+use App\Models\Competence;
 use App\Models\SousMatiere;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -130,7 +131,9 @@ class SousMatiereController extends Controller
      */
     public function destroy($id)
     {
+        DB::table('competences')->where('id_sous_matiere',$id)->delete();
         SousMatiere::where('id',$id)->delete();
+
         return redirect()->back()->with('success','Sous Matière supprimée avec succès');
 
     }

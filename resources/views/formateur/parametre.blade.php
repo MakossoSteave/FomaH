@@ -297,6 +297,26 @@
 
             <!--          XXXXX     XXXXX     XXXXX     XXXXX     XXXXX          -->
 
+
+             
+            <div class="card my-6">
+                <div class="card-content">
+                    <div class="media">
+                        @if(! empty($Cv_f->lien))
+                            <div class="media-left">
+                                <embed class="image is-4by3" src="{{ URL::asset('/') }}doc/cv/{{$Cv_f->lien}}" />
+                                <a href="{{ route('cv.show', $Cv_f->id) }}">  
+                            </div>
+                            <div class="media-content">
+                                <div class="flex">
+                                    <p class="title is-4">Agrandir le {{$Cv_f->designationcv}}</p>
+                                </div>
+                            </div>
+                        @endif    
+                    </div>
+                </div>
+            </div>
+            
             
 
                 <form method="POST" action="{{route('parametre.update', $id->id)}}" enctype="multipart/form-data">

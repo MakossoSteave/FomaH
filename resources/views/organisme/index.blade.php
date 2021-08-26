@@ -66,8 +66,9 @@
 
 
 </div>
-<h1> Hello l'organisme </h1>
-<p> travaux en cours .... </p>
+<h1>Pour rendre votre adhésion effective vous devez accomplir deux étapes :</h1>
+<p> 1/ Compléter les données manquantes </p>
+<p> 2/ Envoyer votre demande d'adhésion à l'administrateur </p> 
 
 
 

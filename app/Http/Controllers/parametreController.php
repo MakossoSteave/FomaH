@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Cv;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Formateur;
 use App\Models\role;
@@ -25,7 +27,16 @@ class parametreController extends Controller
         }
 
         else if($id->role_id==4 || $id->role_id==1){
+
             $User= Formateur::where('user_id',$id->id)->first();
+            if($User->id_cv != null){
+                $Cv_f= Cv::where('id',$User->id_cv)->first();
+                return View('formateur.parametre', compact(['id'],['User'],['Cv_f']),['role' => $role]);
+
+                //dd($Cv_f->lien);
+            }
+               
+            //dd($User, $User->id_cv);
             return View('formateur.parametre', compact(['id'],['User']),['role' => $role]);
         }
 
