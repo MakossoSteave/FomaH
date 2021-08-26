@@ -25,13 +25,13 @@ class CreateSuivreformationsTable extends Migration
             $table->bigInteger('id_cours')->unsigned()->index()->nullable();
             $table->foreign('id_cours')->references('id_cours')->on('cours')->onDelete('set null');
             $table->bigInteger('id_chapitre')->unsigned()->index()->nullable();
-            $table->foreign('id_chapitre')->references('id_chapitre')->on('chapitres')->onDelete('set null');;
-            $table->bigInteger('id_chapitre_Courant')->unsigned()->index();
-            $table->foreign('id_chapitre_Courant')->references('id_chapitre')->on('chapitres');
+            $table->foreign('id_chapitre')->references('id_chapitre')->on('chapitres')->onDelete('set null');
+            $table->bigInteger('id_chapitre_Courant')->unsigned()->index()->nullable();
+            $table->foreign('id_chapitre_Courant')->references('id_chapitre')->on('chapitres')->onDelete('set null');
             $table->bigInteger('id_projet')->unsigned()->index()->nullable();
-            $table->foreign('id_projet')->references('id')->on('projets');
+            $table->foreign('id_projet')->references('id')->on('projets')->onDelete('set null');
             $table->bigInteger('id_qcm')->unsigned()->index()->nullable();
-            $table->foreign('id_qcm')->references('id')->on('qcm');
+            $table->foreign('id_qcm')->references('id')->on('qcm')->onDelete('set null');
             $table->integer('nombre_chapitre_lu');
             $table->integer('progression');
             $table->timestamps();
