@@ -23,6 +23,8 @@ use App\Rules\FilenameDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+date_default_timezone_set('Europe/Paris');
+
 class IntranetController extends Controller
 {
     public function index(){
@@ -1335,8 +1337,8 @@ else {*/
         $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->count();
        
 if($meeting !=0){
-        $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
-        $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
+        $meetings = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
+        $sessionLive = Meeting_en_ligne::where('id', $meetings->id_meeting)->where('id_cours', $formation->id_cours)->first();
 
         $endMeeting = date('Y-m-d H:i:s', strtotime($sessionLive->date_meeting.' +2 hours'));
 
