@@ -24,6 +24,7 @@
 
 <body class="leading-normal tracking-normal text-white gradient" style="font-family: 'Source Sans Pro', sans-serif;">
     <!--Nav-->
+    @if(Auth::user() && Auth::user()->role_id==1)
     <nav id="header" class="fixed w-full z-30 top-0 text-white">
         <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
             <div class="pl-4 flex items-center">
@@ -161,8 +162,15 @@
                 @foreach ($data as $formation)
                 <div class="w-5/6 sm:w-1/2 p-6">
                     <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3">
-                        {{$formation->libelle}}
+                        {{$formation->libelle}}  
                     </h3>
+                    <a class="{{ $formation->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatFormation', $formation->id) }}">
+                        @if($formation->etat == 1) 
+                        Activé
+                        @else
+                        Désactivé
+                        @endif
+                        </a>
                     <p class="text-gray-600 mb-8">
                         {{$formation->description}}
                         <br />
@@ -837,6 +845,32 @@
         return false;
     }
     </script>
+    @else
+<div class="notification is-danger has-text-centered my-4">
+@if(Auth::user() && Auth::user()->role_id!=1)
+Vous n'êtes pas autorisé !
+@else
+Votre session a expiré !
+@endif
+</div>
+<button type="button" class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                         @if(Auth::user() && Auth::user()->role_id==2)
+                        <a href="/centre">
+                        @elseif(Auth::user() && Auth::user()->role_id==3)
+                        <a href="/user">
+                        @elseif(Auth::user() && Auth::user()->role_id==4)
+                        <a href="/formateur">
+                        @elseif(Auth::user() && Auth::user()->role_id==5)
+                        <a href="/organisme">
+                        @else
+                        <a href="/">
+                        @endif
+                        <i class="fas fa-home"></i>
+                            <span>Acceuil</span>
+                        </a>
+
+</button>
+@endif
 </body>
 
 </html>

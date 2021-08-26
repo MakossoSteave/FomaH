@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="lg:flex">
     <div class="lg:w-1/2 xl:max-w-screen-sm">
         <div class="py-2 bg-indigo-100 lg:bg-white flex justify-center lg:justify-start lg:px-12">
@@ -47,6 +48,7 @@
                         </span>
                         @enderror
                     </div>
+
                     <div class="mt-5">
                         <div class="text-sm font-bold text-gray-700 tracking-wide">Mail</div>
                         <input name="email"
@@ -58,6 +60,7 @@
                         </span>
                         @enderror
                     </div>
+
                     <div class="mt-5">
                         <div class="flex justify-between items-center">
                             <div class="text-sm font-bold text-gray-700 tracking-wide">

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@if(Auth::user())
 <section class="py-5">
     <div class="container px-2 mx-auto">
         <div class="flex flex-wrap -mx-1">
@@ -24,6 +25,7 @@
                                 </ul>
                             </div>
                             @endif
+                          
                             <form class="max-w-md mb-2 form-input" action="{{ route('centre.update', $data->id) }}"
                                 method="POST">
                                 @csrf
@@ -61,12 +63,55 @@
                                     </label>
                                     <input
                                         class="shadow appearance-none border border rounded w-full h-12 py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                                        name="prix" type="number" name="{{$data->prix}}" value="{{ $data->prix}}"
+                                        name="prix" type="number" name="prix" value="{{ $data->prix}}"
                                         placeholder=" {{$data->prix}}">
                                     <input
                                         class="shadow appearance-none border border rounded w-full h-12 py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
                                         id="ref_user" name="userRef" type="hidden" value="{{Auth::user()->id}}">
 
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
+                                        Nombre d'heure
+                                    </label>
+                                    <input
+                                        class="shadow appearance-none border border rounded w-full h-12 py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                                        id="password" name="volume_horaire" type="number" placeholder="Nombre d'heure" value="{{$data->volume_horaire}}">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
+                                        Etat
+                                    </label>
+                                    
+                                    <select class="form-select block w-full mt-1"  name="etat">
+                                          
+                                            <option 
+                                            @if($data->etat == 1) value="1"
+                                            @else value="0"
+                                            @endif selected>
+                                            @if($data->etat == 1) Activé
+                                            @else Désactivé
+                                            @endif
+                                            </option>
+                                            <option
+                                            @if(!$data->etat == 1) value="1"
+                                            @else value="0"
+                                            @endif>
+                                            @if(!$data->etat == 1) Activé
+                                            @else Désactivé
+                                            @endif
+                                            </option>
+                                        </select>
+                                </div>
+                                <div class="mb-6">
+                                    <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
+                                        Categorie
+                                    </label>
+                                        <select class="form-select block w-full mt-1"  name="categorie_id">
+                                            @foreach($Categorie as $categorie)
+                                            <option value="{{$categorie->id}}" @if($data->categorie_id == $categorie->id) selected @endif>{{$categorie->designation}}</option>
+                                            @endforeach
+                                        </select>
                                 </div>
                                 <div class="flex items-center justify-between">
                                     <button type="submit" class="bg-indigo-500 text-gray-100 p-4 w-full rounded-full tracking-wide
@@ -88,4 +133,16 @@
         </div>
     </div>
 </section>
+@else
+<div class="notification is-danger has-text-centered my-4">
+Votre session a expiré !
+</div>
+<button type="button" class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <a href="/">
+                        <i class="fas fa-home"></i>
+                            <span>Acceuil</span>
+                        </a>
+
+</button>
+@endif
 @endsection

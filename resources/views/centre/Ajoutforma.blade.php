@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@if(Auth::user())
 
 <div class="row">
     <div class="col-lg-12 margin-tb">
@@ -70,7 +71,7 @@
                             class="shadow appearance-none border border rounded h-12 w-full py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
                             id="text" name="reference" type="text" placeholder="code ref">
                     </div>
-                    <div class="mb-6">
+                    <div class="mb-4">
                         <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
                             Prix
                         </label>
@@ -81,6 +82,25 @@
                             class="shadow appearance-none border border rounded w-full h-12 py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
                             id="ref_user" name="userRef" type="hidden" value="{{Auth::user()->id}}">
 
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
+                            Nombre d'heure
+                        </label>
+                        <input
+                            class="shadow appearance-none border border rounded w-full h-12 py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                            id="password" name="volume_horaire" type="number" placeholder="Nombre d'heure">
+                    </div>
+                    <!-- <input id="etat" name="etat" type="hidden" value="1"> -->
+                    <div class="mb-6">
+                        <label class="block text-grey-darker text-sm font-bold mb-2" for="password">
+                            Categorie
+                        </label>
+                            <select class="form-select block w-full mt-1"  name="categorie_id">
+                                @foreach($Categorie as $categorie)
+                                <option value="{{$categorie->id}}">{{$categorie->designation}}</option>
+                                @endforeach
+                            </select>
                     </div>
                     <div class="flex items-center justify-between">
                         <button type="submit" class="bg-indigo-500 text-gray-100 p-4 w-full rounded-full tracking-wide
@@ -98,4 +118,16 @@
 
 </div>
 
+@else
+<div class="notification is-danger has-text-centered my-4">
+Votre session a expiré !
+</div>
+<button type="button" class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <a href="/">
+                        <i class="fas fa-home"></i>
+                            <span>Acceuil</span>
+                        </a>
+
+</button>
+@endif
 @endsection
