@@ -73,9 +73,9 @@
                                     <div class="modal-background"></div>
                                     <div class="modal-card">
 
-                                        <header class="modal-card-head">
-                                            <p class="modal-card-title">La matière {{$matiere->designation_matiere}} a t'elle une sous_matière ?</p>
-                                            <button class="delete" aria-label="close" ></button>                                        
+                                        <header class="modal-card-head ">
+                                            <div class="modal-card-title f">La matière {{$matiere->designation_matiere}} aa t'elle une sous_matière ?</div>
+                                            <button class="delete" id="{{$matiere->id}}" aria-label="close" ></button>                                        
                                         </header>
 
                                         <section class="modal-card-body">
@@ -99,12 +99,37 @@
                                     $(target).addClass("is-active");
                                 });
                                 
-                                $(".delete").click(function() {
+                                $('.delete').click(function (event) {
+                                $("#"+event.target.id).click(function() {
+                                    $("html").removeClass("is-clipped");
+                                    $(this).removeClass("is-active");
+                                });
+                            });
+                            </script>
+                            <!-- 
+                            <script>
+                            $(".modal-button").click(function() {
+                                var target = $(this).data("target");
+                                $("html").addClass("is-clipped");
+                                $(target).addClass("is-active");
+                            });
+                            
+                            $('.delete').click(function (event) {
+                                $("#"+event.target.id).click(function() {
+                                    $("html").removeClass("is-clipped");
+                                    $(this).removeClass("is-active");
+                                });
+                            });
+                            </script>
+                            -->
+                            <!-- 
+                            $(".delete").click(function() {
                                     var target = $(".modal-button").data("target");
                                     $("html").removeClass("is-clipped");
                                     $(target).removeClass("is-active");
                                 });
-                            </script>
+
+                            -->
                         </div>
                     </div>
                 </div>
