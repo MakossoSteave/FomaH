@@ -121,6 +121,46 @@ class SessionController extends Controller
                     ]); 
                 }
             }
+            //suivre formation
+            $stagiaires=Lier_sessions_stagiaire::select('lier_sessions_stagiaires.*')
+            ->join('stagiaires','stagiaires.id','lier_sessions_stagiaires.id_stagiaire')
+            ->join('users','users.id','stagiaires.user_id')
+            ->join('sessions','sessions.id','lier_sessions_stagiaires.id_session')
+            ->where('id_session',$id)
+            ->where('lier_sessions_stagiaires.etat',1)
+            ->get();
+
+            foreach($stagiaires as $s){
+          $existsAutreFormation=Lier_sessions_stagiaire::where('id_stagiaire',$s->id_stagiaire)
+                    ->where('id_session','!=',$id)->where('etat',1)->first();
+                   
+                    $existsStagiaire=Suivre_formation::where('id_stagiaire',$s->id_stagiaire)
+                    ->where('id_session',$id)->first();
+                    if( $existsStagiaire==null && $existsAutreFormation==null){
+                        $cours=FormationsContenirCours::where('id_formation',$session->formations_id)->where('numero_cours',1)->first();
+                        $chapitre=Chapitre::where('id_cours',$cours->id_cours)
+                            ->where('numero_chapitre',1)
+                            ->where('etat',1)
+                            ->first();
+                       
+                        Suivre_formation::create([
+                            'id_stagiaire' => $s->id_stagiaire,
+                            'id_session'=> $id,
+                            'id_formations' => $session->formations_id,
+                            'id_cours' => $cours->id_cours,
+                            'id_chapitre' => $chapitre->id_chapitre,
+                            'id_chapitre_Courant'=> $chapitre->id_chapitre,
+                            'nombre_chapitre_lu' => 0,
+                            'progression' => 0
+                        ]);
+                    }
+            }
+        
+
+
+
+
+
         }
         }        
         Session::where('id', $id)->update(array('etat' => $etat));
@@ -147,7 +187,7 @@ class SessionController extends Controller
                     ->where('numero_chapitre',1)
                     ->where('etat',1)
                     ->first();
-               
+               if($chapitre){
                 Suivre_formation::create([
                     'id_stagiaire' => $id,
                     'id_session'=> $idSession,
@@ -158,8 +198,12 @@ class SessionController extends Controller
                     'nombre_chapitre_lu' => 0,
                     'progression' => 0
                 ]);
+            }else { 
+                return redirect()->back()->with('error',"Ne peut pas activer le stagiaire car aucun cours n'est actif"); 
+
+            }
             }else {
-                return redirect()->back()->with('error','Aucun cours actif !'); 
+                return redirect()->back()->with('error',"Ne peut pas activer le stagiaire car aucun cours n'est actif"); 
             }
             }else if($existsAutreFormation!=null){
                 return redirect()->back()->with('error','Stagiaire déjà inscrit dans une autre session');
@@ -359,7 +403,7 @@ class SessionController extends Controller
                     'progression' => 0
                 ]);
             }else {
-                return redirect()->back()->with('error','Aucun cours actif !'); 
+                return redirect()->back()->with('error',"Ne peut pas activer le stagiaire car aucun cours n'est actif"); 
             }
             }else if($existsAutreFormation!=null){
                 return redirect()->back()->with('error','Stagiaire déjà inscrit dans une autre session');
