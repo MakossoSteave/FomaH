@@ -1,0 +1,164 @@
+#navbarBasicExample {
+    display: flex;
+    justify-content: space-between;
+}
+
+#logout-form:focus {
+    outline: none;
+}
+
+.image.is-4by3 {
+    padding-top: 0;
+    width: 14em;
+    margin-right: 1em;
+}
+
+#center-cours-select {
+    width: 6em;
+    margin: auto;
+}
+
+.user {
+    margin-top: 1em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.borderNone {
+    border: none;
+    margin-left: 5.8em;
+}
+
+.borderNone:hover {
+    border: none;
+}
+
+.progress {
+    height: 2.5em;
+}
+
+.percentage {
+    display: flex;
+    justify-content: center;
+}
+
+.reponseCss {
+    border-radius: 290486px;
+}
+
+.excerpt {
+    height: 4.6em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cardImageSize {
+    width: 60em;
+    height: 15em;
+}
+
+.docSize {
+    width: 100%;
+    height: 50em;
+}
+
+.marginChapitre {
+    margin-left: 11em;
+}
+
+.alignStart {
+    align-items: self-start;
+}
+
+.section {
+    min-height: 100vh;
+}
+
+#intranetNav {
+    color: #3273DC;
+    margin-left: .5em;
+    vertical-align: top;
+    font-weight: 500;
+}
+
+#intranetNav:focus {
+    outline: none;
+}
+
+.sizeButton {
+    width: 15em;
+}
+
+.button.is-focused:not(:active), .button:focus:not(:active) {
+    outline: 0;
+    box-shadow: none;
+}
+
+.paginate {
+    display: flex;
+    justify-content: center;
+}
+
+.flex-bottom {
+    align-self: flex-end;
+    display: inherit;
+}
+
+.button-card {
+    width: 10em;
+    margin-right: 1em;
+}
+
+#sommaire {
+    margin-left: 5em;
+}
+
+#home {
+    margin-left: 1em;
+}
+
+.imageSection {
+    width: 100%;
+    height: 35rem;
+}
+
+.page {
+    width: 10em;
+}
+
+#link-black {
+    color: black;
+}
+
+#link-black:hover {
+    opacity: 60%;
+}
+
+.fas {
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-left: 1em;
+    margin-right: 0.5em;
+}
+
+.width-forma-button {
+    width: 20em;
+}
+
+.parametreButton{
+    background:none;
+    cursor:pointer;
+}
+
+.containerProfil { position: relative; }
+.containerProfil  img { display: block; height:90px;width:auto; }
+.containerProfil .fa-pencil-alt { position: absolute; bottom:0; right:0; }
+
+#selectOrganisation , #selectCentre{
+    display:none;
+}

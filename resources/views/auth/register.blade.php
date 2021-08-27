@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="lg:flex">
     <div class="lg:w-1/2 xl:max-w-screen-sm">
         <div class="py-2 bg-indigo-100 lg:bg-white flex justify-center lg:justify-start lg:px-12">
@@ -47,6 +48,7 @@
                         </span>
                         @enderror
                     </div>
+
                     <div class="mt-5">
                         <div class="text-sm font-bold text-gray-700 tracking-wide">Mail</div>
                         <input name="email"
@@ -58,6 +60,7 @@
                         </span>
                         @enderror
                     </div>
+
                     <div class="mt-5">
                         <div class="flex justify-between items-center">
                             <div class="text-sm font-bold text-gray-700 tracking-wide">
@@ -98,11 +101,10 @@
                             </div>
                             <select class="form-select block w-full mt-1  @error('role') is-invalid @enderror"
                                 name="role">
-
-                                <option value="3"> Stagiaire</option>
-                                <option value="4">Formateur</option>
-                                <option value="2">Centre de formation</option>
-                                <option value="5">Organisme</option>
+                                @foreach($roles as $role)
+                                <option value="{{$role->id}}">{{$role->type}}</option>
+                                @endforeach
+                                
                                 @error('role')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

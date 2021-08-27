@@ -1,0 +1,56 @@
+CREATE TABLE Organisme_de_formation(
+   id_organisme INT,
+   president VARCHAR(50),
+   fondation_date INT NOT NULL,
+   type VARCHAR(50) NOT NULL,
+   forme_juridique VARCHAR(100) NOT NULL,
+   zone_geographique VARCHAR(50),
+   PRIMARY KEY(id_organisme)
+);
+
+CREATE TABLE Cursus(
+   id_cursus VARCHAR(50),
+   PRIMARY KEY(id_cursus)
+);
+
+CREATE TABLE Cours(
+   id_cours VARCHAR(50),
+   PRIMARY KEY(id_cours)
+);
+
+CREATE TABLE Zone_géographique(
+   id_departement VARCHAR(50),
+   PRIMARY KEY(id_departement)
+);
+
+CREATE TABLE proposeCursus(
+   id_organisme INT,
+   id_cursus VARCHAR(50),
+   PRIMARY KEY(id_organisme, id_cursus),
+   FOREIGN KEY(id_organisme) REFERENCES Organisme_de_formation(id_organisme),
+   FOREIGN KEY(id_cursus) REFERENCES Cursus(id_cursus)
+);
+
+CREATE TABLE est_compose_de(
+   id_cursus VARCHAR(50),
+   id_cours VARCHAR(50),
+   PRIMARY KEY(id_cursus, id_cours),
+   FOREIGN KEY(id_cursus) REFERENCES Cursus(id_cursus),
+   FOREIGN KEY(id_cours) REFERENCES Cours(id_cours)
+);
+
+CREATE TABLE proposeCours(
+   id_organisme INT,
+   id_cours VARCHAR(50),
+   PRIMARY KEY(id_organisme, id_cours),
+   FOREIGN KEY(id_organisme) REFERENCES Organisme_de_formation(id_organisme),
+   FOREIGN KEY(id_cours) REFERENCES Cours(id_cours)
+);
+
+CREATE TABLE est_installe(
+   id_organisme INT,
+   id_departement VARCHAR(50),
+   PRIMARY KEY(id_organisme, id_departement),
+   FOREIGN KEY(id_organisme) REFERENCES Organisme_de_formation(id_organisme),
+   FOREIGN KEY(id_departement) REFERENCES Zone_géographique(id_departement)
+);

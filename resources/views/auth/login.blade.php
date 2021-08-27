@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="lg:flex">
     <div class="lg:w-1/2 xl:max-w-screen-sm">
         <div class="py-2 bg-indigo-100 lg:bg-white flex justify-center lg:justify-start lg:px-12">
@@ -151,8 +152,4 @@
         </div>
     </div>
 </div>
-
-
-
-
 @endsection
