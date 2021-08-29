@@ -74,7 +74,7 @@
                                     <div class="modal-card">
 
                                         <header class="modal-card-head ">
-                                            <div class="modal-card-title f">La matière {{$matiere->designation_matiere}} aa t'elle une sous_matière ?</div>
+                                            <div class="modal-card-title f">La matière {{$matiere->designation_matiere}} a t'elle une sous_matière ?</div>
                                             <button class="delete" id="{{$matiere->id}}" aria-label="close" ></button>                                        
                                         </header>
 
@@ -100,12 +100,12 @@
                                 });
                                 
                                 $('.delete').click(function (event) {
-                                $("#"+event.target.id).click(function() {
-                                    $("html").removeClass("is-clipped");
-                                    $(this).removeClass("is-active");
+                                    $("#"+event.target.id).click(function() {
+                                        $("html").removeClass("is-clipped");
+                                        $(this).removeClass("is-active");
+                                    });
                                 });
-                            });
-                            </script>
+                                </script>
                             <!-- 
                             <script>
                             $(".modal-button").click(function() {
@@ -122,14 +122,7 @@
                             });
                             </script>
                             -->
-                            <!-- 
-                            $(".delete").click(function() {
-                                    var target = $(".modal-button").data("target");
-                                    $("html").removeClass("is-clipped");
-                                    $(target).removeClass("is-active");
-                                });
-
-                            -->
+                            
                         </div>
                     </div>
                 </div>

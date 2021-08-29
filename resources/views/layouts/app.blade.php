@@ -162,9 +162,8 @@
                     <a class="navbar-item" href="{{ url('stagiaires')}}">
                     Stagiaire
                     </a>
-                    <a class="navbar-item">
+                    <a class="navbar-item" href="{{ url('formateurs')}}" >
                     Formateur
-                   
                     </a>
                     <a class="navbar-item">
                     Centre
@@ -176,6 +175,7 @@
                     Admin
                     </a>
                     </div>
+
                 </div>
                
                 <a class="navbar-item" href="{{ url('titre')}}">

@@ -29,6 +29,7 @@ class AdminController extends Controller
         ->where('users.id','!=',$idUserAuth)
         ->where('users.role_id','=',1)
         ->orderBy('created_at','desc')->paginate(8)->setPath('admins');
+        
 
         return view('admin.user.admin.index',compact(['users']));
     }
@@ -203,7 +204,7 @@ class AdminController extends Controller
         }
       }
     
-      public function destroy($id)
+    public function destroy($id)
     {
         $user = User::where('id',$id)->first();
         if($user){

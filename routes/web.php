@@ -127,6 +127,9 @@ Route::get('/addStagiaire', [App\Http\Controllers\StagiaireController::class, 'c
 Route::get('/utilisateurs', [App\Http\Controllers\UtilisateurController::class, 'index'])->name('utilisateurs');
 
 Route::get('/admins', [App\Http\Controllers\AdminController::class, 'admin'])->name('admins');
+Route::get('/formateurs', [App\Http\Controllers\FormateurController::class, 'formateur'])->name('adminformateurs');
+Route::get('/destroyParAdmin/{id}',[App\Http\Controllers\FormateurController::class, 'destroyParAdmin'])->name('destroyParAdmin');
+//Route::get('/chapitres/{id}', [App\Http\Controllers\ChapitreController::class, 'index'])->name('chapitres');
 
 Route::get('/intranet/chapitre', [App\Http\Controllers\IntranetController::class, 'oneChapitre'])->name('chapitreIntranet');
 Route::post('/intranet/cours', [App\Http\Controllers\IntranetController::class, 'cours'])->name('coursIntranet');
