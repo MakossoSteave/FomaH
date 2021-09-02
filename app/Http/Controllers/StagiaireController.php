@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Centre;
+use App\Models\Entreprise;
 use App\Models\Formation;
 use App\Models\Stagiaire;
 use App\Models\User;
@@ -48,9 +48,9 @@ class StagiaireController extends Controller
         $formateurs = Formateur::orderBy('nom','asc')->get();
         $request->session()->put('formateurs', $formateurs);
         
-        $centres = Centre::orderBy('designation','asc')->get();
-        $request->session()->put('centres', $centres);
-        return view('admin.user.stagiaire.create', compact(['typeInscriptions','organisations','centres','formateurs']));
+        $entreprises = Entreprise::orderBy('designation','asc')->get();
+        $request->session()->put('entreprises', $entreprises);
+        return view('admin.user.stagiaire.create', compact(['typeInscriptions','organisations','entreprises','formateurs']));
     }
 
     public function show($id)
@@ -69,10 +69,10 @@ class StagiaireController extends Controller
     
 
     public function stagiaire(){
-        $stagiaires = Stagiaire::select('stagiaires.*','users.image','users.email','formateurs.nom as coachNom','formateurs.prenom as coachPrenom','organisations.designation as organisation','centres.designation as centre','types_inscriptions.type as typeInscription')
+        $stagiaires = Stagiaire::select('stagiaires.*','users.image','users.email','formateurs.nom as coachNom','formateurs.prenom as coachPrenom','organisations.designation as organisation','entreprises.designation as entreprise','types_inscriptions.type as typeInscription')
         ->join('types_inscriptions','stagiaires.type_inscription_id','=','types_inscriptions.id')
         ->leftJoin('organisations','stagiaires.organisation_id','=','organisations.id')
-        ->leftJoin('centres','stagiaires.centre_id','=','centres.id')
+        ->leftJoin('entreprises','stagiaires.entreprise_id','=','entreprises.id')
         ->leftJoin('formateurs','stagiaires.formateur_id','=','formateurs.id')
         ->join('users','stagiaires.user_id','=','users.id')
         ->orderBy('stagiaires.created_at','desc')
@@ -98,10 +98,10 @@ class StagiaireController extends Controller
         $formateurs = Formateur::orderBy('nom','asc')->get();
         $request->session()->put('formateurs', $formateurs);
         
-        $centres = Centre::orderBy('designation','asc')->get();
-        $request->session()->put('centres', $centres);  
+        $entreprises = Entreprise::orderBy('designation','asc')->get();
+        $request->session()->put('entreprises', $entreprises);  
     
-        return view('admin.user.stagiaire.edit',compact(['stagiaire','typeInscriptions','organisations','centres','formateurs']));
+        return view('admin.user.stagiaire.edit',compact(['stagiaire','typeInscriptions','organisations','entreprises','formateurs']));
       }
       else {
         return redirect('/stagiaires/')->with('error',"Le stagiaire n'existe pas ");
@@ -118,8 +118,8 @@ class StagiaireController extends Controller
                 'formateur_id' => ['nullable','numeric'
                 ,'in:'.$request->session()->get('formateurs')->implode('id', ', ')
                 ],
-                'centre_id' => ['nullable','numeric'
-                ,'in:'.$request->session()->get('centres')->implode('id', ', ')],
+                'entreprise_id' => ['nullable','numeric'
+                ,'in:'.$request->session()->get('entreprises')->implode('id', ', ')],
                 'typeInscription' => ['required','numeric',
                 'in:'.$request->session()->get('typeInscriptions')->implode('id', ', ')],
                 'organisation_id' => ['nullable','numeric'
@@ -129,17 +129,17 @@ class StagiaireController extends Controller
                 'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF','max:10000',
                         new FilenameImage('/[\w\W]{4,181}$/')]
             ]);
-            if( (($request->get('typeInscription')==2) && (!empty($request->get('centre_id')))) || (($request->get('typeInscription')==3) && (!empty($request->get('organisation_id')))) ){
-                return redirect('/addStagiaire/')->with('error',"Vous devez choisir soit un centre soit une organisation !");
+            if( (($request->get('typeInscription')==2) && (!empty($request->get('entreprise_id')))) || (($request->get('typeInscription')==3) && (!empty($request->get('organisation_id')))) ){
+                return redirect('/addStagiaire/')->with('error',"Vous devez choisir soit un Entreprise soit une organisation !");
             }
-            if(($request->get('typeInscription')==1) && (!empty($request->get('organisation_id')) || !empty($request->get('centre_id')) )){
-                return redirect('/addStagiaire/')->with('error',"Pas d'organisation ou de centre pour un stagiaire indépendant !");
+            if(($request->get('typeInscription')==1) && (!empty($request->get('organisation_id')) || !empty($request->get('entreprise_id')) )){
+                return redirect('/addStagiaire/')->with('error',"Pas d'organisation ou de Entreprise pour un stagiaire indépendant !");
             }
             if(($request->get('typeInscription')==2) && ( empty($request->get('organisation_id')) )){
                 return redirect('/addStagiaire/')->with('error',"Vous devez choisir une organisation !");
             }
-            if(($request->get('typeInscription')==3) && (empty($request->get('centre_id')) )){
-                return redirect('/addStagiaire/')->with('error',"Vous devez choisir un centre !");
+            if(($request->get('typeInscription')==3) && (empty($request->get('entreprise_id')) )){
+                return redirect('/addStagiaire/')->with('error',"Vous devez choisir un Entreprise !");
             }
             
 
@@ -172,10 +172,10 @@ class StagiaireController extends Controller
                 } else {
                     $telephone = null;
                 }
-            if (!empty($request->get('centre_id'))) {
-            $centre = $request->get('centre_id');
+            if (!empty($request->get('entreprise_id'))) {
+            $Entreprise = $request->get('entreprise_id');
             } else {
-            $centre = null;
+            $Entreprise = null;
             }
             if (!empty($request->get('organisation_id'))) {
             $organisation = $request->get('organisation_id');
@@ -201,7 +201,7 @@ class StagiaireController extends Controller
                 'formateur_id' =>  $coach,
                 'user_id' =>$id,
                 'type_inscription_id'=>$request->get('typeInscription'),
-                'centre_id' => $centre,
+                'entreprise_id' => $Entreprise,
                 'organisation_id' => $organisation
             ]);
 
@@ -237,8 +237,8 @@ class StagiaireController extends Controller
                     'formateur_id' => ['nullable','numeric'
                     ,'in:'.$request->session()->get('formateurs')->implode('id', ', ')
                     ],
-                    'centre_id' => ['nullable','numeric'
-                    ,'in:'.$request->session()->get('centres')->implode('id', ', ')],
+                    'entreprise_id' => ['nullable','numeric'
+                    ,'in:'.$request->session()->get('entreprises')->implode('id', ', ')],
                     'typeInscription' => ['required','numeric',
                     'in:'.$request->session()->get('typeInscriptions')->implode('id', ', ')],
                     'organisation_id' => ['nullable','numeric'
@@ -246,17 +246,17 @@ class StagiaireController extends Controller
                     'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF','max:10000',
                             new FilenameImage('/[\w\W]{4,181}$/')]
                 ]);
-                if( (($request->get('typeInscription')==2) && (!empty($request->get('centre_id')))) || (($request->get('typeInscription')==3) && (!empty($request->get('organisation_id')))) ){
-                    return redirect()->back()->with('error',"Vous devez choisir soit un centre soit une organisation !");
+                if( (($request->get('typeInscription')==2) && (!empty($request->get('entreprise_id')))) || (($request->get('typeInscription')==3) && (!empty($request->get('organisation_id')))) ){
+                    return redirect()->back()->with('error',"Vous devez choisir soit un Entreprise soit une organisation !");
                 }
-                if( ($request->get('typeInscription')==1) && ( (!empty($request->get('organisation_id')) && ($stagiaire->organisation_id==null)) || (!empty($request->get('centre_id'))) && ($stagiaire->centre_id==null) )){
-                    return redirect()->back()->with('error',"Pas d'organisation ou de centre pour un stagiaire indépendant !");
+                if( ($request->get('typeInscription')==1) && ( (!empty($request->get('organisation_id')) && ($stagiaire->organisation_id==null)) || (!empty($request->get('entreprise_id'))) && ($stagiaire->entreprise_id==null) )){
+                    return redirect()->back()->with('error',"Pas d'organisation ou de Entreprise pour un stagiaire indépendant !");
                 }
                 if(($request->get('typeInscription')==2) && (empty($request->get('organisation_id')) )){
                     return redirect()->back()->with('error',"Vous devez choisir une organisation !");
                 }
-                if(($request->get('typeInscription')==3) && (empty($request->get('centre_id')) )){
-                    return redirect()->back()->with('error',"Vous devez choisir un centre !");
+                if(($request->get('typeInscription')==3) && (empty($request->get('entreprise_id')) )){
+                    return redirect()->back()->with('error',"Vous devez choisir un Entreprise !");
                 }
                 
                 if ($request->hasFile('image')) {
@@ -286,18 +286,18 @@ class StagiaireController extends Controller
                     }
 
                 if($request->get('typeInscription') == $stagiaire->type_inscription_id){
-                    $centre = $stagiaire->centre_id;
+                    $Entreprise = $stagiaire->entreprise_id;
                     $organisation = $stagiaire->organisation_id;
                 }
                 else if($request->get('typeInscription')== 1){
-                    $centre = null;
+                    $Entreprise = null;
                     $organisation = null;
                 }
                 else {
-                    if (!empty($request->get('centre_id'))) {
-                    $centre = $request->get('centre_id');
+                    if (!empty($request->get('entreprise_id'))) {
+                    $Entreprise = $request->get('entreprise_id');
                     } else {
-                    $centre = null;
+                    $Entreprise = null;
                     }
                     if (!empty($request->get('organisation_id'))) {
                     $organisation = $request->get('organisation_id');
@@ -331,7 +331,7 @@ class StagiaireController extends Controller
                     'telephone' => $telephone,
                     'formateur_id' =>  $coach,
                     'type_inscription_id'=>$request->get('typeInscription'),
-                    'centre_id' => $centre,
+                    'entreprise_id' => $Entreprise,
                     'organisation_id' => $organisation
                 ]);
 

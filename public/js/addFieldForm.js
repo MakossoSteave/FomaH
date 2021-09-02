@@ -219,15 +219,15 @@ selectElem.addEventListener('change', function() {
        // var fieldTypeInscription = $("#fieldTypeInscription");
         if(selectElem.value==1){
             $("#selectOrganisation").hide();
-            $("#selectCentre").hide();
+            $("#selectEntreprise").hide();
         }
       if(selectElem.value==2){
        /* fieldTypeInscription.append("<div class='field'><label class='label'>Organisation</label><div class='control'> <div class='select'><select name='formateur_id'>@foreach ($organisations as $organisation)<option value='{{$organisation->id}}'>{{$organisation->designation}}</option>@endforeach </select></div></div </div>");*/
        $("#selectOrganisation").show();
-       $("#selectCentre").hide();
+       $("#selectEntreprise").hide();
       }
       if(selectElem.value==3){
-        $("#selectCentre").show();
+        $("#selectEntreprise").show();
         $("#selectOrganisation").hide();
        }
     

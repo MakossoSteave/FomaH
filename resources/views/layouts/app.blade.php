@@ -153,7 +153,7 @@
                    
                     </a>
                     <a class="navbar-item">
-                    Centre
+                    Entreprise
                     </a>
                     <a class="navbar-item">
                     Organisation

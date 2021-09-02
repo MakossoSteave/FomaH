@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCentres extends Migration
+class CreateEntreprises extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCentres extends Migration
      */
     public function up()
     {
-        Schema::create('centres', function (Blueprint $table) {
+        Schema::create('entreprises', function (Blueprint $table) {
             $table->engine='InnoDB';
             $table->id();
             $table->string('designation');
@@ -29,6 +29,6 @@ class CreateCentres extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('centres');
+        Schema::dropIfExists('entreprises');
     }
 }

@@ -16,7 +16,7 @@ class CreateQuestionQcmTable extends Migration
         Schema::create('question_qcm', function (Blueprint $table) {
             $table->engine='InnoDB';
             $table->id();
-            $table->string('question');
+            $table->string('question',1000);
             $table->string('explication', 5000)->nullable();
             $table->boolean('etat');
             $table->bigInteger('qcm_id')->unsigned()->index();

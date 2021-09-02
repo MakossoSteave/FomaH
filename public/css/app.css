@@ -159,6 +159,6 @@
 .containerProfil  img { display: block; height:90px;width:auto; }
 .containerProfil .fa-pencil-alt { position: absolute; bottom:0; right:0; }
 
-#selectOrganisation , #selectCentre{
+#selectOrganisation , #selectEntreprise{
     display:none;
 }

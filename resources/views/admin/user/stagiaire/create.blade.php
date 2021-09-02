@@ -83,7 +83,7 @@
                     <div class="select">
                     <select id="selectTypeInscription" name="typeInscription">
                         @foreach ($typeInscriptions as $typeInscription)
-                            <option value="{{$typeInscription->id}}">{{$typeInscription->type}}</option>
+                            <option value="{{$typeInscription->id}}" >{{$typeInscription->type}}</option>
                         @endforeach
                     </select>
                     </div>
@@ -103,14 +103,14 @@
                 </div>
         </div>
         
-        <div class="field" id="selectCentre">
-            <label class="label">Centre</label>
+        <div class="field" id="selectEntreprise">
+            <label class="label">Entreprise</label>
                 <div class="control">
                     <div class="select">
-                    <select name="centre_id">
-                    <option value=""  selected>Aucun</option>
-                        @foreach ($centres as $centre)
-                            <option value="{{$centre->id}}">{{$centre->designation}}</option>
+                    <select name="entreprise_id">
+                    <option value=""  selected>Aucune</option>
+                        @foreach ($entreprises as $Entreprise)
+                            <option value="{{$Entreprise->id}}">{{$Entreprise->designation}}</option>
                         @endforeach
                     </select>
                     </div>
@@ -157,7 +157,7 @@ Votre session a expiré !
 </div>
 <button type="button" class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                          @if(Auth::user() && Auth::user()->role_id==2)
-                        <a href="/centre">
+                        <a href="/Entreprise">
                         @elseif(Auth::user() && Auth::user()->role_id==3)
                         <a href="/stagiaire">
                         @elseif(Auth::user() && Auth::user()->role_id==4)

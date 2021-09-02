@@ -19,7 +19,7 @@ class CreateFormateurTable extends Migration
             $table->string('nom');
             $table->string('prenom')->nullable();
             $table->integer('telephone')->nullable();
-            $table->string('parcours')->nullable();
+            $table->string('parcours',3000)->nullable();
             $table->string('cv')->nullable();
             $table->bigInteger('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

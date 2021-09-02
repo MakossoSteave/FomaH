@@ -15,7 +15,7 @@ class CreateDocumentTable extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->engine='InnoDB';
-            $table->id();;
+            $table->id();
             $table->string('designation');
             $table->string('lien');
             $table->timestamps();

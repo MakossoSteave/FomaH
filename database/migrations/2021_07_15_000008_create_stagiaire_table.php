@@ -27,8 +27,10 @@ class CreateStagiaireTable extends Migration
             $table->foreign('type_inscription_id')->references('id')->on('types_inscriptions')->onDelete('cascade');
             $table->bigInteger('organisation_id')->unsigned()->index()->nullable();
             $table->foreign('organisation_id')->references('id')->on('organisations')->onDelete('cascade');
-            $table->bigInteger('centre_id')->unsigned()->index()->nullable();
-            $table->foreign('centre_id')->references('id')->on('centres')->onDelete('cascade');
+            $table->bigInteger('entreprise_id')->unsigned()->index()->nullable();
+            $table->foreign('entreprise_id')->references('id')->on('entreprises')->onDelete('cascade');
+           /* $table->bigInteger('centre_id')->unsigned()->index()->nullable();
+            $table->foreign('centre_id')->references('id')->on('centres')->onDelete('cascade');*/
             $table->timestamps();
         });
     }

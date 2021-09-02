@@ -23,7 +23,7 @@ class CreateFormationTable extends Migration
             $table->integer('nombre_cours_total');
             $table->integer('nombre_chapitre_total');
             $table->string('reference')->nullable();
-            $table->integer('prix');
+            $table->float('prix');
             $table->integer('effectif');
             $table->integer('userRef')->nullable();
             $table->string('_token')->nullable();

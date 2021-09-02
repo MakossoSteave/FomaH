@@ -38,7 +38,7 @@ class CreateTypeInscriptionTable extends Migration
         DB::table('types_inscriptions')->insert(
                
             [
-                'type'=>'Centre'
+                'type'=>'Entreprise'
             ]
     
         );

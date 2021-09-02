@@ -15,7 +15,7 @@ class CreateQcmTable extends Migration
     {
         Schema::create('qcm', function (Blueprint $table) {
             $table->engine='InnoDB';
-            $table->id();;
+            $table->id();
             $table->string('designation');
             $table->boolean('etat');
             $table->bigInteger('id_chapitre')->unsigned()->index();

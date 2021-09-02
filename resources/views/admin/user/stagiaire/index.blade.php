@@ -48,7 +48,7 @@
             </div>
             @endif
             
-            <div class="media-content">
+            <!--<div class="media-content">
                 <div class="flex">
             <div>
               
@@ -80,7 +80,7 @@
                     </div>
                 </div>
                 </div>
-            </div>
+            </div>-->
         </div>
 
             <div class="content">
@@ -97,8 +97,8 @@
                         @if($stagiaire->organisation)
                         <p><span class="title is-6">Organisation:</span> <span class="subtitle is-6">{{$stagiaire->organisation}}</span></p>
                         @endif
-                        @if($stagiaire->centre)
-                        <p><span class="title is-6">Centre:</span> <span class="subtitle is-6">{{$stagiaire->centre}}</span></p>
+                        @if($stagiaire->entreprise)
+                        <p><span class="title is-6">Entreprise:</span> <span class="subtitle is-6">{{$stagiaire->entreprise}}</span></p>
                         @endif
 
                     </div>
@@ -163,7 +163,7 @@ Votre session a expiré !
 </div>
 <button type="button" class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                          @if(Auth::user() && Auth::user()->role_id==2)
-                        <a href="/centre">
+                        <a href="/entreprise">
                         @elseif(Auth::user() && Auth::user()->role_id==3)
                         <a href="/stagiaire">
                         @elseif(Auth::user() && Auth::user()->role_id==4)

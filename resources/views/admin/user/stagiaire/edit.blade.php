@@ -106,17 +106,17 @@
                 </div>
         </div>
         
-        <div class="field" @if($stagiaire->centre_id==null) id="selectCentre" @endif>
-            <label class="label">Centre</label>
+        <div class="field" @if($stagiaire->entreprise_id==null) id="selectEntreprise" @endif>
+            <label class="label">Entreprise</label>
                 <div class="control">
                     <div class="select">
-                    <select name="centre_id">
-                    @if(!$stagiaire->centre_id)
-                     <option value=""  selected>Aucun</option>
+                    <select name="entreprise_id">
+                    @if(!$stagiaire->entreprise_id)
+                     <option value=""  selected>Aucune</option>
                     @endif
-                        @foreach ($centres as $centre)
-                            <option value="{{$centre->id}}"  
-                                @if($centre->id==$stagiaire->centre_id)selected @endif>{{$centre->designation}}</option>
+                        @foreach ($entreprises as $Entreprise)
+                            <option value="{{$Entreprise->id}}"  
+                                @if($Entreprise->id==$stagiaire->entreprise_id)selected @endif>{{$Entreprise->designation}}</option>
                         @endforeach
                     </select>
                     </div>
@@ -173,7 +173,7 @@ Votre session a expiré !
 </div>
 <button type="button" class="group bg-white rounded-md text-gray-500 inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                          @if(Auth::user() && Auth::user()->role_id==2)
-                        <a href="/centre">
+                        <a href="/Entreprise">
                         @elseif(Auth::user() && Auth::user()->role_id==3)
                         <a href="/stagiaire">
                         @elseif(Auth::user() && Auth::user()->role_id==4)

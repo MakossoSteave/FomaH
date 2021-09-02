@@ -15,7 +15,7 @@ class CreateReponseQuestionQcmTable extends Migration
     {
         Schema::create('reponse_question_qcm', function (Blueprint $table) {
             $table->engine='InnoDB';
-            $table->id();;
+            $table->id();
             $table->string('reponse', 1000);
             $table->boolean('validation');
             $table->boolean('etat');

@@ -15,7 +15,7 @@ class CreateExerciceTable extends Migration
     {
         Schema::create('exercices', function (Blueprint $table) {
             $table->engine='InnoDB';
-            $table->id();;
+            $table->id();
             $table->string('enonce', 5000);
             $table->string('image')->nullable();
             $table->boolean('etat');

@@ -464,7 +464,7 @@ class ChapitreController extends Controller
 
     public function updateChapitre($Chapitre,$etat){
         $CoursController = new CoursController;
-        $CoursController->Update_nombre_chapitres($Chapitre->id_cours,-1);//ajouter +1 au nombre total de chapitre cours
+        $CoursController->Update_nombre_chapitres($Chapitre->id_cours,-1);//ajouter -1 au nombre total de chapitre cours
         $cours = Cours::find($Chapitre->id_cours);
         if($cours->etat==1){
         $Formation = new FormationAdminController;

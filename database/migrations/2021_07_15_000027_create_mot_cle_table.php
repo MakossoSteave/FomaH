@@ -15,7 +15,7 @@ class CreateMotCleTable extends Migration
     {
         Schema::create('mots_cles', function (Blueprint $table) {
             $table->engine='InnoDB';
-            $table->id();;
+            $table->id();
             $table->string('designation');
             $table->timestamps();
         });

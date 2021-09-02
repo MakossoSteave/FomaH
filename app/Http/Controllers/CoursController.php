@@ -26,7 +26,7 @@ class CoursController extends Controller
         ->leftJoin('formateurs', 'formateurs.id',"=","cours.formateur")
         ->orderBy('created_at','desc')
         ->paginate(5);
-
+    //    dd($cours);
         //$test = FormationsContenirCours::with('formations')->with('cours')->get();
                    
     return view('admin.cours.index',compact(['cours']/*,['test']*/));

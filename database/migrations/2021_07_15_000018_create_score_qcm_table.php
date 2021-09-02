@@ -15,7 +15,7 @@ class CreateScoreQcmTable extends Migration
     {
         Schema::create('score_qcm', function (Blueprint $table) {
             $table->engine='InnoDB';
-            $table->id();;
+            $table->id();
             $table->integer('resultat');
             $table->bigInteger('stagiaire_id')->unsigned()->index();
             $table->foreign('stagiaire_id')->references('id')->on('stagiaires')->onDelete('cascade');
