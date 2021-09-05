@@ -32,8 +32,8 @@ class SessionController extends Controller
         $sessions = Session::select('sessions.*','formations.libelle','statut.statut','formateurs.nom','formateurs.prenom')
         ->leftJoin('formateurs','formateurs.id','sessions.formateur_id')
         ->join('formations','formations.id','sessions.formations_id')
-        ->join('statut','statut.id','sessions.statut_id')  
-        ->orderBy('updated_at','desc')->paginate(8)->setPath('session');      
+        ->join('statut','statut.id','sessions.statut_id')
+        ->orderBy('updated_at','desc')->paginate(8)->setPath('session');
         return view('admin.session.index',compact(['sessions']));
     }
 
@@ -56,7 +56,7 @@ class SessionController extends Controller
 
         do {
             $id = rand(10000000, 99999999);
-        } while(Session::find($id) != null); 
+        } while(Session::find($id) != null);
 
         if ($request->get('formateur_id') == '') {
             $formateur = null;
@@ -73,7 +73,7 @@ class SessionController extends Controller
             'formations_id' => $request->get('formation_id'),
             'statut_id' => 2
         ]);
-       
+
         return redirect('/session')->with('success','Session créé avec succès');
     }
 
@@ -109,8 +109,8 @@ class SessionController extends Controller
                 ->first();
                 $exists = Contenir_sessions_projet::where('id_session',$id)
                 ->where('id_projet',$projet->id)->exists();
-               
-                
+
+
                 if(!$exists){
                     Contenir_sessions_projet::create([
                         'id_projet' => $projet->id ,
@@ -118,7 +118,7 @@ class SessionController extends Controller
                         'statut_id' => 1,
                         'date_debut' =>$session->date_debut,
                         'date_fin' =>$session->date_fin
-                    ]); 
+                    ]);
                 }
             }
             //suivre formation
@@ -133,7 +133,7 @@ class SessionController extends Controller
             foreach($stagiaires as $s){
           $existsAutreFormation=Lier_sessions_stagiaire::where('id_stagiaire',$s->id_stagiaire)
                     ->where('id_session','!=',$id)->where('etat',1)->first();
-                   
+
                     $existsStagiaire=Suivre_formation::where('id_stagiaire',$s->id_stagiaire)
                     ->where('id_session',$id)->first();
                     if( $existsStagiaire==null && $existsAutreFormation==null){
@@ -142,7 +142,7 @@ class SessionController extends Controller
                             ->where('numero_chapitre',1)
                             ->where('etat',1)
                             ->first();
-                       
+
                         Suivre_formation::create([
                             'id_stagiaire' => $s->id_stagiaire,
                             'id_session'=> $id,
@@ -155,14 +155,14 @@ class SessionController extends Controller
                         ]);
                     }
             }
-        
+
 
 
 
 
 
         }
-        }        
+        }
         Session::where('id', $id)->update(array('etat' => $etat));
         return redirect()->back()->with('success','Etat modifié avec succès');
     }
@@ -174,7 +174,7 @@ class SessionController extends Controller
         ->first();
         $etat = !$etatStagiaire->etat;
 
-  
+
         if($etat ==1){
             $session=Session::find($idSession);
             $exists=Suivre_formation::where('id_stagiaire',$id)
@@ -198,12 +198,12 @@ class SessionController extends Controller
                     'nombre_chapitre_lu' => 0,
                     'progression' => 0
                 ]);
-            }else { 
-                return redirect()->back()->with('error',"Ne peut pas activer le stagiaire car aucun cours n'est actif"); 
+            }else {
+                return redirect()->back()->with('error',"Ne peut pas activer le stagiaire car aucun cours n'est actif");
 
             }
             }else {
-                return redirect()->back()->with('error',"Ne peut pas activer le stagiaire car aucun cours n'est actif"); 
+                return redirect()->back()->with('error',"Ne peut pas activer le stagiaire car aucun cours n'est actif");
             }
             }else if($existsAutreFormation!=null){
                 return redirect()->back()->with('error','Stagiaire déjà inscrit dans une autre session');
@@ -222,11 +222,11 @@ class SessionController extends Controller
 
        return view('admin.session.edit',compact(['session'],['formateurs'],['formations'],['statuts']));
     }
-    public function editStagiaire($id,$idSession)
+    public function editStagiaire($idStagiaire,$idSession)
     {
         $stagiaire=Lier_sessions_stagiaire::
         where('id_session',$idSession)
-        ->where('id_stagiaire',$id)
+        ->where('id_stagiaire',$idStagiaire)
         ->first();
         return view('admin.session.stagiaire.edit',compact(['stagiaire']));
     }
@@ -263,7 +263,7 @@ class SessionController extends Controller
             $message="L'Etat ne pas être modifié car aucun stagiaire actif n'est inscrit";
           }
         }
-        }        
+        }
         Session::where('id', $id)->update([
             'date_debut' => $request->get('date_debut'),
             'date_fin' => $request->get('date_fin'),
@@ -282,16 +282,16 @@ class SessionController extends Controller
                 ->first();
                 $exists = Contenir_sessions_projet::where('id_session',$id)
                 ->where('id_projet',$projet->id)->exists();
-               
+
                 if(!$exists){
-                   
+
                     Contenir_sessions_projet::create([
                         'id_projet' => $projet->id ,
                         'id_session' => $id ,
                         'statut_id' => 1,
                         'date_debut' =>$session->date_debut,
                         'date_fin' =>$session->date_fin
-                    ]); 
+                    ]);
                 }
             }
         }
@@ -301,12 +301,12 @@ class SessionController extends Controller
         } else {
             return redirect('/session')->with('success','Session modifié avec succès');
         }
-        
+
     }
     public function editResultStagiaire(Request $request, $id,$idSession)
     {
         $request->validate([
-           
+
             'resultat' => ['required','string','max:3000'],
             'validation' => [
                 'required',
@@ -349,7 +349,7 @@ class SessionController extends Controller
         ->where('id_session',$id)
         ->orWhere('etat',1)
         ->get();
-        $stagiaires= Stagiaire::select('stagiaires.nom','stagiaires.prenom','stagiaires.id') 
+        $stagiaires= Stagiaire::select('stagiaires.nom','stagiaires.prenom','stagiaires.id')
         ->whereNotIn('id',$stagiairesInscrits)
         ->orderBy('created_at','desc')
         ->get();
@@ -374,11 +374,11 @@ class SessionController extends Controller
         ->where('sessions.id',$id)
         ->first();
         $effectif = $cursus->effectif;
-        
+
         if($stagiairesInscrits==$effectif){
-            return redirect('/StagiaireSession/'.$id)->with('error','Nombre maximum de stagiaire atteint'); 
+            return redirect('/StagiaireSession/'.$id)->with('error','Nombre maximum de stagiaire atteint');
         }else{
-       
+
         if($request->get('etat')==1){
             $session=Session::find($id);
             $exists=Suivre_formation::where('id_stagiaire',$request->get('stagiaire_id'))
@@ -391,7 +391,7 @@ class SessionController extends Controller
                     ->where('numero_chapitre',1)
                     ->where('etat',1)
                     ->first();
-               
+
                 Suivre_formation::create([
                     'id_stagiaire' => $request->get('stagiaire_id'),
                     'id_session' => $id,
@@ -403,7 +403,7 @@ class SessionController extends Controller
                     'progression' => 0
                 ]);
             }else {
-                return redirect()->back()->with('error',"Ne peut pas activer le stagiaire car aucun cours n'est actif"); 
+                return redirect()->back()->with('error',"Ne peut pas activer le stagiaire car aucun cours n'est actif");
             }
             }else if($existsAutreFormation!=null){
                 return redirect()->back()->with('error','Stagiaire déjà inscrit dans une autre session');
@@ -435,20 +435,21 @@ class SessionController extends Controller
     }
 
     public function createPDF($id,$idSession){
+
         $session= Session::find($idSession);
         $formation= Formation::find($session->formations_id);
         $stagiaire = Stagiaire::find($id);
+
         $data = [
 
             'prenom' => $stagiaire->prenom,
             'nom' => $stagiaire->nom,
             'type' => 'cursus',
-            'titre' => $formation->libelle, 
-            'date' =>  	$session->date_fin /*date('m/d/Y')*/
+            'titre' => $formation->libelle,
+            'date' =>  	$session->date_fin
 
         ];
 
-          
 
         $pdf = PDF::loadView('admin.session.diplome', $data);
         if($stagiaire->prenom)
@@ -489,7 +490,7 @@ class SessionController extends Controller
         return view('admin.session.stagiaire.progression.index',compact(['stagiaire']),['progress'=>  $progress]);
     }
     public function qcmStagiaire($id,$idSession){
-      
+
         $qcms=Score_qcm::select('score_qcm.*','qcm.designation')
         ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','score_qcm.stagiaire_id')
         ->join('sessions','sessions.id','lier_sessions_stagiaires.id_session')
@@ -499,7 +500,7 @@ class SessionController extends Controller
                         {
                              $join->on('chapitres.id_chapitre', '=', 'qcm.id_chapitre');
                              $join->on('score_qcm.qcm_id','=','qcm.id');
-                        }) 
+                        })
         ->where('lier_sessions_stagiaires.id_session',$idSession)
         ->where('score_qcm.stagiaire_id',$id)
         ->orderBy('updated_at','desc')->paginate(8)->setPath('qcmStagiaire');
@@ -512,13 +513,15 @@ class SessionController extends Controller
     }
 
     public function projetStagiaire($id,$idSession){
-      
+        /* $projets=Projet::select('faire_projets')->with('Session')->with('Stagiaire')->where('contenir_sessions_projets.id_session',$idSession)
+         ->where('faire_projets.id_stagiaire',$id)
+         ->orderBy('faire_projets.updated_at','desc')->paginate(8)->setPath('projetStagiaire');*/
          $projets=Faire_projet::select('faire_projets.*','projets.description','contenir_sessions_projets.id_session')
          ->join('contenir_sessions_projets','contenir_sessions_projets.id_projet','faire_projets.id_projet')
          ->join('projets','projets.id','faire_projets.id_projet')
          ->where('contenir_sessions_projets.id_session',$idSession)
          ->where('faire_projets.id_stagiaire',$id)
-         ->orderBy('updated_at','desc')->paginate(8)->setPath('qcmStagiaire');
+         ->orderBy('updated_at','desc')->paginate(8)->setPath('projetStagiaire');
          return view('admin.session.stagiaire.progression.projet',compact(['projets']));
      }
 
@@ -536,7 +539,7 @@ class SessionController extends Controller
     public function editResultProjetStagiaire(Request $request, $id_projet,$id_stagiaire)
     {
         $request->validate([
-           
+
             'resultat' => ['required','string','max:3000'],
             'validation' => [
                 'required',
@@ -554,7 +557,7 @@ class SessionController extends Controller
 
     public function deleteResultProjetStagiaire(Request $request, $id_projet,$id_stagiaire)
     {
-      
+
 
         Faire_projet:: where('id_projet',$id_projet)
         ->where('id_stagiaire',$id_stagiaire)->delete();
@@ -570,7 +573,7 @@ class SessionController extends Controller
         ->where('contenir_sessions_projets.id_session',$id)
         ->with('Document')
         ->orderBy('contenir_sessions_projets.created_at','asc')->paginate(8)->setPath('Session_Projet');
-       
+
         return view('admin.session.projet.index',compact(['projets']),['idSession'=>$id]);
         }
 
@@ -591,22 +594,22 @@ class SessionController extends Controller
                 ,'in:'.$request->session()->get('statutsProjet')->implode('id', ', ')],
                 'date_debut'=>['required','date'],
                 'date_fin'=>['required','date']
-                                
+
             ]);
-            
-            
+
+
            Contenir_sessions_projet::where('id_projet',$id_projet)
            ->where('id_session',$id_session)->update([
                'date_debut' => $request->get('date_debut'),
                'date_fin' => $request->get('date_fin'),
                'statut_id' => $request->get('statut_id')
            ]);
-            
-            
+
+
             Projet::where('id', $id_projet)->update([
                 'description' => $request->get('description')
             ]);
-    
+
             if ($request->has('documentsUpdate')) {
                 for ($indexDoc=0; $indexDoc < count($request->get('documentsUpdate')); $indexDoc++) {
                     if ($request->hasFile("documentsUpdate.$indexDoc.lien")) {
@@ -623,21 +626,21 @@ class SessionController extends Controller
                         $document = Document::find($request->documentsUpdate[$indexDoc]['documentID']);
                         $lien = $document->lien;
                     }
-    
+
                     Document::where('id', $request->documentsUpdate[$indexDoc]['documentID'])->update([
                         'designation' => $request->documentsUpdate[$indexDoc]['designation'],
                         'lien' => $lien
                     ]);
                 }
             }
-    
+
             if ($request->has('documents')) {
-                for ($indexDoc=0; $indexDoc < count($request->get('documents')); $indexDoc++) { 
-    
+                for ($indexDoc=0; $indexDoc < count($request->get('documents')); $indexDoc++) {
+
                 do {
                     $idDoc = rand(10000000, 99999999);
                 } while(Projet::find($idDoc) != null);
-        
+
                 if ($request->hasFile("documents.$indexDoc.lien")) {
                     $request->validate([
                         "documents.$indexDoc.lien" =>  ['mimes:pdf,PDF','max:1000000',
@@ -651,25 +654,25 @@ class SessionController extends Controller
                 } else {
                     $lien = null;
                 }
-        
+
                 Document::create([
                     'id' => $idDoc,
                     'designation' => $request->documents[$indexDoc]['designation'],
                     'lien' => $lien
                 ]);
-        
+
                 ContenirDocumentsProjet::create([
                     'id_projet' => $id_projet,
                     'id_document' => $idDoc
                 ]);
             }
         }
-    
+
             $idProjet = Projet::where('id',$id_projet)->get();
-   
+
         return redirect('/Session_Projet/'.$id_session)->with('success','Projet modifié avec succès');
-    
-           
+
+
         }
-    
+
 }

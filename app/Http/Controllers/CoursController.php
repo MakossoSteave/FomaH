@@ -31,7 +31,7 @@ class CoursController extends Controller
         ->paginate(5);
     //    dd($cours);
         //$test = FormationsContenirCours::with('formations')->with('cours')->get();
-                   
+
     return view('admin.cours.index',compact(['cours']/*,['test']*/));
     }
 
@@ -82,13 +82,13 @@ class CoursController extends Controller
         } else {
             $image = null;
         }
-      
+
         if (!empty($request->get('formateur_id'))) {
-            $formateurID = $request->get('formateur_id');  
+            $formateurID = $request->get('formateur_id');
         }else{
             $formateurID = null;
         }
-              
+
 
         Cours::create([
             'id_cours' => $id,
@@ -117,8 +117,8 @@ class CoursController extends Controller
            $Formation= new FormationAdminController;
          //  $Formation->Update_nombre_cours_total($request->get('formation_id'),1);
         }
-       
-      
+
+
         if($request->get('formation_id')!="") {
         return redirect('/cours/'.intval($request->get('formation_id')))->with('success','Le cours a été ajouté avec succès');
         } else {
@@ -165,7 +165,7 @@ class CoursController extends Controller
         $coursToUpdate=Cours::find($id);
         $request->validate([
             'designation' => ['required','max:191', Rule::unique('cours')->where(function ($query) use($id) {
-             
+
                 return $query->where('id_cours',"!=", $id);
             })] ,
             'formateur' => ['nullable','numeric'],
@@ -177,7 +177,7 @@ class CoursController extends Controller
                  new FilenameImage('/[\w\W]{4,181}$/')]
         ]);
 
-    
+
         if ($request->hasFile('image')) {
             $destinationPath = public_path('img/cours/');
             $file = $request->file('image');
@@ -213,19 +213,19 @@ class CoursController extends Controller
                 foreach($formationContenirCours as $f)
                     { $Numero = FormationsContenirCours::where('id_formation',$f->id_formation)->max('numero_cours');
                         FormationsContenirCours::where('id_cours',$id)->update([
-                            
+
                             'numero_cours' => $Numero+1
-                        
+
                         ]);
                         $nombreChapitresCours=Cours::where('id_cours',$id)->value('nombre_chapitres');
                         $Formation= new FormationAdminController;
                         // Mettre à jour le nombre de cours total dans chaque formations
                         $Formation->Update_nombre_cours_total($f->id_formation,1);
-                                    
+
                         // Mettre à jour le nombre de chapitre total dans chaque formations
-        
+
                         $Formation->Update_nombre_chapitre_total($f->id_formation,$nombreChapitresCours);
-                    
+
                         $session =  Session::where('formations_id',$f->id_formation)
                         ->where('etat',1)
                         ->where('statut_id',3)
@@ -237,7 +237,7 @@ class CoursController extends Controller
                             foreach($session as $s){
                             $exists = Contenir_sessions_projet::where('id_session',$s->id)
                             ->where('id_projet',$projet->id)->exists();
-                
+
                             if(!$exists){
                                 Contenir_sessions_projet::create([
                                     'id_projet' => $projet->id ,
@@ -245,7 +245,7 @@ class CoursController extends Controller
                                     'statut_id' => 1,
                                     'date_debut' =>$session->date_debut,
                                     'date_fin' =>$session->date_fin
-                                ]); 
+                                ]);
                             }}
                         }
                     }
@@ -253,8 +253,8 @@ class CoursController extends Controller
             }
 
 
-        
-            
+
+
         }else {
             if(!$this->checkCours($id)){
                 $etatCanChangeSession=false;
@@ -263,13 +263,13 @@ class CoursController extends Controller
             //$this->Update_cours($id);
             $this->checkEtat($id,false);
             }
-           
+
         }
       /*if($etat==1){
           $nbChap= $nombreChapitresCours+1;
       }
       else {
-        $nbChap =$nombreChapitresCours; 
+        $nbChap =$nombreChapitresCours;
       }*/
      if(!empty($request->get('formateur'))){
         $formateur = $request->get('formateur');
@@ -292,11 +292,11 @@ class CoursController extends Controller
             return redirect('/cours/'.$request->get('formation_id'))->with('success','Cours modifié avec succès')
             ->with('error',"L'état ne peut pas être modifié car une session est en cours ! ");
         } else if(!$etatCanChangeProjet){
-            return redirect('/cours/'.$request->get('formation_id'))->with('success','Cours modifié avec succès')->with('error',"L'état ne peut pas être modifié car aucun projet n'est actif ! "); 
+            return redirect('/cours/'.$request->get('formation_id'))->with('success','Cours modifié avec succès')->with('error',"L'état ne peut pas être modifié car aucun projet n'est actif ! ");
         }else {
             return redirect('/cours/'.$request->get('formation_id'))->with('success','Cours modifié avec succès');
         }
-       
+
     }
 
     // public function Update_numero_cours($id_cours,$operation)
@@ -328,30 +328,30 @@ class CoursController extends Controller
             where('id_cours',$id_cours)->get();
         foreach($formationContenirCours as $f)
         {
-            
-            
+
+
 
             // Mettre à jour le nombre de cours total dans chaque formations
             $Formation->Update_nombre_cours_total($f->id_formation,-1);
-            
+
             // Mettre à jour le nombre de chapitre total dans chaque formations
 
             $Formation->Update_nombre_chapitre_total($f->id_formation,-$nombreChapitresCours);
-            
-            
+
+
              // Mettre à jour le numero de cours dans chaque formations
-           
+
                 FormationsContenirCours::where('id_formation',$f->id_formation)
             ->where("numero_cours",">",$f->numero_cours)
-            ->decrement('numero_cours',1);  
+            ->decrement('numero_cours',1);
             FormationsContenirCours::where('id_cours',$id_cours)->update([
-                            
+
                 'numero_cours' => 0
-            
+
             ]);
         }
     }
-    
+
     public function etat($id)
     {
         $cours = Cours::find($id);
@@ -380,18 +380,18 @@ class CoursController extends Controller
                 foreach($formationContenirCours as $f)
                     { $Numero = FormationsContenirCours::where('id_formation',$f->id_formation)->max('numero_cours');
                         FormationsContenirCours::where('id_cours',$id)->update([
-                            
+
                             'numero_cours' => $Numero+1
-                        
+
                         ]);
 
                         $nombreChapitresCours=Cours::where('id_cours',$id)->value('nombre_chapitres');
                         $Formation= new FormationAdminController;
                         // Mettre à jour le nombre de cours total dans chaque formations
                         $Formation->Update_nombre_cours_total($f->id_formation,1);
-                                    
+
                         // Mettre à jour le nombre de chapitre total dans chaque formations
-        
+
                         $session =  Session::where('formations_id',$f->id_formation)
                         ->where('etat',1)
                         ->where('statut_id',3)
@@ -403,7 +403,7 @@ class CoursController extends Controller
                             foreach($session as $s){
                             $exists = Contenir_sessions_projet::where('id_session',$s->id)
                             ->where('id_projet',$projet->id)->exists();
-                
+
                             if(!$exists){
                                 Contenir_sessions_projet::create([
                                     'id_projet' => $projet->id ,
@@ -411,19 +411,19 @@ class CoursController extends Controller
                                     'statut_id' => 1,
                                     'date_debut' =>$session->date_debut,
                                     'date_fin' =>$session->date_fin
-                                ]); 
+                                ]);
                             }
                         }  }  $Formation->Update_nombre_chapitre_total($f->id_formation,$nombreChapitresCours);
-                    
-                    
-                    
+
+
+
                     }
 
-               
+
             }
 
 
-        }   
+        }
         // etat == 0
         else {
             if(!$this->checkCours($id)){
@@ -432,21 +432,21 @@ class CoursController extends Controller
             }else {
             //$this->Update_cours($id);
             $this->checkEtat($id,false);
-            
+
         }
-            
+
         }
         //
 
         //return
         if(!$etatCanChangeChapitre){
-            return redirect()->back()->with('error',"L'état ne peut pas être modifié car aucun chapitre n'est actif ! "); 
+            return redirect()->back()->with('error',"L'état ne peut pas être modifié car aucun chapitre n'est actif ! ");
         }
         else if(!$etatCanChangeProjet){
-            return redirect()->back()->with('error',"L'état ne peut pas être modifié car aucun projet n'est actif ! "); 
+            return redirect()->back()->with('error',"L'état ne peut pas être modifié car aucun projet n'est actif ! ");
         }
         else if(!$etatCanChangeSession){
-            return redirect()->back()->with('error',"L'état ne peut pas être modifié car une session est acitve ! "); 
+            return redirect()->back()->with('error',"L'état ne peut pas être modifié car une session est acitve ! ");
         }
         else {
         Cours::where('id_cours', $id)->update(array('etat' => $etat));
@@ -462,32 +462,32 @@ class CoursController extends Controller
             return redirect()->back()->with('error',"Ne peut pas être supprimé car une session est en cours");/* et aucun autre chapitre n'est actif");*/
             }
         }
-       
+
         // toutes les id formations qui contienent le cours
         $this->checkEtat($id,true);
         $this->checkCoursSuivreFormation($id);
-        
+
         /*************************** */
 
         // nombre de chapitres du cours
         $nombreChapitresCours=Cours::where('id_cours',$id)->value('nombre_chapitres');
         $Formation= new FormationAdminController;
 
-        
+
         $formationContenirCours = FormationsContenirCours::
             where('id_cours',$id)->get();
         foreach($formationContenirCours as $f)
         {
-            
+
             if($cours->etat==1){
 
             // Mettre à jour le nombre de cours total dans chaque formations
             $Formation->Update_nombre_cours_total($f->id_formation,-1);
-            
+
             // Mettre à jour le nombre de chapitre total dans chaque formations
 
             $Formation->Update_nombre_chapitre_total($f->id_formation,-$nombreChapitresCours);
-            
+
              }
              // Supprimer le cours des formations
              FormationsContenirCours::where('id_cours',$id)->delete();
@@ -495,32 +495,32 @@ class CoursController extends Controller
              if($cours->etat==1){ FormationsContenirCours::where('id_formation',$f->id_formation)
                 ->where("numero_cours",">",$f->numero_cours)
                 ->decrement('numero_cours',1);}
-           
+
         }
 
          /*************************** */
 
         // Supprimer le cours
         Cours::where('id_cours',$id)->delete();
-       
+
         return redirect()->back()->with('success','Cours supprimé avec succès');
-    
+
     }
     public function checkEtat($id,$destroy){
         $cursus =  FormationsContenirCours::select('id_formation')
         ->where('id_cours',$id)->get();
-     
+
        foreach($cursus as $c) {
 
             $coursDeLaFormation = FormationsContenirCours::select('id_cours')
             ->where('id_formation',$c->id_formation)
             ->get();
-            
+
             $cours = Cours::where('etat',"=",1)
             ->whereIn('id_cours',$coursDeLaFormation)
             ->where('id_cours',"!=",$id)
             ->count();
-        
+
             // $test = Cours::with('cours.formations')->get();
            /* $session =  Session::where('formations_id',$c->id_formation)
             ->where('etat',1)
@@ -530,19 +530,19 @@ class CoursController extends Controller
         if( $cours==0 /*&& $session==null*/){
 
          Formation::where('id',$c->id_formation)->update([
-                    
+
                     'etat' => 0
-                   
+
                 ]);}
                Session::where('formations_id',$c->id_formation)->update([
                    'etat' => 0
                ]);
         }
         if(!$destroy){ $this->Update_cours($id); }
-       
+
     }
     public function checkCours($id_cours){
-       
+
         $Formation=FormationsContenirCours::where('id_cours',$id_cours)
         ->get();
         foreach($Formation as $f){
@@ -559,8 +559,8 @@ class CoursController extends Controller
     }
     public function checkCoursSuivreFormation($id_cours){
        $Suivre= Suivre_formation::where("id_cours",$id_cours)->get();
-      
-      
+
+
        foreach($Suivre as $s){
         $cours= FormationsContenirCours::where('id_cours',$id_cours)
         ->where('id_formation',$s->id_formations)->first();
@@ -574,19 +574,20 @@ class CoursController extends Controller
                     'id_chapitre' => $chapitre->id_chapitre,
                     'id_chapitre_Courant'=> $chapitre->id_chapitre
                 ]);
-                
+
                 if($s->nombre_chapitre_lu<0){
                     $s->update([
-                        
+
                         'nombre_chapitre_lu' => 0
-                       
+
                     ]);
                 }
             } else {
                // dd($cours->numero_cours);
+               Lier_sessions_stagiaire::where('id_stagiaire',$s->id_stagiaire)->where('id_session',$s->id_session)->update(['etat' => 0]);
                 $s->delete();
             }
-          
+
             $projet=Projet::where('etat',1)->where('id_cours',$id_cours)->first();
             Faire_projet::where('id_projet',$projet->id)->delete();
             $chapitre=Chapitre::where('etat',1)->where('id_cours',$id_cours)->get();
@@ -595,12 +596,12 @@ class CoursController extends Controller
               // dd($chapitre);
                 foreach($chapitre as $c){
                     $qcm = Qcm::where('etat',1)->where('id_chapitre',$c->id_chapitre)->first();
-                    
+
                     Score_qcm::where('qcm_id',$qcm->id)->delete();
                 }
             }
-           
-           
+
+
        }
 
     }

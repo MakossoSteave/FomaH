@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Http\Response; 
+use Illuminate\Http\Response;
 // use App\Models\Formations;
 // use App\Models\User;
 
@@ -93,7 +93,7 @@ Route::get('/AjouterStagiaireSession/{id}', [App\Http\Controllers\SessionControl
 Route::post('/AddStagiaire/{id}', [App\Http\Controllers\SessionController::class, 'store_stagiaire_session'])->name('AddStagiaire');
 Route::delete('/removeStagiaire/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'removeStagiaire'])->name('removeStagiaire');
 Route::get('/etatStagiaireSession/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'etatStagiaireSession'])->name('etatStagiaireSession');
-Route::get('/editStagiaireSession/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'editStagiaire'])->name('editStagiaireSession');
+Route::get('/editStagiaireSession/{idStagiaire}/{idSession}', [App\Http\Controllers\SessionController::class, 'editStagiaire'])->name('editStagiaireSession');
 Route::get('/createPDF/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'createPDF'])->name('createPDF');
 Route::post('/editStagiaireSession/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'editResultStagiaire'])->name('editResultStagiaire');
 Route::get('/progressionStagiaire/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'progressionStagiaire'])->name('progressionStagiaire');
@@ -155,17 +155,17 @@ Route::get('/intranet/coursSuivant', [App\Http\Controllers\IntranetController::c
 Route::get('storage/{filename}', function ($filename)
 {
     $path = storage_path('public/' . $filename);
- 
+
     if (!File::exists($path)) {
         abort(404);
     }
- 
+
     $file = File::get($path);
     $type = File::mimeType($path);
- 
+
     $response = Response::make($file, 200);
     $response->header("Content-Type", $type);
- 
+
     return $response;
 });
 
