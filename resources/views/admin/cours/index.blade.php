@@ -14,7 +14,7 @@
             <span class="icon is-small is-right"><i class="fas fa-plus"></i></span>
         </a>
     </div>
-    
+
     @if (session('success'))
         <div class="notification is-success has-text-centered my-4">
             {{ session('success') }}
@@ -30,11 +30,11 @@
 
     @if($cours->isEmpty())
         <div class="notification is-warning has-text-centered my-4">
-            Aucun cours n'existe pour cette formation
+            Aucun cours n'existe
         </div>
     @else
 
-  
+
 
     @foreach ($cours as $cour)
     <div class="card my-6">
@@ -45,7 +45,7 @@
                 <img class="image is-4by3" src="{{ URL::asset('/') }}img/cours/{{$cour->image}}" alt="Placeholder image">
             </div>
             @endif
-            
+
             <div class="media-content">
                 <div class="flex">
             <div>
@@ -61,9 +61,9 @@
                         </span>
                         </button>
                     </div>
-            
-                    <div class="dropdown-menu" 
-                        id="dropdown-menu" 
+
+                    <div class="dropdown-menu"
+                        id="dropdown-menu"
                         role="menu">
                         <div class="dropdown-content">
                         <form action="{{ route('chapitres', $cour->id_cours) }}" method="GET">
@@ -88,7 +88,7 @@
                         <p class="title is-6 mt-4">Nombre de chapitres actifs: {{$cour->nombre_chapitres}}</p>
                         <p class="title is-6">Prix: {{$cour->prix}}€</p>
                         <a class="{{ $cour->etat == 1 ? 'text-green-600' : 'text-red-600'  }} mb-8" href="{{ route('etatCours', $cour->id_cours) }}">
-                        @if($cour->etat == 1) 
+                        @if($cour->etat == 1)
                         Activé
                         @else
                         Désactivé
@@ -128,7 +128,7 @@
                                 $("html").addClass("is-clipped");
                                 $(target).addClass("is-active");
                             });
-                            
+
                             $(".delete").click(function() {
                                 var target = $(".modal-button").data("target");
                                 $("html").removeClass("is-clipped");
