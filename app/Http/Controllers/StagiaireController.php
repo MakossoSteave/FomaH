@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 class StagiaireController extends Controller
 {
-    
+
     public function index(){
         $data = Formation::orderBy('id','desc')->paginate(8)->setPath('stagiaire');
         $idUserAuth=null;
@@ -34,7 +34,7 @@ class StagiaireController extends Controller
             ->where('sessions.etat',1)
             ->where('sessions.statut_id',3)->exists();}
         else {
-            $SuivreFormation = false; 
+            $SuivreFormation = false;
         }
         return view('stagiaire/index',compact(['data']),['SuivreFormation'=>$SuivreFormation]);
     }
@@ -42,12 +42,12 @@ class StagiaireController extends Controller
     public function create(Request $request)
     {
         $typeInscriptions = types_inscription::all();
-        
+        $request->session()->put('typeInscriptions', $typeInscriptions);
         $organisations = Organisation::orderBy('designation','asc')->get();
         $request->session()->put('organisations', $organisations);
         $formateurs = Formateur::orderBy('nom','asc')->get();
         $request->session()->put('formateurs', $formateurs);
-        
+
         $entreprises = Entreprise::orderBy('designation','asc')->get();
         $request->session()->put('entreprises', $entreprises);
         return view('admin.user.stagiaire.create', compact(['typeInscriptions','organisations','entreprises','formateurs']));
@@ -60,13 +60,13 @@ class StagiaireController extends Controller
         $user = $Formation->userRef;
         $al = User:: find($user);
         $referenceee = Formation::where("userRef",$user)->take(10)->get();
-        
-      
+
+
         //$databis =Formation::all();
 
        return view('stagiaire.formation.Show',compact(['Formation','al', 'referenceee']));
     }
-    
+
 
     public function stagiaire(){
         $stagiaires = Stagiaire::select('stagiaires.*','users.image','users.email','formateurs.nom as coachNom','formateurs.prenom as coachPrenom','organisations.designation as organisation','entreprises.designation as entreprise','types_inscriptions.type as typeInscription')
@@ -94,19 +94,19 @@ class StagiaireController extends Controller
         $request->session()->put('typeInscriptions', $typeInscriptions);
         $organisations = Organisation::orderBy('designation','asc')->get();
         $request->session()->put('organisations', $organisations);
-    
+
         $formateurs = Formateur::orderBy('nom','asc')->get();
         $request->session()->put('formateurs', $formateurs);
-        
+
         $entreprises = Entreprise::orderBy('designation','asc')->get();
-        $request->session()->put('entreprises', $entreprises);  
-    
+        $request->session()->put('entreprises', $entreprises);
+
         return view('admin.user.stagiaire.edit',compact(['stagiaire','typeInscriptions','organisations','entreprises','formateurs']));
       }
       else {
         return redirect('/stagiaires/')->with('error',"Le stagiaire n'existe pas ");
        }
-   
+
     }
     public function store(Request $request){
 
@@ -121,11 +121,11 @@ class StagiaireController extends Controller
                 'entreprise_id' => ['nullable','numeric'
                 ,'in:'.$request->session()->get('entreprises')->implode('id', ', ')],
                 'typeInscription' => ['required','numeric',
-                'in:'.$request->session()->get('typeInscriptions')->implode('id', ', ')],
+                'in:'.$request->session()->get('typeInscriptions')? : $request->session()->get('typeInscriptions')->implode('id', ', ')],
                 'organisation_id' => ['nullable','numeric'
                 ,'in:'.$request->session()->get('organisations')->implode('id', ', ')],
                 'motdepasse' => ['required','string', 'min:8', 'confirmed'],
-                'motdepasse_confirmation' => ['required','string', 'min:8'], 
+                'motdepasse_confirmation' => ['required','string', 'min:8'],
                 'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF','max:10000',
                         new FilenameImage('/[\w\W]{4,181}$/')]
             ]);
@@ -141,12 +141,12 @@ class StagiaireController extends Controller
             if(($request->get('typeInscription')==3) && (empty($request->get('entreprise_id')) )){
                 return redirect('/addStagiaire/')->with('error',"Vous devez choisir un Entreprise !");
             }
-            
+
 
             do {
                 $id = rand(10000000, 99999999);
             } while(User::find($id) != null);
-   
+
             if ($request->hasFile('image')) {
                 $destinationPath = public_path('img/user/');
                 $file = $request->file('image');
@@ -206,11 +206,11 @@ class StagiaireController extends Controller
             ]);
 
            return redirect('/stagiaires/')->with('success','Le stagiaire a été ajouté avec succès');
-          
+
     }
-    
+
        public function update(Request $request,$idUser){
-          
+
         $stagiaire = Stagiaire::where('user_id',$idUser)->first();
         $user = User::find($idUser);
         if($stagiaire)
@@ -222,13 +222,13 @@ class StagiaireController extends Controller
                         'motdepasse_confirmation' => ['required','string', 'min:8']]);
                         $oldMdp=$request->get('Oldmotdepasse');
                         $oldMdpBD=(User::find($idUser))->password;
-                        if(! Hash::check($oldMdp,$oldMdpBD)){ 
-                            return redirect()->back()->with('error','Mot de passe incorrecte !'); 
+                        if(! Hash::check($oldMdp,$oldMdpBD)){
+                            return redirect()->back()->with('error','Mot de passe incorrecte !');
                             }
                         }
                 $request->validate([
                     'email' => ['required','email','max:191',Rule::unique('users')->where(function ($query) use($idUser) {
-             
+
                         return $query->where('id',"!=", $idUser);
                     })],
                     'nom' => ['required','string','max:191'],
@@ -258,7 +258,7 @@ class StagiaireController extends Controller
                 if(($request->get('typeInscription')==3) && (empty($request->get('entreprise_id')) )){
                     return redirect()->back()->with('error',"Vous devez choisir un Entreprise !");
                 }
-                
+
                 if ($request->hasFile('image')) {
                     $destinationPath = public_path('img/user/');
                     $file = $request->file('image');
@@ -318,14 +318,14 @@ class StagiaireController extends Controller
                 else {
                     User::where('id',$idUser)->update([
                         'name' => $request->get('nom'),
-                        'email' =>$request->get('email'), 
+                        'email' =>$request->get('email'),
                         'image' => $image,
                         'role_id'=>3
                     ]);
                     }
-            
+
                 Stagiaire::where('user_id',$idUser)->update([
-                
+
                     'nom' =>  $request->get('nom'),
                     'prenom' => $prenom,
                     'telephone' => $telephone,
@@ -336,7 +336,7 @@ class StagiaireController extends Controller
                 ]);
 
             return redirect('/stagiaires/')->with('success','Le stagiaire a été modifié avec succès');
-      
+
         } else {
             return redirect('/stagiaires/')->with('error',"Le stagiaire n'existe pas ");
         }
