@@ -45,7 +45,7 @@
 | Nom | Description | Type | Commentaire |
 | :--------------- |:---------------:|:---------------:| -----:|
 | ID | Identifiant du type d'inscription | BigInt | Clé primaire |
-| Type| Type d'inscription du stagiaire | Char |Indépendant,Indépendant,Entreprise  |
+| Type| Type d'inscription du stagiaire | Char |Indépendant,Organisation,Entreprise  |
 | created_at | Date de création | Timestamp |   |
 | updated_at | Date de modification | Timestamp |   |
 
