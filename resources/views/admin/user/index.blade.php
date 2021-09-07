@@ -9,7 +9,7 @@
             <input class="input" type="search" placeholder="Rechercher..."/>
             <span class="icon is-small is-right"><i class="fas fa-search"></i></span>
         </p>
-       
+
     </div>
     @if (session('success'))
         <div class="notification is-success has-text-centered my-4">
@@ -30,7 +30,7 @@
         </div>
     @else
 
-  
+
 
     @foreach ($users as $user)
     <div class="card my-6">
@@ -43,13 +43,13 @@
             </figure>
             </div>
             @endif
-            
+
             <div class="media-content">
                 <div class="flex">
             <div>
-              
+
             </div>
-                
+
                 </div>
             </div>
         </div>
@@ -60,7 +60,7 @@
                         <p><span class="title is-6"> Nom: </span> <span class="subtitle is-6"> {{$user->name}}</span></p>
                         <p><span class="title is-6">Email:</span> <span class="subtitle is-6">{{$user->email}}</span></p>
                         <p><span class="title is-6">Role:</span> <span class="subtitle is-6">{{$user->type}}</span></p>
-                      
+
 
                     </div>
                     <div class="flex-bottom">
@@ -69,7 +69,9 @@
                             <button type="submit" class="button button-card is-info">Modifier</button>
                         </form>
                             <p>
+                                @if($user->role_id!==1)
                                 <a class = "button is-danger button-card modal-button" data-target = "#{{$user->id}}">Supprimer</a>
+                                @endif
                             </p>
                             <div id="{{$user->id}}" class="modal">
                                 <div class="modal-background"></div>
@@ -96,7 +98,7 @@
                                 $("html").addClass("is-clipped");
                                 $(target).addClass("is-active");
                             });
-                            
+
                             $(".delete").click(function() {
                                 var target = $(".modal-button").data("target");
                                 $("html").removeClass("is-clipped");
