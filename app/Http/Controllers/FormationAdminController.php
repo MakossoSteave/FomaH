@@ -22,7 +22,7 @@ class FormationAdminController extends Controller
     public function index(Request $request)
     {
         $formations = Formation::orderBy('id','desc')->paginate(3)->setPath('cursus');
-        $request->session()->forget('cursusId');           
+        $request->session()->forget('cursusId');
         return view('admin.formation.index',compact(['formations']));
     }
 
@@ -97,7 +97,7 @@ class FormationAdminController extends Controller
         $formation=Formation::find($id);
         $request->validate([
          'libelle' =>['required','max:191', Rule::unique('formations')->where(function ($query) use($id) {
-             
+
             return $query->where('id',"!=", $id);
         })] ,
          'description' => ['required','max:1000'],
@@ -125,15 +125,15 @@ class FormationAdminController extends Controller
         $etatCanChangeCours=true;
         $etatCanChangeSession=true;
         if($etat==1 && $etat!=$formation->etat){
-        
+
             $coursDeLaFormation = FormationsContenirCours::select('id_cours')
             ->where('id_formation',$id)
             ->get();
             $cours = Cours::where('etat',"=",1)
-           
+
             ->whereIn('id_cours',$coursDeLaFormation)
             ->count();
-            
+
             if( $cours ==0){
                 $etat=0;
                 $etatCanChangeCours=false;
@@ -141,7 +141,7 @@ class FormationAdminController extends Controller
         }else  if($etat==0 && $etat!=$formation->etat){
             $session =  Session::where('formations_id',$id)
             ->where('etat',1)
-            
+
             ->first();
             if($session!=null){
                 $etat=1;
@@ -167,14 +167,14 @@ class FormationAdminController extends Controller
         else {
             return redirect('/cursus/'.$request->session()->get('cursusId'))->with('success','Formation modifié avec succès');
         }
-      
-        
+
+
     }
 
     public function createCours($id)
     {
         $coursDeLaFormation = Cours::select('cours.id_cours')
-       
+
        ->leftJoin('formations_contenir_cours', 'formations_contenir_cours.id_cours', '=','cours.id_cours')
         ->where('formations_contenir_cours.id_formation',"=",$id)
        ->get();
@@ -190,16 +190,16 @@ class FormationAdminController extends Controller
     {
         $Cours = Cours::find($request->get('id_cours'));
         //$numero_cours = FormationsContenirCours::where("id_formation","=",$id)->max('numero_cours');
-       
+
         if($Cours->etat==1){
         $numero_cours = FormationsContenirCours::where("id_formation","=",$id)->max('numero_cours');
-    
+
             if ($numero_cours == null) {
                 $numero_cours = 1;
             } else {
                 $numero_cours = $numero_cours+1;
             }
-           
+
         }
         else {
             $numero_cours = 0;
@@ -209,10 +209,10 @@ class FormationAdminController extends Controller
             'id_formation' => $id,
             'numero_cours' => $numero_cours
         ]);
-       
+
         if($Cours->etat==1){
             $this->Update_nombre_cours_total($id,1);
-       
+
             $CoursNombreChapitre = $Cours->nombre_chapitres;
             $this->Update_nombre_chapitre_total($id,$CoursNombreChapitre);
 
@@ -223,16 +223,16 @@ class FormationAdminController extends Controller
             ->where('etat',1)
             ->where('statut_id',3)
             ->get();
-           
+
             if($session!=null){
                 $projet = Projet::where('etat',1)
                 ->where('id_cours',$Cours->id_cours)
                 ->first();
-            
+
                 foreach($session as $s){
                 $exists = Contenir_sessions_projet::where('id_session',$s->id)
                 ->where('id_projet',$projet->id)->exists();
-    
+
                 if(!$exists){
                     Contenir_sessions_projet::create([
                         'id_projet' => $projet->id ,
@@ -240,10 +240,10 @@ class FormationAdminController extends Controller
                         'statut_id' => 1,
                         'date_debut' =>$session->date_debut,
                         'date_fin' =>$session->date_fin
-                    ]); 
+                    ]);
                 }}}}
         }
-       
+
 
        return redirect('/cours/'.intval($id))->with('success','Le cours a été ajouté avec succès');
     }
@@ -280,15 +280,15 @@ class FormationAdminController extends Controller
         $etatCanChangeCours=true;
         $etatCanChangeSession=true;
         if($etat==1){
-        
+
             $coursDeLaFormation = FormationsContenirCours::select('id_cours')
             ->where('id_formation',$id)
             ->get();
             $cours = Cours::where('etat',"=",1)
-           
+
             ->whereIn('id_cours',$coursDeLaFormation)
             ->count();
-            
+
             if( $cours ==0){
                 $etat=0;
                 $etatCanChangeCours=false;
@@ -296,7 +296,7 @@ class FormationAdminController extends Controller
         }else {
             $session =  Session::where('formations_id',$id)
             ->where('etat',1)
-            
+
             ->first();
             if($session!=null){
                 $etat=1;
@@ -313,23 +313,24 @@ class FormationAdminController extends Controller
         Formation::where('id', $id)->update(array('etat' => $etat));
         return redirect()->back()->with('success','Etat modifié avec succès');
         }
-       
+
     }
 
     public function destroy($id)
     {
-        
+
   $session =  Session::where('formations_id',$id)
   ->where('etat',1)
-  
+
   ->first();
   if($session!=null){
     return redirect()->back()->with('error','Ne peut pas être supprimé car une session est active !');
   } else{
+    FormationsContenirCours::where('id_formation',$id)->delete();
     Formation::where('id',$id)->delete();
     return redirect()->back()->with('success','Supprimé avec succès');
   }
-        
+
     }
     public function removeCours($idCours,$idFormation){
         $cours = Cours::find($idCours);
@@ -347,7 +348,7 @@ class FormationAdminController extends Controller
                 }
             }
         }
-        
+
   $formationContenirCours = FormationsContenirCours::
             where('id_cours',$idCours)
             ->where('id_formation',$idFormation)
@@ -356,20 +357,20 @@ class FormationAdminController extends Controller
 
             $Formation= new FormationAdminController;
 
-            
+
             $formationContenirCours = FormationsContenirCours::
                 where('id_cours',$idCours)->get();
                 $nombreChapitresCours=Cours::where('id_cours',$idCours)->value('nombre_chapitres');
             foreach($formationContenirCours as $f)
             {
-                
+
                 if($cours->etat==1){
-    
+
                 // Mettre à jour le nombre de cours total dans chaque formations
                 $Formation->Update_nombre_cours_total($f->id_formation,-1);
-                
+
                 // Mettre à jour le nombre de chapitre total dans chaque formations
-    
+
                 $Formation->Update_nombre_chapitre_total($f->id_formation,-$nombreChapitresCours);
                 FormationsContenirCours::where('id_formation',$f->id_formation)
                 ->where("numero_cours",">",$f->numero_cours)
@@ -378,10 +379,10 @@ class FormationAdminController extends Controller
                  // Supprimer le cours des formations
                  FormationsContenirCours::where('id_cours',$idCours)->delete();
                  // Mettre à jour le numero de cours dans chaque formations
-               
+
             }
-        
-        
+
+
 
         $CoursController = new CoursController;
         $CoursController->checkEtat($idCours,false);
@@ -389,18 +390,18 @@ class FormationAdminController extends Controller
         $coursDeLaFormation = FormationsContenirCours::select('id_cours')
             ->where('id_formation',$idFormation)
             ->get();
-            
+
             $coursNumber = Cours::where('etat',"=",1)
             ->whereIn('id_cours',$coursDeLaFormation)
             ->where('id_cours',"!=",$idCours)
             ->count();
-        
+
         if(  $coursNumber==0){
 
  Formation::where('id',$idFormation)->update([
-                    
+
                     'etat' => 0
-                   
+
                 ]);}
 
 */
@@ -414,5 +415,5 @@ class FormationAdminController extends Controller
             Contenir_sessions_projet::where('id_projet',$p->id)->delete();
         }
         return redirect()->back()->with('success','Supprimé avec succès');
-    } 
+    }
 }

@@ -512,18 +512,22 @@ class SessionController extends Controller
         return view('admin.session.stagiaire.progression.qcmView',compact(['qcm']));
     }
 
-    public function projetStagiaire($id,$idSession){
-        /* $projets=Projet::select('faire_projets')->with('Session')->with('Stagiaire')->where('contenir_sessions_projets.id_session',$idSession)
+    public function projetStagiaire($idStagiaire,$idSession)
+
+    {
+        /* $projets=Projet::select('faire_projets','contenir_sessions_projets.id_session')->with('Session')->with('Stagiaire')->where('contenir_sessions_projets.id_session',$idSession)
          ->where('faire_projets.id_stagiaire',$id)
          ->orderBy('faire_projets.updated_at','desc')->paginate(8)->setPath('projetStagiaire');*/
          $projets=Faire_projet::select('faire_projets.*','projets.description','contenir_sessions_projets.id_session')
          ->join('contenir_sessions_projets','contenir_sessions_projets.id_projet','faire_projets.id_projet')
          ->join('projets','projets.id','faire_projets.id_projet')
          ->where('contenir_sessions_projets.id_session',$idSession)
-         ->where('faire_projets.id_stagiaire',$id)
+         ->where('faire_projets.id_stagiaire',$idStagiaire)
          ->orderBy('updated_at','desc')->paginate(8)->setPath('projetStagiaire');
          return view('admin.session.stagiaire.progression.projet',compact(['projets']));
-     }
+
+    }
+
 
      public function projetViewStagiaire($id){
         $projet = Projet::find($id);

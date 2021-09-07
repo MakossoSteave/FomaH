@@ -18,8 +18,8 @@ class CreateParticiperMeetingTable extends Migration
             $table->bigInteger('id_utilisateur')->unsigned();
             $table->bigInteger('id_meeting')->unsigned();
             $table->primary(['id_utilisateur', 'id_meeting']);
-            $table->foreign('id_meeting')->references('id')->on('meeting_en_lignes');    
-            $table->foreign('id_utilisateur')->references('id')->on('users');
+            $table->foreign('id_meeting')->references('id')->on('meeting_en_lignes')->onDelete('cascade');
+            $table->foreign('id_utilisateur')->references('id')->on('users')->onDelete('cascade');
             $table->boolean('validation')->nullable();
             $table->timestamps();
         });

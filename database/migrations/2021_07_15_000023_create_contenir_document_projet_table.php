@@ -18,8 +18,8 @@ class CreateContenirDocumentProjetTable extends Migration
             $table->bigInteger('id_projet')->unsigned();
             $table->bigInteger('id_document')->unsigned();
             $table->primary(['id_projet', 'id_document']);
-            $table->foreign('id_document')->references('id')->on('documents');    
-            $table->foreign('id_projet')->references('id')->on('projets');
+            $table->foreign('id_document')->references('id')->on('documents')->onDelete('cascade');
+            $table->foreign('id_projet')->references('id')->on('projets')->onDelete('cascade');
             $table->timestamps();
         });
     }

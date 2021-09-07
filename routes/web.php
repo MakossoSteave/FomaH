@@ -99,7 +99,7 @@ Route::post('/editStagiaireSession/{id}/{idSession}', [App\Http\Controllers\Sess
 Route::get('/progressionStagiaire/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'progressionStagiaire'])->name('progressionStagiaire');
 Route::get('/qcmStagiaire/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'qcmStagiaire'])->name('qcmStagiaire');
 Route::get('/qcmViewStagiaire/{id}', [App\Http\Controllers\SessionController::class, 'qcmViewStagiaire'])->name('qcmViewStagiaire');
-Route::get('/projetStagiaire/{id}/{idSession}', [App\Http\Controllers\SessionController::class, 'projetStagiaire'])->name('projetStagiaire');
+Route::get('/projetStagiaire/{idStagiaire}/{idSession}', [App\Http\Controllers\SessionController::class, 'projetStagiaire'])->name('projetStagiaire');
 Route::get('/projetViewStagiaire/{id}', [App\Http\Controllers\SessionController::class, 'projetViewStagiaire'])->name('projetViewStagiaire');
 Route::get('/projetStagiaireModifierResultat/{id_projet}/{id_stagiaire}/{idSession}', [App\Http\Controllers\SessionController::class, 'projetStagiaireModifierResultat'])->name('projetStagiaireModifierResultat');
 Route::post('/editResultProjetStagiaire/{id_projet}/{id_stagiaire}', [App\Http\Controllers\SessionController::class, 'editResultProjetStagiaire'])->name('editResultProjetStagiaire');

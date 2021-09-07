@@ -18,8 +18,8 @@ class CreateContenirDocumentChapitreTable extends Migration
             $table->bigInteger('id_doc')->unsigned();
             $table->bigInteger('id_chapitre')->unsigned();
             $table->primary(['id_doc', 'id_chapitre']);
-            $table->foreign('id_doc')->references('id')->on('documents');    
-            $table->foreign('id_chapitre')->references('id_chapitre')->on('chapitres');
+            $table->foreign('id_doc')->references('id')->on('documents')->onDelete('cascade');
+            $table->foreign('id_chapitre')->references('id_chapitre')->on('chapitres')->onDelete('cascade');
             $table->timestamps();
         });
     }
