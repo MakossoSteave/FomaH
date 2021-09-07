@@ -121,7 +121,7 @@ class StagiaireController extends Controller
                 'entreprise_id' => ['nullable','numeric'
                 ,'in:'.$request->session()->get('entreprises')->implode('id', ', ')],
                 'typeInscription' => ['required','numeric',
-                'in:'.$request->session()->get('typeInscriptions')? : $request->session()->get('typeInscriptions')->implode('id', ', ')],
+                'in:'.$request->session()->get('typeInscriptions')->implode('id', ', ')],
                 'organisation_id' => ['nullable','numeric'
                 ,'in:'.$request->session()->get('organisations')->implode('id', ', ')],
                 'motdepasse' => ['required','string', 'min:8', 'confirmed'],
