@@ -42,7 +42,7 @@ class UtilisateurController extends Controller
         else {
           return redirect('/utilisateurs/')->with('error',"L'utilisateur n'existe pas ");
          }
-     
+
       }
       public function update(Request $request,$id){
         $user = User::find($id);
@@ -55,13 +55,13 @@ class UtilisateurController extends Controller
                         'motdepasse_confirmation' => ['required','string', 'min:8']]);
                         $oldMdp=$request->get('Oldmotdepasse');
                         $oldMdpBD=(User::find($id))->password;
-                        if(! Hash::check($oldMdp,$oldMdpBD)){ 
-                            return redirect()->back()->with('error','Mot de passe incorrecte !'); 
+                        if(! Hash::check($oldMdp,$oldMdpBD)){
+                            return redirect()->back()->with('error','Mot de passe incorrecte !');
                             }
                         }
                 $request->validate([
                     'email' => ['required','email','max:191',Rule::unique('users')->where(function ($query) use($id) {
-             
+
                         return $query->where('id',"!=", $id);
                     })],
                     'nom' => ['required','string','max:191'],
@@ -70,8 +70,8 @@ class UtilisateurController extends Controller
                     'image' => ['mimes:jpeg,png,bmp,tif,gif,ico,jpg,GIF','max:10000',
                             new FilenameImage('/[\w\W]{4,181}$/')]
                 ]);
-              
-                
+
+
                 if ($request->hasFile('image')) {
                     $destinationPath = public_path('img/user/');
                     $file = $request->file('image');
@@ -81,7 +81,7 @@ class UtilisateurController extends Controller
                 } else {
                     $image = $user->image;
                 }
-               
+
                 if($request->get('motdepasse'))
                 {
                     User::where('id',$id)->update([
@@ -95,26 +95,26 @@ class UtilisateurController extends Controller
                 else {
                     User::where('id',$id)->update([
                         'name' => $request->get('nom'),
-                        'email' =>$request->get('email'), 
+                        'email' =>$request->get('email'),
                         'image' => $image,
                         'role_id'=>$request->get('role')
                     ]);
                     }
 
-          /* if($user->role_id !=$request->get('role') ) {
+           if($user->role_id !=$request->get('role') ) {
                 if($request->get('role')==1){
                     do {
                         $idFormateur = rand(10000000, 99999999);
                     } while(Formateur::find($idFormateur) != null);
-        
+
                     Formateur::create([
                         'id' =>  $idFormateur,
                         'nom' => $request->get('nom'),
                         'user_id' => $id
                     ]);
-                }/* else if($request->get('role')==4){
+                } else if($request->get('role')==4){
                     Formateur::where('user_id',$id)->delete();
-                }*/ /*else if($request->get('role')==2){
+                }} /*else if($request->get('role')==2){
                     Stagiaire::where('user_id',$id)->delete();
                     do {
                         $idCentre = rand(10000000, 99999999);
@@ -136,15 +136,15 @@ class UtilisateurController extends Controller
                     ]);
                 }*/
             /*}*/
-            
+
 
             return redirect('/utilisateurs/')->with('success',"L'utilisateur a été modifié avec succès");
-      
+
         } else {
             return redirect('/utilisateurs/')->with('error',"L'utilisateur n'existe pas ");
         }
       }
-    
+
       public function destroy($id)
     {
         $user = User::where('id',$id)->first();
