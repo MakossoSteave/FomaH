@@ -54,7 +54,6 @@
         @endif
         @else
         @if (Auth::user()->role_id==1)
-<<<<<<< HEAD
 
         <link href="https://fonts.googleapis.com/css?family=Nunito:400,700,800" rel="stylesheet">
 
@@ -97,8 +96,6 @@
                                 class="w-full inline-block pb-1 md:pb-0 text-sm">Statistique</span>
                         </a>
                     </li>
-=======
->>>>>>> a8ab41008ee5df44f098d8fbf743d9f3a2187f1e
 
         <div class="container is-fluid">
             <div class="user">

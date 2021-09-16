@@ -22,14 +22,9 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-<<<<<<< HEAD:database/migrations/2014_10_12_000000_create_users_table.php
-           $table->unsignedBigInteger('role_id');
-           $table->string("preference")->nullable();
-=======
             $table->bigInteger('role_id')->unsigned()->index();
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
             $table->string("preference")->nullable();
->>>>>>> a8ab41008ee5df44f098d8fbf743d9f3a2187f1e:database/migrations/2021_07_15_000002_create_users_table.php
             $table->rememberToken();
             $table->timestamps();
         });
