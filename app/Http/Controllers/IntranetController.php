@@ -201,19 +201,18 @@ class IntranetController extends Controller
 
         $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->count();
 
-        $sessionLives = null;
+        $sessionLive = null;
 
         if($meeting != 0) {
 
             $meetings = Participer_meeting::where('id_utilisateur', $idUserAuth)->get();
 
             foreach ($meetings as $meeting) {
-                $sessionLives = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
+                $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
             }
         }
 
-        if ($sessionLives != null) {
-            foreach ($sessionLives as $sessionLive) {
+        if ($sessionLive != null) {
                 $endMeeting = date('Y-m-d H:i:s', strtotime($sessionLive->date_meeting.' +2 hours'));
     
                 if(date('Y-m-d H:i:s') < $sessionLive->date_meeting) {
@@ -235,7 +234,6 @@ class IntranetController extends Controller
                     ]);
                 }
             }
-        }
 
         if ($session && $countFormation == 1 && date('Y-m-d') >= $session->date_debut && date('Y-m-d') <= $session->date_fin) {
 
@@ -265,7 +263,8 @@ class IntranetController extends Controller
         }
     } else {
         return redirect("/");
-    }}
+    }
+}
 
     public function oneChapitre(Request $request) {
         $request->session()->forget('sessionTerminée');
