@@ -177,9 +177,6 @@
         </div>
 
         @endif
-        @if(Auth::user()->role_id ==2)
-
-        @endif
 
         @endguest
 
