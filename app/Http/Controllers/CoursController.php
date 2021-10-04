@@ -10,10 +10,14 @@ use App\Models\Formation;
 use App\Models\Cours;
 use App\Models\Chapitre;
 use App\Models\Contenir_sessions_projet;
+use App\Models\Faire_projet;
 use App\Models\Formateur;
 use App\Models\Lier_sessions_stagiaire;
 use App\Models\Projet;
+use App\Models\Qcm;
+use App\Models\Score_qcm;
 use App\Models\Session;
+use App\Models\Suivre_formation;
 use Illuminate\Validation\Rule;
 use App\Rules\FilenameImage;
 
@@ -313,6 +317,7 @@ class CoursController extends Controller
 
     public function Update_cours($id_cours)
     {
+        $this->checkCoursSuivreFormation($id_cours);
          // nombre de chapitres du cours
         $nombreChapitresCours=Cours::where('id_cours',$id_cours)->value('nombre_chapitres');
 
@@ -427,7 +432,8 @@ class CoursController extends Controller
             }else {
             //$this->Update_cours($id);
             $this->checkEtat($id,false);
-            }
+            
+        }
             
         }
         //
@@ -459,7 +465,7 @@ class CoursController extends Controller
        
         // toutes les id formations qui contienent le cours
         $this->checkEtat($id,true);
-       
+        $this->checkCoursSuivreFormation($id);
         
         /*************************** */
 
@@ -550,5 +556,52 @@ class CoursController extends Controller
             }
         }
         return true;
+    }
+    public function checkCoursSuivreFormation($id_cours){
+       $Suivre= Suivre_formation::where("id_cours",$id_cours)->get();
+      
+       //dd($Suivre);
+       foreach($Suivre as $s){
+        $cours= FormationsContenirCours::where('id_cours',$id_cours)
+        ->where('id_formation',$s->id_formations)->first();
+        $coursPrecedent= FormationsContenirCours::where('numero_cours',$cours->numero_cours-1)->where('numero_cours','!=',0)->first();
+
+            if($coursPrecedent!=null){
+                $chapitre=Chapitre::where('etat',1)->where('id_cours',$coursPrecedent->id_cours)->where('numero_chapitre',1)->first();
+                $s->update([
+                    'id_cours' => $coursPrecedent->id_cours,
+                    'nombre_chapitre_lu' => $s->nombre_chapitre_lu-1,
+                    'id_chapitre' => $chapitre->id_chapitre,
+                    'id_chapitre_Courant'=> $chapitre->id_chapitre
+                ]);
+                
+                if($s->nombre_chapitre_lu<0){
+                    $s->update([
+                        
+                        'nombre_chapitre_lu' => 0
+                       
+                    ]);
+                }
+            } else {
+               // dd($cours->numero_cours);
+                $s->delete();
+            }
+          
+            $projet=Projet::where('etat',1)->where('id_cours',$id_cours)->first();
+            Faire_projet::where('id_projet',$projet->id)->delete();
+            $chapitre=Chapitre::where('etat',1)->where('id_cours',$id_cours)->get();
+            //dd($chapitre);
+            if($chapitre!=null){
+              // dd($chapitre);
+                foreach($chapitre as $c){
+                    $qcm = Qcm::where('etat',1)->where('id_chapitre',$c->id_chapitre)->first();
+                    
+                    Score_qcm::where('qcm_id',$qcm->id)->delete();
+                }
+            }
+           
+           
+       }
+
     }
 }

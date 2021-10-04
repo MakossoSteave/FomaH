@@ -121,6 +121,7 @@
         <div class="notification is-success has-text-centered my-4">
         Bravo vous avez réussi
         </div>
+        <p>{{$FaireProjetResult->resultat_description}}</p>
         <footer class="buttons paginate" class="mb-4">
         <a href="{{Route('coursSuivant')}}" class="button is-success sizeButton " >Continuer</a>
         </footer>
