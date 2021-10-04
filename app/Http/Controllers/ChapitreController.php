@@ -10,6 +10,8 @@ use App\Http\Controllers\CoursController;
 use App\Models\Formation;
 use App\Models\FormationsContenirCours;
 use App\Models\Qcm;
+use App\Models\Score_qcm;
+use App\Models\Suivre_formation;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Rules\FilenameImage;
@@ -246,10 +248,10 @@ class ChapitreController extends Controller
         if ($request->has('updateSection')) {
 
         for ($indexSection=0; $indexSection < count($request->get('updateSection')); $indexSection++) {
-            $request->validate([
+            /*$request->validate([
                 "updateSection[$indexSection][designation]" => 'required',
                 "updateSection[$indexSection][contenu]" => 'required'
-             ]);
+             ]);*/
             $sectionId = $request->updateSection[$indexSection]['sectionID'];
 
             // $request->validate([
@@ -410,10 +412,12 @@ class ChapitreController extends Controller
         $Chapitre= Chapitre::find($id_chapitre);
         if($Chapitre->etat==1){
         if(!$this->checkChapitre($id_chapitre)){
+            
             return redirect()->back()->with('error',"Ne peut pas être supprimé car une session est en cours");/* et aucun autre chapitre n'est actif");*/
-        }
+       
+        } 
     }
-        else {
+        
             
         
            
@@ -427,9 +431,9 @@ class ChapitreController extends Controller
             //}
             
             //
-    
+
             return redirect()->back()->with('success','Supprimé avec succès');
-        }
+
         
     }
     public function checkChapitre($id_chapitre){
@@ -463,6 +467,7 @@ class ChapitreController extends Controller
     }
 
     public function updateChapitre($Chapitre,$etat){
+        $this->checkChapitreSuivreFormation($Chapitre->id_chapitre);
         $CoursController = new CoursController;
         $CoursController->Update_nombre_chapitres($Chapitre->id_cours,-1);//ajouter +1 au nombre total de chapitre cours
         $cours = Cours::find($Chapitre->id_cours);
@@ -506,4 +511,56 @@ class ChapitreController extends Controller
         }
        
     }
+
+    public function checkChapitreSuivreFormation($id_chapitre){
+        $Suivre= Suivre_formation::where("id_chapitre",$id_chapitre)->get();
+       
+       
+        foreach($Suivre as $s){
+         $Chapitre= Chapitre::find($id_chapitre);
+         
+         $ChapitrePrecedent= Chapitre::where('etat',1)->
+         where('numero_chapitre',$Chapitre->numero_chapitre-1)
+         ->where('id_cours',$Chapitre->id_cours)->first();
+ 
+             if($ChapitrePrecedent!=null){
+                
+                 $s->update([
+                     
+                     'nombre_chapitre_lu' => $s->nombre_chapitre_lu-1,
+                     'id_chapitre' => $ChapitrePrecedent->id_chapitre,
+                     'id_chapitre_Courant'=> $ChapitrePrecedent->id_chapitre
+                 ]);
+                 if($s->nombre_chapitre_lu<0){
+                     $s->update([
+                         
+                         'nombre_chapitre_lu' => 0
+                        
+                     ]);
+                 }
+             } else{
+                $cours= FormationsContenirCours::where('id_cours',$Chapitre->id_cours)
+                ->where('id_formation',$s->id_formations)->first();
+                $coursPrecedent= FormationsContenirCours::where('numero_cours',$cours->numero_cours-1)->where('numero_cours','!=',0)->first();
+                $chapitrePrecedentNumber=Chapitre::where('etat',1)->where('id_cours',$coursPrecedent->id_cours)->max('numero_chapitre');
+                $chapitrePrecedent=Chapitre::where('etat',1)->where('id_cours',$coursPrecedent->id_cours)->where('numero_chapitre',$chapitrePrecedentNumber)->first();
+                $s->update([
+                    'id_cours' =>$coursPrecedent->id_cours,
+                    'nombre_chapitre_lu' => $s->nombre_chapitre_lu-1,
+                    'id_chapitre' => $chapitrePrecedent->id_chapitre,
+                    'id_chapitre_Courant'=> $chapitrePrecedent->id_chapitre
+                ]);
+                if($s->nombre_chapitre_lu<0){
+                    $s->update([
+                        
+                        'nombre_chapitre_lu' => 0
+                       
+                    ]);
+                }
+             }
+             $qcm = Qcm::where('etat',1)->where('id_chapitre',$id_chapitre)->first();
+             Score_qcm::where('qcm_id',$qcm->id)->delete();
+        }
+ 
+     }
 }
