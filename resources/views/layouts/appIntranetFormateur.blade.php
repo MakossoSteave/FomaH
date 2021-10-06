@@ -49,7 +49,7 @@
         <div class="columns">
             <div class="column is-9">
                 <div class="container content">
-                    <a id="home" class="icon is-medium" href="{{ url('intranet') }}"><i class="fas fa-home mr-2"></i>Accueil</a>
+                    <a id="home" class="icon is-medium" href="{{ url('intranet-formateur') }}"><i class="fas fa-home mr-2"></i>Accueil</a>
                     <h1 class="title">Intranet</h1>
                 </div>
             </div>
@@ -60,7 +60,7 @@
                             <a  href="{{ route('parametre', [Auth::user()->id]) }}">
                                 <span
                                     class="group text-white inline-flex items-center text-base font-medium hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    {{Str::ucfirst(Auth::user()->name)}} </span>
+                                    {{ Str::ucfirst(Auth::user()->name) }} </span>
                             </a>
                         </li>
                         <li> <i class="fas fa-envelope text-blue-900 font-medium"></i>
@@ -75,7 +75,7 @@
 
                     <div class="relative">
                         <i class="fas fa-sign-out-alt"></i>
-                        <a href="../stagiaire">
+                        <a href="../formateur">
                             <button type="button"
                                 class="group  text-white inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
 
@@ -91,18 +91,14 @@
     <div class="columns">
         <div class="column is-3">
             <aside class="is-medium menu">
-                <ul class="menu-list">
-                    <li><a href="{{ url('intranet/chapitre') }}">Reprendre</a></li>
-                </ul>
                 <p class="menu-label">
                     Navigation
                 </p>
                 <ul class="menu-list">
-                    <li><a href="{{ url('intranet/previousChapter') }}">Cours</a></li>
-                    <li><a href="{{ url('intranet/previousQCM') }}">QCMs</a></li>
-                    <li><a href="{{ url('intranet/previousExercices') }}">Exercices</a></li>
-                    <li><a href="{{ url('intranet/previousProjets') }}">Projets</a></li>
-                    <li><a href="{{ url('intranet/statutLive') }}">Live</a></li>
+                    <li><a href="#">QCMs</a></li>
+                    <li><a href="#">Progressions</a></li>
+                    <li><a href="#">Projets</a></li>
+                    <li><a href="#">Live</a></li>
                 </ul>
             </aside>
         </div>
@@ -151,36 +147,6 @@
     <script src="{{ URL::asset('/') }}js/toggle.js"></script>
     <script src="https://unpkg.com/popper.js@1/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@4"></script>
-    <script>
-    //Init tooltips
-    tippy('.link', {
-        placement: 'bottom'
-    })
-
-    //Toggle mode
-    const toggle = document.querySelector('.js-change-theme');
-    const body = document.querySelector('body');
-    const profile = document.getElementById('profile');
-
-
-    toggle.addEventListener('click', () => {
-
-        if (body.classList.contains('text-gray-900')) {
-            toggle.innerHTML = "☀️";
-            body.classList.remove('text-gray-900');
-            body.classList.add('text-gray-100');
-            profile.classList.remove('bg-white');
-            profile.classList.add('bg-gray-900');
-        } else {
-            toggle.innerHTML = "🌙";
-            body.classList.remove('text-gray-100');
-            body.classList.add('text-gray-900');
-            profile.classList.remove('bg-gray-900');
-            profile.classList.add('bg-white');
-
-        }
-    });
-    </script>
 </body>
 
 

@@ -173,6 +173,7 @@ Route::get('storage/{filename}', function ($filename)
     return $response;
 });
 
+Route::resource('intranetFormateur','App\Http\Controllers\IntranetFormateurController');
 Route::resource('intranet','App\Http\Controllers\IntranetController');
 Route::resource('exercice','App\Http\Controllers\ExerciceController');
 Route::resource('projet','App\Http\Controllers\ProjetController');
