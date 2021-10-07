@@ -78,7 +78,7 @@ class IntranetController extends Controller
             $formation = Suivre_formation::select('suivre_formations.*')
             ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
 
-/*
+        /*
             $coursFormations = FormationsContenirCours::where('id_formation', $formation->id_formations)->get();
 
             foreach($coursFormations as $coursFormation) {
