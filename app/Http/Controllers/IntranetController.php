@@ -50,22 +50,24 @@ class IntranetController extends Controller
 		$SuivreFormation = false;
 		}
         if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
-            return redirect("/");
-        }
-
-        
+            switch ($idUserRole) {
+                case '2':
+                    return redirect("/centre");
+                    break;
+                case '3':
+                    return redirect("/stagiaire");
+                    break;
+                case '4':
+                    return redirect("/formateur");
+                    break;
+                case '5':
+                    return redirect("/organisme");
+                    break;
+                default:
+                return redirect("/");
+                    break;
+            }
+        }      
         
         $countFormation = Suivre_formation::select('suivre_formations.*')
         ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->count();
