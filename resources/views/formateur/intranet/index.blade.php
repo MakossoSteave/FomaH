@@ -2,6 +2,7 @@
 
 @section('content')
 @if(Auth::user())
+{{dd($sessionFormateur)}}
         <div class="column is-9">
             <div class="content is-medium">
             <h3 class="has-text-centered">Votre session</h2>

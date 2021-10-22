@@ -44,13 +44,10 @@ class IntranetFormateurController extends Controller
         if($formateur){
            $sessionFormateur = Suivre_formation::select('suivre_formations.*')
             ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('formateurs','sessions.formateur_id','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $formateur->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
+            ->where('sessions.formateur_id', $formateur->id)
+            ->where('sessions.statut_id',3)
+            ->get();
+		} else {
 		    $sessionFormateur = false;
 		}
         
@@ -73,7 +70,7 @@ class IntranetFormateurController extends Controller
                     break;
             }
         }
-            return view('formateur.intranet.index', compact(['formationName'], ['session'], ['progress']));
+            return view('formateur.intranet.index', compact(['sessionFormateur']));
         } else {
             return redirect("/");
         }
