@@ -16,6 +16,11 @@ class Suivre_formation extends Model
     protected $fillable=[
         'id_stagiaire', 'id_formations', 'id_cours', 'id_chapitre', 'nombre_chapitre_lu', 'progression','id_chapitre_Courant','id_projet','id_qcm','id_session'
     ];
+    
+    // public function Stagiaire()
+    // {
+    //     return $this->belongsTo(Stagiaire::class, 'id_stagiaire', 'id');
+    // }
 
     public function Cours()
     {
