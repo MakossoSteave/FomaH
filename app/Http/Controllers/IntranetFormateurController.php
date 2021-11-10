@@ -19,6 +19,7 @@ use App\Models\Faire_projet;
 use App\Models\Contenir_sessions_projet;
 use App\Models\Participer_meeting;
 use App\Models\Meeting_en_ligne;
+use App\Models\User;
 use App\Rules\FilenameDocument;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -27,88 +28,245 @@ class IntranetFormateurController extends Controller
 {
     public function index()
     {
-        $idUserAuth=null;
-        $idUserRole=null;
+        $idUserAuth = null;
+        $idUserRole = null;
 
-        if(Auth::user()){
+        if (Auth::user()) {
 
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
 
-        $formateur = Formateur::where('user_id', $idUserAuth)->first();
+            $formateur = Formateur::where('user_id', $idUserAuth)->first();
 
-        if($formateur){
-           $formateurSuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->where('sessions.formateur_id', $formateur->id)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-            $formateurSuivreFormation = false;
+            if ($formateur) {
+                $formateurSuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->where('sessions.formateur_id', $formateur->id)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $formateurSuivreFormation = false;
             }
-            if(!$formateurSuivreFormation){
-                if($idUserRole==2)
-                return redirect("/centre");
-                else if($idUserRole==3)
-                return redirect("/stagiaire");
-                
-                else if($idUserRole==4)
-                
-                return redirect("/formateur");
-                else if($idUserRole==5)
-                
-                return redirect("/organisme");
-                else
-                return redirect("/");
+            if (!$formateurSuivreFormation) {
+                switch ($idUserRole) {
+                    case 2:
+                        return redirect("/centre");
+                        break;
+                    case 3:
+                        return redirect("/stagiaire");
+                        break;
+                    case 4:
+                        return redirect("/formateur");
+                        break;
+                    case 5:
+                        return redirect("/organisme");
+                        break;
+                    default:
+                        return redirect("/");
+                        break;
+                }
             } else {
 
-                $formateurFormations = Suivre_formation::join('sessions','sessions.id','suivre_formations.id_session')
-                ->join('formations', 'formations.id', 'suivre_formations.id_formations')
-                ->join('stagiaires', 'stagiaires.id', 'suivre_formations.id_stagiaire')
-                ->select(
-                    'suivre_formations.*',
-                    'sessions.*',
-                    'formations.libelle',
-                    'stagiaires.nom',
-                    'stagiaires.prenom'
-                )
-                ->where('sessions.formateur_id', $formateur->id)
-                ->where('stagiaires.formateur_id', $formateur->id)
-                ->where('sessions.etat',1)
-                ->where('sessions.statut_id',3)
-                ->get();
+                $formateurFormations = Suivre_formation::join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('formations', 'formations.id', 'suivre_formations.id_formations')
+                    ->join('stagiaires', 'stagiaires.id', 'suivre_formations.id_stagiaire')
+                    ->select(
+                        'suivre_formations.*',
+                        'sessions.*',
+                        'formations.libelle',
+                        'stagiaires.nom',
+                        'stagiaires.prenom'
+                    )
+                    ->where('sessions.formateur_id', $formateur->id)
+                    ->where('stagiaires.formateur_id', $formateur->id)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)
+                    ->get();
 
                 return view('formateur.intranet.index', compact('formateurFormations'));
             }
-
         }
-        
+    }
+
+    public function projet()
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
+
+        if (Auth::user()) {
+
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+
+            $formateur = Formateur::where('user_id', $idUserAuth)->first();
+
+            if ($formateur) {
+                $formateurSuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->where('sessions.formateur_id', $formateur->id)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $formateurSuivreFormation = false;
+            }
+            if (!$formateurSuivreFormation) {
+                switch ($idUserRole) {
+                    case 2:
+                        return redirect("/centre");
+                        break;
+                    case 3:
+                        return redirect("/stagiaire");
+                        break;
+                    case 4:
+                        return redirect("/formateur");
+                        break;
+                    case 5:
+                        return redirect("/organisme");
+                        break;
+                    default:
+                        return redirect("/");
+                        break;
+                }
+            } else {
+
+                $formateurFormations = Suivre_formation::join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('formations', 'formations.id', 'suivre_formations.id_formations')
+                    ->join('stagiaires', 'stagiaires.id', 'suivre_formations.id_stagiaire')
+                    ->select(
+                        'suivre_formations.*',
+                        'sessions.*',
+                        'formations.libelle',
+                        'stagiaires.nom',
+                        'stagiaires.prenom'
+                    )
+                    ->where('sessions.formateur_id', $formateur->id)
+                    ->where('stagiaires.formateur_id', $formateur->id)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)
+                    ->get();
+
+                return view('formateur.intranet.index', compact('formateurFormations'));
+            }
+        }
+    }
+
+    public function live()
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
+
+        if (Auth::user()) {
+
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+
+            $user = User::where('id', $idUserAuth)->first();
+
+            if ($user) {
+                $lives = Meeting_en_ligne::where('user_id', $idUserAuth)->exists();
+            } else {
+                $lives = false;
+            }
+            if (!$lives) {
+                switch ($idUserRole) {
+                    case 2:
+                        return redirect("/centre");
+                        break;
+                    case 3:
+                        return redirect("/stagiaire");
+                        break;
+                    case 4:
+                        return redirect("/formateur");
+                        break;
+                    case 5:
+                        return redirect("/organisme");
+                        break;
+                    default:
+                        return redirect("/");
+                        break;
+                }
+            } else {
+                $lives = Meeting_en_ligne::where('user_id', $idUserAuth)
+                    ->where('statut_id', '=', '2')
+                    ->orWhere('statut_id', '=', '3')
+                    ->orderby('date_meeting')
+                    ->get();
+
+                $participants = Meeting_en_ligne::where('user_id', $idUserAuth)
+                    ->join('participer_meetings', 'participer_meetings.id_meeting', 'meeting_en_lignes.id')
+                    ->join('users', 'users.id', 'participer_meetings.id_utilisateur')
+                    ->where('statut_id', '=', '2')
+                    ->orWhere('statut_id', '=', '3')
+                    ->get();
+
+                return view('formateur.intranet.lives.index', compact(['lives', 'participants']));
+            }
+        } else {
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
+        }
+    }
+
+    public function createLive(Request $request)
+    {
+        $idUserAuth = Auth::user()->id;
+
+        $request->validate([
+            'date_meeting' => 'required',
+            'lien' => 'required'
+           ]);
+           do {
+               $id = rand(10000000, 99999999);
+           } while(Meeting_en_ligne::find($id)!=null);
+   
+           Meeting_en_ligne::create(
+               $request->all() + 
+               ['id'=> $id] + 
+               ['user_id' => $idUserAuth] + 
+               ['id_cours' => 22043240] + 
+               ['statut_id' => 2]
+            );
+
+           return redirect('/intranet/formateurs/lives')->with('success','Create Successfully');
+    }
+
+    public function score()
+    {
     }
 
     public function create()
     {
-
     }
 
     public function store(Request $request)
     {
-
     }
 
 
     public function edit($id)
     {
-
     }
 
     public function update(Request $request, $id)
     {
-
     }
 
     public function destroy($id)
     {
-
     }
 }

@@ -27,58 +27,60 @@ date_default_timezone_set('Europe/Paris');
 
 class IntranetController extends Controller
 {
-    public function index(){
-       
-        $idUserAuth=null;
-        $idUserRole=null;
+    public function index()
+    {
 
-        if(Auth::user()){
+        $idUserAuth = null;
+        $idUserRole = null;
 
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
-            return redirect("/");
-        }
+        if (Auth::user()) {
 
-        
-        
-        $countFormation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->count();
-       
-        $formationName = null;
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
+            }
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
 
-        $session = null;
 
-        if ($countFormation == 1) {
-            $formation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
 
-        /*
+            $countFormation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->count();
+
+            $formationName = null;
+
+            $session = null;
+
+            if ($countFormation == 1) {
+                $formation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
+
+                /*
             $coursFormations = FormationsContenirCours::where('id_formation', $formation->id_formations)->get();
 
             foreach($coursFormations as $coursFormation) {
@@ -88,274 +90,273 @@ class IntranetController extends Controller
 
             $arraySumTotalChapitre = array_sum($arrayNombreChapitre);
        */
-            // nombre_chapitre_total actif dans formations
-            $SumTotalChapitre = (Formation::find($formation->id_formations))->nombre_chapitre_total;
-            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)
-            ->where('id_session',$formation->id_session)->first();
+                // nombre_chapitre_total actif dans formations
+                $SumTotalChapitre = (Formation::find($formation->id_formations))->nombre_chapitre_total;
+                $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)
+                    ->where('id_session', $formation->id_session)->first();
 
-            $session = Session::where('id', $sessionStagiaire->id_session)->first();
+                $session = Session::where('id', $sessionStagiaire->id_session)->first();
 
-            $formation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
+                $formation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
 
-            $formationName = Formation::where('id', $formation->id_formations)->first();
+                $formationName = Formation::where('id', $formation->id_formations)->first();
 
-            $progress = intval(($formation->nombre_chapitre_lu
-            /*$arraySumTotalChapitre*/ /$SumTotalChapitre)*100);
-        }
+                $progress = intval(($formation->nombre_chapitre_lu
+                    /*$arraySumTotalChapitre*/ / $SumTotalChapitre) * 100);
+            }
 
-        return view('stagiaire.intranet.index', compact(['formationName'], ['session'], ['progress']));
-    } else {
-        return redirect("/");
-    }}
-
-    public function preIndex() {
-        $idUserAuth=null;
-        $idUserRole=null;
-
-        if(Auth::user()){
-
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
+            return view('stagiaire.intranet.index', compact(['formationName'], ['session'], ['progress']));
+        } else {
             return redirect("/");
         }
-
-      
-
-        $formation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
-        
-        $countFormation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->count();
-        
-        $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session',$formation->id_session)->first();
-
-        if($sessionStagiaire){
-            $session = Session::where('id', $sessionStagiaire->id_session)->first();
-        } else {
-            $session=null;
-        }
-
-        $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session',$formation->id_session)->first();
-
-        $session = Session::where('id', $sessionStagiaire->id_session)->first();
-        $sessionProjets = Contenir_sessions_projet::where('id_session', '=' ,$session->id)->get();
-        foreach ($sessionProjets as $sessionProjet) {
-        
-
-        if (date('Y-m-d') >= $sessionProjet->date_debut && date('Y-m-d') <= $sessionProjet->date_fin) {
-
-            Contenir_sessions_projet::where([
-                ['id_session', '=' ,$sessionProjet->id_session],
-                ['id_projet','=', $sessionProjet->id_projet]
-            ])->update([
-                'statut_id' => 3
-            ]);
-
-        } else if(date('Y-m-d') < $sessionProjet->date_debut) {
-
-            Contenir_sessions_projet::where([
-                ['id_session', '=' ,$sessionProjet->id_session],
-                ['id_projet','=',$sessionProjet->id_projet]
-            ])->update([
-                'statut_id' => 1
-            ]);
-
-        } else if(date('Y-m-d') > $sessionProjet->date_fin) {
-
-            Contenir_sessions_projet::where([
-                ['id_session', '=' ,$sessionProjet->id_session],
-                ['id_projet','=', $sessionProjet->id_projet]
-            ])->update([
-                'statut_id' => 4
-            ]);
-        } 
     }
-        $meetings = Participer_meeting::where('id_utilisateur', $idUserAuth)->get();
 
-        $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->count();
+    public function preIndex()
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
 
-        $sessionLive = null;
+        if (Auth::user()) {
 
-        if($meeting != 0) {
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
+            }
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
 
+
+
+            $formation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
+
+            $countFormation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->count();
+
+            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session', $formation->id_session)->first();
+
+            if ($sessionStagiaire) {
+                $session = Session::where('id', $sessionStagiaire->id_session)->first();
+            } else {
+                $session = null;
+            }
+
+            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session', $formation->id_session)->first();
+
+            $session = Session::where('id', $sessionStagiaire->id_session)->first();
+            $sessionProjets = Contenir_sessions_projet::where('id_session', '=', $session->id)->get();
+            foreach ($sessionProjets as $sessionProjet) {
+
+
+                if (date('Y-m-d') >= $sessionProjet->date_debut && date('Y-m-d') <= $sessionProjet->date_fin) {
+
+                    Contenir_sessions_projet::where([
+                        ['id_session', '=', $sessionProjet->id_session],
+                        ['id_projet', '=', $sessionProjet->id_projet]
+                    ])->update([
+                        'statut_id' => 3
+                    ]);
+                } else if (date('Y-m-d') < $sessionProjet->date_debut) {
+
+                    Contenir_sessions_projet::where([
+                        ['id_session', '=', $sessionProjet->id_session],
+                        ['id_projet', '=', $sessionProjet->id_projet]
+                    ])->update([
+                        'statut_id' => 1
+                    ]);
+                } else if (date('Y-m-d') > $sessionProjet->date_fin) {
+
+                    Contenir_sessions_projet::where([
+                        ['id_session', '=', $sessionProjet->id_session],
+                        ['id_projet', '=', $sessionProjet->id_projet]
+                    ])->update([
+                        'statut_id' => 4
+                    ]);
+                }
+            }
             $meetings = Participer_meeting::where('id_utilisateur', $idUserAuth)->get();
 
-            foreach ($meetings as $meeting) {
-                $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
-            }
-        }
+            $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->count();
 
-        if ($sessionLive != null) {
-                $endMeeting = date('Y-m-d H:i:s', strtotime($sessionLive->date_meeting.' +2 hours'));
-    
-                if(date('Y-m-d H:i:s') < $sessionLive->date_meeting) {
-    
+            $sessionLive = null;
+
+            if ($meeting != 0) {
+
+                $meetings = Participer_meeting::where('id_utilisateur', $idUserAuth)->get();
+
+                foreach ($meetings as $meeting) {
+                    $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
+                }
+            }
+
+            if ($sessionLive != null) {
+                $endMeeting = date('Y-m-d H:i:s', strtotime($sessionLive->date_meeting . ' +2 hours'));
+
+                if (date('Y-m-d H:i:s') < $sessionLive->date_meeting) {
+
                     $sessionLive->update([
                         'statut_id' => 1
                     ]);
-    
-                } else if(date('Y-m-d H:i:s') > $endMeeting) {
-    
+                } else if (date('Y-m-d H:i:s') > $endMeeting) {
+
                     $sessionLive->update([
                         'statut_id' => 4
                     ]);
-                    
-                } else if(date('Y-m-d H:i:s') >= $sessionLive->date_meeting && date('Y-m-d H:i:s') <= $endMeeting) {
-    
+                } else if (date('Y-m-d H:i:s') >= $sessionLive->date_meeting && date('Y-m-d H:i:s') <= $endMeeting) {
+
                     $sessionLive->update([
                         'statut_id' => 3
                     ]);
                 }
             }
 
-        if ($session && $countFormation == 1 && date('Y-m-d') >= $session->date_debut && date('Y-m-d') <= $session->date_fin) {
+            if ($session && $countFormation == 1 && date('Y-m-d') >= $session->date_debut && date('Y-m-d') <= $session->date_fin) {
 
-            Session::where('id', $sessionStagiaire->id_session)->update([
-                'statut_id' => 3
-            ]);
- 
-            return redirect('/intranet');
+                Session::where('id', $sessionStagiaire->id_session)->update([
+                    'statut_id' => 3
+                ]);
 
-        } else if($session && $countFormation == 1 && date('Y-m-d') < $session->date_debut) {
+                return redirect('/intranet');
+            } else if ($session && $countFormation == 1 && date('Y-m-d') < $session->date_debut) {
 
-            Session::where('id', $sessionStagiaire->id_session)->update([
-                'statut_id' => 2
-            ]);
+                Session::where('id', $sessionStagiaire->id_session)->update([
+                    'statut_id' => 2
+                ]);
 
-            return redirect('/intranet');
+                return redirect('/intranet');
+            } else if ($session && $countFormation == 1 && date('Y-m-d') > strtotime($session->date_fin . ' +10 days')) {
 
-        } else if($session && $countFormation == 1 && date('Y-m-d') > strtotime($session->date_fin.' +10 days')) {
+                Session::where('id', $sessionStagiaire->id_session)->update([
+                    'statut_id' => 5
+                ]);
 
-            Session::where('id', $sessionStagiaire->id_session)->update([
-                'statut_id' => 5
-            ]);
-
-            return redirect('/intranet');
+                return redirect('/intranet');
+            } else {
+                return redirect('/stagiaire');
+            }
         } else {
-            return redirect('/stagiaire');
-        }
-    } else {
-        return redirect("/");
-    }
-}
-
-    public function oneChapitre(Request $request) {
-        $request->session()->forget('sessionTerminée');
-        $idUserAuth=null;
-        $idUserRole=null;
-        $titre=null;
-        if(Auth::user()){
-
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
             return redirect("/");
         }
+    }
 
-        
-        
-        $countFormation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->count();
+    public function oneChapitre(Request $request)
+    {
+        $request->session()->forget('sessionTerminée');
+        $idUserAuth = null;
+        $idUserRole = null;
+        $titre = null;
+        if (Auth::user()) {
 
-        $qcmCount = 0;
-
-        $scoreCount = 0;
-
-        $exerciceCount = 0;
-
-        $projetCount = 0;
-
-        $cours = null;
-
-        $chapitre = null;
-
-        if ($countFormation == 1) {
-            $formation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
-
-            $qcmCount = Qcm::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->count();
-
-            $cours = Cours::where('etat',1)->where('id_cours', $formation->id_cours)->first();
-
-            $chapitre = Suivre_formation::where('id_chapitre', $formation->id_chapitre)->with('Chapitre.Section')->first();
-
-            $qcm = Qcm::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
-    
-            $scoreCount = Score_qcm::where([
-                ['qcm_id', $qcm->id],
-                ['stagiaire_id', $stagiaire->id]
-            ])->count();
-                
-            $exerciceCount = Exercice::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->count();
-
-            $chapitreMax = Chapitre::where('etat',1)->where('id_cours', $formation->id_cours)->max('numero_chapitre');
-
-            $chap = Chapitre::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
-
-            if($chapitreMax == $chap->numero_chapitre) {
-                $projetCount = Projet::where('etat',1)->where('id_cours', $formation->id_cours)->count();
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
             }
-        }
-        if($request->session()->get('sessionTerminée')==true){
-            $SessionTerminée=true;
-            $ResultatsessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session',$formation->id_session)->where('validation','!=',null)->first();
-            if($ResultatsessionStagiaire){
-                if($ResultatsessionStagiaire->validation==1){
-                    $titre = Titre::where('session_id',$formation->id_session)
-                    ->where('stagiaire_id',$stagiaire->id)->first();
-                    /*if($titre){
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
+
+
+
+            $countFormation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->count();
+
+            $qcmCount = 0;
+
+            $scoreCount = 0;
+
+            $exerciceCount = 0;
+
+            $projetCount = 0;
+
+            $cours = null;
+
+            $chapitre = null;
+
+            if ($countFormation == 1) {
+                $formation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
+
+                $qcmCount = Qcm::where('etat', 1)->where('id_chapitre', $formation->id_chapitre)->count();
+
+                $cours = Cours::where('etat', 1)->where('id_cours', $formation->id_cours)->first();
+
+                $chapitre = Suivre_formation::where('id_chapitre', $formation->id_chapitre)->with('Chapitre.Section')->first();
+
+                $qcm = Qcm::where('etat', 1)->where('id_chapitre', $formation->id_chapitre)->first();
+
+                $scoreCount = Score_qcm::where([
+                    ['qcm_id', $qcm->id],
+                    ['stagiaire_id', $stagiaire->id]
+                ])->count();
+
+                $exerciceCount = Exercice::where('etat', 1)->where('id_chapitre', $formation->id_chapitre)->count();
+
+                $chapitreMax = Chapitre::where('etat', 1)->where('id_cours', $formation->id_cours)->max('numero_chapitre');
+
+                $chap = Chapitre::where('etat', 1)->where('id_chapitre', $formation->id_chapitre)->first();
+
+                if ($chapitreMax == $chap->numero_chapitre) {
+                    $projetCount = Projet::where('etat', 1)->where('id_cours', $formation->id_cours)->count();
+                }
+            }
+            if ($request->session()->get('sessionTerminée') == true) {
+                $SessionTerminée = true;
+                $ResultatsessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session', $formation->id_session)->where('validation', '!=', null)->first();
+                if ($ResultatsessionStagiaire) {
+                    if ($ResultatsessionStagiaire->validation == 1) {
+                        $titre = Titre::where('session_id', $formation->id_session)
+                            ->where('stagiaire_id', $stagiaire->id)->first();
+                        /*if($titre){
                       
                         if($titre->session_id !=null){
                             if($stagiaire->prenom)
@@ -367,278 +368,287 @@ class IntranetController extends Controller
                 }else {
                     $titre=null;
                 }*/
+                    }
+                }
+            } else {
+                $SessionTerminée = false;
+                $ResultatsessionStagiaire = null;
             }
+            return view('stagiaire.intranet.cours.index', compact(['chapitre'], ['cours'], ['qcmCount'], ['scoreCount'], ['exerciceCount'], ['projetCount'], ['SessionTerminée'], ['ResultatsessionStagiaire'], ['titre']));
+        } else {
+            return redirect("/");
         }
-        }else {
-            $SessionTerminée=false;
-            $ResultatsessionStagiaire =null;
-           
-        }
-        return view('stagiaire.intranet.cours.index', compact(['chapitre'], ['cours'],['qcmCount'],['scoreCount'],['exerciceCount'],['projetCount'],['SessionTerminée'],['ResultatsessionStagiaire'],['titre']));
-    } else {
-        return redirect("/");
     }
-}
 
-    public function qcm() {
-        $idUserAuth=null;
-        $idUserRole=null;
+    public function qcm()
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
 
-        if(Auth::user()){
+        if (Auth::user()) {
 
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
-            return redirect("/");
-        }
-
-        
-        
-        $formation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
-
-        $cours = Cours::where('etat',1)->where('id_cours', $formation->id_cours)->first();
-
-        $qcms = Qcm::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->with('Question_qcm.Reponse_question_qcm')->get();
-
-        $qcm = Qcm::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
-    
-        $scoreCount = Score_qcm::where('qcm_id', $qcm->id)->count();
-       
-        $score = null;
-
-        if ($scoreCount == 1) {
-            $score = Score_qcm::where('qcm_id', $qcm->id)->first();
-        }
-
-        return view('stagiaire.intranet.qcm.index', compact(['qcms'],['cours'],['formation'],['score']));
-    } else {
-        return redirect("/");
-    } }
-
-    public function score(Request $request) {
-        $idUserAuth=null;
-        $idUserRole=null;
-
-        if(Auth::user()){
-
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
-            return redirect("/");
-        }
-
-        $resultat = 0;
-
-        for ($idRadio=0; $idRadio < count($request->get('reponseNameRadio')); $idRadio++) { 
-
-            if($request->reponseNameRadio[$idRadio] == 1) {
-                $resultat = $resultat+1;
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
             }
-        }
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
 
-        do {
-            $idScore = rand(10000000, 99999999);
-        } while(Score_qcm::find($idScore) != null);
 
-        
 
-        Score_qcm::create([
-            'id' => $idScore,
-            'resultat' => ($resultat/count($request->get('reponseNameRadio')))*100,
-            'stagiaire_id' => $stagiaire->id,
-            'qcm_id' => $request->get('qcm_id')
-        ]);
+            $formation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
 
-        return redirect('/intranet/qcm');
-    } else {
-        return redirect("/");
-    }}
+            $cours = Cours::where('etat', 1)->where('id_cours', $formation->id_cours)->first();
 
-    public function exercice() {
-        $idUserAuth=null;
-        $idUserRole=null;
+            $qcms = Qcm::where('etat', 1)->where('id_chapitre', $formation->id_chapitre)->with('Question_qcm.Reponse_question_qcm')->get();
 
-        if(Auth::user()){
+            $qcm = Qcm::where('etat', 1)->where('id_chapitre', $formation->id_chapitre)->first();
 
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
+            $scoreCount = Score_qcm::where('qcm_id', $qcm->id)->count();
+
+            $score = null;
+
+            if ($scoreCount == 1) {
+                $score = Score_qcm::where('qcm_id', $qcm->id)->first();
+            }
+
+            return view('stagiaire.intranet.qcm.index', compact(['qcms'], ['cours'], ['formation'], ['score']));
+        } else {
             return redirect("/");
         }
+    }
 
-       
+    public function score(Request $request)
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
 
-        $formation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
+        if (Auth::user()) {
 
-        $cours = Cours::where('etat',1)->where('id_cours', $formation->id_cours)->first();
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
+            }
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
 
-        $chapitre = Chapitre::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
+            $resultat = 0;
 
-        $exercices = Exercice::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->with('Questions_exercice.Questions_correction')->get();
+            for ($idRadio = 0; $idRadio < count($request->get('reponseNameRadio')); $idRadio++) {
 
-        $qcm = Qcm::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
+                if ($request->reponseNameRadio[$idRadio] == 1) {
+                    $resultat = $resultat + 1;
+                }
+            }
 
-        if($qcm) {
-            $scoreCount = Score_qcm::where([
-                ['qcm_id', $qcm->id],
-                ['stagiaire_id', $stagiaire->id]
-            ])->count();
-        } else {
-            $scoreCount = 0;
-        }
+            do {
+                $idScore = rand(10000000, 99999999);
+            } while (Score_qcm::find($idScore) != null);
 
-        if ($scoreCount == 1) {
-    
-            return view('stagiaire.intranet.exercices.index', compact(['chapitre'], ['cours'], ['exercices']));
-        } else {
 
-            return redirect('/intranet/chapitre');
-        }
-    } else {
-        return redirect("/");
-    }}
 
-    public function nextIfExercice(Request $request) {
-        $idUserAuth=null;
-        $idUserRole=null;
-
-        if(Auth::user()){
-
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
-            return redirect("/");
-        }
-
-       
-
-        $formation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
-
-        $chapitre = Chapitre::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
-
-        $chapitreMax = Chapitre::where('etat',1)->where('id_cours', $formation->id_cours)->max('numero_chapitre');
-
-        if ($chapitreMax != $chapitre->numero_chapitre) {
-            $numeroChapitre = $chapitre->numero_chapitre+1;
-
-            $nextChapitre = Chapitre::where([
-                'id_cours' => $formation->id_cours,
-                'numero_chapitre' => $numeroChapitre,
-                'etat'=>1
-            ])->first();
-    
-            Suivre_formation::join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->update([
-                'id_chapitre' => $nextChapitre->id_chapitre,
-                'nombre_chapitre_lu' => $formation->nombre_chapitre_lu+1
+            Score_qcm::create([
+                'id' => $idScore,
+                'resultat' => ($resultat / count($request->get('reponseNameRadio'))) * 100,
+                'stagiaire_id' => $stagiaire->id,
+                'qcm_id' => $request->get('qcm_id')
             ]);
-    
-            return redirect('/intranet/chapitre');
 
-        } else if($chapitreMax == $chapitre->numero_chapitre) {
-           /* $coursActuel=FormationsContenirCours::where('id_cours',$formation->id_cours)->where('id_formation',$formation->id_formations)->first();
+            return redirect('/intranet/qcm');
+        } else {
+            return redirect("/");
+        }
+    }
+
+    public function exercice()
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
+
+        if (Auth::user()) {
+
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
+            }
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
+
+
+
+            $formation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
+
+            $cours = Cours::where('etat', 1)->where('id_cours', $formation->id_cours)->first();
+
+            $chapitre = Chapitre::where('etat', 1)->where('id_chapitre', $formation->id_chapitre)->first();
+
+            $exercices = Exercice::where('etat', 1)->where('id_chapitre', $formation->id_chapitre)->with('Questions_exercice.Questions_correction')->get();
+
+            $qcm = Qcm::where('etat', 1)->where('id_chapitre', $formation->id_chapitre)->first();
+
+            if ($qcm) {
+                $scoreCount = Score_qcm::where([
+                    ['qcm_id', $qcm->id],
+                    ['stagiaire_id', $stagiaire->id]
+                ])->count();
+            } else {
+                $scoreCount = 0;
+            }
+
+            if ($scoreCount == 1) {
+
+                return view('stagiaire.intranet.exercices.index', compact(['chapitre'], ['cours'], ['exercices']));
+            } else {
+
+                return redirect('/intranet/chapitre');
+            }
+        } else {
+            return redirect("/");
+        }
+    }
+
+    public function nextIfExercice(Request $request)
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
+
+        if (Auth::user()) {
+
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
+            }
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
+
+
+
+            $formation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
+
+            $chapitre = Chapitre::where('etat', 1)->where('id_chapitre', $formation->id_chapitre)->first();
+
+            $chapitreMax = Chapitre::where('etat', 1)->where('id_cours', $formation->id_cours)->max('numero_chapitre');
+
+            if ($chapitreMax != $chapitre->numero_chapitre) {
+                $numeroChapitre = $chapitre->numero_chapitre + 1;
+
+                $nextChapitre = Chapitre::where([
+                    'id_cours' => $formation->id_cours,
+                    'numero_chapitre' => $numeroChapitre,
+                    'etat' => 1
+                ])->first();
+
+                Suivre_formation::join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->update([
+                    'id_chapitre' => $nextChapitre->id_chapitre,
+                    'nombre_chapitre_lu' => $formation->nombre_chapitre_lu + 1
+                ]);
+
+                return redirect('/intranet/chapitre');
+            } else if ($chapitreMax == $chapitre->numero_chapitre) {
+                /* $coursActuel=FormationsContenirCours::where('id_cours',$formation->id_cours)->where('id_formation',$formation->id_formations)->first();
             $cours=FormationsContenirCours::where('id_formation',$formation->id_formations)->where('numero_cours','>',$coursActuel->numero_cours)->first();
 if($cours){
     $nextChapitre = Chapitre::where('etat',1)->where('id_cours',$cours->id_cours)
@@ -654,114 +664,114 @@ if($cours){
     return redirect('/intranet/chapitre');
 }
 else {*/
-         
-            $formation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
 
-            $projet = Projet::where('etat',1)->where('id_cours', $formation->id_cours)->first();
+                $formation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
 
-            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session',$formation->id_session)->first();
+                $projet = Projet::where('etat', 1)->where('id_cours', $formation->id_cours)->first();
 
-            $session = Session::where('id', $sessionStagiaire->id_session)->first();
+                $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session', $formation->id_session)->first();
 
-            $sessionProjet = Contenir_sessions_projet::where([
-                ['id_session', '=' ,$session->id],
-                ['id_projet','=', $projet->id]
-            ])->first();
+                $session = Session::where('id', $sessionStagiaire->id_session)->first();
 
-            if (date('Y-m-d') >= $sessionProjet->date_debut && date('Y-m-d') <= $sessionProjet->date_fin) {
+                $sessionProjet = Contenir_sessions_projet::where([
+                    ['id_session', '=', $session->id],
+                    ['id_projet', '=', $projet->id]
+                ])->first();
 
-                Contenir_sessions_projet::where([
-                    ['id_session', '=' ,$session->id],
-                    ['id_projet','=', $projet->id]
-                ])->update([
-                    'statut_id' => 3
-                ]);
-    
-                return redirect('/intranet/projet');
+                if (date('Y-m-d') >= $sessionProjet->date_debut && date('Y-m-d') <= $sessionProjet->date_fin) {
 
-            } else if(date('Y-m-d') < $sessionProjet->date_debut) {
+                    Contenir_sessions_projet::where([
+                        ['id_session', '=', $session->id],
+                        ['id_projet', '=', $projet->id]
+                    ])->update([
+                        'statut_id' => 3
+                    ]);
 
-                Contenir_sessions_projet::where([
-                    ['id_session', '=' ,$session->id],
-                    ['id_projet','=', $projet->id]
-                ])->update([
-                    'statut_id' => 1
-                ]);
+                    return redirect('/intranet/projet');
+                } else if (date('Y-m-d') < $sessionProjet->date_debut) {
 
-                return redirect('/intranet/projet');
+                    Contenir_sessions_projet::where([
+                        ['id_session', '=', $session->id],
+                        ['id_projet', '=', $projet->id]
+                    ])->update([
+                        'statut_id' => 1
+                    ]);
 
-            } else if(date('Y-m-d') > $sessionProjet->date_fin) {
+                    return redirect('/intranet/projet');
+                } else if (date('Y-m-d') > $sessionProjet->date_fin) {
 
-                Contenir_sessions_projet::where([
-                    ['id_session', '=' ,$session->id],
-                    ['id_projet','=', $projet->id]
-                ])->update([
-                    'statut_id' => 4
-                ]);
+                    Contenir_sessions_projet::where([
+                        ['id_session', '=', $session->id],
+                        ['id_projet', '=', $projet->id]
+                    ])->update([
+                        'statut_id' => 4
+                    ]);
 
-                return redirect('/intranet/projet');
-            } 
-       // }
-    }
-} else {
-    return redirect("/");
-}}
-    public function next(Request $request) {
-        $idUserAuth=null;
-        $idUserRole=null;
-
-        if(Auth::user()){
-
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
+                    return redirect('/intranet/projet');
+                }
+                // }
+            }
+        } else {
             return redirect("/");
         }
+    }
+    public function next(Request $request)
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
 
-        $exerciceCount = Exercice::where('etat',1)->where('id_chapitre', $request->get('id_chapitre'))->count();
+        if (Auth::user()) {
 
-       
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
 
-        $formation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
+            }
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
 
-        $chapitre = Chapitre::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
+            $exerciceCount = Exercice::where('etat', 1)->where('id_chapitre', $request->get('id_chapitre'))->count();
 
-        $chapitreMax = Chapitre::where('etat',1)->where('id_cours', $formation->id_cours)->max('numero_chapitre');
 
-        if($exerciceCount >= 1) {
 
-            return redirect('/intranet/exercice');
+            $formation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
 
-        } else if($chapitreMax == $chapitre->numero_chapitre) {
-/*
+            $chapitre = Chapitre::where('etat', 1)->where('id_chapitre', $formation->id_chapitre)->first();
+
+            $chapitreMax = Chapitre::where('etat', 1)->where('id_cours', $formation->id_cours)->max('numero_chapitre');
+
+            if ($exerciceCount >= 1) {
+
+                return redirect('/intranet/exercice');
+            } else if ($chapitreMax == $chapitre->numero_chapitre) {
+                /*
             $coursActuel=FormationsContenirCours::where('id_cours',$formation->id_cours)->where('id_formation',$formation->id_formations)->first();
             $cours=FormationsContenirCours::where('id_formation',$formation->id_formations)->where('numero_cours','>',$coursActuel->numero_cours)->first();
             if($cours){
@@ -779,772 +789,798 @@ else {*/
             }
             else {
 */
-            $formation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
+                $formation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
 
-            $projet = Projet::where('etat',1)->where('id_cours', $formation->id_cours)->first();
+                $projet = Projet::where('etat', 1)->where('id_cours', $formation->id_cours)->first();
 
-            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session',$formation->id_session)->first();
+                $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session', $formation->id_session)->first();
 
-            $session = Session::where('id', $sessionStagiaire->id_session)->first();
+                $session = Session::where('id', $sessionStagiaire->id_session)->first();
 
-            $sessionProjet = Contenir_sessions_projet::where([
-                ['id_session', '=' ,$session->id],
-                ['id_projet','=', $projet->id]
-            ])->first();
+                $sessionProjet = Contenir_sessions_projet::where([
+                    ['id_session', '=', $session->id],
+                    ['id_projet', '=', $projet->id]
+                ])->first();
 
-            if (date('Y-m-d') >= $sessionProjet->date_debut && date('Y-m-d') <= $sessionProjet->date_fin) {
+                if (date('Y-m-d') >= $sessionProjet->date_debut && date('Y-m-d') <= $sessionProjet->date_fin) {
 
-                Contenir_sessions_projet::where([
-                    ['id_session', '=' ,$session->id],
-                    ['id_projet','=', $projet->id]
-                ])->update([
-                    'statut_id' => 3
-                ]);
-    
-                return redirect('/intranet/projet');
+                    Contenir_sessions_projet::where([
+                        ['id_session', '=', $session->id],
+                        ['id_projet', '=', $projet->id]
+                    ])->update([
+                        'statut_id' => 3
+                    ]);
 
-            } else if(date('Y-m-d') < $session->date_debut) {
+                    return redirect('/intranet/projet');
+                } else if (date('Y-m-d') < $session->date_debut) {
 
-                Contenir_sessions_projet::where([
-                    ['id_session', '=' ,$session->id],
-                    ['id_projet','=', $projet->id]
-                ])->update([
-                    'statut_id' => 1
-                ]);
+                    Contenir_sessions_projet::where([
+                        ['id_session', '=', $session->id],
+                        ['id_projet', '=', $projet->id]
+                    ])->update([
+                        'statut_id' => 1
+                    ]);
 
-                return redirect('/intranet/projet');
+                    return redirect('/intranet/projet');
+                } else if (date('Y-m-d') > $session->date_fin) {
 
-            } else if(date('Y-m-d') > $session->date_fin) {
+                    Contenir_sessions_projet::where([
+                        ['id_session', '=', $session->id],
+                        ['id_projet', '=', $projet->id]
+                    ])->update([
+                        'statut_id' => 4
+                    ]);
 
-                Contenir_sessions_projet::where([
-                    ['id_session', '=' ,$session->id],
-                    ['id_projet','=', $projet->id]
-                ])->update([
-                    'statut_id' => 4
-                ]);
-
-                return redirect('/intranet/projet');
-            } //}
-           else {return redirect('/intranet/projet'); }
-        } else {
-
-            $numeroChapitre = $chapitre->numero_chapitre+1;
-            
-            $nextChapitre = Chapitre::where([
-                'id_cours' => $formation->id_cours,
-                'numero_chapitre' => $numeroChapitre,
-                'etat'=>1
-            ])->first();
-
-            Suivre_formation::join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->update([
-                'id_chapitre' => $nextChapitre->id_chapitre,
-                'nombre_chapitre_lu' => $formation->nombre_chapitre_lu+1
-            ]);
-    
-            return redirect('/intranet/chapitre');
-        }
-    } else {
-        return redirect("/");
-    } }
-
-    public function projet() {
-        $idUserAuth=null;
-        $idUserRole=null;
-
-        if(Auth::user()){
-
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
-            return redirect("/");
-        }
-
-        $formation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
-
-        $cours = Cours::where('etat',1)->where('id_cours', $formation->id_cours)->first();
-
-        $projetCount = Projet::where('etat',1)->where('id_cours', $formation->id_cours)->count();
-
-        $projet = Projet::where('etat',1)->where('id_cours', $formation->id_cours)->first();
-
-        $FaireProjetCount = Faire_projet::where([
-            ['id_stagiaire', '=' ,$stagiaire->id],
-            ['id_projet','=', $projet->id]
-        ])->count();
-        $FaireProjetResult = null;
-        if ($FaireProjetCount >= 1) {
-            $faireProjet = true;
-            $FaireProjetResult = Faire_projet::where([
-                ['id_stagiaire', '=' ,$stagiaire->id],
-                ['id_projet','=', $projet->id]
-            ])->first();
-        } else {
-            $faireProjet = false;
-        }
-
-        $sessionProjet = null;
-
-        if ($projetCount > 0) {
-            $projets = Projet::where('etat',1)->where('id_cours', $formation->id_cours)->with('Document')->get();
-
-            $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session',$formation->id_session)->first();
-
-            $session = Session::where('id', $sessionStagiaire->id_session)->first();
-
-            $sessionProjet = Contenir_sessions_projet::where([
-                ['id_session', '=', $session->id],
-                ['id_projet','=', $projet->id]
-            ])->first();
-
-            return view('stagiaire.intranet.projet.index', compact(['projets'],['cours'],['formation'],['faireProjet'],['sessionProjet'],['FaireProjetResult']));
-        } else {
-            return redirect('/intranet/chapitre');
-        }
-    } else {
-        return redirect("/");
-    }}
-
-    public function faireProjet(Request $request) {
-        $idUserAuth=null;
-        $idUserRole=null;
-
-        if(Auth::user()){
-
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
-            return redirect("/");
-        }
-
-       
-
-        $formation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
-
-        $projet = Projet::where('etat',1)->where('id_cours', $formation->id_cours)->first();
-
-        $FaireProjetCount = Faire_projet::where([
-            ['id_stagiaire', '=' ,$stagiaire->id],
-            ['id_projet','=', $projet->id]
-        ])->count();
-
-        if ($request->hasFile('lienDocProjet')) {
-            $request->validate([
-                'lienDocProjet' =>  ['max:2000000',
-            new FilenameDocument('/[\w\W]{4,181}$/')]
-            ]);
-            $destinationPath = public_path('doc/faireProjet/');
-            $file = $request->file('lienDocProjet');
-            $filename = $file->getClientOriginalName();
-            $lien = time().$filename;
-            $file->move($destinationPath, $lien);
-        } else if(!empty($request->get('lienProjet'))){
-            $request->validate([
-                'lienProjet' =>  ['string','max:191','starts_with:http']
-            ]);
-            $lien = $request->get('lienProjet');
-        }
-        else {
-            return redirect()->back()->with('fail','Veuillez télécharger un document ou saisir un lien');
-        }
-        if ($FaireProjetCount < 1) {
-            Faire_projet::create([
-                'id_projet' => $projet->id,
-                'id_stagiaire' => $stagiaire->id,
-                'lien' => $lien
-            ]);
-
-            return redirect()->back()->with('success','Votre projet a bien été envoyé');
-        } else {
-
-            return redirect()->back()->with('fail','Votre projet a déjà été envoyé, vous ne pouvez pas en soumettre un autre');
-        }
-    } else {
-        return redirect("/");
-    }}
-
-    public function previousChapter() {
-        $idUserAuth=null;
-        $idUserRole=null;
-
-        if(Auth::user()){
-
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
-            return redirect("/");
-        }
-
-
-
-        $formation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
-
-        $maxCours = FormationsContenirCours::where('id_cours', $formation->id_cours)->first();
-
-        $allCours = FormationsContenirCours::where('id_formation','=', $formation->id_formations)
-        ->where('numero_cours','<=', $maxCours->numero_cours)
-        ->with('Cours')->get();
-
-        foreach ($allCours as $cour) {
-            $chapitre = Chapitre::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
-        }
-
-        $arrayChap[] = $chapitre['numero_chapitre'];
-
-        foreach($allCours as $cour) {
-            $lessons[] = Cours::where('etat',1)->where('id_cours', $cour->id_cours)
-            ->with('Chapitre', function ($query) use ($arrayChap, $cour, $formation) {
-                if($cour->id_cours == $formation->id_cours) {
-                    $query->where('numero_chapitre','<=', max($arrayChap))->where('id_cours', $cour->id_cours)->where('etat',1);
-                } else {
-                    $query->where('id_cours', $cour->id_cours)->where('etat',1);
+                    return redirect('/intranet/projet');
+                } //}
+                else {
+                    return redirect('/intranet/projet');
                 }
-            })->get();
-        }
-        
-        return view('stagiaire.intranet.cours.previousIndex', compact(['lessons']));
-    } else {
-        return redirect("/");
-    }}
+            } else {
 
-    public function onePreviousChapter($id) {
-        $chapitre = Chapitre::where('etat',1)->where('id_chapitre', $id)->with(['Section' => function($query) use($id) {
+                $numeroChapitre = $chapitre->numero_chapitre + 1;
+
+                $nextChapitre = Chapitre::where([
+                    'id_cours' => $formation->id_cours,
+                    'numero_chapitre' => $numeroChapitre,
+                    'etat' => 1
+                ])->first();
+
+                Suivre_formation::join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->update([
+                    'id_chapitre' => $nextChapitre->id_chapitre,
+                    'nombre_chapitre_lu' => $formation->nombre_chapitre_lu + 1
+                ]);
+
+                return redirect('/intranet/chapitre');
+            }
+        } else {
+            return redirect("/");
+        }
+    }
+
+    public function projet()
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
+
+        if (Auth::user()) {
+
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
+            }
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
+
+            $formation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
+
+            $cours = Cours::where('etat', 1)->where('id_cours', $formation->id_cours)->first();
+
+            $projetCount = Projet::where('etat', 1)->where('id_cours', $formation->id_cours)->count();
+
+            $projet = Projet::where('etat', 1)->where('id_cours', $formation->id_cours)->first();
+
+            $FaireProjetCount = Faire_projet::where([
+                ['id_stagiaire', '=', $stagiaire->id],
+                ['id_projet', '=', $projet->id]
+            ])->count();
+            $FaireProjetResult = null;
+            if ($FaireProjetCount >= 1) {
+                $faireProjet = true;
+                $FaireProjetResult = Faire_projet::where([
+                    ['id_stagiaire', '=', $stagiaire->id],
+                    ['id_projet', '=', $projet->id]
+                ])->first();
+            } else {
+                $faireProjet = false;
+            }
+
+            $sessionProjet = null;
+
+            if ($projetCount > 0) {
+                $projets = Projet::where('etat', 1)->where('id_cours', $formation->id_cours)->with('Document')->get();
+
+                $sessionStagiaire = Lier_sessions_stagiaire::where('id_stagiaire', $stagiaire->id)->where('id_session', $formation->id_session)->first();
+
+                $session = Session::where('id', $sessionStagiaire->id_session)->first();
+
+                $sessionProjet = Contenir_sessions_projet::where([
+                    ['id_session', '=', $session->id],
+                    ['id_projet', '=', $projet->id]
+                ])->first();
+
+                return view('stagiaire.intranet.projet.index', compact(['projets'], ['cours'], ['formation'], ['faireProjet'], ['sessionProjet'], ['FaireProjetResult']));
+            } else {
+                return redirect('/intranet/chapitre');
+            }
+        } else {
+            return redirect("/");
+        }
+    }
+
+    public function faireProjet(Request $request)
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
+
+        if (Auth::user()) {
+
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
+            }
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
+
+
+
+            $formation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
+
+            $projet = Projet::where('etat', 1)->where('id_cours', $formation->id_cours)->first();
+
+            $FaireProjetCount = Faire_projet::where([
+                ['id_stagiaire', '=', $stagiaire->id],
+                ['id_projet', '=', $projet->id]
+            ])->count();
+
+            if ($request->hasFile('lienDocProjet')) {
+                $request->validate([
+                    'lienDocProjet' =>  [
+                        'max:2000000',
+                        new FilenameDocument('/[\w\W]{4,181}$/')
+                    ]
+                ]);
+                $destinationPath = public_path('doc/faireProjet/');
+                $file = $request->file('lienDocProjet');
+                $filename = $file->getClientOriginalName();
+                $lien = time() . $filename;
+                $file->move($destinationPath, $lien);
+            } else if (!empty($request->get('lienProjet'))) {
+                $request->validate([
+                    'lienProjet' =>  ['string', 'max:191', 'starts_with:http']
+                ]);
+                $lien = $request->get('lienProjet');
+            } else {
+                return redirect()->back()->with('fail', 'Veuillez télécharger un document ou saisir un lien');
+            }
+            if ($FaireProjetCount < 1) {
+                Faire_projet::create([
+                    'id_projet' => $projet->id,
+                    'id_stagiaire' => $stagiaire->id,
+                    'lien' => $lien
+                ]);
+
+                return redirect()->back()->with('success', 'Votre projet a bien été envoyé');
+            } else {
+
+                return redirect()->back()->with('fail', 'Votre projet a déjà été envoyé, vous ne pouvez pas en soumettre un autre');
+            }
+        } else {
+            return redirect("/");
+        }
+    }
+
+    public function previousChapter()
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
+
+        if (Auth::user()) {
+
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
+            }
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
+
+
+
+            $formation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
+
+            $maxCours = FormationsContenirCours::where('id_cours', $formation->id_cours)->first();
+
+            $allCours = FormationsContenirCours::where('id_formation', '=', $formation->id_formations)
+                ->where('numero_cours', '<=', $maxCours->numero_cours)
+                ->with('Cours')->get();
+
+            foreach ($allCours as $cour) {
+                $chapitre = Chapitre::where('etat', 1)->where('id_chapitre', $formation->id_chapitre)->first();
+            }
+
+            $arrayChap[] = $chapitre['numero_chapitre'];
+
+            foreach ($allCours as $cour) {
+                $lessons[] = Cours::where('etat', 1)->where('id_cours', $cour->id_cours)
+                    ->with('Chapitre', function ($query) use ($arrayChap, $cour, $formation) {
+                        if ($cour->id_cours == $formation->id_cours) {
+                            $query->where('numero_chapitre', '<=', max($arrayChap))->where('id_cours', $cour->id_cours)->where('etat', 1);
+                        } else {
+                            $query->where('id_cours', $cour->id_cours)->where('etat', 1);
+                        }
+                    })->get();
+            }
+
+            return view('stagiaire.intranet.cours.previousIndex', compact(['lessons']));
+        } else {
+            return redirect("/");
+        }
+    }
+
+    public function onePreviousChapter($id)
+    {
+        $chapitre = Chapitre::where('etat', 1)->where('id_chapitre', $id)->with(['Section' => function ($query) use ($id) {
             $query->where('sections.id', $id);
         }])->first();
 
         return view('stagiaire.intranet.cours.onePreviousIndex', compact(['chapitre']));
     }
 
-    public function previousQCM() {
-        $idUserAuth=null;
-        $idUserRole=null;
+    public function previousQCM()
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
 
-        if(Auth::user()){
+        if (Auth::user()) {
 
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
+            }
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
+
+
+
+            $formation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
+
+            $qcmScores = Score_qcm::select('score_qcm.*')
+                ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'score_qcm.stagiaire_id')
+                ->join('sessions', 'sessions.id', 'lier_sessions_stagiaires.id_session')
+                ->join('formations_contenir_cours', 'formations_contenir_cours.id_formation', 'sessions.formations_id')
+                ->join('chapitres', 'chapitres.id_cours', 'formations_contenir_cours.id_cours')
+                ->join('qcm', function ($join) {
+                    $join->on('chapitres.id_chapitre', '=', 'qcm.id_chapitre');
+                    $join->on('score_qcm.qcm_id', '=', 'qcm.id');
+                })
+                ->where('lier_sessions_stagiaires.id_session', $formation->id_session)
+                ->where('score_qcm.stagiaire_id', $stagiaire->id)->get();
+
+            if ($qcmScores->count() != 0) {
+                foreach ($qcmScores as $qcmScore) {
+                    $qcms[] = Qcm::where('etat', 1)->where('id', $qcmScore->qcm_id)->with('Score_qcm')->get();
+                }
+            } else {
+                $qcms = array();
+            }
+            return view('stagiaire.intranet.qcm.previousIndex', compact(['qcms']));
+        } else {
             return redirect("/");
         }
-
-       
-
-        $formation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
-
-        $qcmScores = Score_qcm::select('score_qcm.*')
-        ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','score_qcm.stagiaire_id')
-        ->join('sessions','sessions.id','lier_sessions_stagiaires.id_session')
-        ->join('formations_contenir_cours','formations_contenir_cours.id_formation','sessions.formations_id')
-        ->join('chapitres','chapitres.id_cours','formations_contenir_cours.id_cours')
-        ->join('qcm', function($join)
-                        {
-                             $join->on('chapitres.id_chapitre', '=', 'qcm.id_chapitre');
-                             $join->on('score_qcm.qcm_id','=','qcm.id');
-                        }) 
-        ->where('lier_sessions_stagiaires.id_session',$formation->id_session)
-        ->where('score_qcm.stagiaire_id', $stagiaire->id)->get();
-        
-        if($qcmScores->count()!=0){
-        foreach($qcmScores as $qcmScore) {
-            $qcms[] = Qcm::where('etat',1)->where('id', $qcmScore->qcm_id)->with('Score_qcm')->get();
-        }
     }
-        else {
-            $qcms = array();
-        }
-        return view('stagiaire.intranet.qcm.previousIndex', compact(['qcms']));
-    } else {
-        return redirect("/");
-    }}
 
-    public function onePreviousQCM($id) {
-        $qcm = Qcm::where('etat',1)->where('id', $id)->with(['Question_qcm' => function($query) use($id) {
+    public function onePreviousQCM($id)
+    {
+        $qcm = Qcm::where('etat', 1)->where('id', $id)->with(['Question_qcm' => function ($query) use ($id) {
             $query->where('question_qcm.qcm_id', $id)
-            ->with('Reponse_question_qcm');
+                ->with('Reponse_question_qcm');
         }])->first();
 
         return view('stagiaire.intranet.qcm.onePreviousIndex', compact(['qcm']));
     }
 
-    public function previousExercices() {
-        $idUserAuth=null;
-        $idUserRole=null;
+    public function previousExercices()
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
 
-        if(Auth::user()){
+        if (Auth::user()) {
 
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
-            return redirect("/");
-        }
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
+            }
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
 
-      
 
-        $formation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
 
-        $maxCours = FormationsContenirCours::where('id_cours', $formation->id_cours)->first();
+            $formation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
 
-        $allCours = FormationsContenirCours::where('id_formation','=', $formation->id_formations)
-        ->where('numero_cours','<=', $maxCours->numero_cours)
-        ->with('Cours')->get();
+            $maxCours = FormationsContenirCours::where('id_cours', $formation->id_cours)->first();
 
-        foreach ($allCours as $cour) {
-            $chapitre = Chapitre::where('etat',1)->where('id_chapitre', $formation->id_chapitre)->first();
-        }
+            $allCours = FormationsContenirCours::where('id_formation', '=', $formation->id_formations)
+                ->where('numero_cours', '<=', $maxCours->numero_cours)
+                ->with('Cours')->get();
 
-        $arrayChap[] = $chapitre['numero_chapitre'];
+            foreach ($allCours as $cour) {
+                $chapitre = Chapitre::where('etat', 1)->where('id_chapitre', $formation->id_chapitre)->first();
+            }
 
-        foreach($allCours as $cour) {
-            $lessons[] = Cours::where('etat',1)->where('id_cours', $cour->id_cours)
-            ->with('Chapitre', function ($query) use ($arrayChap, $cour, $formation) {
-                if($cour->id_cours == $formation->id_cours) {
-                    $query->where('numero_chapitre','<=', max($arrayChap))->where('id_cours', $cour->id_cours)->where('etat',1);
-                } else {
-                    $query->where('id_cours', $cour->id_cours)->where('etat',1);
-                }
-            })->get();
-        }
+            $arrayChap[] = $chapitre['numero_chapitre'];
 
-        foreach($lessons as $lesson) {
-            foreach($lesson as $l) {
-                foreach($l->Chapitre as $chapitre) {
-                    $chapitreIds[] = $chapitre->id_chapitre;
+            foreach ($allCours as $cour) {
+                $lessons[] = Cours::where('etat', 1)->where('id_cours', $cour->id_cours)
+                    ->with('Chapitre', function ($query) use ($arrayChap, $cour, $formation) {
+                        if ($cour->id_cours == $formation->id_cours) {
+                            $query->where('numero_chapitre', '<=', max($arrayChap))->where('id_cours', $cour->id_cours)->where('etat', 1);
+                        } else {
+                            $query->where('id_cours', $cour->id_cours)->where('etat', 1);
+                        }
+                    })->get();
+            }
+
+            foreach ($lessons as $lesson) {
+                foreach ($lesson as $l) {
+                    foreach ($l->Chapitre as $chapitre) {
+                        $chapitreIds[] = $chapitre->id_chapitre;
+                    }
                 }
             }
-        }
-        
-        foreach($chapitreIds as $chapitreId) {
-            $exercices[] = Exercice::where('etat',1)->where('id_chapitre', $chapitreId)->first();
-        }
 
-        return view('stagiaire.intranet.exercices.previousIndex', compact(['exercices']));
-    } else {
-        return redirect("/");
-    }}
+            foreach ($chapitreIds as $chapitreId) {
+                $exercices[] = Exercice::where('etat', 1)->where('id_chapitre', $chapitreId)->first();
+            }
 
-    public function onePreviousExercice($id) {
-        $exercice = Exercice::where('etat',1)->where('id', $id)->with(['Questions_exercice' => function($query) use($id) {
+            return view('stagiaire.intranet.exercices.previousIndex', compact(['exercices']));
+        } else {
+            return redirect("/");
+        }
+    }
+
+    public function onePreviousExercice($id)
+    {
+        $exercice = Exercice::where('etat', 1)->where('id', $id)->with(['Questions_exercice' => function ($query) use ($id) {
             $query->where('questions_exercices.exercice_id', $id)
-            ->with('Questions_correction');
+                ->with('Questions_correction');
         }])->first();
 
         return view('stagiaire.intranet.exercices.onePreviousIndex', compact(['exercice']));
     }
 
-    public function previousProjets() {
-        $idUserAuth=null;
-        $idUserRole=null;
+    public function previousProjets()
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
 
-        if(Auth::user()){
+        if (Auth::user()) {
 
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
+            }
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
+
+
+            $formation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
+
+            $sessionProjets = Contenir_sessions_projet::where('id_session', $formation->id_session)
+                ->orWhere('statut_id', 3)->orWhere('statut_id', 4)->get();
+
+            foreach ($sessionProjets as $sessionProjet) {
+                $projets[] = Projet::select("projets.*", "faire_projets.statut_reussite", "faire_projets.resultat_description", "faire_projets.lien")
+                    ->leftJoin("faire_projets", "faire_projets.id_projet", "projets.id")
+                    ->where('etat', 1)->where('id', $sessionProjet->id_projet)->first();
+            }
+
+            return view('stagiaire.intranet.projet.previousIndex', compact(['projets']));
+        } else {
             return redirect("/");
         }
+    }
 
-
-        $formation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
-
-        $sessionProjets = Contenir_sessions_projet::where('id_session', $formation->id_session)
-        ->orWhere('statut_id', 3)->orWhere('statut_id', 4)->get();
-
-        foreach($sessionProjets as $sessionProjet) {
-            $projets[] = Projet::select("projets.*","faire_projets.statut_reussite","faire_projets.resultat_description","faire_projets.lien")
-            ->leftJoin("faire_projets","faire_projets.id_projet","projets.id")
-            ->where('etat',1)->where('id', $sessionProjet->id_projet)->first();
-        }
-
-        return view('stagiaire.intranet.projet.previousIndex', compact(['projets']));
-    } else {
-        return redirect("/");
-    }}
-
-    public function onePreviousProjet($id) {
-        $projet = Projet::where('etat',1)->where('id', $id)->with('Document')->first();
+    public function onePreviousProjet($id)
+    {
+        $projet = Projet::where('etat', 1)->where('id', $id)->with('Document')->first();
 
         return view('stagiaire.intranet.projet.onePreviousIndex', compact(['projet']));
     }
 
-    public function statutLive() {
-        $idUserAuth=null;
-        $idUserRole=null;
+    public function statutLive()
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
 
-        if(Auth::user()){
+        if (Auth::user()) {
 
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
-            return redirect("/");
-        }
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
+            }
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
 
-       
 
-        $formation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
 
-        $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->count();
-       
-if($meeting !=0){
-        $meetings = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
-        $sessionLive = Meeting_en_ligne::where('id', $meetings->id_meeting)->where('id_cours', $formation->id_cours)->first();
+            $formation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
 
-        $endMeeting = date('Y-m-d H:i:s', strtotime($sessionLive->date_meeting.' +2 hours'));
+            $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->count();
 
-        if(date('Y-m-d H:i:s') < $sessionLive->date_meeting) {
+            if ($meeting != 0) {
+                $meetings = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
+                $sessionLive = Meeting_en_ligne::where('id', $meetings->id_meeting)->where('id_cours', $formation->id_cours)->first();
 
-            $sessionLive->update([
-                'statut_id' => 1
-            ]);
+                $endMeeting = date('Y-m-d H:i:s', strtotime($sessionLive->date_meeting . ' +2 hours'));
 
-            return redirect('/intranet/live');
+                if (date('Y-m-d H:i:s') < $sessionLive->date_meeting) {
 
-        } else if(date('Y-m-d H:i:s') > $endMeeting) {
+                    $sessionLive->update([
+                        'statut_id' => 1
+                    ]);
 
-            $sessionLive->update([
-                'statut_id' => 4
-            ]);
+                    return redirect('/intranet/live');
+                } else if (date('Y-m-d H:i:s') > $endMeeting) {
 
-            return redirect('/intranet/live');
-        } else if(date('Y-m-d H:i:s') == $sessionLive->date_meeting || date('Y-m-d H:i:s') <= $endMeeting) {
+                    $sessionLive->update([
+                        'statut_id' => 4
+                    ]);
 
-        if($meeting != 0) {
-            $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
+                    return redirect('/intranet/live');
+                } else if (date('Y-m-d H:i:s') == $sessionLive->date_meeting || date('Y-m-d H:i:s') <= $endMeeting) {
 
-            $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
-    
-            $endMeeting = date('Y-m-d H:i:s', strtotime($sessionLive->date_meeting.' +2 hours'));
-    
-            if(date('Y-m-d H:i:s') < $sessionLive->date_meeting) {
-    
-                $sessionLive->update([
-                    'statut_id' => 1
-                ]);
-    
-                return redirect('/intranet/live');
-    
-            } else if(date('Y-m-d H:i:s') > $endMeeting) {
-    
-                $sessionLive->update([
-                    'statut_id' => 4
-                ]);
-    
-                return redirect('/intranet/live');
-            } else if(date('Y-m-d H:i:s') >= $sessionLive->date_meeting && date('Y-m-d H:i:s') <= $endMeeting) {
-    
-                $sessionLive->update([
-                    'statut_id' => 3
-                ]);
-    
-                return redirect('/intranet/live');
+                    if ($meeting != 0) {
+                        $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
+
+                        $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
+
+                        $endMeeting = date('Y-m-d H:i:s', strtotime($sessionLive->date_meeting . ' +2 hours'));
+
+                        if (date('Y-m-d H:i:s') < $sessionLive->date_meeting) {
+
+                            $sessionLive->update([
+                                'statut_id' => 1
+                            ]);
+
+                            return redirect('/intranet/live');
+                        } else if (date('Y-m-d H:i:s') > $endMeeting) {
+
+                            $sessionLive->update([
+                                'statut_id' => 4
+                            ]);
+
+                            return redirect('/intranet/live');
+                        } else if (date('Y-m-d H:i:s') >= $sessionLive->date_meeting && date('Y-m-d H:i:s') <= $endMeeting) {
+
+                            $sessionLive->update([
+                                'statut_id' => 3
+                            ]);
+
+                            return redirect('/intranet/live');
+                        }
+                    } else {
+
+                        return redirect()->back()->with("warning", "Pas de live prévu");
+                    }
+                }
+            } else {
+
+                return redirect()->back()->with("warning", "Pas de live prévu");
             }
         } else {
-          
-            return redirect()->back()->with("warning","Pas de live prévu");
-        }
-    }
-    }else {
-        
-        return redirect()->back()->with("warning","Pas de live prévu");
-    }
-} else {
-    return redirect("/");
-}}
-    public function live() {
-        $idUserAuth=null;
-        $idUserRole=null;
-
-        if(Auth::user()){
-
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
             return redirect("/");
         }
+    }
+    public function live()
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
+
+        if (Auth::user()) {
+
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
+            }
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
 
 
-        $formation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
+            $formation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
 
-        $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->count();
-        $sessionLive = null;
-        if($meeting !=0){
-            $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
-        $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
+            $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->count();
+            $sessionLive = null;
+            if ($meeting != 0) {
+                $meeting = Participer_meeting::where('id_utilisateur', $idUserAuth)->first();
+                $sessionLive = Meeting_en_ligne::where('id', $meeting->id_meeting)->where('id_cours', $formation->id_cours)->first();
 
-        return view('stagiaire.intranet.live.index', compact(['sessionLive']));
-        } 
-        
-        else {
-            return redirect()->back()->with("warning","Pas de live prévu");
-        }
-    } else {
-        return redirect("/");
-    }}
-    public function coursSuivant(Request $request) {
-        $idUserAuth=null;
-        $idUserRole=null;
-
-        if(Auth::user()){
-
-        $idUserAuth=Auth::user()->id;
-        $idUserRole=Auth::user()->role_id;
-        $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
-        if($stagiaire){
-           $SuivreFormation = Suivre_formation::select('suivre_formations.*')
-            ->join('sessions','sessions.id','suivre_formations.id_session')
-            ->join('lier_sessions_stagiaires','lier_sessions_stagiaires.id_stagiaire','suivre_formations.id_stagiaire')
-            ->where('suivre_formations.id_stagiaire', $stagiaire->id)
-            ->where('lier_sessions_stagiaires.etat',1)
-            ->where('sessions.etat',1)
-            ->where('sessions.statut_id',3)->exists();
-		}
-		else {
-		$SuivreFormation = false;
-		}
-        if(!$SuivreFormation){
-            if($idUserRole==2)
-            return redirect("/centre");
-            else if($idUserRole==3)
-            return redirect("/stagiaire");
-            
-            else if($idUserRole==4)
-            
-            return redirect("/formateur");
-            else if($idUserRole==5)
-            
-            return redirect("/organisme");
-            else
+                return view('stagiaire.intranet.live.index', compact(['sessionLive']));
+            } else {
+                return redirect()->back()->with("warning", "Pas de live prévu");
+            }
+        } else {
             return redirect("/");
         }
+    }
+    public function coursSuivant(Request $request)
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
+
+        if (Auth::user()) {
+
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+            $stagiaire = Stagiaire::where('user_id', $idUserAuth)->first();
+            if ($stagiaire) {
+                $SuivreFormation = Suivre_formation::select('suivre_formations.*')
+                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('lier_sessions_stagiaires', 'lier_sessions_stagiaires.id_stagiaire', 'suivre_formations.id_stagiaire')
+                    ->where('suivre_formations.id_stagiaire', $stagiaire->id)
+                    ->where('lier_sessions_stagiaires.etat', 1)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $SuivreFormation = false;
+            }
+            switch ($idUserRole) {
+                case 2:
+                    return redirect("/centre");
+                    break;
+                case 3:
+                    return redirect("/stagiaire");
+                    break;
+                case 4:
+                    return redirect("/formateur");
+                    break;
+                case 5:
+                    return redirect("/organisme");
+                    break;
+                default:
+                    return redirect("/");
+                    break;
+            }
 
 
-        $formation = Suivre_formation::select('suivre_formations.*')
-        ->join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->first();
-        $coursActuel=FormationsContenirCours::where('id_cours',$formation->id_cours)->where('id_formation',$formation->id_formations)->first();
-            $cours=FormationsContenirCours::where('id_formation',$formation->id_formations)->where('numero_cours',$coursActuel->numero_cours+1)->first();
-            if($cours){
-                $nextChapitre = Chapitre::where('etat',1)->where('id_cours',$cours->id_cours)
-                ->where('numero_chapitre',1)->first();
-                
+            $formation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->first();
+            $coursActuel = FormationsContenirCours::where('id_cours', $formation->id_cours)->where('id_formation', $formation->id_formations)->first();
+            $cours = FormationsContenirCours::where('id_formation', $formation->id_formations)->where('numero_cours', $coursActuel->numero_cours + 1)->first();
+            if ($cours) {
+                $nextChapitre = Chapitre::where('etat', 1)->where('id_cours', $cours->id_cours)
+                    ->where('numero_chapitre', 1)->first();
 
-                Suivre_formation::join('sessions','sessions.id','suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat',1)->where('sessions.statut_id',3)->update([
+
+                Suivre_formation::join('sessions', 'sessions.id', 'suivre_formations.id_session')->where('id_stagiaire', $stagiaire->id)->where('sessions.etat', 1)->where('sessions.statut_id', 3)->update([
                     'id_chapitre' => $nextChapitre->id_chapitre,
-                    'nombre_chapitre_lu' => $formation->nombre_chapitre_lu+1,
+                    'nombre_chapitre_lu' => $formation->nombre_chapitre_lu + 1,
                     'id_cours' => $cours->id_cours
                 ]);
-            }else{
-                $request->session()->put('sessionTerminée',true);
-            }
-                return redirect('/intranet/chapitre');
-            
             } else {
-                return redirect("/");
-            } }
+                $request->session()->put('sessionTerminée', true);
+            }
+            return redirect('/intranet/chapitre');
+        } else {
+            return redirect("/");
+        }
+    }
 }

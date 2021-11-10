@@ -162,3 +162,7 @@
 #selectOrganisation , #selectCentre{
     display:none;
 }
+
+.text-link-live {
+    overflow-wrap: break-word;
+}

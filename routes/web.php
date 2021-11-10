@@ -156,6 +156,9 @@ Route::get('/intranet/live', [App\Http\Controllers\IntranetController::class, 'l
 Route::get('/intranet/statutLive', [App\Http\Controllers\IntranetController::class, 'statutLive'])->name('statutLiveIntranet');
 Route::get('/intranet/coursSuivant', [App\Http\Controllers\IntranetController::class, 'coursSuivant'])->name('coursSuivant');
 
+Route::get('/intranet/formateurs/lives', [App\Http\Controllers\IntranetFormateurController::class, 'live'])->name('live_formateur');
+Route::post('/intranet/formateurs/lives', [App\Http\Controllers\IntranetFormateurController::class, 'createLive'])->name('create_live_formateur');
+
 Route::get('storage/{filename}', function ($filename)
 {
     $path = storage_path('public/' . $filename);

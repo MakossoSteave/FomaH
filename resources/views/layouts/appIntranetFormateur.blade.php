@@ -95,10 +95,9 @@
                     Navigation
                 </p>
                 <ul class="menu-list">
-                    <li><a href="#">QCMs</a></li>
-                    <li><a href="#">Progressions</a></li>
+                    <li><a href="{{ route('intranetFormateur.index') }}">Sessions</a></li>
                     <li><a href="#">Projets</a></li>
-                    <li><a href="#">Live</a></li>
+                    <li><a href="{{ route('live_formateur') }}">Live</a></li>
                 </ul>
             </aside>
         </div>
