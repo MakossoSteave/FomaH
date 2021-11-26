@@ -166,3 +166,10 @@
 .text-link-live {
     overflow-wrap: break-word;
 }
+
+.body-404 {
+    background: #dedede;
+}
+.page-wrap {
+    min-height: 100vh;
+}

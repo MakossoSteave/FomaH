@@ -96,7 +96,7 @@
                 </p>
                 <ul class="menu-list">
                     <li><a href="{{ route('intranetFormateur.index') }}">Sessions</a></li>
-                    <li><a href="#">Projets</a></li>
+                    <li><a href="{{ route('projet_formateur') }}">Projets</a></li>
                     <li><a href="{{ route('live_formateur') }}">Live</a></li>
                 </ul>
             </aside>

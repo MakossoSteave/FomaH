@@ -24,6 +24,8 @@ use App\Rules\FilenameDocument;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
+date_default_timezone_set('Europe/Paris');
+
 class IntranetFormateurController extends Controller
 {
     public function index()
@@ -98,17 +100,30 @@ class IntranetFormateurController extends Controller
             $idUserAuth = Auth::user()->id;
             $idUserRole = Auth::user()->role_id;
 
+            $formateurSuivreFormation = true;
+
+            $projetList = null;
+
             $formateur = Formateur::where('user_id', $idUserAuth)->first();
 
             if ($formateur) {
                 $formateurSuivreFormation = Suivre_formation::select('suivre_formations.*')
-                    ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
-                    ->where('sessions.formateur_id', $formateur->id)
-                    ->where('sessions.etat', 1)
-                    ->where('sessions.statut_id', 3)->exists();
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                ->where('sessions.formateur_id', $formateur->id)
+                ->where('sessions.etat', 1)
+                ->where('sessions.statut_id', 3)->exists();
+
+                $projetList = Projet::where('projets.formateur_id', $formateur->id)
+                    ->join('faire_projets', 'faire_projets.id_projet', 'projets.id')
+                    ->join('contenir_sessions_projets', 'contenir_sessions_projets.id_projet', 'projets.id')
+                    ->join('stagiaires', 'stagiaires.id', 'faire_projets.id_stagiaire')
+                    ->where('contenir_sessions_projets.date_fin' ,'>', date('Y-m-d'))
+                    ->get();
+
             } else {
                 $formateurSuivreFormation = false;
             }
+            
             if (!$formateurSuivreFormation) {
                 switch ($idUserRole) {
                     case 2:
@@ -145,7 +160,70 @@ class IntranetFormateurController extends Controller
                     ->where('sessions.statut_id', 3)
                     ->get();
 
-                return view('formateur.intranet.index', compact('formateurFormations'));
+                return view('formateur.intranet.projet.index', compact('projetList'));
+            }
+        }
+    }
+
+    public function projetGrade()
+    {
+        $idUserAuth = null;
+        $idUserRole = null;
+
+        if (Auth::user()) {
+
+            $idUserAuth = Auth::user()->id;
+            $idUserRole = Auth::user()->role_id;
+
+            $formateur = Formateur::where('user_id', $idUserAuth)->first();
+
+            if ($formateur) {
+                $formateurSuivreFormation = Suivre_formation::select('suivre_formations.*')
+                ->join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                ->where('sessions.formateur_id', $formateur->id)
+                ->where('sessions.etat', 1)
+                ->where('sessions.statut_id', 3)->exists();
+            } else {
+                $formateurSuivreFormation = false;
+            }
+            
+            if (!$formateurSuivreFormation) {
+                switch ($idUserRole) {
+                    case 2:
+                        return redirect("/centre");
+                        break;
+                    case 3:
+                        return redirect("/stagiaire");
+                        break;
+                    case 4:
+                        return redirect("/formateur");
+                        break;
+                    case 5:
+                        return redirect("/organisme");
+                        break;
+                    default:
+                        return redirect("/");
+                        break;
+                }
+            } else {
+
+                $formateurFormations = Suivre_formation::join('sessions', 'sessions.id', 'suivre_formations.id_session')
+                    ->join('formations', 'formations.id', 'suivre_formations.id_formations')
+                    ->join('stagiaires', 'stagiaires.id', 'suivre_formations.id_stagiaire')
+                    ->select(
+                        'suivre_formations.*',
+                        'sessions.*',
+                        'formations.libelle',
+                        'stagiaires.nom',
+                        'stagiaires.prenom'
+                    )
+                    ->where('sessions.formateur_id', $formateur->id)
+                    ->where('stagiaires.formateur_id', $formateur->id)
+                    ->where('sessions.etat', 1)
+                    ->where('sessions.statut_id', 3)
+                    ->get();
+
+                // return view('formateur.intranet.projet.index');
             }
         }
     }
@@ -243,6 +321,11 @@ class IntranetFormateurController extends Controller
             );
 
            return redirect('/intranet/formateurs/lives')->with('success','Create Successfully');
+    }
+
+    public function deleteLive(Request $request)
+    {
+
     }
 
     public function score()

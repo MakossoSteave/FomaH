@@ -17,6 +17,7 @@ use Illuminate\Http\Response;
 | contains the "web" middleware group. Now create something great!
 |
 */
+try {
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,10 +27,6 @@ Auth::routes();
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
-
-
 
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
 Route::get('/stagiaire/{id}{ref} ', [App\Http\Controllers\StagiaireController::class, 'index'])->name('stagiaire');
@@ -158,6 +155,7 @@ Route::get('/intranet/coursSuivant', [App\Http\Controllers\IntranetController::c
 
 Route::get('/intranet/formateurs/lives', [App\Http\Controllers\IntranetFormateurController::class, 'live'])->name('live_formateur');
 Route::post('/intranet/formateurs/lives', [App\Http\Controllers\IntranetFormateurController::class, 'createLive'])->name('create_live_formateur');
+Route::get('/intranet/formateurs/projets', [App\Http\Controllers\IntranetFormateurController::class, 'projet'])->name('projet_formateur');
 
 Route::get('storage/{filename}', function ($filename)
 {
@@ -194,3 +192,9 @@ Route::resource('stagiaire','App\Http\Controllers\StagiaireController');
 Route::resource('utilisateur','App\Http\Controllers\UtilisateurController');
 Route::resource('admin','App\Http\Controllers\AdminController');
 Route::resource('parametre','App\Http\Controllers\parametreController');
+
+} catch(ReflectionException $e) {
+    // use custom /resources/views/errors/404.blade.php to display $pageName
+    // View::share('pageName', $nameFormat);
+    abort(404, "Not found");
+}
