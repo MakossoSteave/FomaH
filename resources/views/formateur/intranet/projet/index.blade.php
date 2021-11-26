@@ -6,8 +6,22 @@
   <div class="content is-medium">
     <h3 class="has-text-centered mb-4">Les projets en cours</h2>
   </div>
+
+  <section class="hero is-info welcome is-small">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          Bonjour {{ Str::ucfirst(Auth::user()->name) }}
+        </h1>
+        <h2 class="subtitle">
+          Il y a --- projet(s) à corriger !
+        </h2>
+      </div>
+    </div>
+  </section>
+  
   @if($projetList != null)
-  <table class="table table-striped">
+  <table class="table table-striped" width="100%">
     <thead>
       <tr>
         <th scope="col">Projet</th>
@@ -28,7 +42,13 @@
         <td>{{$projet['resultat_description']}}</td>
         <td>{{$projet['date_debut']}}</td>
         <td>{{$projet['date_fin']}}</td>
-        <td><a href="" class="button">Voir</a></td>
+        <td>
+          <form action="{{route('one_projet_formateur', $projet['id'])}}" method="get">
+            <input type="hidden" value="{{$projet['nom']}}" name="name">
+            <button class="button">Voir</button>
+          </form>
+          <!-- <a href="{{route('one_projet_formateur', $projet['id'])}}" class="button">Voir</a> -->
+        </td>
       </tr>
       @endforeach
     </tbody>

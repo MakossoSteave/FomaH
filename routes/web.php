@@ -155,7 +155,12 @@ Route::get('/intranet/coursSuivant', [App\Http\Controllers\IntranetController::c
 
 Route::get('/intranet/formateurs/lives', [App\Http\Controllers\IntranetFormateurController::class, 'live'])->name('live_formateur');
 Route::post('/intranet/formateurs/lives', [App\Http\Controllers\IntranetFormateurController::class, 'createLive'])->name('create_live_formateur');
-Route::get('/intranet/formateurs/projets', [App\Http\Controllers\IntranetFormateurController::class, 'projet'])->name('projet_formateur');
+Route::get('/intranet/formateurs/projets', [App\Http\Controllers\IntranetFormateurController::class, 'projet'])->name('projet_formateur')
+;
+Route::get('/intranet/formateurs/projet/{id}', [App\Http\Controllers\IntranetFormateurController::class, 'oneProjet'])->name('one_projet_formateur')
+;
+Route::post('/intranet/formateurs/projetGrade', [App\Http\Controllers\IntranetFormateurController::class, 'projetGrade'])->name('grade_project')
+;
 
 Route::get('storage/{filename}', function ($filename)
 {

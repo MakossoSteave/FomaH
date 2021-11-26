@@ -173,3 +173,8 @@
 .page-wrap {
     min-height: 100vh;
 }
+
+.embbDetail {
+    height: 100vh;
+    width: 100%;
+}
